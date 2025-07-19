@@ -1,0 +1,33 @@
+import "user"
+import "preset"
+
+model Model {
+    id       String     @id @default(cuid())
+    url      Connection @json
+    settings Settings   @json
+    name     String
+    apiKey   String     @encrypted
+
+    User     User       @relation(fields: [userId], references: [id])
+    userId   String     @default(auth().id)
+
+    @@allow('all', auth() == User)
+
+    Presets  Preset[]
+}
+
+enum Provider {
+    local
+    openai
+}
+
+type Connection {
+    identifier String
+    host       String
+    autodetect Boolean
+    port       Int?
+}
+
+type Settings {
+    temperature Float @gte(0) @lte(10)
+}

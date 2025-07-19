@@ -1,0 +1,11 @@
+---
+import { Badge } from '~ui/badge'
+
+interface Props {
+    model: string
+}
+---
+
+<Badge variant="secondary" className="h-fit p-2 z-10">
+    {Astro.props.model}
+</Badge>

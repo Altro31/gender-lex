@@ -1,0 +1,12 @@
+
+type ModifiedAlternative {
+    alternativeNumber        Int
+    alternativeText          String
+    modificationsExplanation ModificationItem[]
+}
+
+type ModificationItem {
+    originalFragment String
+    modifiedFragment String
+    reason           String
+}

@@ -1,0 +1,89 @@
+import "user"
+import "modified-alternatives"
+import "preset"
+
+model Analysis {
+    id                          String                       @id @default(cuid())
+
+    originalText                String
+    modifiedTextAlternatives    ModifiedAlternative[]        @json
+    biasedTerms                 BiasedTerm[]                 @json
+    biasedMetaphors             BiasedMetaphor[]             @json
+    additionalContextEvaluation AdditionalContextEvaluation? @json
+    impactAnalysis              ImpactAnalysis?              @json
+    conclusion                  String?
+
+    status                      AnalysisStatus               @default(analyzing)
+
+    Presets                     Preset[]
+    userId                      String?                      @default(auth().id)
+    User                        User?                        @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+    createdAt                   DateTime                     @default(now())
+
+    @@allow('all',auth() == User)
+}
+
+enum AnalysisStatus {
+    analyzing
+    done
+}
+
+enum BiasedTermCategory {
+    paternalistic
+    stereotypical
+    reproductiveExclusion
+}
+
+type BiasedTerm {
+    content             String
+    influencePercentage Float  @gte(0) @lte(1)
+    explanation         String
+    category            String
+}
+
+type BiasedMetaphor {
+    content             String
+    influencePercentage Float  @gte(0) @lte(1)
+    explanation         String
+    historicalContext   String
+}
+
+type AdditionalContextEvaluation {
+    stereotype                  AdditionalContextEvaluationItem
+    powerAsymmetry              AdditionalContextEvaluationItem
+    genderRepresentationAbsence AdditionalContextGenderRepresentationAbsence
+    intersectionality           AdditionalContextIntersectionality
+    systemicBiases              AdditionalContextEvaluationItem
+}
+
+type AdditionalContextEvaluationItem {
+    presence            Boolean
+    influencePercentage Float    @gte(0) @lte(1)
+    examples            String[]
+    explanation         String
+}
+
+type AdditionalContextGenderRepresentationAbsence {
+    presence            Boolean
+    influencePercentage Float    @gte(0) @lte(1)
+    explanation         String
+    affectedGroups      String[]
+}
+
+type AdditionalContextIntersectionality {
+    presence            Boolean
+    influencePercentage Float    @gte(0) @lte(1)
+    explanation         String
+    excludedGroups      String[]
+}
+
+type ImpactAnalysis {
+    accessToCare   ImpactAnalysisItem
+    stigmatization ImpactAnalysisItem
+}
+
+type ImpactAnalysisItem {
+    affected    Boolean
+    description String
+}

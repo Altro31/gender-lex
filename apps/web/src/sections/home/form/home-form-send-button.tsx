@@ -1,0 +1,23 @@
+import { Button } from "@/components/ui/button"
+import { Loader2 } from "lucide-react"
+import { useFormStatus } from "react-dom"
+
+interface Props {
+	disabled?: boolean
+}
+
+export default function HomeFormSendButton({ disabled = false }: Props) {
+	const { pending } = useFormStatus()
+	
+	return (
+		<Button
+			size="sm"
+			className="cursor-pointer rounded-lg transition-opacity"
+			disabled={disabled || pending}
+			type="submit"
+		>
+			{pending && <Loader2 className="animate-spin" />}
+			<span>{pending ? "Analizando..." : "Enviar"}</span>
+		</Button>
+	)
+}

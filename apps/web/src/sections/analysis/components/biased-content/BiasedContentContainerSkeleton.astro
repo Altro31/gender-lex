@@ -1,0 +1,12 @@
+---
+import BiasedContentItemSkeleton from '@/sections/analysis/components/biased-content/BiasedContentItemSkeleton.astro'
+import { Card } from '~ui/card'
+import { Skeleton } from '~ui/skeleton'
+---
+
+<Card>
+    <div class="p-4 space-y-3">
+        <Skeleton className="w-full max-w-32 h-6" />
+        <BiasedContentItemSkeleton />
+    </div>
+</Card>

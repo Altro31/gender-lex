@@ -15,7 +15,17 @@
       "outputs": [
         ".next/**",
         "!.next/cache/**"
+      ],
+      "env": [
+        "DATABASE_URL"
       ]
+    },
+    "db:generate": {
+      "cache": true,
+      "inputs": [
+        "**/*.zmodel"
+      ],
+      "outputs": []
     },
     "lint": {},
     "test": {},

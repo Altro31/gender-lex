@@ -1,0 +1,32 @@
+import "analysis"
+import "model"
+import "preset"
+
+enum Role {
+  superadmin
+  admin
+  authenticated
+}
+
+enum AuthProvider {
+  local
+  google
+}
+
+model User {
+  id        String       @id @default(cuid())
+  email     String       @email @unique
+  password  String?      @password @deny('read', this.provider != local)
+  provider  AuthProvider @default(local)
+  createdAt DateTime     @default(now())
+
+  Analyses  Analysis[]
+  Models    Model[]
+  Presets   Preset[]
+
+  role      Role         @default(authenticated)
+
+  @@auth
+  @@allow('all', auth() == this)
+  @@allow('create,read',true)
+}

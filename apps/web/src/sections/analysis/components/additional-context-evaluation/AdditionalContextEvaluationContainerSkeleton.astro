@@ -1,0 +1,16 @@
+---
+import AdditionalContextEvaluationItemSkeleton from '@/sections/analysis/components/additional-context-evaluation/AdditionalContextEvaluationItemSkeleton.astro'
+import { Card } from '~ui/card'
+import { Skeleton } from '~ui/skeleton'
+---
+
+<Card>
+    <div class="p-4 space-y-2">
+        <Skeleton className="w-full max-w-64 h-7 mb-4" />
+        <div class="flex justify-around flex-wrap pt-4 gap-4">
+            <AdditionalContextEvaluationItemSkeleton />
+            <AdditionalContextEvaluationItemSkeleton />
+            <AdditionalContextEvaluationItemSkeleton />
+        </div>
+    </div>
+</Card>

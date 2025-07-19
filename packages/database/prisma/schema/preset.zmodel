@@ -1,0 +1,15 @@
+import "model"
+import "user"
+import "analysis"
+
+model Preset {
+    id        String     @id @default(cuid())
+
+    Primary   Model      @relation(fields: [primaryId], references: [id])
+    primaryId String
+
+    user      User       @relation(fields: [userId], references: [id])
+    userId    String     @default(auth().id)
+
+    Analysis  Analysis[]
+}

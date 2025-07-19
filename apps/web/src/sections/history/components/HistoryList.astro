@@ -1,0 +1,15 @@
+---
+import Pagination from '@/components/Pagination.astro'
+import HistoryItem from '@/sections/history/components/HistoryItem.astro'
+import { getRequests } from '@/services/request'
+
+const page = Number(Astro.url.searchParams.get('page')) || 1
+
+const res = await getRequests(page, Astro.request)
+console.log(res)
+
+const total = res?.totalPages ?? 1
+---
+
+{res?.data?.map((data) => <HistoryItem data={data as any} />)}
+{total > 1 && <Pagination total={total} />}

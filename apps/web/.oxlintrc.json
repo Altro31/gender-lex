@@ -1,0 +1,4 @@
+{
+  "plugins": ["nextjs"],
+  "ignorePatterns": ["node_modules", "src/components/ui", ".next"]
+}
