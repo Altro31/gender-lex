@@ -2,18 +2,25 @@ import "user"
 import "preset"
 
 model Model {
-    id       String     @id @default(cuid())
-    url      Connection @json
-    settings Settings   @json
-    name     String
-    apiKey   String     @encrypted
+    id           String        @id @default(cuid())
+    connection   Connection    @json
+    settings     Settings      @json
+    name         String
+    apiKey       String?       @encrypted
 
-    User     User       @relation(fields: [userId], references: [id])
-    userId   String     @default(auth().id)
+    User         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId       String        @default(auth().id)
 
+    PresetModels PresetModel[]
+
+    // Require login
+    @@deny('all', auth() == null)
+
+    // User can do everything
     @@allow('all', auth() == User)
 
-    Presets  Preset[]
+    // Admins can delete models
+    @@allow('delete', auth().role == admin)
 }
 
 enum Provider {
@@ -23,11 +30,11 @@ enum Provider {
 
 type Connection {
     identifier String
-    host       String
-    autodetect Boolean
-    port       Int?
+    url        String @url("Connection url must me a valid URL")
 }
 
 type Settings {
-    temperature Float @gte(0) @lte(10)
+    temperature Float
+
+    @@validate(temperature < 0 || temperature > 10, "Temperature must be in range of 0 to 10")
 }

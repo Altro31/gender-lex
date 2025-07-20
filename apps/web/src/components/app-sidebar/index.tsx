@@ -1,8 +1,4 @@
-import {
-	Bot,
-	Clock,
-	Plus
-} from "lucide-react"
+import { Bot, Clock, Plus } from "lucide-react"
 import * as React from "react"
 
 import { Logo } from "@/components/app-sidebar/logo"
@@ -17,7 +13,6 @@ import {
 	SidebarRail,
 } from "@/components/ui/sidebar"
 
-// This is sample data.
 const data = {
 	navMain: [
 		{
@@ -66,7 +61,9 @@ export default function AppSidebar({
 				<NavRecent projects={data.projects} />
 			</SidebarContent>
 			<SidebarFooter>
-				<NavUser />
+				<React.Suspense fallback={"Loading..."}>
+					<NavUser />
+				</React.Suspense>
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>

@@ -1,10 +1,15 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  experimental: {
-    ppr: true,
-    reactCompiler: true,
-  }
-};
+	experimental: {
+		cacheComponents: true,
+		reactCompiler: true,
+		nodeMiddleware: true,
+		browserDebugInfoInTerminal: true,
+		clientSegmentCache: true,
+		devtoolSegmentExplorer: true,
+		turbopackPersistentCaching: true,
+	},
+}
 
-export default nextConfig;
+export default nextConfig

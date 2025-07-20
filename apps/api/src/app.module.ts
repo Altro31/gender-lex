@@ -1,4 +1,8 @@
-import { Module } from '@nestjs/common'
+import {
+	Module,
+	type MiddlewareConsumer,
+	type NestModule,
+} from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_PIPE } from '@nestjs/core'
 import { ServeStaticModule } from '@nestjs/serve-static'
@@ -16,6 +20,7 @@ import { AuthModule } from './security/modules/auth/auth.module'
 import { UserModule } from './security/modules/user/user.module'
 import { PresetModule } from './ai/modules/preset/preset.module'
 import { enhance } from '@repo/db'
+import { CrudMiddleware } from 'src/core/prisma/middlewares/crud.middleware'
 
 export type EnvTypes = z.infer<typeof EnvTypes>
 const EnvTypes = z.object({
@@ -43,11 +48,10 @@ const EnvTypes = z.object({
 				config: ConfigService<EnvTypes>,
 			) => {
 				const key = config.getOrThrow<string>('AUTH_SECRET')
-				console.log(getEncryptionKey(key))
-
 				return {
-					getEnhancedPrisma: () =>
-						enhance(
+					getEnhancedPrisma: () => {
+						console.log(cls.get('auth'))
+						return enhance(
 							prisma,
 							{ user: cls.get('auth') },
 							{
@@ -55,7 +59,8 @@ const EnvTypes = z.object({
 									encryptionKey: getEncryptionKey(key),
 								},
 							},
-						),
+						)
+					},
 				}
 			},
 			inject: [PrismaService, ClsService, ConfigService],
@@ -71,6 +76,13 @@ const EnvTypes = z.object({
 		}),
 		PresetModule,
 	],
-	providers: [{ provide: APP_PIPE, useClass: ZodValidationPipe }],
+	providers: [
+		{ provide: APP_PIPE, useClass: ZodValidationPipe },
+		PrismaService,
+	],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+	configure(consumer: MiddlewareConsumer) {
+		consumer.apply(CrudMiddleware).forRoutes('/api/zen')
+	}
+}

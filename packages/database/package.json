@@ -2,7 +2,9 @@
     "name": "@repo/db",
     "version": "0.0.0",
     "scripts": {
-        "db:generate": "zenstack generate"
+        "db:generate": "zenstack generate",
+        "db:migrate": "prisma migrate dev",
+        "studio": "prisma studio"
     },
     "dependencies": {
         "@prisma/client": "6.10",

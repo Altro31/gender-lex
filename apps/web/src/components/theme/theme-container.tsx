@@ -1,7 +1,16 @@
 import ThemeSwitcher from "@/components/theme/theme-switcher"
 import { cookies } from "next/headers"
+import { Suspense } from "react"
 
-export default async function ThemeContainer() {
+export default function ThemeContainer() {
+	return (
+		<Suspense>
+			<Theme />
+		</Suspense>
+	)
+}
+
+async function Theme() {
 	const cookiesStore = await cookies()
 	const isDark = cookiesStore.get("THEME_DARK")
 

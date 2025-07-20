@@ -4,31 +4,46 @@
     "**/.env.*local"
   ],
   "tasks": {
+    "studio": {
+      "cache": false,
+      "persistent": true
+    },
     "dev": {
       "cache": false,
       "persistent": true
     },
     "build": {
       "dependsOn": [
+        "db:generate",
         "^build"
       ],
       "outputs": [
         ".next/**",
-        "!.next/cache/**"
+        "!.next/cache/**",
+        "dist/**",
+        "!tsconfig.build.tsbuildinfo"
       ],
       "env": [
         "DATABASE_URL"
       ]
     },
     "db:generate": {
+      "dependsOn": [
+        "^db:generate"
+      ],
       "cache": true,
       "inputs": [
         "**/*.zmodel"
       ],
-      "outputs": []
+      "outputs": [
+        "$TURBO_ROOT$/node_modules/.zenstack/**",
+        "$TURBO_ROOT$/apps/api/public/openapi.yaml",
+        "$TURBO_ROOT$/apps/web/src/lib/api/types.d.ts"
+      ]
     },
-    "lint": {},
-    "test": {},
-    "test:e2e": {}
+    "db:migrate": {
+      "cache": false,
+      "interactive": true
+    }
   }
 }

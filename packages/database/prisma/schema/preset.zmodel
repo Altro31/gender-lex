@@ -3,13 +3,38 @@ import "user"
 import "analysis"
 
 model Preset {
-    id        String     @id @default(cuid())
 
-    Primary   Model      @relation(fields: [primaryId], references: [id])
-    primaryId String
+    id       String        @id @default(cuid())
 
-    user      User       @relation(fields: [userId], references: [id])
-    userId    String     @default(auth().id)
+    Models   PresetModel[]
 
-    Analysis  Analysis[]
+    User     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId   String        @default(auth().id)
+
+    Analysis Analysis[]
+
+    // Require login
+    @@deny('all', auth() == null)
+
+    // Only owners can view its own presets
+    @@allow("all",auth()==User)
+}
+
+model PresetModel {
+    role     ModelRole
+
+    Preset   Preset    @relation(fields: [presetId], references: [id], onDelete: Cascade)
+    presetId String
+
+    Model    Model     @relation(fields: [modelId], references: [id], onDelete: Cascade)
+    modelId  String
+
+    @@id([role, presetId])
+
+    @@allow("all",check(Preset) && check(Model))
+}
+
+enum ModelRole {
+    primary
+    secondary
 }

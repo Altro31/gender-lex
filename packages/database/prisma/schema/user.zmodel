@@ -14,19 +14,44 @@ enum AuthProvider {
 }
 
 model User {
-  id        String       @id @default(cuid())
-  email     String       @email @unique
-  password  String?      @password @deny('read', this.provider != local)
-  provider  AuthProvider @default(local)
-  createdAt DateTime     @default(now())
+  @@auth
+
+  // Id cannot change
+  id        String       @id @default(cuid()) @deny("update", true)
+
+  // Emails cannot change
+  email     String       @email @unique @deny("update", true)
+
+  // Only users with local providers can have passwords and only them can access its password
+  password  String?      @password @deny('read', this.provider != local || auth()!=this)
+
+  // Providers cannot change
+  provider  AuthProvider @default(local) @deny("update", true)
+
+  // Timestamps cannot change
+  createdAt DateTime     @default(now()) @deny('update', true)
+  updatedAt DateTime     @updatedAt @deny('update', true)
 
   Analyses  Analysis[]
   Models    Model[]
   Presets   Preset[]
 
-  role      Role         @default(authenticated)
+  // 1.Only admins can update a user role
+  // 2.Only a superadmin can update the role of other admin
+  role      Role         @default(authenticated) /**1*/ @deny("update", auth().role != admin || auth().role != superadmin) /**2*/ @deny("update", auth().role != superadmin && (role == admin || role == superadmin))
+  
+  // Logged and admin users can read and update user data
+  @@allow('read,update', auth() == this || auth().role == admin || auth().role == superadmin)
+ 
+  // Everyone can register if they are not logged in
+  @@allow('create,read', auth() == null)
 
-  @@auth
-  @@allow('all', auth() == this)
-  @@allow('create,read',true)
+  // Admins can delete users
+  @@allow('delete', auth().role == admin || auth().role == superadmin)
+
+  // Users cannot delete him selfs
+  @@deny('delete',auth() == this)
+
+  // Only superadmin users can delete others admins
+  @@deny('delete',auth().role == "admin" && (role == superadmin || role == admin))
 }

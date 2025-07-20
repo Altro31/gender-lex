@@ -16,4 +16,10 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+plugin openapi {
+  provider = '@zenstackhq/openapi'
+  flavor = 'rest'
+  output = '../../apps/api/public/openapi.yaml'
+}
+
 

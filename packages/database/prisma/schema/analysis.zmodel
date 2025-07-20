@@ -1,5 +1,4 @@
 import "user"
-import "modified-alternatives"
 import "preset"
 
 model Analysis {
@@ -13,6 +12,8 @@ model Analysis {
     impactAnalysis              ImpactAnalysis?              @json
     conclusion                  String?
 
+    visibility                  Visibility                   @default(private)
+
     status                      AnalysisStatus               @default(analyzing)
 
     Presets                     Preset[]
@@ -20,8 +21,21 @@ model Analysis {
     User                        User?                        @relation(fields: [userId], references: [id], onDelete: SetNull)
 
     createdAt                   DateTime                     @default(now())
+    updatedAt                   DateTime                     @updatedAt
 
-    @@allow('all',auth() == User)
+    // Everyone can create
+    @@allow('create',true)
+
+    // Only owners can view it's analysis
+    @@allow("read,update,delete",auth()==User)
+
+    // Anyone can read if this analysis is public
+    @@allow("read",visibility == public)
+}
+
+enum Visibility {
+    public
+    private
 }
 
 enum AnalysisStatus {
@@ -86,4 +100,16 @@ type ImpactAnalysis {
 type ImpactAnalysisItem {
     affected    Boolean
     description String
+}
+
+type ModifiedAlternative {
+    alternativeNumber        Int
+    alternativeText          String
+    modificationsExplanation ModificationItem[]
+}
+
+type ModificationItem {
+    originalFragment String
+    modifiedFragment String
+    reason           String
 }

@@ -11,7 +11,10 @@ export const metadata: Metadata = {
 	description: "GenderLex",
 }
 
-export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
+export default async function RootLayout({
+	children,
+}: Readonly<PropsWithChildren>) {
+
 	return (
 		<html lang="en">
 			<body className="relative">
