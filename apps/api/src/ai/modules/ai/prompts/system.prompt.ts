@@ -62,7 +62,7 @@ Act as an expert in gender bias analysis in texts, specializing in women’s hea
     "biasedTerms": [
         {
             "content": "<Identified term>",
-            "influencePercentage": "<Influence percentage (0-1)>",
+            "influencePercentage": <Influence percentage (0-1)>,
             "explanation": "<Bias explanation>",
             "category": "<Category: 'paternalistic', 'stereotypical', 'reproductive exclusion', etc.>"
         } // More terms as appropriate 
@@ -96,13 +96,13 @@ Act as an expert in gender bias analysis in texts, specializing in women’s hea
         },
         "intersectionality": {
             "presence": "boolean",
-            "influencePercentage": "<Percentage>",
+            "influencePercentage": <Percentage>,
             "excludedGroups": ["<Racialized women>", "<LGBTQ+>", "<Disabilities>"],
             "explanation": "<Explanation>"
         },
         "systemicBiases": {
             "presence": "boolean",
-            "influencePercentage": "<Percentage>",
+            "influencePercentage": <Percentage>,
             "examples": ["<Blaming women for social inequalities>", "<Excluding non-reproductive health>"],
             "explanation": "<Explanation>"
         }

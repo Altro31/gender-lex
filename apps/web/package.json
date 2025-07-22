@@ -10,7 +10,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "oxlint --fix --fix-suggestions",
-    "db:generate": "openapi-typescript ../api/public/openapi.yaml -o ./src/lib/api/types.d.ts"
+    "db:generate": "openapi-typescript ../api/public/zen/openapi.yaml -o ./src/lib/api/types.d.ts"
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",

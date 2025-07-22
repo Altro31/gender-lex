@@ -19,7 +19,8 @@ datasource db {
 plugin openapi {
   provider = '@zenstackhq/openapi'
   flavor = 'rest'
-  output = '../../apps/api/public/openapi.yaml'
+  output = '../../apps/api/public/zen/openapi.yaml'
+  prefix = "/api/zen"
 }
 
 

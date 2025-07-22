@@ -11,10 +11,6 @@ export class AnalysisService {
 		return this.analysisRepository.create(createAnalysisDto)
 	}
 
-	findAll(params: any) {
-		return this.analysisRepository.findAll(params)
-	}
-
 	findOne(id: string) {
 		return this.analysisRepository.findOneBy('id', id)
 	}

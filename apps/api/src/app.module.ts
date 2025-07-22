@@ -50,7 +50,6 @@ const EnvTypes = z.object({
 				const key = config.getOrThrow<string>('AUTH_SECRET')
 				return {
 					getEnhancedPrisma: () => {
-						console.log(cls.get('auth'))
 						return enhance(
 							prisma,
 							{ user: cls.get('auth') },

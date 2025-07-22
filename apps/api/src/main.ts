@@ -3,9 +3,9 @@ import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import type { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { AppModule, type EnvTypes } from './app.module'
 import { patchNestJsSwagger } from 'nestjs-zod'
 import { GlobalJWTAuthGuard } from 'src/security/modules/auth/guards/global-jwt-auth.guard'
+import { AppModule, type EnvTypes } from './app.module'
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -28,17 +28,17 @@ async function bootstrap() {
 		swaggerOptions: {
 			urls: [
 				{ name: '1. API', url: 'api/swagger.json' },
-				{ name: '2. Cats API', url: 'openapi.yaml' },
+				{ name: '2. Models API', url: 'zen/openapi.yaml' },
 			],
 		},
 		jsonDocumentUrl: '/api/swagger.json',
 	})
 
-	SwaggerModule.setup('api', app, documentFactory)
 	const port = app.get(ConfigService<EnvTypes>).get<number>('PORT') ?? 4000
 	await app.listen(port)
 	console.log(`	🚀Server running at http://localhost:${port}`)
 	console.log(`	Docs running at http://localhost:${port}/api`)
+	console.log(process.cwd())
 }
 patchNestJsSwagger()
 void bootstrap()
