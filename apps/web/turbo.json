@@ -1,0 +1,13 @@
+{
+	"$schema": "https://turborepo.com/schema.json",
+	"extends": ["//"],
+	"globalDependencies": ["**/.env.*local"],
+	"tasks": {
+		"generate": {
+			"dependsOn": ["^generate", "api#generate"],
+			"cache": true,
+			"inputs": ["$TURBO_ROOT$/apps/api/public/openapi.yaml"],
+			"outputs": ["./src/lib/api/types.d.ts"]
+		}
+	}
+}

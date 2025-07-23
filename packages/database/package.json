@@ -1,23 +1,24 @@
 {
-    "name": "@repo/db",
-    "version": "0.0.0",
-    "scripts": {
-        "db:generate": "zenstack generate",
-        "db:migrate": "prisma migrate dev",
-        "studio": "prisma studio -b none"
-    },
-    "dependencies": {
-        "@prisma/client": "6.10",
-        "@zenstackhq/runtime": "^2.16.1"
-    },
-    "devDependencies": {
-        "@zenstackhq/openapi": "^2.16.1",
-        "zenstack": "^2.16.1"
-    },
-    "exports": {
-        ".": "./index.ts",
-        "./models": "./models.ts",
-        "./zod": "./zod.ts",
-        "./client": "./client.ts"
-    }
+	"name": "@repo/db",
+	"version": "0.0.0",
+	"scripts": {
+		"generate": "zenstack generate",
+		"migrate": "prisma migrate dev",
+		"studio": "prisma studio -b none"
+	},
+	"dependencies": {
+		"@prisma/client": "6.10",
+		"@zenstackhq/runtime": "^2.16.1"
+	},
+	"devDependencies": {
+		"@zenstackhq/openapi": "^2.16.1",
+		"zenstack": "^2.16.1"
+	},
+	"exports": {
+		".": "./index.ts",
+		"./models": "./models.ts",
+		"./zod": "./zod.ts",
+		"./client": "./client.ts",
+		"./openapi.yaml": "./openapi.yaml"
+	}
 }

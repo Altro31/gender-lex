@@ -2,18 +2,13 @@ import { ValidationPipe, type INestApplication } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import type { NestExpressApplication } from '@nestjs/platform-express'
-import {
-	DocumentBuilder,
-	SwaggerModule,
-	type OpenAPIObject,
-} from '@nestjs/swagger'
+import { SwaggerModule, type OpenAPIObject } from '@nestjs/swagger'
+import * as fs from 'fs'
+import * as yaml from 'js-yaml'
 import { patchNestJsSwagger } from 'nestjs-zod'
+import * as path from 'path'
 import { GlobalJWTAuthGuard } from 'src/security/modules/auth/guards/global-jwt-auth.guard'
 import { AppModule, type EnvTypes } from './app.module'
-import * as yaml from 'js-yaml'
-import * as fs from 'fs'
-import * as path from 'path'
-import { isErrorResult, merge } from 'openapi-merge'
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -35,30 +30,19 @@ async function bootstrap() {
 }
 
 function openapi(app: INestApplication) {
-	const config = new DocumentBuilder()
-		.addBearerAuth()
-		.setTitle('Gender Lex Backend')
-		.setVersion('1.0')
-		.build()
-	const documentFactory = () => SwaggerModule.createDocument(app, config)
 	let doc: OpenAPIObject | undefined
 	try {
 		doc = yaml.load(
 			fs.readFileSync(
-				path.join(process.cwd(), './public/zen/openapi.yaml'),
+				path.join(process.cwd(), './public/openapi.yaml'),
 				'utf8',
 			),
 		) as OpenAPIObject
 	} catch (e) {
 		console.log(e)
 	}
-	const result = merge([
-		{ oas: documentFactory() as any },
-		...(doc ? [{ oas: doc as any }] : []),
-	])
-	const document = isErrorResult(result) ? documentFactory() : result.output
-
-	SwaggerModule.setup('api', app, document as OpenAPIObject)
+	if (!doc) return console.warn('OpenApi spec cannot be loaded')
+	SwaggerModule.setup('api', app, doc)
 }
 
 patchNestJsSwagger()

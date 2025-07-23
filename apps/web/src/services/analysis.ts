@@ -1,6 +1,7 @@
 "use server"
 
 import { auth } from "@/auth"
+import { client } from "@/lib/api/client"
 import { endpoints } from "@/lib/endpoints"
 import { permanentRedirect, unauthorized } from "next/navigation"
 
@@ -14,12 +15,13 @@ export async function prepareAnalysis(formData: FormData) {
 		},
 	})
 	const data = await res.json()
-	permanentRedirect("/analice?" + data.id)
+	permanentRedirect("/analysis/" + data.id)
 }
 
 export async function startAnalysis(id: string) {
 	const session = await auth()
-	const res = await fetch(endpoints.ai.analysis.start.replace(":id", id), {
+	const res = await client.POST("")
+	fetch(endpoints.ai.analysis.start.replace(":id", id), {
 		method: "POST",
 		headers: {
 			Authorization: `Bearer ${session?.jwt}`,

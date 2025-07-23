@@ -1,50 +1,20 @@
 {
-  "$schema": "https://turborepo.com/schema.json",
-  "globalDependencies": [
-    "**/.env.*local"
-  ],
-  "ui": "tui",
-  "tasks": {
-    "studio": {
-      "cache": false,
-      "persistent": true
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "build": {
-      "dependsOn": [
-        "db:generate",
-        "^build"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "dist/**",
-        "!tsconfig.build.tsbuildinfo"
-      ],
-      "env": [
-        "DATABASE_URL"
-      ]
-    },
-    "db:generate": {
-      "dependsOn": [
-        "^db:generate"
-      ],
-      "cache": true,
-      "inputs": [
-        "**/*.zmodel"
-      ],
-      "outputs": [
-        "$TURBO_ROOT$/node_modules/.zenstack/**",
-        "$TURBO_ROOT$/apps/api/public/openapi.yaml",
-        "$TURBO_ROOT$/apps/web/src/lib/api/types.d.ts"
-      ]
-    },
-    "db:migrate": {
-      "cache": false,
-      "interactive": true
-    }
-  }
+	"$schema": "https://turborepo.com/schema.json",
+	"globalDependencies": ["**/.env.*local"],
+	"ui": "tui",
+	"tasks": {
+		"studio": { "cache": false, "persistent": true },
+		"dev": { "cache": false, "persistent": true },
+		"build": {
+			"dependsOn": ["^generate", "^build"],
+			"outputs": [
+				".next/**",
+				"!.next/cache/**",
+				"dist/**",
+				"!tsconfig.build.tsbuildinfo"
+			],
+			"env": ["DATABASE_URL"]
+		},
+		"migrate": { "cache": false, "interactive": true }
+	}
 }

@@ -1,0 +1,12 @@
+{
+	"$schema": "https://turborepo.com/schema.json",
+	"extends": ["//"],
+	"globalDependencies": ["**/.env.*local"],
+	"tasks": {
+		"generate": {
+			"cache": true,
+			"inputs": ["**/*.zmodel"],
+			"outputs": ["$TURBO_ROOT$/node_modules/.zenstack/**"]
+		}
+	}
+}

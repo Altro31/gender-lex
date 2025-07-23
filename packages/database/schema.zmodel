@@ -19,11 +19,12 @@ datasource db {
 plugin openapi {
   provider = '@zenstackhq/openapi'
   flavor = 'rest'
-  output = '../../apps/api/public/zen/openapi.yaml'
+  output = 'openapi.yaml'
   prefix = "/zen"
   securitySchemes = {
         bearer: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }
     }
 }
+  
 
 
