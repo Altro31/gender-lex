@@ -29,7 +29,7 @@ export class CrudMiddleware implements NestMiddleware {
 		const key = this.config.getOrThrow<string>('AUTH_SECRET')
 		const bearerToken = req.headers.authorization ?? ''
 		const token = bearerToken.slice(7)
-		const payload = token && this.jwtService.verify(token, { secret: key }) 
+		const payload = token && this.jwtService.verify(token, { secret: key })
 		const user = payload ? { id: payload.sub, ...payload } : undefined
 
 		// construct an Express middleware and forward the request/response

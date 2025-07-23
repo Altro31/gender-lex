@@ -3,8 +3,6 @@ import type { UpdateAnalysisDto } from 'src/ai/modules/analysis/dto/update-analy
 import { BaseRepository } from 'src/core/utils/repository'
 
 export class AnalysisRepository extends BaseRepository('analysis') {
-	
-
 	create(data: CreateAnalysisDto) {
 		return this.prisma.analysis.create({
 			data: {

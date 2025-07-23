@@ -1,9 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-
-
-export class AnaliceDTO  {
-
+export class AnaliceDTO {
 	@ApiProperty({ type: 'string', format: 'binary', required: false })
 	file?: string
 

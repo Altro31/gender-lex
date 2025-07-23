@@ -8,7 +8,7 @@ interface Props {
 
 export default function HomeFormSendButton({ disabled = false }: Props) {
 	const { pending } = useFormStatus()
-	
+
 	return (
 		<Button
 			size="sm"

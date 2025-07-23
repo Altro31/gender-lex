@@ -26,10 +26,7 @@ export default function HomeFormContainer() {
 		if (file !== null) onFileUpload(file)
 	}, [file, onFileUpload])
 	return (
-		<Form
-			action={prepareAnalysis}
-			className="group flex h-full gap-2 pr-2"
-		>
+		<Form action={prepareAnalysis} className="group flex h-full gap-2 pr-2">
 			<Textarea
 				name="text"
 				className="bg-background resize-none px-4"

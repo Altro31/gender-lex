@@ -1,7 +1,7 @@
 import {
 	Module,
 	type MiddlewareConsumer,
-	type NestModule
+	type NestModule,
 } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_PIPE } from '@nestjs/core'
@@ -32,7 +32,6 @@ const EnvTypes = z.object({
 	AUTH_GOOGLE_SECRET: z.string(),
 	HOST_URL: z.string().url(),
 })
-
 
 @Module({
 	imports: [

@@ -5,11 +5,11 @@ const positions = []
 let match
 
 while ((match = regex.exec(path)) !== null) {
-    positions.push(match.index)
+	positions.push(match.index)
 }
 
 for (const pos of positions) {
-    blank = `${blank.slice(0, pos)}^${blank.slice(pos + 1)}`
+	blank = `${blank.slice(0, pos)}^${blank.slice(pos + 1)}`
 }
 
 console.log('WARNING: Maybe husky installation fails because the project path:')

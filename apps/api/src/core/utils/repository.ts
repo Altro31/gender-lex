@@ -7,7 +7,7 @@ import {
 	PrismaClient,
 	User,
 } from '@repo/db/models'
-import { ENHANCED_PRISMA } from '@zenstackhq/server/nestjs';
+import { ENHANCED_PRISMA } from '@zenstackhq/server/nestjs'
 import { buildPaginatedResponse } from 'src/core/utils/pagination'
 type ModelMap = { user: User; analysis: Analysis; model: Model; preset: Preset }
 

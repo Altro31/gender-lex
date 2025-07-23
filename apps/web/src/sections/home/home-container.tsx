@@ -32,7 +32,6 @@ const cards = [
 ]
 
 export default function HomeContainer() {
-
 	return (
 		<UploadArea className="h-full flex items-center justify-center">
 			<div className="p-4 max-w-4xl space-y-3 sm:space-y-8">
