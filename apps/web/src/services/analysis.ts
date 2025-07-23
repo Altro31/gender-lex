@@ -7,14 +7,11 @@ import { permanentRedirect, unauthorized } from "next/navigation"
 
 export async function prepareAnalysis(formData: FormData) {
 	const session = await auth()
-	const res = await fetch(endpoints.ai.analysis.prepare, {
-		method: "POST",
-		body: formData,
-		headers: {
-			Authorization: `Bearer ${session?.jwt}`,
-		},
+	const { data, error } = await client.POST("/ai/analysis/prepare", {
+		body: formData as any,
+		headers: { Authorization: `Bearer ${session?.jwt}` },
 	})
-	const data = await res.json()
+	if (error) return error
 	permanentRedirect("/analysis/" + data.id)
 }
 
