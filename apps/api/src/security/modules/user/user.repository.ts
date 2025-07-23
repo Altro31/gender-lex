@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common'
 import type { PrismaClient, User } from '@repo/db/models'
 import { ENHANCED_PRISMA } from '@zenstackhq/server/nestjs'
-import type { PrismaService } from 'src/core/prisma/prisma.service'
+import { PrismaService } from 'src/core/prisma/prisma.service'
 import { BaseRepository } from 'src/core/utils/repository'
 import type { CreateUserDto } from 'src/security/modules/user/dto/create-user.dto'
 import type { UpdateUserDto } from 'src/security/modules/user/dto/update-user.dto'
@@ -20,7 +20,7 @@ export class UserRepository extends BaseRepository('user') {
 	}
 
 	create(data: CreateUserDto): Promise<User> {
-		return this.model.create({ data })
+		return this.prisma.user.create({ data })
 	}
 
 	update(id: string, data: UpdateUserDto): Promise<User> {

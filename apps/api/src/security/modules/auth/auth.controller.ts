@@ -19,10 +19,14 @@ import { UserWithoutPassword } from './entities/user_without_password.entity'
 import { JWTAuthGuard } from './guards/jwt_auth.guard'
 import { LocalAuthGuard } from './guards/local_auth.guard'
 import { CurrentUser } from './param_decorators/current_user.param_decorator'
+import { ClsService } from 'nestjs-cls'
 
 @Controller('auth')
 export class AuthController {
-	constructor(private readonly authService: AuthService) {}
+	constructor(
+		private readonly authService: AuthService,
+		private readonly clsService: ClsService,
+	) {}
 
 	/**
 	 * Login with email and password
@@ -41,6 +45,7 @@ export class AuthController {
 	@HttpCode(200)
 	@Post('register')
 	async register(@Body() data: RegisterDto) {
+		this.clsService.set('auth', { id: 'null', email: data.email })
 		return { token: await this.authService.register(data) }
 	}
 

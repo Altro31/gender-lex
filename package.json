@@ -16,9 +16,12 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "js-yaml": "^4.1.0",
+    "openapi-merge": "^1.3.3",
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.10.7",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",

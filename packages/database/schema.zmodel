@@ -7,20 +7,23 @@ import "./prisma/schema/user"
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-    provider = "prisma-client-js"
-    previewFeatures = ["postgresqlExtensions"]
+  provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 plugin openapi {
   provider = '@zenstackhq/openapi'
   flavor = 'rest'
   output = '../../apps/api/public/zen/openapi.yaml'
-  prefix = "/api/zen"
+  prefix = "/zen"
+  securitySchemes = {
+        bearer: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }
+    }
 }
 
 

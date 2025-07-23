@@ -1,23 +1,29 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { compareSync } from 'bcryptjs'
-import type { RegisterDto } from 'src/security/modules/auth/dto/register.dto'
-import { UserService } from '../user/user.service'
+import type { PrismaClient, User } from '@repo/db/models'
 import axios from 'axios'
+import { compareSync } from 'bcryptjs'
+import { PrismaService } from 'src/core/prisma/prisma.service'
+import type { RegisterDto } from 'src/security/modules/auth/dto/register.dto'
 import { GoogleLoginEntity } from 'src/security/modules/auth/entities/google_login.entity'
-import type { User } from '@repo/db/models'
+import { UserService } from '../user/user.service'
+import { ENHANCED_PRISMA } from '@zenstackhq/server/nestjs'
+import { ClsService } from 'nestjs-cls'
 
 @Injectable()
 export class AuthService {
 	constructor(
 		private readonly userService: UserService,
 		private readonly jwtService: JwtService,
+		private readonly rawPrisma: PrismaService,
+		private readonly clsService: ClsService,
+		@Inject(ENHANCED_PRISMA) private readonly prisma: PrismaClient,
 	) {}
 
 	async validateUser(email: string, pass: string) {
-		const user = await this.userService.findOneByEmail(email)
-		console.log(user);
-		
+		const user = await this.rawPrisma.user.findUnique({ where: { email } })
+		console.log(user)
+
 		if (!user) {
 			throw new UnauthorizedException()
 		}
@@ -27,6 +33,11 @@ export class AuthService {
 	}
 	async register(data: RegisterDto) {
 		const user = await this.userService.create(data)
+		this.clsService.set('auth', user)
+		await this.prisma.user.update({
+			where: { id: user?.id },
+			data: { loggedAt: new Date() },
+		})
 		return this.generateToken(user!)
 	}
 
@@ -34,12 +45,8 @@ export class AuthService {
 		return this.userService.updatePassword(id, prev_pw, new_pw)
 	}
 
-	generateToken(user: Pick<User, 'id' | 'email' | 'provider'>) {
-		const payload = {
-			email: user.email,
-			sub: user.id.toString(),
-			provider: user.provider,
-		}
+	generateToken({ id, ...user }: Omit<User, 'password'>) {
+		const payload = { sub: id, ...user }
 		return this.jwtService.sign(payload)
 	}
 

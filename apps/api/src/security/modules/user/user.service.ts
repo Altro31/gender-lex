@@ -14,6 +14,7 @@ export class UserService {
 		try {
 			return await this.userRepository.create(createUserDto)
 		} catch (e) {
+			console.log(e);
 			if (e.code === 'P2002') throw new ExistingUserException()
 		}
 	}

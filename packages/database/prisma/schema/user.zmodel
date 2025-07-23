@@ -23,10 +23,17 @@ model User {
   email     String       @email @unique @deny("update", true)
 
   // Only users with local providers can have passwords and only them can access its password
-  password  String?      @password @deny('read', this.provider != local || auth()!=this)
+  password  String?      @password @allow('read', this.provider == local && auth() == this)
 
   // Providers cannot change
   provider  AuthProvider @default(local) @deny("update", true)
+
+  // Only users can update it's last time login
+  loggedAt  DateTime?    @allow('update', auth() == this)
+
+  // 1.Only admins can update a user role
+  // 2.Only a superadmin can update the role of other admin
+  role      Role         @default(authenticated) /**1*/ @allow("update", auth().role == admin || auth().role == superadmin) /**2*/ @deny("update", auth().role != superadmin && (role == admin || role == superadmin))
 
   // Timestamps cannot change
   createdAt DateTime     @default(now()) @deny('update', true)
@@ -36,22 +43,21 @@ model User {
   Models    Model[]
   Presets   Preset[]
 
-  // 1.Only admins can update a user role
-  // 2.Only a superadmin can update the role of other admin
-  role      Role         @default(authenticated) /**1*/ @deny("update", auth().role != admin || auth().role != superadmin) /**2*/ @deny("update", auth().role != superadmin && (role == admin || role == superadmin))
-  
-  // Logged and admin users can read and update user data
-  @@allow('read,update', auth() == this || auth().role == admin || auth().role == superadmin)
- 
-  // Everyone can register if they are not logged in
-  @@allow('create,read', auth() == null)
+  /** Unauthenticated users can only access data related with it's email */
+  @@allow('read',auth().id == "null" && auth().email == email)
 
-  // Admins can delete users
+  /** Logged and admin users can update user data */
+  @@allow("update,read",auth() == this || auth().role == admin || auth().role == superadmin)
+ 
+  /** Everyone can register if they are not logged in */
+  @@allow('create', auth().id == "null")
+
+  /** Admins can delete users */
   @@allow('delete', auth().role == admin || auth().role == superadmin)
 
-  // Users cannot delete him selfs
+  /** Users cannot delete him selfs */
   @@deny('delete',auth() == this)
 
-  // Only superadmin users can delete others admins
+  /** Only superadmin users can delete others admins */
   @@deny('delete',auth().role == "admin" && (role == superadmin || role == admin))
 }

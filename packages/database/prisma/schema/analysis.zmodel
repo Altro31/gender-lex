@@ -1,27 +1,17 @@
 import "user"
 import "preset"
 
-model Analysis {
-    id                          String                       @id @default(cuid())
+model Analysis extends RawAnalysis {
+    id         String         @id @default(cuid())
+    visibility Visibility     @default(private)
+    status     AnalysisStatus @default(analyzing)
 
-    originalText                String
-    modifiedTextAlternatives    ModifiedAlternative[]        @json
-    biasedTerms                 BiasedTerm[]                 @json
-    biasedMetaphors             BiasedMetaphor[]             @json
-    additionalContextEvaluation AdditionalContextEvaluation? @json
-    impactAnalysis              ImpactAnalysis?              @json
-    conclusion                  String?
+    Presets    Preset[]
+    userId     String?        @default(auth().id)
+    User       User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-    visibility                  Visibility                   @default(private)
-
-    status                      AnalysisStatus               @default(analyzing)
-
-    Presets                     Preset[]
-    userId                      String?                      @default(auth().id)
-    User                        User?                        @relation(fields: [userId], references: [id], onDelete: SetNull)
-
-    createdAt                   DateTime                     @default(now())
-    updatedAt                   DateTime                     @updatedAt
+    createdAt  DateTime       @default(now())
+    updatedAt  DateTime       @updatedAt
 
     // Everyone can create
     @@allow('create',true)
@@ -31,6 +21,16 @@ model Analysis {
 
     // Anyone can read if this analysis is public
     @@allow("read",visibility == public)
+}
+
+abstract model RawAnalysis {
+    originalText                String
+    modifiedTextAlternatives    ModifiedAlternative[]        @json
+    biasedTerms                 BiasedTerm[]                 @json
+    biasedMetaphors             BiasedMetaphor[]             @json
+    additionalContextEvaluation AdditionalContextEvaluation? @json
+    impactAnalysis              ImpactAnalysis?              @json
+    conclusion                  String?
 }
 
 enum Visibility {

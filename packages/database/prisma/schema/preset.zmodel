@@ -13,10 +13,10 @@ model Preset {
 
     Analysis Analysis[]
 
-    // Require login
+    /** Require login */
     @@deny('all', auth() == null)
 
-    // Only owners can view its own presets
+    /** Only owners can view its own presets */
     @@allow("all",auth()==User)
 }
 
@@ -32,6 +32,8 @@ model PresetModel {
     @@id([role, presetId])
 
     @@allow("all",check(Preset) && check(Model))
+
+    @@openapi.ignore()
 }
 
 enum ModelRole {

@@ -3,6 +3,7 @@
   "globalDependencies": [
     "**/.env.*local"
   ],
+  "ui": "tui",
   "tasks": {
     "studio": {
       "cache": false,

@@ -1,4 +1,5 @@
 import { Controller } from '@nestjs/common'
+import { BaseController } from 'src/core/utils/controller'
 
 @Controller('user')
 /**
@@ -7,5 +8,4 @@ import { Controller } from '@nestjs/common'
  *   name: Users
  *   description: API for managing users
  */
-export class UserController {
-}
+export class UserController extends BaseController {}
