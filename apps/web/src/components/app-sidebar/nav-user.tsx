@@ -25,6 +25,7 @@ import {
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Image from "next/image"
+import { cookies } from "next/headers"
 
 export default async function NavUser() {
 	const session = await auth()
@@ -55,7 +56,7 @@ async function User() {
 					</Avatar>
 					<div className="grid flex-1 text-left text-sm leading-tight">
 						<span className="truncate font-medium">
-							{session?.user.name}
+							{session?.user.name}{" "}
 						</span>
 						<span className="truncate text-xs">
 							{session?.user.email}
@@ -116,7 +117,9 @@ async function User() {
 	)
 }
 
-function Login() {
+async function Login() {
+	const cookieStore = await cookies()
+	await new Promise((res) => setTimeout(res, 3000))
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -128,7 +131,9 @@ function Login() {
 						<LogIn className="size-4" />
 					</div>
 					<div className="grid flex-1 text-left text-sm leading-tight">
-						<span className="truncate font-medium">Login</span>
+						<span className="truncate font-medium">
+							Login {cookieStore.get("visitors")?.value}
+						</span>
 					</div>
 					<ChevronsUpDown className="ml-auto size-4" />
 				</SidebarMenuButton>

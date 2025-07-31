@@ -18,6 +18,7 @@ import type { UserWithoutPassword } from 'src/security/modules/auth/entities/use
 import { JWTAuthGuard } from 'src/security/modules/auth/guards/jwt_auth.guard'
 import { CurrentUser } from 'src/security/modules/auth/param_decorators/current_user.param_decorator'
 import { AiService } from './ai.service'
+import { PrepareResponseDTO } from 'src/ai/modules/ai/dto/prepare-response.dto'
 
 @ApiBearerAuth()
 @UseGuards(JWTAuthGuard(false))
@@ -36,7 +37,7 @@ export class AiController {
 		@UploadedFile() file: Express.Multer.File,
 		@Body() { text: inputText }: AnaliceDTO,
 		@CurrentUser() user: UserWithoutPassword,
-	) {
+	): Promise<PrepareResponseDTO> {
 		const text = (
 			file ? await this.extractorService.extractPDFText(file) : inputText
 		)!

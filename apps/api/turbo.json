@@ -10,7 +10,10 @@
 		"generate": {
 			"dependsOn": ["^generate"],
 			"cache": true,
-			"inputs": ["$TURBO_ROOT$/packages/database/openapi.yaml"],
+			"inputs": [
+				"$TURBO_ROOT$/packages/database/openapi.yaml",
+				"**/*.ts"
+			],
 			"outputs": ["./public/openapi.yaml"]
 		}
 	}

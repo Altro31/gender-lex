@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
 		cacheComponents: true,
 		reactCompiler: true,
 		nodeMiddleware: true,
-		browserDebugInfoInTerminal: true,
+		browserDebugInfoInTerminal: false,
 		clientSegmentCache: true,
 		devtoolSegmentExplorer: true,
 	},

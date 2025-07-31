@@ -3,28 +3,31 @@
 import { auth } from "@/auth"
 import { client } from "@/lib/api/client"
 import { endpoints } from "@/lib/endpoints"
+import { cookies } from "next/headers"
 import { permanentRedirect, unauthorized } from "next/navigation"
 
 export async function prepareAnalysis(formData: FormData) {
-	const session = await auth()
-	const { data, error } = await client.POST("/ai/analysis/prepare", {
-		body: formData as any,
-		headers: { Authorization: `Bearer ${session?.jwt}` },
-	})
-	if (error) return error
-	permanentRedirect("/analysis/" + data.id)
+	// const session = await auth()
+	// const { data } = await client.POST("/ai/analysis/prepare", {
+	// 	body: formData as any,
+	// 	headers: { Authorization: `Bearer ${session?.jwt}` },
+	// })
+	// if (!data)
+	// 	throw new Error("An error occurred when trying access analysis with id")
+	const cookieStore = await cookies()
+	cookieStore.set(
+		"visitors",
+		Number(cookieStore.get("visitors")?.value ?? 0) + 1 + "",
+	)
+	permanentRedirect("/analysis/" + "1")
 }
 
 export async function startAnalysis(id: string) {
 	const session = await auth()
-	const res = await client.POST("")
-	fetch(endpoints.ai.analysis.start.replace(":id", id), {
-		method: "POST",
-		headers: {
-			Authorization: `Bearer ${session?.jwt}`,
-		},
+	const res = await client.POST("/ai/analysis/start/{id}", {
+		params: { path: { id } },
 	})
-	return res.json()
+	return res.data
 }
 
 export async function deleteAnalysis(id: string) {
