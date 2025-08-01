@@ -1,19 +1,6 @@
 "use client"
 
-import { useState } from "react"
-import {
-	ArrowLeft,
-	Eye,
-	EyeOff,
-	Download,
-	Share2,
-	Calendar,
-	User,
-	Settings,
-	AlertTriangle,
-	CheckCircle,
-	Clock,
-} from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
 	Card,
@@ -22,11 +9,24 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+	AlertTriangle,
+	ArrowLeft,
+	Calendar,
+	CheckCircle,
+	Clock,
+	Download,
+	Eye,
+	EyeOff,
+	Settings,
+	Share2,
+	User,
+} from "lucide-react"
 import Link from "next/link"
+import { useState } from "react"
 
 // Types based on Prisma schema
 interface BiasedTerm {
@@ -277,7 +277,7 @@ const mockAnalysis: Analysis = {
 export default function AnalysisDetailsPage({
 	params,
 }: {
-	params: { id: string }
+	params: Promise<{ id: string }>
 }) {
 	const [showSensitiveContent, setShowSensitiveContent] = useState(true)
 
