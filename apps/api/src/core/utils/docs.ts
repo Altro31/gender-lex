@@ -7,6 +7,7 @@ import {
 import { isErrorResult, merge } from 'openapi-merge'
 import * as fs from 'fs/promises'
 import * as yaml from 'js-yaml'
+import { dirname } from 'path'
 
 export async function generateDocs(app: INestApplication) {
 	const specPath = require.resolve('@repo/db/openapi.yaml')
@@ -30,5 +31,7 @@ export async function generateDocs(app: INestApplication) {
 	])
 	const document = isErrorResult(result) ? documentFactory() : result.output
 
-	await fs.writeFile('./public/openapi.yaml', yaml.dump(document))
+	const filePath = './public/openapi.yaml'
+	await fs.mkdir(dirname(filePath), { recursive: true })
+	await fs.writeFile(filePath, yaml.dump(document))
 }
