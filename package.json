@@ -8,8 +8,8 @@
 	"scripts": {
 		"dev": "turbo run dev",
 		"generate": "turbo run generate",
-		"build:api": "turbo run build",
-		"build:web": "turbo run build",
+		"build:api": "turbo run api#build",
+		"build:web": "turbo run web#build",
 		"build": "turbo run build",
 		"test": "turbo run test",
 		"test:e2e": "turbo run test:e2e",
