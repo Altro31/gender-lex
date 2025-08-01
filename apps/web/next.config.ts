@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
 		browserDebugInfoInTerminal: false,
 		clientSegmentCache: true,
 		devtoolSegmentExplorer: true,
-	},
+	} as any,
 }
 
 export default nextConfig

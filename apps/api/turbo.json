@@ -23,7 +23,6 @@
 				"PDF_SERVICES_CLIENT_ID",
 				"PDF_SERVICES_CLIENT_SECRET",
 				"PORT",
-				"HOST_URL",
 				"AUTH_GOOGLE_SECRET"
 			]
 		}

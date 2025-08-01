@@ -29,7 +29,6 @@ const EnvTypes = z.object({
 	AUTH_SECRET: z.string().min(32),
 	AUTH_GOOGLE_ID: z.string(),
 	AUTH_GOOGLE_SECRET: z.string(),
-	HOST_URL: z.string().url(),
 })
 
 @Module({
