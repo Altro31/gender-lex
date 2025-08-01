@@ -25,6 +25,10 @@
 				"PORT",
 				"AUTH_GOOGLE_SECRET"
 			]
+		},
+		"build": {
+			"dependsOn": ["generate"],
+			"outputs": ["dist/**", "!tsconfig.build.tsbuildinfo"]
 		}
 	}
 }

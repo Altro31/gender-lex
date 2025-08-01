@@ -5,16 +5,6 @@
 	"tasks": {
 		"studio": { "cache": false, "persistent": true },
 		"dev": { "cache": false, "persistent": true },
-		"build": {
-			"dependsOn": ["^generate", "^build"],
-			"outputs": [
-				".next/**",
-				"!.next/cache/**",
-				"dist/**",
-				"!tsconfig.build.tsbuildinfo"
-			],
-			"env": ["DATABASE_URL"]
-		},
 		"migrate": { "cache": false, "interactive": true }
 	}
 }
