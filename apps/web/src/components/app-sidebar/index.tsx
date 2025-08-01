@@ -1,4 +1,4 @@
-import { Bot, Clock, Plus } from "lucide-react"
+import { Bot, Clock, Plus, Settings } from "lucide-react"
 import * as React from "react"
 
 import { Logo } from "@/components/app-sidebar/logo"
@@ -23,13 +23,18 @@ const data = {
 		},
 		{
 			title: "History",
-			url: "/history",
+			url: "/analysis",
 			icon: <Clock />,
 		},
 		{
 			title: "Models",
 			url: "/models",
 			icon: <Bot />,
+		},
+		{
+			title: "Presets",
+			url: "/presets",
+			icon: <Settings />,
 		},
 	],
 	projects: [

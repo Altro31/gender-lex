@@ -80,7 +80,7 @@ export default function NavRecent({
 						asChild
 						className="text-sidebar-foreground/70"
 					>
-						<Link href="/history">
+						<Link href="/analysis">
 							<MoreHorizontal className="text-sidebar-foreground/70" />
 							<span>More</span>
 						</Link>

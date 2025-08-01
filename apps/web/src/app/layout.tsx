@@ -1,4 +1,5 @@
 import AppSidebar from "@/components/app-sidebar"
+import FloatingChatbot from "@/components/floating-chatbot"
 import ProviderContainer from "@/components/provider-container"
 import ThemeContainer from "@/components/theme/theme-container"
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
@@ -23,6 +24,7 @@ export default async function RootLayout({
 						<SidebarTrigger />
 						<ThemeContainer />
 						{children}
+						<FloatingChatbot />
 					</SidebarInset>
 				</ProviderContainer>
 			</body>
