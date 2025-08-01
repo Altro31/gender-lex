@@ -6,7 +6,10 @@
 		"generate": {
 			"cache": true,
 			"inputs": ["**/*.zmodel"],
-			"outputs": ["$TURBO_ROOT$/node_modules/.zenstack/**"],
+			"outputs": [
+				"$TURBO_ROOT$/node_modules/.zenstack/**",
+				"$TURBO_ROOT$/node_modules/.prisma/client/**"
+			],
 			"env": ["DATABASE_URL"]
 		}
 	}
