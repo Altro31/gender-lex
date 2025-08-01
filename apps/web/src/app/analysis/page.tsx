@@ -677,6 +677,7 @@ export default function AnalysisPage() {
 																							]
 																								.label
 																						}
+
 																						)
 																					</Badge>
 																				),
@@ -1359,6 +1360,7 @@ export default function AnalysisPage() {
 																							]
 																								.label
 																						}
+
 																						)
 																					</Badge>
 																				),
