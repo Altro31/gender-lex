@@ -6,7 +6,8 @@
 		"generate": {
 			"cache": true,
 			"inputs": ["**/*.zmodel"],
-			"outputs": ["$TURBO_ROOT$/node_modules/.zenstack/**"]
+			"outputs": ["$TURBO_ROOT$/node_modules/.zenstack/**"],
+			"env": ["DATABASE_URL"]
 		}
 	}
 }

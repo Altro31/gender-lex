@@ -14,7 +14,18 @@
 				"$TURBO_ROOT$/packages/database/openapi.yaml",
 				"**/*.ts"
 			],
-			"outputs": ["./public/openapi.yaml"]
+			"outputs": ["./public/openapi.yaml"],
+			"env": [
+				"AUTH_GOOGLE_ID",
+				"AUTH_SECRET",
+				"GEMINI_API_KEY",
+				"GROQ_API_KEY",
+				"PDF_SERVICES_CLIENT_ID",
+				"PDF_SERVICES_CLIENT_SECRET",
+				"PORT",
+				"HOST_URL",
+				"AUTH_GOOGLE_SECRET"
+			]
 		}
 	}
 }
