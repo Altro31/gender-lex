@@ -23,7 +23,6 @@ import { UserModule } from './security/modules/user/user.module'
 export type EnvTypes = z.infer<typeof EnvTypes>
 const EnvTypes = z.object({
 	PORT: z.coerce.number().int().min(0).default(4000),
-	DATABASE_URL: z.string().url(),
 	GROQ_API_KEY: z.string(),
 	PDF_SERVICES_CLIENT_ID: z.string(),
 	PDF_SERVICES_CLIENT_SECRET: z.string(),
