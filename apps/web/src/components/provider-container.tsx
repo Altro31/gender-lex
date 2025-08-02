@@ -8,14 +8,12 @@ export default function ProviderContainer({
 	children,
 }: Readonly<PropsWithChildren>) {
 	return (
-		
-			<ProgressProvider
-				color="blue"
-				height="3px"
-				options={{ showSpinner: false }}
-			>
-				<SidebarProvider>{children}</SidebarProvider>
-			</ProgressProvider>
-		
+		<ProgressProvider
+			color="blue"
+			height="3px"
+			options={{ showSpinner: false }}
+		>
+			<SidebarProvider>{children}</SidebarProvider>
+		</ProgressProvider>
 	)
 }

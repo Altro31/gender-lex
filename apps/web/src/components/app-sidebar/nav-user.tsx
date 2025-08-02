@@ -40,7 +40,7 @@ export default async function NavUser() {
 
 async function User() {
 	const session = await getSession()
-	
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>

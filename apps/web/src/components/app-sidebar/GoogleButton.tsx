@@ -11,7 +11,7 @@ export default function GoogleButton() {
 			onClick={() => {
 				authClient.signIn.social({
 					provider: "google",
-					callbackURL: "http://localhost:3000"
+					callbackURL: "http://localhost:3000",
 				})
 			}}
 		>
