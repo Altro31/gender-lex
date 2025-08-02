@@ -16,7 +16,7 @@ import { getEncryptionKey } from 'src/core/utils/auth'
 				cls: ClsService,
 				config: ConfigService<EnvTypes>,
 			) => {
-				const key = config.getOrThrow<string>('AUTH_SECRET')
+				const key = config.getOrThrow<string>('BETTER_AUTH_SECRET')
 				return {
 					getEnhancedPrisma: () => {
 						return enhance(

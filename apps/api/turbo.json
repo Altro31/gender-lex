@@ -8,7 +8,7 @@
 			"with": ["@repo/db#studio"]
 		},
 		"generate": {
-			"dependsOn": ["^generate"],
+			"dependsOn": ["@repo/auth#build", "@repo/db#generate"],
 			"cache": true,
 			"inputs": [
 				"$TURBO_ROOT$/packages/database/openapi.yaml",
@@ -17,7 +17,7 @@
 			"outputs": ["./public/openapi.yaml"],
 			"env": [
 				"AUTH_GOOGLE_ID",
-				"AUTH_SECRET",
+				"BETTER_AUTH_SECRET",
 				"GEMINI_API_KEY",
 				"GROQ_API_KEY",
 				"PDF_SERVICES_CLIENT_ID",

@@ -8,18 +8,17 @@ import * as yaml from 'js-yaml'
 import { patchNestJsSwagger } from 'nestjs-zod'
 import * as path from 'path'
 import { generateDocs } from 'src/core/utils/docs'
-import { GlobalJWTAuthGuard } from 'src/security/modules/auth/guards/global-jwt-auth.guard'
 import { AppModule, type EnvTypes } from './app.module'
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-		cors: true,
-		rawBody: true,
+		cors: { credentials: true, origin: 'http://localhost:3000' },
+		bodyParser: false,
 	})
 
 	app.useGlobalPipes(new ValidationPipe({ transform: true }))
-	app.useGlobalGuards(new (GlobalJWTAuthGuard())())
-	app.useBodyParser('text')
+	// app.useGlobalGuards(new (GlobalJWTAuthGuard())())
+	// app.useBodyParser('text')
 	await generateDocs(app)
 	openapi(app)
 

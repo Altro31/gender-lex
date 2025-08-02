@@ -17,31 +17,37 @@ model User {
   @@auth
 
   // Id cannot change
-  id        String       @id @default(cuid()) @deny("update", true)
+  id            String       @id @default(cuid()) @deny("update", true)
+
+  name          String
 
   // Emails cannot change
-  email     String       @email @unique @deny("update", true)
+  email         String       @email @unique @deny("update", true)
 
-  // Only users with local providers can have passwords and only them can access its password
-  password  String?      @password @allow('read', this.provider == local && auth() == this)
+  emailVerified Boolean
+
+  image         String?
 
   // Providers cannot change
-  provider  AuthProvider @default(local) @deny("update", true)
+  provider      AuthProvider @default(local) @deny("update", true)
 
   // Only users can update it's last time login
-  loggedAt  DateTime?    @allow('update', auth() == this)
+  loggedAt      DateTime?    @allow('update', auth() == this)
 
   // 1.Only admins can update a user role
   // 2.Only a superadmin can update the role of other admin
-  role      Role         @default(authenticated) /**1*/ @allow("update", auth().role == admin || auth().role == superadmin) /**2*/ @deny("update", auth().role != superadmin && (role == admin || role == superadmin))
+  role          Role         @default(authenticated) /**1*/ @allow("update", auth().role == admin || auth().role == superadmin) /**2*/ @deny("update", auth().role != superadmin && (role == admin || role == superadmin))
 
   // Timestamps cannot change
-  createdAt DateTime     @default(now()) @deny('update', true)
-  updatedAt DateTime     @updatedAt @deny('update', true)
+  createdAt     DateTime     @default(now()) @deny('update', true)
+  updatedAt     DateTime     @updatedAt @deny('update', true)
 
-  Analyses  Analysis[]
-  Models    Model[]
-  Presets   Preset[]
+  Analyses      Analysis[]
+  Models        Model[]
+  Presets       Preset[]
+
+  sessions      Session[]
+  accounts      Account[]
 
   /** Unauthenticated users can only access data related with it's email */
   @@allow('read',auth().id == "null" && auth().email == email)
@@ -60,4 +66,49 @@ model User {
 
   /** Only superadmin users can delete others admins */
   @@deny('delete',auth().role == "admin" && (role == superadmin || role == admin))
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
 }

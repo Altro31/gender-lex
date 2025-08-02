@@ -1,10 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
-import { compare } from 'bcryptjs'
+import { Injectable } from '@nestjs/common'
+import type { User } from '@repo/db/models'
+import { ExistingUserException } from 'src/security/lib/exceptions'
 import type { UpdateUserDto } from 'src/security/modules/user/dto/update-user.dto'
 import { UserRepository } from 'src/security/modules/user/user.repository'
 import type { CreateUserDto } from './dto/create-user.dto'
-import { ExistingUserException } from 'src/security/lib/exceptions'
-import type { User } from '@repo/db/models'
 
 @Injectable()
 export class UserService {
@@ -37,17 +36,5 @@ export class UserService {
 
 	update(id: string, data: UpdateUserDto): Promise<User> {
 		return this.userRepository.update(id, data)
-	}
-
-	async updatePassword(id: string, prev_pw: string, new_pw: string) {
-		const user = await this.userRepository.findOneBy('id', id)
-		if (!user) {
-			throw new UnauthorizedException()
-		}
-		const isOldPasswordValid = await compare(prev_pw, user.password!)
-		if (!isOldPasswordValid) {
-			throw new UnauthorizedException()
-		}
-		return this.userRepository.update(id, { password: new_pw })
 	}
 }

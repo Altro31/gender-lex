@@ -6,9 +6,7 @@ import {
 	LogOut,
 	UserIcon,
 } from "lucide-react"
-import Google from "@/assets/google.webp"
 
-import { auth, signOut } from "@/auth"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
 	DropdownMenu,
@@ -24,11 +22,15 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import Image from "next/image"
+import { getSession } from "@/lib/auth-server"
 import { cookies } from "next/headers"
 
+import GoogleButton from "@/components/app-sidebar/GoogleButton"
+import { authClient } from "@/lib/auth-client"
+
 export default async function NavUser() {
-	const session = await auth()
+	const session = await getSession()
+
 	return (
 		<SidebarMenu>
 			<SidebarMenuItem>{session ? <User /> : <Login />}</SidebarMenuItem>
@@ -37,7 +39,8 @@ export default async function NavUser() {
 }
 
 async function User() {
-	const session = await auth()
+	const session = await getSession()
+	
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -47,7 +50,7 @@ async function User() {
 				>
 					<Avatar className="h-8 w-8 rounded-lg">
 						<AvatarImage
-							src={session?.user.avatar}
+							src={session?.user.image ?? ""}
 							alt={session?.user.name}
 						/>
 						<AvatarFallback className="rounded-lg">
@@ -74,7 +77,7 @@ async function User() {
 					<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 						<Avatar className="h-8 w-8 rounded-lg">
 							<AvatarImage
-								src={session?.user.avatar}
+								src={session?.user.image ?? ""}
 								alt={session?.user.name}
 							/>
 							<AvatarFallback className="rounded-lg">
@@ -106,7 +109,7 @@ async function User() {
 				<DropdownMenuItem
 					onClick={async () => {
 						"use server"
-						await signOut()
+						await authClient.signOut()
 					}}
 				>
 					<LogOut />
@@ -149,15 +152,7 @@ async function Login() {
 						Email
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem>
-						<Image
-							src={Google}
-							alt="google"
-							className="size-4"
-							width={16}
-						/>
-						Google
-					</DropdownMenuItem>
+					<GoogleButton />
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>

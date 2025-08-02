@@ -7,6 +7,7 @@ import { useRef, useState, type ComponentProps, type DragEvent } from "react"
 interface Props extends ComponentProps<"div"> {}
 
 export default function UploadArea({ children, className, ...props }: Props) {
+	 
 	const { setFile } = useDroppedFile()
 	const [isDragging, setIsDragging] = useState(false)
 	const dropAreaRef = useRef<HTMLDivElement>(null)

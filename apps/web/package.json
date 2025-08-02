@@ -6,13 +6,14 @@
 		"node": ">=22.x"
 	},
 	"scripts": {
-		"dev": "next dev --turbopack",
+		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
 		"lint": "oxlint --fix --fix-suggestions",
 		"generate": "openapi-typescript ../api/public/openapi.yaml -o ./src/lib/api/types.d.ts"
 	},
 	"dependencies": {
+		"@repo/auth": "workspace:*",
 		"@bprogress/next": "^3.2.12",
 		"@hookform/resolvers": "^5.1.1",
 		"@radix-ui/react-accordion": "^1.2.11",
@@ -46,7 +47,8 @@
 		"server-only": "^0.0.1",
 		"sonner": "^2.0.6",
 		"tailwind-merge": "^3.3.1",
-		"zustand": "^5.0.6"
+		"zustand": "^5.0.6",
+		"better-auth": "catalog:"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",

@@ -26,7 +26,7 @@ export class CrudMiddleware implements NestMiddleware {
 		// base url for RESTful resource linkage
 		const baseUrl = `${req.protocol}://${req.headers.host}${req.baseUrl}`
 
-		const key = this.config.getOrThrow<string>('AUTH_SECRET')
+		const key = this.config.getOrThrow<string>('BETTER_AUTH_SECRET')
 		const bearerToken = req.headers.authorization ?? ''
 		const token = bearerToken.slice(7)
 		const payload = token && this.jwtService.verify(token, { secret: key })

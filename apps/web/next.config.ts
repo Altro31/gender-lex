@@ -1,3 +1,4 @@
+import envs from "@/env" with { type: "macro" }
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
@@ -9,6 +10,14 @@ const nextConfig: NextConfig = {
 		clientSegmentCache: true,
 		devtoolSegmentExplorer: true,
 	} as any,
+	async rewrites() {
+		return [
+			{
+				source: "/api/:path*",
+				destination: `${envs.API_URL}/api/:path*`,
+			},
+		]
+	},
 }
 
 export default nextConfig

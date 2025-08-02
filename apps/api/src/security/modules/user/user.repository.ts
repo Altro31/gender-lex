@@ -20,7 +20,7 @@ export class UserRepository extends BaseRepository('user') {
 	}
 
 	create(data: CreateUserDto): Promise<User> {
-		return this.prisma.user.create({ data })
+		return this.prisma.user.create({ data: data as any })
 	}
 
 	update(id: string, data: UpdateUserDto): Promise<User> {

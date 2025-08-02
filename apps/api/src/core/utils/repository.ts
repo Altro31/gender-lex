@@ -3,13 +3,24 @@ import {
 	Analysis,
 	Model,
 	Preset,
+	Session,
+	Account,
+	Verification,
 	Prisma,
 	PrismaClient,
 	User,
 } from '@repo/db/models'
 import { ENHANCED_PRISMA } from '@zenstackhq/server/nestjs'
 import { buildPaginatedResponse } from 'src/core/utils/pagination'
-type ModelMap = { user: User; analysis: Analysis; model: Model; preset: Preset }
+type ModelMap = {
+	user: User
+	analysis: Analysis
+	model: Model
+	preset: Preset
+	session: Session
+	account: Account
+	verification: Verification
+}
 
 abstract class DynamicRepository<
 	T extends Lowercase<Exclude<Prisma.ModelName, 'PresetModel'>>,
