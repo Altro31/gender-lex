@@ -9,6 +9,9 @@ import { patchNestJsSwagger } from 'nestjs-zod'
 import * as path from 'path'
 import { generateDocs } from 'src/core/utils/docs'
 import { AppModule, type EnvTypes } from './app.module'
+import { GlobalAuthGuard } from 'src/security/modules/auth/guards/global-auth.guard'
+import { ClsService } from 'nestjs-cls'
+import { AuthService } from '@mguay/nestjs-better-auth'
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -17,7 +20,9 @@ async function bootstrap() {
 	})
 
 	app.useGlobalPipes(new ValidationPipe({ transform: true }))
-	// app.useGlobalGuards(new (GlobalJWTAuthGuard())())
+	app.useGlobalGuards(
+		new GlobalAuthGuard(app.get(ClsService), app.get(AuthService)),
+	)
 	// app.useBodyParser('text')
 	await generateDocs(app)
 	openapi(app)

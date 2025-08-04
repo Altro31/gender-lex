@@ -1,32 +1,36 @@
 "use server"
 
 import { client } from "@/lib/api/client"
-import { getSession } from "@/lib/auth-server"
+import { getSession } from "@/lib/auth/auth-server"
 import { endpoints } from "@/lib/endpoints"
-import { unauthorized } from "next/navigation"
+import type { Analysis } from "@repo/db/models"
+import { permanentRedirect, unauthorized } from "next/navigation"
 
 export async function prepareAnalysis(formData: FormData) {
-	const session = await getSession()
-	const { data } = await client.POST("/ai/analysis/prepare", {
+	const { data, error } = await client.POST("/ai/analysis/prepare", {
 		body: formData as any,
-		headers: { Authorization: `Bearer ${session?.session.token}` },
 	})
-	if (!data)
+	if (!data) {
+		console.error(error)
 		throw new Error("An error occurred when trying access analysis with id")
+	}
+	permanentRedirect(`/analysis/${data.data.id}`)
 }
 
 export async function startAnalysis(id: string) {
-	const session = await getSession()
-	if (!session) unauthorized()
-	const res = await client.POST("/ai/analysis/start/{id}", {
+	const { data, error } = await client.POST("/ai/analysis/start/{id}", {
 		params: { path: { id } },
 	})
-	return res.data
+	if (error) {
+		console.error(error)
+		throw new Error("An error occurred when trying access analysis with id")
+	}
+
+	return data as unknown as Analysis
 }
 
 export async function deleteAnalysis(id: string) {
 	const session = await getSession()
-
 	if (!session) unauthorized()
 	await fetch(endpoints.ai.analysis.id.replace(":id", id), {
 		method: "DELETE",
@@ -38,7 +42,6 @@ export async function deleteAnalysis(id: string) {
 
 export async function getAllAnalysis(page: number) {
 	const session = await getSession()
-
 	if (!session) unauthorized()
 	const res = await fetch(endpoints.ai.analysis.root, {
 		headers: { Authorization: `Bearer ${session.session.token}` },

@@ -1,15 +1,23 @@
 import {
+	AuthGuard,
+	Optional,
+	Public,
+	Session,
+	type UserSession,
+} from '@mguay/nestjs-better-auth'
+import {
 	Body,
 	Controller,
 	NotFoundException,
 	Param,
 	Post,
 	UploadedFile,
+	UseGuards,
 	UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth, ApiConsumes } from '@nestjs/swagger'
-import { Analysis } from '@repo/db/models'
+import type { Analysis } from '@repo/db/models'
 import { AnaliceDTO } from 'src/ai/modules/ai/dto/analice.dto'
 import { PrepareResponseDTO } from 'src/ai/modules/ai/dto/prepare-response.dto'
 import { AnalysisService } from 'src/ai/modules/analysis/analysis.service'
@@ -17,6 +25,7 @@ import { ExtractorService } from 'src/ai/modules/extractor/extractor.service'
 import { AiService } from './ai.service'
 
 @ApiBearerAuth()
+@UseGuards(AuthGuard)
 @Controller('ai/analysis')
 export class AiController {
 	constructor(
@@ -26,32 +35,46 @@ export class AiController {
 	) {}
 
 	@Post('prepare')
+	@Optional()
 	@UseInterceptors(FileInterceptor('file'))
 	@ApiConsumes('multipart/form-data')
 	async prepare(
 		@UploadedFile() file: Express.Multer.File,
-		@Body() { text: inputText }: AnaliceDTO,
+		@Body() body: AnaliceDTO,
+		@Session() session: UserSession,
 	): Promise<PrepareResponseDTO> {
 		const text = (
-			file ? await this.extractorService.extractPDFText(file) : inputText
+			file?.size
+				? await this.extractorService.extractPDFText(file)
+				: body.text
 		)!
 		const analysis = await this.analysisService.create({
 			originalText: text,
+			visibility: session ? 'private' : 'public',
 		})
 		return { data: { id: analysis.id } }
 	}
 
+	@Public()
 	@Post('start/:id')
 	async start(@Param('id') id: string) {
 		const analysis = await this.analysisService.findOne(id)
 		if (!analysis) {
 			throw new NotFoundException('Analysis not found')
 		}
-		const result =
-			analysis.status === 'analyzing'
-				? await this.aiService.analice(analysis.originalText)
-				: {}
-		void this.analysisService.update(id, { ...result, status: 'done' })
-		return { data: { ...analysis, ...result } as Analysis }
+		let result = {} as Analysis
+		try {
+			result = (
+				analysis.status === 'pending'
+					? await this.aiService.analice(analysis.originalText)
+					: {}
+			) as Analysis
+			result.status = 'done'
+			void this.analysisService.update(id, result)
+		} catch (error) {
+			console.error(error)
+			void this.analysisService.update(id, { ...result, status: 'error' })
+		}
+		return { ...analysis, ...result }
 	}
 }

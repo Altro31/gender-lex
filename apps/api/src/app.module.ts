@@ -3,7 +3,7 @@ import {
 	type MiddlewareConsumer,
 	type NestModule,
 } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_PIPE } from '@nestjs/core'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { ApiHandlerService } from '@zenstackhq/server/nestjs'
@@ -19,6 +19,7 @@ import { ExtractorModule } from './ai/modules/extractor/extractor.module'
 import { PresetModule } from './ai/modules/preset/preset.module'
 import { AuthModule } from './security/modules/auth/auth.module'
 import { UserModule } from './security/modules/user/user.module'
+import { JwtModule } from '@nestjs/jwt'
 
 export type EnvTypes = z.infer<typeof EnvTypes>
 const EnvTypes = z.object({
@@ -49,6 +50,16 @@ const EnvTypes = z.object({
 		ModelModule,
 		ServeStaticModule.forRoot({
 			rootPath: path.join(process.cwd(), 'public'),
+		}),
+		JwtModule.registerAsync({
+			global: true,
+			inject: [ConfigService],
+			useFactory(config: ConfigService<EnvTypes>) {
+				return {
+					secret: config.get('BETTER_AUTH_SECRET'),
+					signOptions: { expiresIn: '1d' },
+				}
+			},
 		}),
 		PresetModule,
 	],

@@ -6,8 +6,8 @@
 		"node": ">=22.x"
 	},
 	"scripts": {
-		"dev": "next dev",
-		"build": "next build",
+		"dev": "next dev --turbopack",
+		"build": "next build --turbopack",
 		"start": "next start",
 		"lint": "oxlint --fix --fix-suggestions",
 		"generate": "openapi-typescript ../api/public/openapi.yaml -o ./src/lib/api/types.d.ts"
@@ -15,6 +15,7 @@
 	"dependencies": {
 		"@bprogress/next": "^3.2.12",
 		"@hookform/resolvers": "^5.1.1",
+		"@icons-pack/react-simple-icons": "^13.7.0",
 		"@radix-ui/react-accordion": "^1.2.11",
 		"@radix-ui/react-alert-dialog": "^1.1.14",
 		"@radix-ui/react-avatar": "^1.1.10",
@@ -49,6 +50,7 @@
 		"server-only": "^0.0.1",
 		"sonner": "^2.0.6",
 		"tailwind-merge": "^3.3.1",
+		"valibot": "^1.1.0",
 		"zustand": "^5.0.6"
 	},
 	"devDependencies": {

@@ -1,12 +1,26 @@
 {
 	"$schema": "https://turborepo.com/schema.json",
 	"extends": ["//"],
-	"globalDependencies": ["**/.env.*local"],
 	"tasks": {
+		"dev": {
+			"cache": false,
+			"persistent": true,
+			"env": [
+				"API_URL",
+				"AUTH_GOOGLE_ID",
+				"AUTH_GOOGLE_SECRET",
+				"AUTH_GITHUB_ID",
+				"AUTH_GITHUB_SECRET",
+				"BETTER_AUTH_SECRET",
+				"BETTER_AUTH_URL",
+				"UI_URL",
+				"NEXT_PUBLIC_UI_URL"
+			]
+		},
 		"build": {
 			"dependsOn": ["generate"],
 			"outputs": [".next/**", "!.next/cache/**"],
-			"env": ["FLAG_REACT_SCAN", "API_URL"]
+			"env": ["API_URL"]
 		},
 		"generate": {
 			"dependsOn": ["api#generate", "@repo/auth#build"],

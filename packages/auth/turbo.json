@@ -1,11 +1,5 @@
 {
 	"$schema": "https://turborepo.com/schema.json",
 	"extends": ["//"],
-	"tasks": {
-		"build": {
-			"cache": true,
-			"inputs": ["index.ts"],
-			"outputs": ["./dist/**"]
-		}
-	}
+	"tasks": { "build": { "cache": true, "outputs": ["./dist/**"] } }
 }

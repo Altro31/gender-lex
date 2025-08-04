@@ -1,7 +1,7 @@
 import { google } from '@ai-sdk/google'
 import { groq } from '@ai-sdk/groq'
 import { Injectable } from '@nestjs/common'
-import Schemas from '@repo/db/zod'
+import { AnalysisSchema } from '@repo/db/zod'
 import { customProvider, generateText, Output, stepCountIs } from 'ai'
 import { RawAnalysis } from 'src/ai/lib/types'
 import { genderLexSystemPrompt } from 'src/ai/modules/ai/prompts/system.prompt'
@@ -29,7 +29,7 @@ const provider = customProvider({
 })
 
 // @ts-nocheck
-const schema = Schemas.AnalysisSchema?.pick({
+const schema = AnalysisSchema?.pick({
 	originalText: true,
 	modifiedTextAlternatives: true,
 	biasedTerms: true,

@@ -12,6 +12,7 @@ import {
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import type { Analysis } from "@repo/db/models"
 import {
 	AlertTriangle,
 	ArrowLeft,
@@ -28,261 +29,11 @@ import {
 import Link from "next/link"
 import { useState } from "react"
 
-// Types based on Prisma schema
-interface BiasedTerm {
-	content: string
-	influencePercentage: number
-	explanation: string
-	category: string
+interface Props {
+	analysis: Analysis
 }
-
-interface BiasedMetaphor {
-	content: string
-	influencePercentage: number
-	explanation: string
-	historicalContext: string
-}
-
-interface AdditionalContextEvaluationItem {
-	presence: boolean
-	influencePercentage: number
-	examples: string[]
-	explanation: string
-}
-
-interface AdditionalContextGenderRepresentationAbsence {
-	presence: boolean
-	influencePercentage: number
-	explanation: string
-	affectedGroups: string[]
-}
-
-interface AdditionalContextIntersectionality {
-	presence: boolean
-	influencePercentage: number
-	explanation: string
-	excludedGroups: string[]
-}
-
-interface AdditionalContextEvaluation {
-	stereotype: AdditionalContextEvaluationItem
-	powerAsymmetry: AdditionalContextEvaluationItem
-	genderRepresentationAbsence: AdditionalContextGenderRepresentationAbsence
-	intersectionality: AdditionalContextIntersectionality
-	systemicBiases: AdditionalContextEvaluationItem
-}
-
-interface ImpactAnalysisItem {
-	affected: boolean
-	description: string
-}
-
-interface ImpactAnalysis {
-	accessToCare: ImpactAnalysisItem
-	stigmatization: ImpactAnalysisItem
-}
-
-interface ModificationItem {
-	originalFragment: string
-	modifiedFragment: string
-	reason: string
-}
-
-interface ModifiedAlternative {
-	alternativeNumber: number
-	alternativeText: string
-	modificationsExplanation: ModificationItem[]
-}
-
-interface Analysis {
-	id: string
-	visibility: "public" | "private"
-	status: "analyzing" | "done"
-	userId?: string
-	createdAt: string
-	updatedAt: string
-	originalText: string
-	modifiedTextAlternatives: ModifiedAlternative[]
-	biasedTerms: BiasedTerm[]
-	biasedMetaphors: BiasedMetaphor[]
-	additionalContextEvaluation?: AdditionalContextEvaluation
-	impactAnalysis?: ImpactAnalysis
-	conclusion?: string
-}
-
-// Mock data for demonstration
-const mockAnalysis: Analysis = {
-	id: "clx123456789",
-	visibility: "private",
-	status: "done",
-	userId: "user123",
-	createdAt: "2024-01-30T10:30:00Z",
-	updatedAt: "2024-01-30T10:35:00Z",
-	originalText:
-		"Los médicos deben ser más empáticos con sus pacientes, especialmente las enfermeras que trabajan en pediatría. Es importante que los hombres en posiciones de liderazgo médico comprendan las necesidades específicas de las madres trabajadoras en el sector salud.",
-	biasedTerms: [
-		{
-			content: "los médicos",
-			influencePercentage: 0.75,
-			explanation:
-				"Uso del masculino genérico que invisibiliza a las mujeres médicas",
-			category: "stereotypical",
-		},
-		{
-			content: "las enfermeras",
-			influencePercentage: 0.85,
-			explanation:
-				"Asociación automática de la enfermería con el género femenino",
-			category: "stereotypical",
-		},
-		{
-			content: "madres trabajadoras",
-			influencePercentage: 0.65,
-			explanation:
-				"Asume que solo las madres tienen responsabilidades de cuidado",
-			category: "paternalistic",
-		},
-	],
-	biasedMetaphors: [
-		{
-			content: "hombres en posiciones de liderazgo médico",
-			influencePercentage: 0.8,
-			explanation:
-				"Refuerza la idea de que el liderazgo médico es naturalmente masculino",
-			historicalContext:
-				"Históricamente, la medicina ha sido dominada por hombres en posiciones de poder, excluyendo a las mujeres de roles de liderazgo",
-		},
-	],
-	additionalContextEvaluation: {
-		stereotype: {
-			presence: true,
-			influencePercentage: 0.78,
-			examples: [
-				"Asociación enfermería-mujer",
-				"Liderazgo médico-hombre",
-			],
-			explanation:
-				"El texto perpetúa estereotipos de género en roles profesionales de la salud",
-		},
-		powerAsymmetry: {
-			presence: true,
-			influencePercentage: 0.7,
-			examples: ["Jerarquía médico-enfermera", "Liderazgo masculino"],
-			explanation:
-				"Se evidencia una estructura de poder que favorece roles tradicionalmente masculinos",
-		},
-		genderRepresentationAbsence: {
-			presence: true,
-			influencePercentage: 0.65,
-			explanation:
-				"Ausencia de representación equitativa de géneros en diferentes roles",
-			affectedGroups: [
-				"Mujeres médicas",
-				"Hombres enfermeros",
-				"Personas no binarias",
-			],
-		},
-		intersectionality: {
-			presence: true,
-			influencePercentage: 0.6,
-			explanation:
-				"No considera la intersección de género con otras identidades",
-			excludedGroups: [
-				"Madres solteras",
-				"Padres cuidadores",
-				"Personas LGBTQ+",
-			],
-		},
-		systemicBiases: {
-			presence: true,
-			influencePercentage: 0.72,
-			examples: [
-				"Estructura jerárquica tradicional",
-				"Roles de género normativos",
-			],
-			explanation:
-				"Refleja sesgos sistémicos en la organización del sector salud",
-		},
-	},
-	impactAnalysis: {
-		accessToCare: {
-			affected: true,
-			description:
-				"Los sesgos identificados pueden limitar el acceso equitativo a la atención médica al perpetuar estructuras de poder desiguales",
-		},
-		stigmatization: {
-			affected: true,
-			description:
-				"El lenguaje utilizado puede contribuir a la estigmatización de profesionales que no se ajustan a los roles de género tradicionales",
-		},
-	},
-	modifiedTextAlternatives: [
-		{
-			alternativeNumber: 1,
-			alternativeText:
-				"El personal médico debe ser más empático con sus pacientes, especialmente quienes trabajan en pediatría. Es importante que las personas en posiciones de liderazgo médico comprendan las necesidades específicas de las familias trabajadoras en el sector salud.",
-			modificationsExplanation: [
-				{
-					originalFragment: "Los médicos",
-					modifiedFragment: "El personal médico",
-					reason: "Uso de lenguaje inclusivo que no asume género",
-				},
-				{
-					originalFragment: "las enfermeras",
-					modifiedFragment: "quienes trabajan",
-					reason: "Eliminación del sesgo de género en la profesión de enfermería",
-				},
-				{
-					originalFragment: "los hombres en posiciones de liderazgo",
-					modifiedFragment: "las personas en posiciones de liderazgo",
-					reason: "Lenguaje neutro que no asume género en roles de liderazgo",
-				},
-				{
-					originalFragment: "madres trabajadoras",
-					modifiedFragment: "familias trabajadoras",
-					reason: "Inclusión de todas las estructuras familiares y responsabilidades de cuidado",
-				},
-			],
-		},
-		{
-			alternativeNumber: 2,
-			alternativeText:
-				"Los profesionales de la salud deben mostrar mayor empatía hacia sus pacientes, independientemente de su especialidad. Es fundamental que el liderazgo médico comprenda las necesidades de todo el personal que combina responsabilidades laborales y familiares.",
-			modificationsExplanation: [
-				{
-					originalFragment: "Los médicos... las enfermeras",
-					modifiedFragment:
-						"Los profesionales de la salud... independientemente de su especialidad",
-					reason: "Eliminación de la jerarquización y segmentación por género de las profesiones",
-				},
-				{
-					originalFragment:
-						"los hombres en posiciones de liderazgo médico",
-					modifiedFragment: "el liderazgo médico",
-					reason: "Neutralización del género en posiciones de autoridad",
-				},
-				{
-					originalFragment: "madres trabajadoras",
-					modifiedFragment:
-						"todo el personal que combina responsabilidades laborales y familiares",
-					reason: "Inclusión universal sin asumir género o estructura familiar específica",
-				},
-			],
-		},
-	],
-	conclusion:
-		"El análisis revela múltiples sesgos de género que perpetúan estereotipos profesionales y estructuras de poder tradicionales en el sector salud. Se recomienda adoptar un lenguaje más inclusivo y cuestionar las asunciones de género en roles profesionales para promover un ambiente más equitativo.",
-}
-
-export default function AnalysisDetailsPage({
-	params,
-}: {
-	params: Promise<{ id: string }>
-}) {
+export default function AnalysisDetailsContainer({ analysis }: Props) {
 	const [showSensitiveContent, setShowSensitiveContent] = useState(true)
-
-	// In a real app, you would fetch the analysis data based on params.id
-	const analysis = mockAnalysis
 
 	const getStatusConfig = (status: string) => {
 		switch (status) {
@@ -300,42 +51,15 @@ export default function AnalysisDetailsPage({
 				}
 			default:
 				return {
-					label: "Desconocido",
-					color: "bg-gray-100 text-gray-800",
+					label: "Pendiente",
+					color: "bg-yellow-100 text-yellow-800",
 					icon: AlertTriangle,
 				}
 		}
 	}
 
-	const getCategoryColor = (category: string) => {
-		switch (category) {
-			case "paternalistic":
-				return "bg-red-100 text-red-800"
-			case "stereotypical":
-				return "bg-orange-100 text-orange-800"
-			case "reproductiveExclusion":
-				return "bg-purple-100 text-purple-800"
-			default:
-				return "bg-gray-100 text-gray-800"
-		}
-	}
-
-	const getCategoryLabel = (category: string) => {
-		switch (category) {
-			case "paternalistic":
-				return "Paternalista"
-			case "stereotypical":
-				return "Estereotípico"
-			case "reproductiveExclusion":
-				return "Exclusión Reproductiva"
-			default:
-				return category
-		}
-	}
-
 	const statusConfig = getStatusConfig(analysis.status)
 	const StatusIcon = statusConfig.icon
-
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<div className="container mx-auto px-4 py-8">
@@ -474,40 +198,43 @@ export default function AnalysisDetailsPage({
 						{/* Summary Stats */}
 						<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 							<Card>
-								<CardContent className="p-4">
-									<div className="text-2xl font-bold text-red-600">
-										{analysis.biasedTerms.length}
-									</div>
+								<CardContent>
 									<div className="text-sm text-gray-600">
 										Términos Sesgados
 									</div>
+									<div className="text-2xl font-bold text-red-600">
+										{analysis.biasedTerms.length}
+									</div>
 								</CardContent>
 							</Card>
 							<Card>
-								<CardContent className="p-4">
-									<div className="text-2xl font-bold text-orange-600">
-										{analysis.biasedMetaphors.length}
-									</div>
+								<CardContent>
 									<div className="text-sm text-gray-600">
 										Metáforas Sesgadas
 									</div>
+									<div className="text-2xl font-bold text-orange-600">
+										{analysis.biasedMetaphors.length}
+									</div>
 								</CardContent>
 							</Card>
 							<Card>
-								<CardContent className="p-4">
+								<CardContent>
+									<div className="text-sm text-gray-600">
+										Alternativas
+									</div>
 									<div className="text-2xl font-bold text-blue-600">
 										{
 											analysis.modifiedTextAlternatives
 												.length
 										}
 									</div>
-									<div className="text-sm text-gray-600">
-										Alternativas
-									</div>
 								</CardContent>
 							</Card>
 							<Card>
-								<CardContent className="p-4">
+								<CardContent>
+									<div className="text-sm text-gray-600">
+										Influencia Promedio
+									</div>
 									<div className="text-2xl font-bold text-green-600">
 										{analysis.additionalContextEvaluation
 											? Math.round(
@@ -525,9 +252,6 @@ export default function AnalysisDetailsPage({
 												)
 											: 0}
 										%
-									</div>
-									<div className="text-sm text-gray-600">
-										Influencia Promedio
 									</div>
 								</CardContent>
 							</Card>
@@ -572,15 +296,6 @@ export default function AnalysisDetailsPage({
 												<span className="font-medium text-lg">
 													"{term.content}"
 												</span>
-												<Badge
-													className={getCategoryColor(
-														term.category,
-													)}
-												>
-													{getCategoryLabel(
-														term.category,
-													)}
-												</Badge>
 											</div>
 											<div className="text-right">
 												<div className="text-sm text-gray-600">

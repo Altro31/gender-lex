@@ -1,4 +1,4 @@
-import envs from "@/env"
+import envs from "@/lib/env/env-server"
 
 export const endpoints = {
 	auth: {

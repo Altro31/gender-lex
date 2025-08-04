@@ -1,11 +1,5 @@
-import {
-	BadgeCheck,
-	Bell,
-	ChevronsUpDown,
-	LogIn,
-	LogOut,
-	UserIcon,
-} from "lucide-react"
+import envs from "@/lib/env/env-server" with { type: "macro" }
+import { BadgeCheck, Bell, ChevronsUpDown, LogIn, UserIcon } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -22,11 +16,13 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { getSession } from "@/lib/auth-server"
+import { getSession } from "@/lib/auth/auth-server"
 import { cookies } from "next/headers"
 
-import GoogleButton from "@/components/app-sidebar/GoogleButton"
-import { authClient } from "@/lib/auth-client"
+import GithubButton from "@/components/app-sidebar/buttons/GithubButton"
+import GoogleButton from "@/components/app-sidebar/buttons/GoogleButton"
+import LogoutButton from "@/components/app-sidebar/buttons/LogoutButton"
+import Link from "next/link"
 
 export default async function NavUser() {
 	const session = await getSession()
@@ -106,15 +102,7 @@ async function User() {
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem
-					onClick={async () => {
-						"use server"
-						await authClient.signOut()
-					}}
-				>
-					<LogOut />
-					Log out
-				</DropdownMenuItem>
+				<LogoutButton />
 			</DropdownMenuContent>
 		</DropdownMenu>
 	)
@@ -147,12 +135,15 @@ async function Login() {
 				sideOffset={4}
 			>
 				<DropdownMenuGroup>
-					<DropdownMenuItem>
-						<UserIcon />
-						Email
+					<DropdownMenuItem asChild>
+						<Link href="/auth/login">
+							<UserIcon />
+							Email
+						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
-					<GoogleButton />
+					<GoogleButton redirect={envs.UI_URL} />
+					<GithubButton redirect={envs.UI_URL} />
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>

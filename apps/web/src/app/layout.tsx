@@ -1,8 +1,7 @@
-import AppSidebar from "@/components/app-sidebar"
 import FloatingChatbot from "@/components/floating-chatbot"
 import ProviderContainer from "@/components/provider-container"
 import ThemeContainer from "@/components/theme/theme-container"
-import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
+import { Toaster } from "@/components/ui/sonner"
 import "@/globals.css"
 import type { Metadata } from "next"
 import type { PropsWithChildren } from "react"
@@ -19,13 +18,10 @@ export default async function RootLayout({
 		<html lang="en">
 			<body className="relative">
 				<ProviderContainer>
-					<AppSidebar />
-					<SidebarInset>
-						<SidebarTrigger />
-						<ThemeContainer />
-						{children}
-						<FloatingChatbot />
-					</SidebarInset>
+					<ThemeContainer />
+					{children}
+					<FloatingChatbot />
+					<Toaster richColors position="bottom-right" />
 				</ProviderContainer>
 			</body>
 		</html>

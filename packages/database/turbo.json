@@ -11,6 +11,11 @@
 				"$TURBO_ROOT$/node_modules/.prisma/client/**"
 			],
 			"env": ["DATABASE_URL"]
+		},
+		"migrate": {
+			"cache": false,
+			"env": ["DATABASE_URL"],
+			"interactive": true
 		}
 	}
 }

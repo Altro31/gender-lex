@@ -1,4 +1,4 @@
-import envs from "@/env" with { type: "macro" }
+import envs from "@/lib/env/env-server" with { type: "macro" }
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {

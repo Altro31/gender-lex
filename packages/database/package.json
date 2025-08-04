@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"scripts": {
 		"generate": "zenstack generate",
-		"migrate": "prisma migrate dev",
+		"migrate": "prisma migrate dev --skip-generate",
 		"studio": "prisma studio -b none"
 	},
 	"dependencies": {

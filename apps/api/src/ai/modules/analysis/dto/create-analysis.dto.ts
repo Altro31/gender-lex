@@ -1,6 +1,6 @@
-import Schemas from '@repo/db/zod'
+import { AnalysisCreateSchema } from '@repo/db/zod'
 import { createZodDto } from 'nestjs-zod'
 
 export class CreateAnalysisDto extends createZodDto(
-	Schemas.AnalysisCreateSchema.omit({ createdAt: true, id: true }),
+	AnalysisCreateSchema.omit({ createdAt: true, id: true }),
 ) {}

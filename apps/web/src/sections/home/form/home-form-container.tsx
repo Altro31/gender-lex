@@ -25,6 +25,7 @@ export default function HomeFormContainer() {
 	useEffect(() => {
 		if (file !== null) onFileUpload(file)
 	}, [file, onFileUpload])
+
 	return (
 		<Form action={prepareAnalysis} className="group flex h-full gap-2 pr-2">
 			<Textarea
