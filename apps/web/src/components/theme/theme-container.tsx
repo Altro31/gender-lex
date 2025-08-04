@@ -13,6 +13,6 @@ export default function ThemeContainer() {
 async function Theme() {
 	const cookiesStore = await cookies()
 	const isDark = cookiesStore.get("THEME_DARK")
-	
+
 	return <ThemeSwitcher isDark={isDark?.value === "true"} />
 }
