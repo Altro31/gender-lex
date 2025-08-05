@@ -20,7 +20,17 @@
 		"build": {
 			"dependsOn": ["generate"],
 			"outputs": [".next/**", "!.next/cache/**"],
-			"env": ["API_URL"]
+			"env": [
+				"API_URL",
+				"AUTH_GOOGLE_ID",
+				"AUTH_GOOGLE_SECRET",
+				"AUTH_GITHUB_ID",
+				"AUTH_GITHUB_SECRET",
+				"BETTER_AUTH_SECRET",
+				"BETTER_AUTH_URL",
+				"UI_URL",
+				"NEXT_PUBLIC_UI_URL"
+			]
 		},
 		"generate": {
 			"dependsOn": ["api#generate", "@repo/auth#build"],
@@ -32,7 +42,6 @@
 				"AUTH_SECRET",
 				"AUTH_GOOGLE_ID",
 				"AUTH_GOOGLE_SECRET",
-				"FLAG_REACT_SCAN",
 				"API_URL"
 			]
 		}
