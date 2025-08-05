@@ -12,7 +12,7 @@ import { AppModule, type EnvTypes } from './app.module'
 import { GlobalAuthGuard } from 'src/security/modules/auth/guards/global-auth.guard'
 import { ClsService } from 'nestjs-cls'
 import { AuthService } from '@mguay/nestjs-better-auth'
-import cors from 'cors'
+import * as cors from 'cors'
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
