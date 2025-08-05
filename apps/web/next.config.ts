@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
 		browserDebugInfoInTerminal: false,
 		clientSegmentCache: true,
 		devtoolSegmentExplorer: true,
+		authInterrupts: true,
 	} as any,
 	async rewrites() {
 		return [
