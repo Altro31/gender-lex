@@ -9,7 +9,8 @@ interface Props {
 
 export default async function AnalysesPage({ searchParams }: Props) {
 	const { page = 1 } = await searchParams
-	const analyses = await getAllAnalysis(page)
-
-	return <AnalysisListContainer analyses={analyses} />
+	const analysesResponse = await getAllAnalysis(page)
+	if (!analysesResponse)
+		throw new Error("No se pudieron obtener los análisis")
+	return <AnalysisListContainer analysesResponse={analysesResponse} />
 }
