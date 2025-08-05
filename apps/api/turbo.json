@@ -18,6 +18,10 @@
 			"env": [
 				"AUTH_GOOGLE_ID",
 				"BETTER_AUTH_SECRET",
+				"BETTER_AUTH_URL",
+				"UI_URL",
+				"AUTH_GITHUB_ID",
+				"AUTH_GITHUB_SECRET",
 				"GEMINI_API_KEY",
 				"GROQ_API_KEY",
 				"PDF_SERVICES_CLIENT_ID",
