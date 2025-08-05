@@ -2,21 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
-import {
-	Eye,
-	EyeOff,
-	Mail,
-	Lock,
-	User,
-	Github,
-	Chrome,
-	ArrowLeft,
-	Check,
-} from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
 	Card,
 	CardContent,
@@ -24,13 +10,23 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
-import Link from "next/link"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth/auth-client"
-import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons"
-import { toast } from "sonner"
+import {
+	ArrowLeft,
+	Check,
+	Eye,
+	EyeOff,
+	Lock,
+	Mail,
+	User
+} from "lucide-react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { toast } from "sonner"
 
 export default function RegisterPage() {
 	const router = useRouter()
@@ -171,37 +167,6 @@ export default function RegisterPage() {
 					</CardHeader>
 
 					<CardContent className="space-y-6">
-						{/* Social Register Buttons */}
-						<div className="space-y-3">
-							<Button
-								variant="outline"
-								className="w-full h-11 gap-3 hover:bg-gray-50 bg-transparent"
-								onClick={() => handleSocialRegister("google")}
-							>
-								<SiGoogle className="size-5" />
-								Registrarse con Google
-							</Button>
-							<Button
-								variant="outline"
-								className="w-full h-11 gap-3 hover:bg-gray-50 bg-transparent"
-								onClick={() => handleSocialRegister("github")}
-							>
-								<SiGithub className="size-5" />
-								Registrarse con GitHub
-							</Button>
-						</div>
-
-						<div className="relative">
-							<div className="absolute inset-0 flex items-center">
-								<Separator className="w-full" />
-							</div>
-							<div className="relative flex justify-center text-xs uppercase">
-								<span className="bg-white px-2 text-gray-500">
-									O regístrate con email
-								</span>
-							</div>
-						</div>
-
 						{/* Register Form */}
 						<form onSubmit={handleSubmit} className="space-y-4">
 							<div className="space-y-2">

@@ -1,11 +1,7 @@
 import AppSidebar from "@/components/app-sidebar"
-import FloatingChatbot from "@/components/floating-chatbot"
-import ProviderContainer from "@/components/provider-container"
-import ThemeContainer from "@/components/theme/theme-container"
 import {
 	SidebarInset,
-	SidebarProvider,
-	SidebarTrigger,
+	SidebarTrigger
 } from "@/components/ui/sidebar"
 import "@/globals.css"
 import type { Metadata } from "next"
