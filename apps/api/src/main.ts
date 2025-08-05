@@ -12,10 +12,10 @@ import { AppModule, type EnvTypes } from './app.module'
 import { GlobalAuthGuard } from 'src/security/modules/auth/guards/global-auth.guard'
 import { ClsService } from 'nestjs-cls'
 import { AuthService } from '@mguay/nestjs-better-auth'
+import cors from 'cors'
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-		cors: { credentials: true, origin: 'http://localhost:3000' },
 		bodyParser: false,
 	})
 
@@ -23,11 +23,13 @@ async function bootstrap() {
 	app.useGlobalGuards(
 		new GlobalAuthGuard(app.get(ClsService), app.get(AuthService)),
 	)
-	// app.useBodyParser('text')
 	await generateDocs(app)
 	openapi(app)
 
-	const port = app.get(ConfigService<EnvTypes>).get<number>('PORT') ?? 4000
+	const configService = app.get(ConfigService<EnvTypes>)
+	const uiURL = configService.get<string>('UI_URL')
+	app.use(cors({ origin: uiURL }))
+	const port = configService.get<number>('PORT') ?? 4000
 	await app.listen(port)
 	const url = await app.getUrl()
 	console.log(`	🚀Server running at ${url}`)

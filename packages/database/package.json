@@ -8,11 +8,12 @@
 	},
 	"dependencies": {
 		"@prisma/client": "6.12.0",
-		"@zenstackhq/runtime": "^2.17.2"
+		"@zenstackhq/runtime": "catalog:"
 	},
 	"devDependencies": {
-		"@zenstackhq/openapi": "^2.17.2",
-		"zenstack": "^2.17.2"
+		"@zenstackhq/openapi": "catalog:",
+		"prisma": "6.12.0",
+		"zenstack": "catalog:"
 	},
 	"exports": {
 		".": "./index.ts",
