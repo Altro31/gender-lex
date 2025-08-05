@@ -43,11 +43,11 @@ export async function deleteAnalysis(id: string) {
 export async function getAllAnalysis(page: number) {
 	const session = await getSession()
 	if (!session) unauthorized()
-	const res = await fetch(endpoints.ai.analysis.root, {
-		headers: { Authorization: `Bearer ${session.session.token}` },
+	const res = await client.GET("/zen/analysis", {
+		params: { query: { "page[offset]": (page - 1) * 10 } },
 	})
 
-	return res.json()
+	return res.data
 }
 
 export async function getOneAnalysis(id: string) {
