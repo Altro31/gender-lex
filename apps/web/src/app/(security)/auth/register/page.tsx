@@ -97,18 +97,14 @@ export default function RegisterPage() {
 		})
 		if (error) {
 			toast.error(error.message)
+			setIsLoading(false)
 		} else {
 			toast.success("User registered successfully")
 			router.push("/")
 		}
 	}
 
-	const handleSocialRegister = (provider: "google" | "github") => {
-		authClient.signIn.social({
-			provider,
-			callbackURL: process.env.NEXT_PUBLIC_UI_URL,
-		})
-	}
+
 
 	const getPasswordStrength = (password: string) => {
 		let strength = 0
@@ -385,26 +381,6 @@ export default function RegisterPage() {
 										{errors.acceptTerms}
 									</p>
 								)}
-
-								<div className="flex items-center space-x-2">
-									<Checkbox
-										id="newsletter"
-										checked={formData.newsletter}
-										onCheckedChange={(checked) =>
-											setFormData({
-												...formData,
-												newsletter: checked as boolean,
-											})
-										}
-									/>
-									<Label
-										htmlFor="newsletter"
-										className="text-sm text-gray-600"
-									>
-										Quiero recibir noticias y
-										actualizaciones por email
-									</Label>
-								</div>
 							</div>
 
 							<Button

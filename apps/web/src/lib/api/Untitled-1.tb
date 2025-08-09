@@ -1,0 +1,14 @@
+function FilterPaths(ResponseType extends ResponseTypes, Paths = keyof paths) {
+  if (Paths extends infer U)
+    if (U extends keyof paths)
+        if (paths[U]["get"] extends infer P extends undefined)
+         if (P extends undefined)
+            return never
+        else if (P extends {responses: {200: {content: {[Key in ResponseTypes]?: any}}}})
+            if (P["responses"][200]["content"][ResponseType] extends infer Data)
+                if (Data extends undefined)
+                    return never
+                else
+                    return U
+}
+

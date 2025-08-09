@@ -40,23 +40,24 @@ export async function deleteAnalysis(id: string) {
 	})
 }
 
-export async function getAllAnalysis(page: number) {
+export async function findAnalyses(page: number) {
 	const session = await getSession()
 	if (!session) unauthorized()
-	const res = await client.GET("/zen/analysis", {
+	return client.GET("/zen/analysis", {
 		params: { query: { "page[offset]": (page - 1) * 10 } },
 	})
-
-	return res.data
 }
 
-export async function getOneAnalysis(id: string) {
+export async function findOneAnalysis(id: string) {
 	const session = await getSession()
 	if (!session) unauthorized()
-	const res = await fetch(endpoints.ai.analysis.id.replace(":id", id), {
-		headers: {
-			Authorization: `Bearer ${session.session.token}`,
-		},
+	return client.GET("/zen/analysis/{id}", {
+		params: { path: { id }, query: { include: "Presets" } },
 	})
-	return res.json()
+}
+
+export async function getStatusCount() {
+	const session = await getSession()
+	if (!session) unauthorized()
+	return client.GET("/analysis/status-count")
 }

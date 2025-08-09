@@ -19,9 +19,10 @@ import { getEncryptionKey } from 'src/core/utils/auth'
 				const key = config.getOrThrow<string>('BETTER_AUTH_SECRET')
 				return {
 					getEnhancedPrisma: () => {
+						const user = cls.get('auth')
 						return enhance(
 							prisma,
-							{ user: cls.get('auth') },
+							{ user: user ?? null },
 							{
 								encryption: {
 									encryptionKey: getEncryptionKey(key),

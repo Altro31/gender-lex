@@ -1,37 +1,5 @@
 "use client"
 
-import { useState } from "react"
-import {
-	Search,
-	Filter,
-	RotateCcw,
-	Trash2,
-	Eye,
-	Play,
-	AlertTriangle,
-	CheckCircle,
-	Clock,
-	XCircle,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -42,19 +10,54 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card"
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import type { Analysis } from "@repo/db/models"
-import type { paths } from "@/lib/api/types"
-import type { ApiResponse } from "@/lib/api/utils"
+import type { AnalysesResponse, StatusCountResponse } from "@/types/analyses"
+import {
+	AlertTriangle,
+	CheckCircle,
+	Clock,
+	Eye,
+	Filter,
+	Play,
+	RotateCcw,
+	Search,
+	Trash2,
+	XCircle,
+} from "lucide-react"
+import { cn } from "@/lib/utils"
+import { useState } from "react"
 
 interface Props {
-	analysesResponse: ApiResponse<"/zen/analysis">
+	analysesResponse: AnalysesResponse
+	statusCount: StatusCountResponse
 }
 
-type ResponseAnalysis = ApiResponse<"/zen/analysis">["data"][number]
+type ResponseAnalysis = AnalysesResponse["data"][number]
 
-export default function AnalysisListContainer({ analysesResponse }: Props) {
+export default function AnalysisListContainer({
+	analysesResponse,
+	statusCount,
+}: Props) {
 	const { data: analyses } = analysesResponse
 	const [searchTerm, setSearchTerm] = useState("")
 	const [statusFilter, setStatusFilter] = useState<string>("all")
@@ -85,26 +88,6 @@ export default function AnalysisListContainer({ analysesResponse }: Props) {
 		// TODO: re-analice
 	}
 
-	const getStatusCounts = () => {
-		return {
-			all: analyses.length,
-			pending: analyses.filter(
-				({ attributes }) => attributes.status === "pending",
-			).length,
-			analyzing: analyses.filter(
-				({ attributes }) => attributes.status === "analyzing",
-			).length,
-			done: analyses.filter(
-				({ attributes }) => attributes.status === "done",
-			).length,
-			error: analyses.filter(
-				({ attributes }) => attributes.status === "error",
-			).length,
-		}
-	}
-
-	const statusCounts = getStatusCounts()
-
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<div className="container mx-auto px-4 py-8">
@@ -120,54 +103,29 @@ export default function AnalysisListContainer({ analysesResponse }: Props) {
 
 				{/* Stats Cards */}
 				<div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-					<Card>
-						<CardContent className="p-4">
-							<div className="text-2xl font-bold text-gray-900">
-								{statusCounts.all}
-							</div>
-							<div className="text-sm text-gray-600">Total</div>
-						</CardContent>
-					</Card>
-					<Card>
-						<CardContent className="p-4">
-							<div className="text-2xl font-bold text-blue-600">
-								{statusCounts.analyzing}
-							</div>
-							<div className="text-sm text-gray-600">
-								En Progreso
-							</div>
-						</CardContent>
-					</Card>
-					<Card>
-						<CardContent className="p-4">
-							<div className="text-2xl font-bold text-green-600">
-								{statusCounts.done}
-							</div>
-							<div className="text-sm text-gray-600">
-								Completados
-							</div>
-						</CardContent>
-					</Card>
-					<Card>
-						<CardContent className="p-4">
-							<div className="text-2xl font-bold text-gray-600">
-								{statusCounts.pending}
-							</div>
-							<div className="text-sm text-gray-600">
-								Pendientes
-							</div>
-						</CardContent>
-					</Card>
-					<Card>
-						<CardContent className="p-4">
-							<div className="text-2xl font-bold text-red-600">
-								{statusCounts.error}
-							</div>
-							<div className="text-sm text-gray-600">
-								Con Error
-							</div>
-						</CardContent>
-					</Card>
+					{Object.entries(statusMapper).map(
+						([key, { label, color }]) => (
+							<Card>
+								<CardContent className="">
+									<div className="text-sm text-gray-600">
+										{label}
+									</div>
+									<div
+										className={cn(
+											"text-2xl font-bold",
+											color,
+										)}
+									>
+										{
+											statusCount[
+												key as keyof typeof statusCount
+											]
+										}
+									</div>
+								</CardContent>
+							</Card>
+						),
+					)}
 				</div>
 
 				{/* Filters and Search */}
@@ -487,9 +445,15 @@ const statusConfig = {
 		color: "bg-red-100 text-red-800",
 		icon: XCircle,
 	},
-	cancelled: {
-		label: "Cancelado",
-		color: "bg-orange-100 text-orange-800",
-		icon: AlertTriangle,
-	},
 }
+
+const statusMapper = {
+	all: { label: "Todos", color: "text-gray-900" },
+	analyzing: { label: "Analizando", color: "text-blue-600" },
+	done: { label: "Completado", color: "text-green-600" },
+	error: { label: "Fallido", color: "text-red-600" },
+	pending: { label: "Pendiente", color: "text-gray-600" },
+} as const satisfies Record<
+	keyof StatusCountResponse,
+	{ label: string; color: `text-${string}-${number}00` }
+>

@@ -1,5 +1,5 @@
 import AnalysisListContainer from "@/sections/analysis/list/analysis-list-container"
-import { getAllAnalysis } from "@/services/analysis"
+import { findAnalyses, getStatusCount } from "@/services/analysis"
 
 interface Props {
 	searchParams: Promise<{
@@ -9,8 +9,20 @@ interface Props {
 
 export default async function AnalysesPage({ searchParams }: Props) {
 	const { page = 1 } = await searchParams
-	const analysesResponse = await getAllAnalysis(page)
-	if (!analysesResponse)
+
+	const [analysesResponse, statusCountResponse] = await Promise.all([
+		findAnalyses(page),
+		getStatusCount(),
+	])
+
+	if (analysesResponse.error)
 		throw new Error("No se pudieron obtener los análisis")
-	return <AnalysisListContainer analysesResponse={analysesResponse} />
+	if (statusCountResponse.error)
+		throw new Error("No se pudieron contar los análisis")
+	return (
+		<AnalysisListContainer
+			analysesResponse={analysesResponse.data}
+			statusCount={statusCountResponse.data}
+		/>
+	)
 }

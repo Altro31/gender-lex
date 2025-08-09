@@ -7,18 +7,13 @@ import {
 	DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Moon, Sun } from "lucide-react"
-import { useRef, type MouseEvent } from "react"
+import { useState, type MouseEvent } from "react"
 
-interface Props {
-	isDark: boolean
-}
-
-export default function ThemeSwitcher({ isDark }: Props) {
-	const triggerRef = useRef<HTMLDivElement>(null)
-
-	const changeTheme = (isDark: boolean) => (e: MouseEvent) => {
-		if (!triggerRef.current) return
-		const target = document.body
+export default function ThemeSwitcher() {
+	const [open, setOpen] = useState(false)
+	const changeTheme = (isDark: boolean) => async (e: MouseEvent) => {
+		const target = document.querySelector<HTMLDivElement>("#theme")
+		if (!target) return
 		const newValue = !isDark
 		if (newValue) {
 			target.dataset.dark = newValue + ""
@@ -35,21 +30,21 @@ export default function ThemeSwitcher({ isDark }: Props) {
 
 	return (
 		<>
-			<DropdownMenuSub>
-				<DropdownMenuSubTrigger className="gap-2" ref={triggerRef}>
-					<Moon className="hidden in-data-dark:inline size-4" />
-					<Sun className="in-data-dark:hidden size-4" />
+			<DropdownMenuSub onOpenChange={setOpen} open={open}>
+				<DropdownMenuSubTrigger className="gap-2">
+					<Moon className="not-dark:hidden size-4" />
+					<Sun className="dark:hidden size-4" />
 					Theme
 				</DropdownMenuSubTrigger>
 				<DropdownMenuSubContent>
 					<DropdownMenuItem
-						// onClick={changeTheme(true)}
+						onClick={changeTheme(false)}
 						className="dark:opacity-50 dark:pointer-events-none"
 					>
 						<Moon /> Dark
 					</DropdownMenuItem>
 					<DropdownMenuItem
-						// onClick={changeTheme(false)}
+						onClick={changeTheme(true)}
 						className="not-dark:opacity-50 not-dark:pointer-events-none"
 					>
 						<Sun /> Light

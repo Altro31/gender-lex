@@ -17,11 +17,11 @@ import {
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { getSession } from "@/lib/auth/auth-server"
-import { cookies } from "next/headers"
 
 import GithubButton from "@/components/app-sidebar/buttons/GithubButton"
 import GoogleButton from "@/components/app-sidebar/buttons/GoogleButton"
 import LogoutButton from "@/components/app-sidebar/buttons/LogoutButton"
+import ThemeMenu from "@/components/theme/theme-menu"
 import Link from "next/link"
 
 export default async function NavUser() {
@@ -96,10 +96,7 @@ async function User() {
 						<BadgeCheck />
 						Account
 					</DropdownMenuItem>
-					<DropdownMenuItem>
-						<Bell />
-						Notifications
-					</DropdownMenuItem>
+					<ThemeMenu />
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<LogoutButton />
@@ -108,9 +105,7 @@ async function User() {
 	)
 }
 
-async function Login() {
-	const cookieStore = await cookies()
-	await new Promise((res) => setTimeout(res, 3000))
+function Login() {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -122,9 +117,7 @@ async function Login() {
 						<LogIn className="size-4" />
 					</div>
 					<div className="grid flex-1 text-left text-sm leading-tight">
-						<span className="truncate font-medium">
-							Login {cookieStore.get("visitors")?.value}
-						</span>
+						<span className="truncate font-medium">Login</span>
 					</div>
 					<ChevronsUpDown className="ml-auto size-4" />
 				</SidebarMenuButton>

@@ -51,6 +51,7 @@ export class AiController {
 		const analysis = await this.analysisService.create({
 			originalText: text,
 			visibility: session ? 'private' : 'public',
+			userId: session ? session.user.id : undefined,
 		})
 		return { data: { id: analysis.id } }
 	}

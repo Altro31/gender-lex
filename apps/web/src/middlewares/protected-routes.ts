@@ -16,4 +16,8 @@ export async function protectedRoutes(req: NextRequest) {
 	) {
 		return NextResponse.redirect(new URL("/auth/login", req.url))
 	}
+
+	if (!session && req.nextUrl.pathname === "/analysis") {
+		return NextResponse.redirect(new URL("/auth/login", req.url))
+	}
 }

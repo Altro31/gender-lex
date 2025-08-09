@@ -1,6 +1,6 @@
 import FloatingChatbot from "@/components/floating-chatbot"
 import ProviderContainer from "@/components/provider-container"
-import ThemeContainer from "@/components/theme/theme-container"
+import ThemeRegister from "@/components/theme/theme-register"
 import { Toaster } from "@/components/ui/sonner"
 import "@/globals.css"
 import type { Metadata } from "next"
@@ -18,10 +18,10 @@ export default async function RootLayout({
 		<html lang="en">
 			<body className="relative">
 				<ProviderContainer>
-					<ThemeContainer />
 					{children}
 					<FloatingChatbot />
 					<Toaster richColors position="bottom-right" />
+					<ThemeRegister />
 				</ProviderContainer>
 			</body>
 		</html>

@@ -12,6 +12,7 @@ import {
 	SidebarHeader,
 	SidebarRail,
 } from "@/components/ui/sidebar"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const data = {
 	navMain: [
@@ -66,7 +67,7 @@ export default function AppSidebar({
 				<NavRecent projects={data.projects} />
 			</SidebarContent>
 			<SidebarFooter>
-				<React.Suspense fallback={"Loading..."}>
+				<React.Suspense fallback={<Skeleton className="h-12 w-full" />}>
 					<NavUser />
 				</React.Suspense>
 			</SidebarFooter>

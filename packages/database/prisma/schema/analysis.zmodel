@@ -11,17 +11,17 @@ model Analysis extends RawAnalysis {
     inputSource InputSource    @default(manual)
 
     Presets     Preset[]
-    userId      String?        @default(auth().id)
+    userId      String?
     User        User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
 
     createdAt   DateTime       @default(now())
     updatedAt   DateTime       @updatedAt
 
     // Everyone can create
-    @@allow('create',true)
+    @@allow('create,read',true)
 
     // Anyone can read public analysis
-    @@allow("read",visibility == public)
+    @@deny("read",visibility == private && auth()!=User)
 
     // Only owners can view it's analysis
     @@allow("read,update,delete",auth()==User)

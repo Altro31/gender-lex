@@ -19,8 +19,11 @@ import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons"
 import { ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 export default function LoginPage() {
+	const router = useRouter()
 	const [showPassword, setShowPassword] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 	const [formData, setFormData] = useState({
@@ -58,10 +61,16 @@ export default function LoginPage() {
 		}
 
 		setIsLoading(true)
-		await authClient.signIn.email({
+		const { error } = await authClient.signIn.email({
 			...formData,
-			callbackURL: process.env.NEXT_PUBLIC_UI_URL,
 		})
+		if (error) {
+			toast.error(error.message)
+		} else {
+			toast.success("Usuario autenticado con éxito")
+			router.replace("/")
+		}
+		setIsLoading(false)
 	}
 
 	const handleSocialLogin = (provider: "google" | "github") => {
