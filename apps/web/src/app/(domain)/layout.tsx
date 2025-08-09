@@ -1,8 +1,5 @@
 import AppSidebar from "@/components/app-sidebar"
-import {
-	SidebarInset,
-	SidebarTrigger
-} from "@/components/ui/sidebar"
+import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import "@/globals.css"
 import type { Metadata } from "next"
 import type { PropsWithChildren } from "react"

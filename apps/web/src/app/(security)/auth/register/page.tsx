@@ -14,15 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth/auth-client"
-import {
-	ArrowLeft,
-	Check,
-	Eye,
-	EyeOff,
-	Lock,
-	Mail,
-	User
-} from "lucide-react"
+import { ArrowLeft, Check, Eye, EyeOff, Lock, Mail, User } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -103,8 +95,6 @@ export default function RegisterPage() {
 			router.push("/")
 		}
 	}
-
-
 
 	const getPasswordStrength = (password: string) => {
 		let strength = 0
