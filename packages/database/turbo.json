@@ -18,6 +18,7 @@
 			"env": ["DATABASE_URL"],
 			"interactive": true
 		},
+		"migrate:prod": { "cache": false, "env": ["DATABASE_URL"] },
 		"studio": {
 			"interruptible": true,
 			"inputs": ["**/*.zmodel"],
