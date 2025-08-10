@@ -1,12 +1,13 @@
+import { PrismaClient } from '@repo/db/client'
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
-import { PrismaClient } from '@repo/db/client'
+import { nextCookies } from 'better-auth/next-js'
+import { customSession } from 'better-auth/plugins'
 
 export function createAuth(
 	get: (env: string) => string | undefined,
 ): ReturnType<typeof betterAuth> {
 	const prisma = new PrismaClient()
-
 	return betterAuth({
 		trustedOrigins: [get('UI_URL') ?? ''],
 		database: prismaAdapter(prisma, { provider: 'postgresql' }),
@@ -23,5 +24,14 @@ export function createAuth(
 				redirectURI: `${get('UI_URL') ?? ''}/api/auth/callback/github`,
 			},
 		},
+		plugins: [
+			nextCookies(),
+			customSession(async ({ session: { id }, user }) => {
+				const session = await prisma.session.findUnique({
+					where: { id },
+				})
+				return { user, session }
+			}) as any,
+		],
 	})
 }

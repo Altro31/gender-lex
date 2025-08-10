@@ -13,8 +13,7 @@
 				"AUTH_GITHUB_SECRET",
 				"BETTER_AUTH_SECRET",
 				"BETTER_AUTH_URL",
-				"UI_URL",
-				"NEXT_PUBLIC_UI_URL"
+				"UI_URL"
 			]
 		},
 		"build": {
@@ -28,8 +27,7 @@
 				"AUTH_GITHUB_SECRET",
 				"BETTER_AUTH_SECRET",
 				"BETTER_AUTH_URL",
-				"UI_URL",
-				"NEXT_PUBLIC_UI_URL"
+				"UI_URL"
 			]
 		},
 		"generate": {

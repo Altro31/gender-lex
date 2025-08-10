@@ -6,7 +6,7 @@
 	"author": "",
 	"license": "UNLICENSED",
 	"scripts": {
-		"dev": "turbo run dev",
+		"dev": "turbo watch dev",
 		"generate": "turbo run generate",
 		"build:api": "turbo api#build",
 		"build:web": "turbo web#build",
@@ -51,7 +51,8 @@
 		"zenstack": "^2.17.2",
 		"@zenstackhq/server": "^2.17.2",
 		"@zenstackhq/runtime": "^2.17.2",
-		"@zenstackhq/openapi": "^2.17.2"
+		"@zenstackhq/openapi": "^2.17.2",
+		"zod": "^4.0.17"
 	},
 	"lint-staged": {
 		"!(package-lock).{ts,json}": "prettier . -w"

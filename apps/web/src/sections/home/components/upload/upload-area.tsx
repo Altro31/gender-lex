@@ -52,7 +52,7 @@ export default function UploadArea({ children, className, ...props }: Props) {
 				className="absolute top-0 left-0 z-10 hidden size-full p-2 data-drag:block"
 			>
 				<div className="grid size-full place-content-center rounded-xl border-2 border-dashed backdrop-blur-xs">
-					<div className="aspect-video w-[50vw] bg-red-500">
+					<div className="aspect-video w-[50vw]">
 						Suelte el archivo aquí
 					</div>
 				</div>

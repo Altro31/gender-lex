@@ -1,12 +1,48 @@
 "use server"
 
-import { endpoints } from "@/lib/endpoints"
+import { auth } from "@/lib/auth/auth-server"
+import envs from "@/lib/env/env-server"
+import { actionClient } from "@/lib/safe-action"
+import { LoginSchema } from "@/sections/auth/login/form/login-schema"
+import { RegisterSchema } from "@/sections/auth/register/form/register-schema"
+import { redirect } from "next/navigation"
+import z from "zod"
 
-export async function google(token: string) {
-	const res = await fetch(endpoints.auth.google.callback, {
-		method: "POST",
-		headers: { Authorization: `Bearer ${token}` },
+export const signInEmail = actionClient
+	.inputSchema(LoginSchema)
+	.action(async ({ parsedInput }) => {
+		await auth.api.signInEmail({
+			body: parsedInput,
+		})
+		return {
+			success: true,
+		}
 	})
-	const data = await res.json()
-	return data
-}
+
+export const signInSocial = actionClient
+	.inputSchema(z.enum(["github", "google"]))
+	.action(async ({ parsedInput: provider }) => {
+		const res = await auth.api.signInSocial({
+			body: {
+				provider,
+				callbackURL: envs.UI_URL,
+			},
+		})
+		if (res.redirect) {
+			redirect(res.url!)
+		}
+		return {
+			success: true,
+		}
+	})
+
+export const signUp = actionClient
+	.inputSchema(RegisterSchema)
+	.action(async ({ parsedInput }) => {
+		const res = await auth.api.signUpEmail({
+			body: parsedInput,
+		})
+		return {
+			success: true,
+		}
+	})

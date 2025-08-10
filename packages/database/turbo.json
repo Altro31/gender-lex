@@ -17,6 +17,11 @@
 			"cache": false,
 			"env": ["DATABASE_URL"],
 			"interactive": true
+		},
+		"studio": {
+			"interruptible": true,
+			"inputs": ["**/*.zmodel"],
+			"persistent": true
 		}
 	}
 }

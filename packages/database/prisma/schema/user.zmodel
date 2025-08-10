@@ -15,7 +15,7 @@ enum AuthProvider {
 
 model User {
   @@auth
-
+  
   // Id cannot change
   id            String     @id @default(cuid()) @deny("update", true)
 
@@ -73,6 +73,7 @@ model Session {
   updatedAt DateTime
   ipAddress String?
   userAgent String?
+  lang      String   @default("en")
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 

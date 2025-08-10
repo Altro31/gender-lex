@@ -1,5 +1,6 @@
 import envs from "@/lib/env/env-server" with { type: "macro" }
 import type { NextConfig } from "next"
+import createNextIntlPlugin from "next-intl/plugin"
 
 const nextConfig: NextConfig = {
 	experimental: {
@@ -21,4 +22,7 @@ const nextConfig: NextConfig = {
 	},
 }
 
-export default nextConfig
+const withNextIntl = createNextIntlPlugin({
+	requestConfig: "./src/locales/request.ts",
+})
+export default withNextIntl(nextConfig)
