@@ -14,6 +14,7 @@
 		"prod:api": "turbo api#prod",
 		"prod:web": "turbo web#start",
 		"migrate": "turbo migrate",
+		"migrate:dev": "turbo migrate:dev",
 		"test": "turbo run test",
 		"test:e2e": "turbo run test:e2e",
 		"lint": "turbo run lint",

@@ -4,7 +4,8 @@
 	"scripts": {
 		"generate": "zenstack generate",
 		"migrate": "prisma migrate dev --skip-generate",
-		"studio": "prisma studio -b none"
+		"studio": "prisma studio -b none",
+		"migrate:prod": "prisma migrate deploy"
 	},
 	"dependencies": {
 		"@prisma/client": "6.12.0",
