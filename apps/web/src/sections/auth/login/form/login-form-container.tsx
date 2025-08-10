@@ -28,8 +28,8 @@ export default function LoginFormContainer({ children }: Props) {
 	})
 	const { status, execute } = useAction(signInEmail, {
 		onSuccess: ({ data }) => {
-			console.log(data);
-			
+			console.log(data)
+
 			toast.success("Usuario autenticado con éxito")
 			router.replace("/")
 		},
