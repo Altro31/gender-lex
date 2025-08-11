@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { RegisterSchema } from "@/sections/auth/register/form/register-schema"
 import { signUp } from "@/services/auth"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema"
 import { Loader2 } from "lucide-react"
 import { useAction } from "next-safe-action/hooks"
 import { useRouter } from "next/navigation"
@@ -18,7 +18,7 @@ interface Props {
 export default function RegisterFormContainer({ children }: Props) {
 	const router = useRouter()
 	const form = useForm({
-		resolver: zodResolver(RegisterSchema),
+		resolver: standardSchemaResolver(RegisterSchema),
 		defaultValues: {
 			name: "",
 			email: "",

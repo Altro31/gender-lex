@@ -2,10 +2,9 @@
 
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
-import { authClient } from "@/lib/auth/auth-client"
 import { LoginSchema } from "@/sections/auth/login/form/login-schema"
 import { signInEmail } from "@/services/auth"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema"
 import { Loader2 } from "lucide-react"
 import { useAction } from "next-safe-action/hooks"
 import { useRouter } from "next/navigation"
@@ -19,7 +18,7 @@ interface Props {
 export default function LoginFormContainer({ children }: Props) {
 	const router = useRouter()
 	const form = useForm({
-		resolver: zodResolver(LoginSchema),
+		resolver: standardSchemaResolver(LoginSchema),
 		defaultValues: {
 			email: "",
 			password: "",
