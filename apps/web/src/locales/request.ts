@@ -1,15 +1,15 @@
 import { auth } from "@/lib/auth/auth-server"
+import type { User } from "@repo/db/models"
 import { getRequestConfig } from "next-intl/server"
 import { headers } from "next/headers"
-import type { Session } from "@repo/db/models"
 
-export default getRequestConfig(async () => {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	})
+export default getRequestConfig(async ({ locale: inputLocale }) => {
 	let locale = "en"
-	if (session) {
-		locale = (session.session as Session).lang!
+	if (!inputLocale) {
+		const session = await auth.api.getSession({ headers: await headers() })
+		if (session) {
+			locale = (session.user as User).lang ?? "en"
+		}
 	}
 
 	return {

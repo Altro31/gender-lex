@@ -6,6 +6,7 @@ import { RegisterSchema } from "@/sections/auth/register/form/register-schema"
 import { signUp } from "@/services/auth"
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema"
 import { Loader2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useAction } from "next-safe-action/hooks"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function RegisterFormContainer({ children }: Props) {
+	const t = useTranslations()
 	const router = useRouter()
 	const form = useForm({
 		resolver: standardSchemaResolver(RegisterSchema),
@@ -29,7 +31,7 @@ export default function RegisterFormContainer({ children }: Props) {
 	})
 	const { status, execute } = useAction(signUp, {
 		onSuccess: () => {
-			toast.success("User registered successfully")
+			toast.success(t("Register.form.on-success"))
 			router.replace("/")
 			console.log("navigating...")
 		},
@@ -51,10 +53,10 @@ export default function RegisterFormContainer({ children }: Props) {
 					{isPending ? (
 						<div className="flex items-center gap-2">
 							<Loader2 className="animate-spin" />
-							Creando cuenta...
+							{t("Actions.registering")}
 						</div>
 					) : (
-						"Crear Cuenta"
+						t("Actions.register")
 					)}
 				</Button>
 			</form>

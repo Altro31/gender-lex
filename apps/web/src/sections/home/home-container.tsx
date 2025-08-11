@@ -7,60 +7,62 @@ import {
 	RefreshCwIcon,
 	SearchCodeIcon,
 } from "lucide-react"
+import { useTranslations, MarkupTagsFunction } from "next-intl"
 
-const cards = [
+const getCards = (t: MarkupTagsFunction) => [
 	{
 		icon: SearchCodeIcon,
-		text: "Analiza texto en busca de contenido sesgado o estigmatizante",
+		text: t("Home.card.1"),
 		ready: true,
 	},
 	{
 		icon: ChartColumnIcon,
-		text: "Muestra qué términos o expresiones influyen en el contenido redactado",
+		text: t("Home.card.2"),
 		ready: true,
 	},
 	{
 		icon: RefreshCwIcon,
-		text: "Proporciona alternativas de los términos o expresiones sesgadas",
+		text: t("Home.card.3"),
 		ready: true,
 	},
 	{
 		icon: FileTextIcon,
-		text: "Pueden subirse archivos en PDF, DOCX...",
+		text: t("Home.card.4"),
 		ready: false,
 	},
 ]
 
 export default function HomeContainer() {
+	const t = useTranslations()
 	return (
-		<UploadArea className="h-full flex items-center justify-center">
-			<div className="p-4 max-w-4xl space-y-3 sm:space-y-8">
+		<UploadArea className="flex h-full items-center justify-center">
+			<div className="max-w-4xl space-y-3 p-4 sm:space-y-8">
 				<div className="w-fit">
 					<div className="space-y-2">
-						<h1 className="p-1 text-3xl sm:text-4xl font-bold bg-linear-to-r from-primary via-fuchsia-600/80 via-65% to-75% to-violet-500 bg-clip-text text-transparent">
-							<span>Bienvenido/a a GenderLex,</span>
+						<h1 className="from-primary bg-linear-to-r via-fuchsia-600/80 via-65% to-violet-500 to-75% bg-clip-text p-1 text-3xl font-bold text-transparent sm:text-4xl">
+							<span>{t("Home.title.1")}</span>
 							<br />
 							<span className="text-2xl">
-								su asistente de escritura inteligente.
+								{t("Home.title.2")}
 							</span>
 						</h1>
 					</div>
 				</div>
-				<div className="flex gap-4 flex-wrap justify-center">
-					{cards.map(({ icon: Icon, text, ready }) => (
+				<div className="flex flex-wrap justify-center gap-4">
+					{getCards(t).map(({ icon: Icon, text, ready }) => (
 						<Card
 							key={text}
 							data-ready={ready}
-							className="data-[ready=false]:bg-muted  cursor-pointer p-2 sm:p-4 transition-colors hover:bg-muted/80 max-w-34 sm:max-w-48"
+							className="data-[ready=false]:bg-muted hover:bg-muted/80 max-w-34 cursor-pointer p-2 transition-colors sm:max-w-48 sm:p-4"
 						>
-							<div className="flex sm:flex-col justify-between h-full gap-1 sm:gap-4">
+							<div className="flex h-full justify-between gap-1 sm:flex-col sm:gap-4">
 								<span className="text-xs sm:text-sm">
 									{text}
 								</span>
-								<div className="flex justify-between sm:flex-row flex-col items-end gap-1">
+								<div className="flex flex-col items-end justify-between gap-1 sm:flex-row">
 									<Icon className="h-5 w-5 text-gray-500" />
 									{!ready && (
-										<span className="bg-dev rounded-full bg text-white p-1 px-2 text-sm">
+										<span className="bg-dev bg rounded-full p-1 px-2 text-sm text-white">
 											dev
 										</span>
 									)}

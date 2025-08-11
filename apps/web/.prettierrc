@@ -2,5 +2,8 @@
 	"endOfLine": "lf",
 	"semi": false,
 	"tabWidth": 4,
-	"useTabs": true
+	"useTabs": true,
+	"plugins": [
+		"prettier-plugin-tailwindcss"
+	]
 }

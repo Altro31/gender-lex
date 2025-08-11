@@ -5,6 +5,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { useTranslations } from "next-intl"
 import Link from "next/link"
 
 export function NavMain({
@@ -17,16 +18,17 @@ export function NavMain({
 		isActive?: boolean
 	}[]
 }) {
+	const t = useTranslations()
 	return (
 		<SidebarGroup>
-			<SidebarGroupLabel>Platform</SidebarGroupLabel>
+			<SidebarGroupLabel>{t("sidebar.platform")}</SidebarGroupLabel>
 			<SidebarMenu>
 				{items.map((item) => (
-					<SidebarMenuItem key={item.title}>
-						<SidebarMenuButton tooltip={item.title} asChild>
+					<SidebarMenuItem key={t(item.title)}>
+						<SidebarMenuButton tooltip={t(item.title)} asChild>
 							<Link href={item.url}>
 								{item.icon}
-								<span>{item.title}</span>
+								<span>{t(item.title)}</span>
 							</Link>
 						</SidebarMenuButton>
 					</SidebarMenuItem>

@@ -17,23 +17,23 @@ import { Skeleton } from "@/components/ui/skeleton"
 const data = {
 	navMain: [
 		{
-			title: "New analysis",
+			title: "sidebar.nav.new-analysis",
 			url: "/",
 			icon: <Plus />,
 			isActive: true,
 		},
 		{
-			title: "History",
+			title: "sidebar.nav.history",
 			url: "/analysis",
 			icon: <Clock />,
 		},
 		{
-			title: "Models",
+			title: "sidebar.nav.models",
 			url: "/models",
 			icon: <Bot />,
 		},
 		{
-			title: "Presets",
+			title: "sidebar.nav.presets",
 			url: "/presets",
 			icon: <Settings />,
 		},
@@ -63,7 +63,9 @@ export default function AppSidebar({
 				<Logo />
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={data.navMain} />
+				<React.Suspense>
+					<NavMain items={data.navMain} />
+				</React.Suspense>
 				<NavRecent projects={data.projects} />
 			</SidebarContent>
 			<SidebarFooter>

@@ -13,30 +13,35 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { deleteAnalysis } from "@/services/analysis"
+import { useTranslations } from "next-intl"
 
 interface Props {
 	model: any
 }
 
 export default function DeleteAnalysisAlertDialog({ model }: Props) {
+	const t = useTranslations()
+
 	return (
 		<AlertDialogPortal>
 			<AlertDialogOverlay />
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Delete analysis</AlertDialogTitle>
+					<AlertDialogTitle>
+						{t("Analysis.delete.title")}
+					</AlertDialogTitle>
 					<AlertDialogDescription>
-						Are you shure yo want delete this analysis?
+						{t("Analysis.delete.quest")}
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogCancel>{t("Commons.cancel")}</AlertDialogCancel>
 					<AlertDialogAction asChild>
 						<Button
 							variant="destructive"
 							onClick={() => deleteAnalysis("")}
 						>
-							Delete
+							{t("Actions.delete")}
 						</Button>
 					</AlertDialogAction>
 				</AlertDialogFooter>

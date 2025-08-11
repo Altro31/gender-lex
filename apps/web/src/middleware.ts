@@ -1,8 +1,8 @@
 import { protectedRoutes } from "@/middlewares/protected-routes"
 import { rejectAuthRoutes } from "@/middlewares/reject-auth-routes"
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 
-export async function middleware(req: NextRequest) {
+export async function middleware(req: any) {
 	return (
 		(await protectedRoutes(req)) ||
 		(await rejectAuthRoutes(req)) ||
@@ -12,4 +12,5 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
 	runtime: "nodejs",
+	matcher: "/((?!api|trpc|_next|_vercel|.*\\..*).*)",
 }

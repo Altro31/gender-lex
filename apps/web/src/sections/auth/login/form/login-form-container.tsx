@@ -6,6 +6,7 @@ import { LoginSchema } from "@/sections/auth/login/form/login-schema"
 import { signInEmail } from "@/services/auth"
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema"
 import { Loader2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useAction } from "next-safe-action/hooks"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function LoginFormContainer({ children }: Props) {
+	const t = useTranslations()
 	const router = useRouter()
 	const form = useForm({
 		resolver: standardSchemaResolver(LoginSchema),
@@ -29,7 +31,7 @@ export default function LoginFormContainer({ children }: Props) {
 		onSuccess: ({ data }) => {
 			console.log(data)
 
-			toast.success("Usuario autenticado con éxito")
+			toast.success(t("Login.form.on-success"))
 			router.replace("/")
 		},
 		onError: ({ error }) => {
@@ -50,10 +52,10 @@ export default function LoginFormContainer({ children }: Props) {
 					{isPending ? (
 						<div className="flex items-center gap-2">
 							<Loader2 className="animate-spin" />
-							Iniciando sesión...
+							{t("Actions.doSignIn")}
 						</div>
 					) : (
-						"Iniciar Sesión"
+						t("Actions.signIn")
 					)}
 				</Button>
 			</form>

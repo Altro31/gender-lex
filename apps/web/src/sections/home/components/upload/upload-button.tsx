@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { PaperclipIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import type { ComponentProps } from "react"
 
 interface Props extends ComponentProps<typeof Button> {
@@ -12,6 +13,7 @@ export default function UploadButton({
 	className,
 	...props
 }: Props) {
+	const t = useTranslations()
 	return (
 		<Button
 			asChild
@@ -21,7 +23,9 @@ export default function UploadButton({
 			{...props}
 		>
 			<label>
-				<span className="sr-only">Upload file</span>
+				<span className="sr-only">
+					{t("Home.form.file.placeholder")}
+				</span>
 				<PaperclipIcon className="h-4 w-4" />
 				<input
 					name="file"

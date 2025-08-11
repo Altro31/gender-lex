@@ -1,1 +1,122 @@
-{}
+{
+	"Upload": {
+		"drop": "Suelte el archivo aquí"
+	},
+	"Home": {
+		"title": {
+			"1": "Bienvenido/a a GenderLex,",
+			"2": "su asistente de escritura inteligente."
+		},
+		"card": {
+			"1": "Analiza texto en busca de contenido sesgado o estigmatizante",
+			"2": "Muestra qué términos o expresiones influyen en el contenido redactado",
+			"3": "Proporciona alternativas de los términos o expresiones sesgadas",
+			"4": "Pueden subirse archivos en PDF, Docx.."
+		},
+		"form": {
+			"text": {
+				"placeholder": "Analizar un texto..."
+			},
+			"file": {
+				"placeholder": "Cargar archivo"
+			}
+		}
+	},
+	"Actions": {
+		"send": "Enviar",
+		"analyzing": "Analizando...",
+		"doSignIn": "Iniciando sesión...",
+		"signIn": "Iniciar Sesión",
+		"registering": "Creando cuenta...",
+		"register": "Crear Cuenta",
+		"view-details": "Ver detalles",
+		"edit": "Editar",
+		"delete": "Delete",
+		"log-out": "Cerrar Sessión"
+	},
+	"Login": {
+		"back-to-home": "Volver al inicio",
+		"title": "Iniciar Sesión",
+		"subtitle": "Ingresa a tu cuenta para continuar",
+		"socials": {
+			"google": "Continuar con Google",
+			"github": "Continuar con GitHub"
+		},
+		"continue-with-email": "O continúa con email",
+		"register-quest": "¿No tienes una cuenta?",
+		"register": "Regístrate aquí",
+		"form": {
+			"on-success": "Usuario autenticado con éxito"
+		},
+		"forgot-password-q": "¿Olvidaste tu contraseña?"
+	},
+	"Security": {
+		"accept-temrs": {
+			"1": "Al continuar, aceptas nuestros",
+			"2": "y",
+			"terms": "Términos de Servicio",
+			"policy": "Política de Privacidad"
+		},
+		"password": {
+			"strength": {
+				"weak": "Débil",
+				"medium": "Media",
+				"strong": "Fuerte"
+			}
+		}
+	},
+	"Commons": {
+		"email": "Correo electónico",
+		"email-placeholder": "tu@ejemplo.com",
+		"password": "Contraseña",
+		"password-placeholder": "Tu contraseña",
+		"remember-me": "Recordarme",
+		"name": "Nombre",
+		"name-placeholder": "Tu nombre",
+		"recent": "Reciente",
+		"more": "Más",
+		"cancel": "Cancelar"
+	},
+	"Register": {
+		"title": "Crear Cuenta",
+		"subtitle": "Únete a nuestra plataforma en segundos",
+		"login-q": "¿Ya tienes una cuenta?",
+		"login": "Inicia sesión aquí",
+		"footer": "Al registrarte, confirmas que tienes al menos 18 años de edad",
+		"form": {
+			"on-success": "Usuario registrado correctamente",
+			"confirm-password": "Confirmar contraseña",
+			"confirm-password-placeholder": "Confirma tu contraseña"
+		}
+	},
+	"sidebar": {
+		"platform": "Plataforma",
+		"nav": {
+			"new-analysis": "Nuevo análisis",
+			"history": "Historial",
+			"models": "Modelos",
+			"presets": "Configuraciones"
+		},
+		"theme": {
+			"label": "Tema",
+			"ligth": "Luz",
+			"dark": "Oscuro"
+		},
+		"language": {
+			"label": "Idioma"
+		}
+	},
+	"Analysis": {
+		"delete": {
+			"title": "Eliminar análisis",
+			"quest": "¿Estás shure que quieres delte este análisis?"
+		}
+	},
+	"Profile": {
+		"account": "Perfil"
+	},
+	"Languages": {
+		"en": "Inglés",
+		"es": "Español"
+	}
+}

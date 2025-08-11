@@ -5,12 +5,14 @@ import UploadButton from "@/sections/home/components/upload/upload-button"
 import FormSendButton from "@/sections/home/form/home-form-send-button"
 import { useDroppedFile } from "@/sections/home/stores/dropped-file"
 import { prepareAnalysis } from "@/services/analysis"
+import { useTranslations } from "next-intl"
 import Form from "next/form"
 import { useEffect, useState, type FormEventHandler } from "react"
 
 type Input = string | undefined
 
 export default function HomeFormContainer() {
+	const t = useTranslations()
 	const [inputValue, setInputValue] = useState<Input>("")
 	const { file } = useDroppedFile()
 
@@ -31,7 +33,7 @@ export default function HomeFormContainer() {
 			<Textarea
 				name="text"
 				className="bg-background resize-none px-4"
-				placeholder="Analizar un texto..."
+				placeholder={t("Home.form.text.placeholder")}
 				id="analyze-text"
 				value={inputValue}
 				onInput={handleInput}

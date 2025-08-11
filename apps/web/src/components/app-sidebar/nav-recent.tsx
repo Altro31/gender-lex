@@ -21,6 +21,7 @@ import {
 import DeleteAnalysisAlertDialog from "@/sections/analysis/components/delete-analysis-alert-dialog"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 
 export default function NavRecent({
 	projects,
@@ -30,11 +31,12 @@ export default function NavRecent({
 		url: string
 	}[]
 }) {
+	const t = useTranslations()
 	const { isMobile } = useSidebar()
 
 	return (
 		<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-			<SidebarGroupLabel>Recent</SidebarGroupLabel>
+			<SidebarGroupLabel>{t("Commons.recent")}</SidebarGroupLabel>
 			<SidebarMenu>
 				{projects.map((item) => (
 					<SidebarMenuItem key={item.name}>
@@ -46,7 +48,9 @@ export default function NavRecent({
 								<DropdownMenuTrigger asChild>
 									<SidebarMenuAction showOnHover>
 										<MoreHorizontal />
-										<span className="sr-only">More</span>
+										<span className="sr-only">
+											{t("Commons.more")}
+										</span>
 									</SidebarMenuAction>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent
@@ -56,17 +60,17 @@ export default function NavRecent({
 								>
 									<DropdownMenuItem>
 										<Eye className="text-muted-foreground" />
-										<span>View details</span>
+										<span>{t("Actions.view-details")}</span>
 									</DropdownMenuItem>
 									<DropdownMenuItem>
 										<Edit className="text-muted-foreground" />
-										<span>Edit</span>
+										<span>{t("Actions.edit")}</span>
 									</DropdownMenuItem>
 									<DropdownMenuSeparator />
 									<AlertDialogTrigger asChild>
 										<DropdownMenuItem variant="destructive">
 											<Trash2 className="text-muted-foreground" />
-											<span>Delete</span>
+											<span>{t("Actions.delete")}</span>
 										</DropdownMenuItem>
 									</AlertDialogTrigger>
 								</DropdownMenuContent>
@@ -82,7 +86,7 @@ export default function NavRecent({
 					>
 						<Link href="/analysis">
 							<MoreHorizontal className="text-sidebar-foreground/70" />
-							<span>More</span>
+							<span>{t("Commons.more")}</span>
 						</Link>
 					</SidebarMenuButton>
 				</SidebarMenuItem>

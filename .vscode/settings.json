@@ -1,1 +1,7 @@
-{ "typescript.tsdk": "node_modules/typescript/lib" }
+{
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"i18n-ally.localesPaths": ["apps/web/src/locales/langs"],
+	"oxc.enable": true,
+	"i18n-ally.keystyle": "nested",
+	"i18n-ally.sourceLanguage": "en"
+}

@@ -1,4 +1,7 @@
 {
-	"plugins": ["nextjs"],
-	"ignorePatterns": ["node_modules", "src/components/ui", ".next"]
+	"plugins": ["nextjs", "react"],
+	"ignorePatterns": ["node_modules", "src/components/ui", ".next"],
+	"rules": {
+		"react/jsx-no-literals": "error"
+	}
 }

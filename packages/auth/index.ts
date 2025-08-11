@@ -11,6 +11,9 @@ export function createAuth(
 	return betterAuth({
 		trustedOrigins: [get('UI_URL') ?? ''],
 		database: prismaAdapter(prisma, { provider: 'postgresql' }),
+		user: {
+			additionalFields: { lang: { type: 'string', defaultValue: 'es' } },
+		},
 		emailAndPassword: { enabled: true },
 		socialProviders: {
 			google: {
@@ -26,10 +29,8 @@ export function createAuth(
 		},
 		plugins: [
 			nextCookies(),
-			customSession(async ({ session: { id }, user }) => {
-				const session = await prisma.session.findUnique({
-					where: { id },
-				})
+			customSession(async ({ session, user: { id } }) => {
+				const user = await prisma.user.findUnique({ where: { id } })
 				return { user, session }
 			}) as any,
 		],

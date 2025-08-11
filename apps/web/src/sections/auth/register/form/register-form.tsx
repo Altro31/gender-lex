@@ -9,19 +9,22 @@ import {
 	FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useTranslations, type MarkupTagsFunction } from "next-intl"
 import Link from "next/link"
 
 export default function RegisterForm() {
+	const t = useTranslations()
+
 	return (
 		<>
 			<FormField
 				name="name"
 				render={({ field }) => (
 					<FormItem className="w-full">
-						<FormLabel>Nombre *</FormLabel>
+						<FormLabel>{t("Commons.name")} *</FormLabel>
 						<FormControl>
 							<Input
-								placeholder="Tu nombre"
+								placeholder={t("Commons.name-placeholder")}
 								type={"text"}
 								value={field.value}
 								onChange={(e) => {
@@ -38,10 +41,10 @@ export default function RegisterForm() {
 				name="email"
 				render={({ field }) => (
 					<FormItem className="w-full">
-						<FormLabel>Correo electónico *</FormLabel>
+						<FormLabel>{t("Commons.email")} *</FormLabel>
 						<FormControl>
 							<Input
-								placeholder="tu@ejemplo.com"
+								placeholder={t("Commons.email-placeholder")}
 								type={""}
 								value={field.value}
 								onChange={(e) => {
@@ -62,18 +65,20 @@ export default function RegisterForm() {
 
 					return (
 						<FormItem className="w-full">
-							<FormLabel>Contraseña *</FormLabel>
+							<FormLabel>{t("Commons.password")} *</FormLabel>
 							<FormControl>
 								<Input
 									{...field}
-									placeholder="Crea una contraseña segura"
+									placeholder={t(
+										"Commons.password-placeholder",
+									)}
 									type="password"
 								/>
 							</FormControl>
 							{field.value && (
 								<div className="space-y-2">
 									<div className="flex items-center gap-2">
-										<div className="flex-1 bg-gray-200 rounded-full h-2">
+										<div className="h-2 flex-1 rounded-full bg-gray-200">
 											<div
 												className={`h-2 rounded-full transition-all duration-300 ${getStrengthColor(passwordStrength)}`}
 												style={{
@@ -82,7 +87,10 @@ export default function RegisterForm() {
 											/>
 										</div>
 										<span className="text-xs text-gray-600">
-											{getStrengthText(passwordStrength)}
+											{getStrengthText(
+												passwordStrength,
+												t,
+											)}
 										</span>
 									</div>
 								</div>
@@ -97,11 +105,15 @@ export default function RegisterForm() {
 				name="confirmPassword"
 				render={({ field }) => (
 					<FormItem className="w-full">
-						<FormLabel>Confirmar contraseña *</FormLabel>
+						<FormLabel>
+							{t("Register.form.confirm-password")} *
+						</FormLabel>
 						<FormControl>
 							<Input
 								{...field}
-								placeholder="Confirma tu contraseña"
+								placeholder={t(
+									"Register.form.confirm-password-placeholder",
+								)}
 								type="password"
 							/>
 						</FormControl>
@@ -113,7 +125,7 @@ export default function RegisterForm() {
 				name="acceptTerms"
 				render={({ field }) => (
 					<FormItem className="">
-						<div className="flex flex-row items-center space-y-0 gap-1 rounded-md">
+						<div className="flex flex-row items-center gap-1 space-y-0 rounded-md">
 							<FormControl>
 								<Checkbox
 									checked={field.value}
@@ -121,19 +133,19 @@ export default function RegisterForm() {
 								/>
 							</FormControl>
 							<FormLabel className="*:contents">
-								Acepto los{" "}
+								{t("Security.accept-temrs.1")}{" "}
 								<Link
 									href="/terms"
-									className="text-blue-600 hover:text-blue-800 "
+									className="text-blue-600 hover:text-blue-800"
 								>
-									Términos de Servicio
+									{t("Security.accept-temrs.terms")}
 								</Link>{" "}
-								y la{" "}
+								{t("Security.accept-temrs.2")}{" "}
 								<Link
 									href="/privacy"
 									className="text-blue-600 hover:text-blue-800"
 								>
-									Política de Privacidad
+									{t("Security.accept-temrs.policy")}
 								</Link>
 							</FormLabel>
 						</div>
@@ -161,8 +173,8 @@ const getStrengthColor = (strength: number) => {
 	return "bg-green-500"
 }
 
-const getStrengthText = (strength: number) => {
-	if (strength <= 2) return "Débil"
-	if (strength <= 3) return "Media"
-	return "Fuerte"
+const getStrengthText = (strength: number, t: MarkupTagsFunction) => {
+	if (strength <= 2) return t("Security.password.strength.weak")
+	if (strength <= 3) return t("Security.password.strength.medium")
+	return t("Security.password.strength.strong")
 }

@@ -7,18 +7,15 @@ import {
 	DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Moon, Sun } from "lucide-react"
-import { useRef, type MouseEvent } from "react"
+import { useTranslations } from "next-intl"
+import { useState, type MouseEvent } from "react"
 
-interface Props {
-	isDark: boolean
-}
-
-export default function ThemeSwitcher({ isDark }: Props) {
-	const triggerRef = useRef<HTMLDivElement>(null)
-
-	const changeTheme = (isDark: boolean) => (e: MouseEvent) => {
-		if (!triggerRef.current) return
-		const target = document.body
+export default function ThemeSwitcher() {
+	const t = useTranslations()
+	const [open, setOpen] = useState(false)
+	const changeTheme = (isDark: boolean) => async (e: MouseEvent) => {
+		const target = document.querySelector<HTMLDivElement>("#theme")
+		if (!target) return
 		const newValue = !isDark
 		if (newValue) {
 			target.dataset.dark = newValue + ""
@@ -35,24 +32,24 @@ export default function ThemeSwitcher({ isDark }: Props) {
 
 	return (
 		<>
-			<DropdownMenuSub>
-				<DropdownMenuSubTrigger className="gap-2" ref={triggerRef}>
-					<Moon className="hidden in-data-dark:inline size-4" />
-					<Sun className="in-data-dark:hidden size-4" />
-					Theme
+			<DropdownMenuSub onOpenChange={setOpen} open={open}>
+				<DropdownMenuSubTrigger className="gap-2">
+					<Moon className="size-4 not-dark:hidden" />
+					<Sun className="size-4 dark:hidden" />
+					{t("sidebar.theme.label")}
 				</DropdownMenuSubTrigger>
 				<DropdownMenuSubContent>
 					<DropdownMenuItem
-						// onClick={changeTheme(true)}
-						className="dark:opacity-50 dark:pointer-events-none"
+						onClick={changeTheme(false)}
+						className="dark:pointer-events-none dark:opacity-50"
 					>
-						<Moon /> Dark
+						<Moon /> {t("sidebar.theme.dark")}
 					</DropdownMenuItem>
 					<DropdownMenuItem
-						// onClick={changeTheme(false)}
-						className="not-dark:opacity-50 not-dark:pointer-events-none"
+						onClick={changeTheme(true)}
+						className="not-dark:pointer-events-none not-dark:opacity-50"
 					>
-						<Sun /> Light
+						<Sun /> {t("sidebar.theme.ligth")}
 					</DropdownMenuItem>
 				</DropdownMenuSubContent>
 			</DropdownMenuSub>

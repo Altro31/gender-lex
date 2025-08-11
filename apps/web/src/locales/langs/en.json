@@ -1,1 +1,122 @@
-{}
+{
+	"Upload": {
+		"drop": "Drop file here"
+	},
+	"Home": {
+		"title": {
+			"1": "Welcome to Genderlex,",
+			"2": "your smart writing assistant."
+		},
+		"card": {
+			"1": "Analyze text in search of biased or stigmatizing content",
+			"2": "Show what terms or expressions influence the written content",
+			"3": "Provides alternatives of biased terms or expressions",
+			"4": "Files can be uploaded in PDF, Docx ..."
+		},
+		"form": {
+			"file": {
+				"placeholder": "Upload File"
+			},
+			"text": {
+				"placeholder": "Analyze a text ..."
+			}
+		}
+	},
+	"Actions": {
+		"analyzing": "Analyzing...",
+		"send": "Send",
+		"doSignIn": "Starting session...",
+		"signIn": "Login",
+		"delete": "Delete",
+		"edit": "Edit",
+		"log-out": "Log out",
+		"register": "Create account",
+		"registering": "Creating account ...",
+		"view-details": "View details"
+	},
+	"Commons": {
+		"email": "Email",
+		"email-placeholder": "you@example.com",
+		"password": "Password",
+		"password-placeholder": "Your password",
+		"remember-me": "Remember me",
+		"cancel": "Cancel",
+		"more": "More",
+		"name": "Name",
+		"name-placeholder": "Your name",
+		"recent": "Recent"
+	},
+	"Login": {
+		"back-to-home": "Back to home",
+		"continue-with-email": "Or continue with email",
+		"forgot-password-q": "Did you forget your password?",
+		"form": {
+			"on-success": "Successful authenticated user"
+		},
+		"register": "Register here",
+		"register-quest": "Don't you have an account?",
+		"socials": {
+			"github": "Continue with Github",
+			"google": "Continue with Google"
+		},
+		"subtitle": "Enter your account to continue",
+		"title": "Login"
+	},
+	"Security": {
+		"accept-temrs": {
+			"1": "By continuing, you accept our",
+			"2": "and",
+			"policy": "Privacy Policy",
+			"terms": "Terms of service"
+		},
+		"password": {
+			"strength": {
+				"medium": "Medium",
+				"strong": "Strong",
+				"weak": "Weak"
+			}
+		}
+	},
+	"Analysis": {
+		"delete": {
+			"quest": "Are You Shure Yo Want Delte This Analysis?",
+			"title": "Delete analysis"
+		}
+	},
+	"Profile": {
+		"account": "Account"
+	},
+	"Register": {
+		"footer": "When you register, you confirm that you are at least 18 years old",
+		"form": {
+			"confirm-password": "Confirm Password",
+			"confirm-password-placeholder": "Confirm your password",
+			"on-success": "User Registered Successfully"
+		},
+		"login": "Locate session here",
+		"login-q": "Do you already have an account?",
+		"subtitle": "Join our platform in seconds",
+		"title": "Create account"
+	},
+	"sidebar": {
+		"nav": {
+			"history": "History",
+			"models": "Models",
+			"new-analysis": "New Analysis",
+			"presets": "Presets"
+		},
+		"platform": "Platform",
+		"theme": {
+			"label": "Theme",
+			"dark": "Dark",
+			"ligth": "Light"
+		},
+		"language": {
+			"label": "Language"
+		}
+	},
+	"Languages": {
+		"en": "English",
+		"es": "Spanish"
+	}
+}

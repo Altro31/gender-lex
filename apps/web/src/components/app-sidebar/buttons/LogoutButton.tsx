@@ -3,6 +3,7 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { authClient } from "@/lib/auth/auth-client"
 import { LogOut } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function LogoutButton({ redirect }: Props) {
+	const t = useTranslations()
 	const router = useRouter()
 	return (
 		<DropdownMenuItem
@@ -19,7 +21,7 @@ export default function LogoutButton({ redirect }: Props) {
 			}}
 		>
 			<LogOut />
-			Log out
+			{t('Actions.log-out')}
 		</DropdownMenuItem>
 	)
 }

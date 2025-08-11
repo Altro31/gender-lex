@@ -2,11 +2,13 @@
 
 import { cn } from "@/lib/utils"
 import { useDroppedFile } from "@/sections/home/stores/dropped-file"
+import { useTranslations } from "next-intl"
 import { useRef, useState, type ComponentProps, type DragEvent } from "react"
 
 interface Props extends ComponentProps<"div"> {}
 
 export default function UploadArea({ children, className, ...props }: Props) {
+	const t = useTranslations("")
 	const { setFile } = useDroppedFile()
 	const [isDragging, setIsDragging] = useState(false)
 	const dropAreaRef = useRef<HTMLDivElement>(null)
@@ -53,7 +55,7 @@ export default function UploadArea({ children, className, ...props }: Props) {
 			>
 				<div className="grid size-full place-content-center rounded-xl border-2 border-dashed backdrop-blur-xs">
 					<div className="aspect-video w-[50vw]">
-						Suelte el archivo aquí
+						{t("Upload.drop")}
 					</div>
 				</div>
 			</div>

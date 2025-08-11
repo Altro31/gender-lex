@@ -21,8 +21,11 @@ import { getSession } from "@/lib/auth/auth-server"
 import GithubButton from "@/components/app-sidebar/buttons/GithubButton"
 import GoogleButton from "@/components/app-sidebar/buttons/GoogleButton"
 import LogoutButton from "@/components/app-sidebar/buttons/LogoutButton"
-import ThemeMenu from "@/components/theme/theme-menu"
+import ThemeSwitcher from "@/components/theme/theme-switcher"
 import Link from "next/link"
+import { getTranslations } from "next-intl/server"
+import { useTranslations } from "next-intl"
+import LanguageSwitcher from "@/locales/components/language-switcher"
 
 export default async function NavUser() {
 	const session = await getSession()
@@ -35,8 +38,8 @@ export default async function NavUser() {
 }
 
 async function User() {
+	const t = await getTranslations()
 	const session = await getSession()
-
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -94,9 +97,10 @@ async function User() {
 				<DropdownMenuGroup>
 					<DropdownMenuItem>
 						<BadgeCheck />
-						Account
+						{t("Profile.account")}
 					</DropdownMenuItem>
-					<ThemeMenu />
+					<ThemeSwitcher />
+					<LanguageSwitcher />
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<LogoutButton />
@@ -106,6 +110,7 @@ async function User() {
 }
 
 function Login() {
+	const t = useTranslations()
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -113,11 +118,13 @@ function Login() {
 					size="lg"
 					className="group data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 				>
-					<div className="shrink-0 size-8 grid place-content-center">
+					<div className="grid size-8 shrink-0 place-content-center">
 						<LogIn className="size-4" />
 					</div>
 					<div className="grid flex-1 text-left text-sm leading-tight">
-						<span className="truncate font-medium">Login</span>
+						<span className="truncate font-medium">
+							{t("Login.title")}
+						</span>
 					</div>
 					<ChevronsUpDown className="ml-auto size-4" />
 				</SidebarMenuButton>
@@ -131,7 +138,7 @@ function Login() {
 					<DropdownMenuItem asChild>
 						<Link href="/auth/login">
 							<UserIcon />
-							Email
+							{t("Commons.email")}
 						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />

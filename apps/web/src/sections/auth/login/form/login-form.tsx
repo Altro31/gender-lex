@@ -9,19 +9,21 @@ import {
 	FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useTranslations } from "next-intl"
 import Link from "next/link"
 
 export default function LoginForm() {
+	const t = useTranslations()
 	return (
 		<>
 			<FormField
 				name="email"
 				render={({ field }) => (
 					<FormItem className="w-full">
-						<FormLabel>Correo electónico *</FormLabel>
+						<FormLabel>{t("Commons.email")} *</FormLabel>
 						<FormControl>
 							<Input
-								placeholder="tu@ejemplo.com"
+								placeholder={t("Commons.email-placeholder")}
 								type={"email"}
 								value={field.value}
 								onChange={(e) => {
@@ -38,10 +40,10 @@ export default function LoginForm() {
 				name="password"
 				render={({ field }) => (
 					<FormItem className="w-full">
-						<FormLabel>Contraseña *</FormLabel>
+						<FormLabel>{t("Commons.password")} *</FormLabel>
 						<FormControl>
 							<Input
-								placeholder="Tu contraseña"
+								placeholder={t("Commons.password-placeholder")}
 								type={"password"}
 								value={field.value}
 								onChange={(e) => {
@@ -66,8 +68,9 @@ export default function LoginForm() {
 								/>
 							</FormControl>
 							<div className="space-y-1 leading-none">
-								<FormLabel>Recordarme</FormLabel>
-
+								<FormLabel>
+									{t("Commons.remember-me")}
+								</FormLabel>
 								<FormMessage />
 							</div>
 						</FormItem>
@@ -77,7 +80,7 @@ export default function LoginForm() {
 					href="/auth/forgot-password"
 					className="text-sm text-blue-600 hover:text-blue-800"
 				>
-					¿Olvidaste tu contraseña?
+					{t("Login.forgot-password-q")}
 				</Link>
 			</div>
 		</>
