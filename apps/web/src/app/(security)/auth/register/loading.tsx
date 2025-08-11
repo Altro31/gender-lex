@@ -1,27 +1,27 @@
 export default function Loading() {
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center p-4">
+		<div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-purple-50 via-white to-blue-50 p-4">
 			<div className="w-full max-w-md">
 				<div className="animate-pulse space-y-6">
-					<div className="h-8 bg-gray-200 rounded w-1/3"></div>
-					<div className="bg-white rounded-lg shadow-xl p-6 space-y-4">
-						<div className="h-12 bg-gray-200 rounded-xl w-12 mx-auto"></div>
-						<div className="h-6 bg-gray-200 rounded w-2/3 mx-auto"></div>
-						<div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+					<div className="h-8 w-1/3 rounded bg-gray-200"></div>
+					<div className="space-y-4 rounded-lg bg-white p-6 shadow-xl">
+						<div className="mx-auto h-12 w-12 rounded-xl bg-gray-200"></div>
+						<div className="mx-auto h-6 w-2/3 rounded bg-gray-200"></div>
+						<div className="mx-auto h-4 w-1/2 rounded bg-gray-200"></div>
 						<div className="space-y-3">
-							<div className="h-11 bg-gray-200 rounded"></div>
-							<div className="h-11 bg-gray-200 rounded"></div>
+							<div className="h-11 rounded bg-gray-200"></div>
+							<div className="h-11 rounded bg-gray-200"></div>
 						</div>
 						<div className="h-px bg-gray-200"></div>
 						<div className="space-y-3">
 							{[...Array(4)].map((_, i) => (
 								<div
 									key={i}
-									className="h-11 bg-gray-200 rounded"
+									className="h-11 rounded bg-gray-200"
 								></div>
 							))}
 						</div>
-						<div className="h-11 bg-gray-200 rounded"></div>
+						<div className="h-11 rounded bg-gray-200"></div>
 					</div>
 				</div>
 			</div>

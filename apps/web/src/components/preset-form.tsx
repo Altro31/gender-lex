@@ -191,7 +191,7 @@ export default function PresetForm({
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div className="space-y-2">
 							<Label htmlFor="name">Nombre del Preset *</Label>
 							<Input
@@ -319,9 +319,9 @@ export default function PresetForm({
 					)}
 
 					{formData.models.length === 0 ? (
-						<div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
-							<Settings className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-							<p className="text-gray-600 mb-4">
+						<div className="rounded-lg border-2 border-dashed border-gray-300 py-8 text-center">
+							<Settings className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+							<p className="mb-4 text-gray-600">
 								No hay modelos configurados
 							</p>
 							<Button
@@ -329,7 +329,7 @@ export default function PresetForm({
 								onClick={addModel}
 								variant="outline"
 							>
-								<Plus className="h-4 w-4 mr-2" />
+								<Plus className="mr-2 h-4 w-4" />
 								Agregar Primer Modelo
 							</Button>
 						</div>

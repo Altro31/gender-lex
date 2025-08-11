@@ -142,7 +142,7 @@ export default function ModelConfigCard({
 
 			<CardContent className="space-y-4">
 				{/* Basic Configuration */}
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<div className="space-y-2">
 						<Label>Modelo *</Label>
 						<Select
@@ -203,10 +203,10 @@ export default function ModelConfigCard({
 					<CollapsibleContent className="space-y-4">
 						{/* Advanced Parameters */}
 						<div className="border-t pt-4">
-							<h4 className="font-medium mb-4">
+							<h4 className="mb-4 font-medium">
 								Parámetros Avanzados
 							</h4>
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 								{/* Temperature */}
 								<div className="space-y-2">
 									<div className="flex justify-between">
@@ -336,7 +336,7 @@ export default function ModelConfigCard({
 							</div>
 
 							{/* System Prompt */}
-							<div className="space-y-2 mt-4">
+							<div className="mt-4 space-y-2">
 								<Label>Prompt del Sistema</Label>
 								<Textarea
 									value={model.parameters.systemPrompt || ""}

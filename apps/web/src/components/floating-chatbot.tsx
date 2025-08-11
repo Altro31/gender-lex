@@ -157,11 +157,11 @@ export default function FloatingChatbot() {
 	return (
 		<>
 			{/* Floating Button */}
-			<div className="fixed bottom-6 right-6 z-50">
+			<div className="fixed right-6 bottom-6 z-50">
 				<Button
 					onClick={() => setIsOpen(!isOpen)}
 					size="lg"
-					className="h-14 w-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 bg-blue-600 hover:bg-blue-700"
+					className="h-14 w-14 rounded-full bg-blue-600 shadow-lg transition-all duration-200 hover:bg-blue-700 hover:shadow-xl"
 				>
 					{isOpen ? (
 						<X className="h-6 w-6" />
@@ -173,9 +173,9 @@ export default function FloatingChatbot() {
 
 			{/* Chat Window */}
 			{isOpen && (
-				<div className="fixed bottom-24 right-6 z-40 w-80 sm:w-96 h-96 shadow-2xl">
-					<Card className="h-full flex flex-col">
-						<CardHeader className="pb-3 bg-blue-600 text-white rounded-t-lg">
+				<div className="fixed right-6 bottom-24 z-40 h-96 w-80 shadow-2xl sm:w-96">
+					<Card className="flex h-full flex-col">
+						<CardHeader className="rounded-t-lg bg-blue-600 pb-3 text-white">
 							<div className="flex items-center gap-3">
 								<Avatar className="h-8 w-8">
 									<AvatarFallback className="bg-blue-500 text-white">
@@ -186,7 +186,7 @@ export default function FloatingChatbot() {
 									<CardTitle className="text-lg">
 										Asistente Virtual
 									</CardTitle>
-									<p className="text-blue-100 text-sm">
+									<p className="text-sm text-blue-100">
 										En línea
 									</p>
 								</div>
@@ -202,7 +202,7 @@ export default function FloatingChatbot() {
 											className={`flex gap-3 ${message.sender === "user" ? "justify-end" : "justify-start"}`}
 										>
 											{message.sender === "bot" && (
-												<Avatar className="h-8 w-8 mt-1">
+												<Avatar className="mt-1 h-8 w-8">
 													<AvatarFallback className="bg-blue-100 text-blue-600">
 														<Bot className="h-4 w-4" />
 													</AvatarFallback>
@@ -220,7 +220,7 @@ export default function FloatingChatbot() {
 													{message.content}
 												</p>
 												<p
-													className={`text-xs mt-1 ${message.sender === "user" ? "text-blue-100" : "text-gray-500"}`}
+													className={`mt-1 text-xs ${message.sender === "user" ? "text-blue-100" : "text-gray-500"}`}
 												>
 													{formatTime(
 														message.timestamp,
@@ -229,7 +229,7 @@ export default function FloatingChatbot() {
 											</div>
 
 											{message.sender === "user" && (
-												<Avatar className="h-8 w-8 mt-1">
+												<Avatar className="mt-1 h-8 w-8">
 													<AvatarFallback className="bg-gray-100 text-gray-600">
 														<User className="h-4 w-4" />
 													</AvatarFallback>
@@ -240,24 +240,24 @@ export default function FloatingChatbot() {
 
 									{/* Typing Indicator */}
 									{isTyping && (
-										<div className="flex gap-3 justify-start">
-											<Avatar className="h-8 w-8 mt-1">
+										<div className="flex justify-start gap-3">
+											<Avatar className="mt-1 h-8 w-8">
 												<AvatarFallback className="bg-blue-100 text-blue-600">
 													<Bot className="h-4 w-4" />
 												</AvatarFallback>
 											</Avatar>
-											<div className="bg-gray-100 rounded-lg px-3 py-2">
+											<div className="rounded-lg bg-gray-100 px-3 py-2">
 												<div className="flex space-x-1">
-													<div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+													<div className="h-2 w-2 animate-bounce rounded-full bg-gray-400"></div>
 													<div
-														className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+														className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
 														style={{
 															animationDelay:
 																"0.1s",
 														}}
 													></div>
 													<div
-														className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+														className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
 														style={{
 															animationDelay:
 																"0.2s",
@@ -273,8 +273,8 @@ export default function FloatingChatbot() {
 							</ScrollArea>
 						</CardContent>
 
-						<CardFooter className="p-4 border-t">
-							<div className="flex gap-2 w-full">
+						<CardFooter className="border-t p-4">
+							<div className="flex w-full gap-2">
 								<Input
 									ref={inputRef}
 									value={inputValue}

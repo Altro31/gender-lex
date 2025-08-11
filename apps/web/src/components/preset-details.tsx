@@ -120,7 +120,7 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 					<h3 className="text-2xl font-semibold text-gray-900">
 						{preset.name}
 					</h3>
-					<div className="flex items-center gap-2 mt-1">
+					<div className="mt-1 flex items-center gap-2">
 						<Badge variant="outline">{preset.category}</Badge>
 						<Badge
 							className={
@@ -145,7 +145,7 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 			{preset.description && (
 				<Card>
 					<CardHeader>
-						<CardTitle className="text-lg flex items-center gap-2">
+						<CardTitle className="flex items-center gap-2 text-lg">
 							<Tag className="h-5 w-5" />
 							Descripción
 						</CardTitle>
@@ -159,7 +159,7 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 			{/* Models Configuration */}
 			<Card>
 				<CardHeader>
-					<CardTitle className="text-lg flex items-center gap-2">
+					<CardTitle className="flex items-center gap-2 text-lg">
 						<Zap className="h-5 w-5" />
 						Configuración de Modelos
 					</CardTitle>
@@ -171,12 +171,12 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 					{preset.models.map((model, index) => (
 						<div
 							key={index}
-							className="border rounded-lg p-4 space-y-4"
+							className="space-y-4 rounded-lg border p-4"
 						>
 							{/* Model Header */}
 							<div className="flex items-center justify-between">
 								<div>
-									<h4 className="font-semibold text-lg">
+									<h4 className="text-lg font-semibold">
 										{model.modelName}
 									</h4>
 									<p className="text-sm text-gray-600">
@@ -189,7 +189,7 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 							</div>
 
 							{/* Parameters Grid */}
-							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+							<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 								{Object.entries(model.parameters).map(
 									([key, value]) => {
 										if (key === "systemPrompt") return null // Handle separately
@@ -244,13 +244,13 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 
 							{/* System Prompt */}
 							{model.parameters.systemPrompt && (
-								<div className="space-y-2 pt-4 border-t">
+								<div className="space-y-2 border-t pt-4">
 									<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
 										<MessageSquare className="h-4 w-4" />
 										Prompt del Sistema
 									</div>
-									<div className="bg-gray-50 rounded-lg p-3">
-										<p className="text-sm text-gray-700 whitespace-pre-wrap">
+									<div className="rounded-lg bg-gray-50 p-3">
+										<p className="text-sm whitespace-pre-wrap text-gray-700">
 											{model.parameters.systemPrompt}
 										</p>
 									</div>
@@ -264,7 +264,7 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 			{/* Usage Information */}
 			<Card>
 				<CardHeader>
-					<CardTitle className="text-lg flex items-center gap-2">
+					<CardTitle className="flex items-center gap-2 text-lg">
 						<Calendar className="h-5 w-5" />
 						Información de Uso
 					</CardTitle>
@@ -273,7 +273,7 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+					<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 						<div className="space-y-2">
 							<div className="text-sm font-medium text-gray-700">
 								Fecha de Creación
@@ -311,7 +311,7 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 							<div className="text-sm font-medium text-gray-700">
 								Total de Usos
 							</div>
-							<p className="text-gray-900 text-2xl font-bold">
+							<p className="text-2xl font-bold text-gray-900">
 								{preset.usageCount}
 							</p>
 						</div>
@@ -321,7 +321,7 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 						<div className="text-sm font-medium text-gray-700">
 							ID del Preset
 						</div>
-						<p className="text-gray-900 font-mono text-sm">
+						<p className="font-mono text-sm text-gray-900">
 							{preset.id}
 						</p>
 					</div>
@@ -338,16 +338,16 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 				</CardHeader>
 				<CardContent>
 					<div className="flex flex-wrap gap-3">
-						<button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+						<button className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700">
 							Usar Preset
 						</button>
-						<button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+						<button className="rounded-lg border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-50">
 							Duplicar
 						</button>
-						<button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+						<button className="rounded-lg border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-50">
 							Exportar Configuración
 						</button>
-						<button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+						<button className="rounded-lg border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-50">
 							Probar Conexiones
 						</button>
 					</div>

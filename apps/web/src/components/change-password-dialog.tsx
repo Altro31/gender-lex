@@ -149,7 +149,7 @@ export default function ChangePasswordDialog({
 							Contraseña Actual
 						</Label>
 						<div className="relative">
-							<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+							<Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
 							<Input
 								id="currentPassword"
 								type={showCurrentPassword ? "text" : "password"}
@@ -161,13 +161,13 @@ export default function ChangePasswordDialog({
 										currentPassword: e.target.value,
 									})
 								}
-								className={`pl-10 pr-10 ${errors.currentPassword ? "border-red-500" : ""}`}
+								className={`pr-10 pl-10 ${errors.currentPassword ? "border-red-500" : ""}`}
 							/>
 							<Button
 								type="button"
 								variant="ghost"
 								size="sm"
-								className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+								className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
 								onClick={() =>
 									setShowCurrentPassword(!showCurrentPassword)
 								}
@@ -189,7 +189,7 @@ export default function ChangePasswordDialog({
 					<div className="space-y-2">
 						<Label htmlFor="newPassword">Nueva Contraseña</Label>
 						<div className="relative">
-							<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+							<Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
 							<Input
 								id="newPassword"
 								type={showNewPassword ? "text" : "password"}
@@ -201,13 +201,13 @@ export default function ChangePasswordDialog({
 										newPassword: e.target.value,
 									})
 								}
-								className={`pl-10 pr-10 ${errors.newPassword ? "border-red-500" : ""}`}
+								className={`pr-10 pl-10 ${errors.newPassword ? "border-red-500" : ""}`}
 							/>
 							<Button
 								type="button"
 								variant="ghost"
 								size="sm"
-								className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+								className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
 								onClick={() =>
 									setShowNewPassword(!showNewPassword)
 								}
@@ -224,7 +224,7 @@ export default function ChangePasswordDialog({
 						{formData.newPassword && (
 							<div className="space-y-2">
 								<div className="flex items-center gap-2">
-									<div className="flex-1 bg-gray-200 rounded-full h-2">
+									<div className="h-2 flex-1 rounded-full bg-gray-200">
 										<div
 											className={`h-2 rounded-full transition-all duration-300 ${getStrengthColor(passwordStrength)}`}
 											style={{
@@ -251,7 +251,7 @@ export default function ChangePasswordDialog({
 							Confirmar Nueva Contraseña
 						</Label>
 						<div className="relative">
-							<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+							<Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
 							<Input
 								id="confirmPassword"
 								type={showConfirmPassword ? "text" : "password"}
@@ -263,13 +263,13 @@ export default function ChangePasswordDialog({
 										confirmPassword: e.target.value,
 									})
 								}
-								className={`pl-10 pr-10 ${errors.confirmPassword ? "border-red-500" : ""}`}
+								className={`pr-10 pl-10 ${errors.confirmPassword ? "border-red-500" : ""}`}
 							/>
 							<Button
 								type="button"
 								variant="ghost"
 								size="sm"
-								className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+								className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
 								onClick={() =>
 									setShowConfirmPassword(!showConfirmPassword)
 								}
@@ -306,7 +306,7 @@ export default function ChangePasswordDialog({
 						>
 							{isLoading ? (
 								<div className="flex items-center gap-2">
-									<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+									<div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
 									Cambiando...
 								</div>
 							) : (
@@ -325,11 +325,11 @@ export default function ChangePasswordDialog({
 				</form>
 
 				{/* Security Tips */}
-				<div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-					<h4 className="font-medium text-blue-900 mb-2">
+				<div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+					<h4 className="mb-2 font-medium text-blue-900">
 						Consejos de Seguridad:
 					</h4>
-					<ul className="text-sm text-blue-800 space-y-1">
+					<ul className="space-y-1 text-sm text-blue-800">
 						<li>• Usa al menos 8 caracteres</li>
 						<li>• Incluye mayúsculas, minúsculas y números</li>
 						<li>• Evita información personal</li>

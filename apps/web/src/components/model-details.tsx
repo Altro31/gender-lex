@@ -72,7 +72,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 					<h3 className="text-2xl font-semibold text-gray-900">
 						{model.name}
 					</h3>
-					<p className="text-gray-600 mt-1">
+					<p className="mt-1 text-gray-600">
 						{model.provider} • {model.model}
 					</p>
 				</div>
@@ -85,7 +85,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 			{model.description && (
 				<Card>
 					<CardHeader>
-						<CardTitle className="text-lg flex items-center gap-2">
+						<CardTitle className="flex items-center gap-2 text-lg">
 							<Tag className="h-5 w-5" />
 							Descripción
 						</CardTitle>
@@ -99,7 +99,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 			{/* Configuration Details */}
 			<Card>
 				<CardHeader>
-					<CardTitle className="text-lg flex items-center gap-2">
+					<CardTitle className="flex items-center gap-2 text-lg">
 						<Server className="h-5 w-5" />
 						Configuración
 					</CardTitle>
@@ -108,13 +108,13 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div className="space-y-2">
 							<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
 								<User className="h-4 w-4" />
 								Proveedor
 							</div>
-							<p className="text-gray-900 font-mono">
+							<p className="font-mono text-gray-900">
 								{model.provider}
 							</p>
 						</div>
@@ -124,7 +124,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 								<Tag className="h-4 w-4" />
 								Modelo
 							</div>
-							<p className="text-gray-900 font-mono">
+							<p className="font-mono text-gray-900">
 								{model.model}
 							</p>
 						</div>
@@ -134,7 +134,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 								<Key className="h-4 w-4" />
 								Clave API
 							</div>
-							<p className="text-gray-900 font-mono">
+							<p className="font-mono text-gray-900">
 								{maskApiKey(model.apiKey)}
 							</p>
 						</div>
@@ -145,7 +145,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 									<Link className="h-4 w-4" />
 									Endpoint
 								</div>
-								<p className="text-gray-900 font-mono break-all">
+								<p className="font-mono break-all text-gray-900">
 									{model.endpoint}
 								</p>
 							</div>
@@ -157,7 +157,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 			{/* Usage Information */}
 			<Card>
 				<CardHeader>
-					<CardTitle className="text-lg flex items-center gap-2">
+					<CardTitle className="flex items-center gap-2 text-lg">
 						<Calendar className="h-5 w-5" />
 						Información de Uso
 					</CardTitle>
@@ -166,7 +166,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div className="space-y-2">
 							<div className="text-sm font-medium text-gray-700">
 								Fecha de Creación
@@ -204,7 +204,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 							<div className="text-sm font-medium text-gray-700">
 								ID del Modelo
 							</div>
-							<p className="text-gray-900 font-mono">
+							<p className="font-mono text-gray-900">
 								{model.id}
 							</p>
 						</div>
@@ -223,10 +223,10 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+					<div className="flex items-center justify-between rounded-lg bg-gray-50 p-4">
 						<div className="flex items-center gap-3">
 							<div
-								className={`w-3 h-3 rounded-full ${
+								className={`h-3 w-3 rounded-full ${
 									model.status === "active"
 										? "bg-green-500"
 										: model.status === "error"
@@ -242,7 +242,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 										: "Sin probar"}
 							</span>
 						</div>
-						<button className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+						<button className="text-sm font-medium text-blue-600 hover:text-blue-800">
 							Probar Conexión
 						</button>
 					</div>

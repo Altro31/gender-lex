@@ -48,12 +48,12 @@ export default function ForgotPasswordPage() {
 
 	if (isSuccess) {
 		return (
-			<div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 flex items-center justify-center p-4">
+			<div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-green-50 via-white to-blue-50 p-4">
 				<div className="w-full max-w-md">
-					<Card className="shadow-xl border-0">
+					<Card className="border-0 shadow-xl">
 						<CardHeader className="space-y-1 pb-6 text-center">
-							<div className="flex justify-center mb-4">
-								<div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center">
+							<div className="mb-4 flex justify-center">
+								<div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-600">
 									<CheckCircle className="h-6 w-6 text-white" />
 								</div>
 							</div>
@@ -66,7 +66,7 @@ export default function ForgotPasswordPage() {
 							</CardDescription>
 						</CardHeader>
 						<CardContent className="space-y-4">
-							<div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+							<div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
 								<p className="text-sm text-blue-800">
 									Revisa tu bandeja de entrada y sigue las
 									instrucciones del email. Si no lo
@@ -98,7 +98,7 @@ export default function ForgotPasswordPage() {
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-4">
+		<div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-green-50 p-4">
 			<div className="w-full max-w-md">
 				{/* Back Button */}
 				<div className="mb-6">
@@ -114,14 +114,14 @@ export default function ForgotPasswordPage() {
 					</Link>
 				</div>
 
-				<Card className="shadow-xl border-0">
+				<Card className="border-0 shadow-xl">
 					<CardHeader className="space-y-1 pb-6">
-						<div className="flex justify-center mb-4">
-							<div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
+						<div className="mb-4 flex justify-center">
+							<div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600">
 								<Mail className="h-6 w-6 text-white" />
 							</div>
 						</div>
-						<CardTitle className="text-2xl font-bold text-center text-gray-900">
+						<CardTitle className="text-center text-2xl font-bold text-gray-900">
 							¿Olvidaste tu contraseña?
 						</CardTitle>
 						<CardDescription className="text-center text-gray-600">
@@ -137,7 +137,7 @@ export default function ForgotPasswordPage() {
 									Correo Electrónico
 								</Label>
 								<div className="relative">
-									<Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+									<Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
 									<Input
 										id="email"
 										type="email"
@@ -146,7 +146,7 @@ export default function ForgotPasswordPage() {
 										onChange={(e) =>
 											setEmail(e.target.value)
 										}
-										className={`pl-10 h-11 ${error ? "border-red-500" : ""}`}
+										className={`h-11 pl-10 ${error ? "border-red-500" : ""}`}
 									/>
 								</div>
 								{error && (
@@ -158,12 +158,12 @@ export default function ForgotPasswordPage() {
 
 							<Button
 								type="submit"
-								className="w-full h-11 bg-blue-600 hover:bg-blue-700"
+								className="h-11 w-full bg-blue-600 hover:bg-blue-700"
 								disabled={isLoading}
 							>
 								{isLoading ? (
 									<div className="flex items-center gap-2">
-										<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+										<div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
 										Enviando...
 									</div>
 								) : (
@@ -177,7 +177,7 @@ export default function ForgotPasswordPage() {
 								¿Recordaste tu contraseña?{" "}
 								<Link
 									href="/auth/login"
-									className="text-blue-600 hover:text-blue-800 font-medium"
+									className="font-medium text-blue-600 hover:text-blue-800"
 								>
 									Inicia sesión
 								</Link>

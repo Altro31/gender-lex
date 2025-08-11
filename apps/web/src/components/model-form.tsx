@@ -132,7 +132,7 @@ export default function ModelForm({
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-6">
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+			<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 				<div className="space-y-2">
 					<Label htmlFor="name">Nombre del Modelo *</Label>
 					<Input
@@ -179,7 +179,7 @@ export default function ModelForm({
 				</div>
 			</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+			<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 				<div className="space-y-2">
 					<Label htmlFor="model">Modelo *</Label>
 					<Select
@@ -248,7 +248,7 @@ export default function ModelForm({
 							type="button"
 							variant="ghost"
 							size="sm"
-							className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+							className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
 							onClick={() => setShowApiKey(!showApiKey)}
 						>
 							{showApiKey ? (

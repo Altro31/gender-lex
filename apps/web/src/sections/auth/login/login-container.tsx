@@ -114,7 +114,7 @@ export default function LoginContainer() {
 						>
 							{t("Security.accept-temrs.terms")}
 						</Link>{" "}
-						{t('Security.accept-temrs.2')}{" "}
+						{t("Security.accept-temrs.2")}{" "}
 						<Link
 							href="/privacy"
 							className="text-blue-600 hover:text-blue-800"

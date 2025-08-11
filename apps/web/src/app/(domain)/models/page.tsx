@@ -173,7 +173,7 @@ export default function ModelsPage() {
 			<div className="container mx-auto px-4 py-8">
 				{/* Header */}
 				<div className="mb-8">
-					<h1 className="text-3xl font-bold text-gray-900 mb-2">
+					<h1 className="mb-2 text-3xl font-bold text-gray-900">
 						Gestión de Modelos
 					</h1>
 					<p className="text-gray-600">
@@ -183,9 +183,9 @@ export default function ModelsPage() {
 				</div>
 
 				{/* Actions Bar */}
-				<div className="flex flex-col sm:flex-row gap-4 mb-6">
+				<div className="mb-6 flex flex-col gap-4 sm:flex-row">
 					<div className="relative flex-1">
-						<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+						<Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
 						<Input
 							placeholder="Buscar modelos..."
 							value={searchTerm}
@@ -219,38 +219,38 @@ export default function ModelsPage() {
 
 				{/* Models Grid */}
 				{filteredModels.length === 0 ? (
-					<div className="text-center py-12">
-						<div className="text-gray-400 mb-4">
-							<Settings className="h-16 w-16 mx-auto" />
+					<div className="py-12 text-center">
+						<div className="mb-4 text-gray-400">
+							<Settings className="mx-auto h-16 w-16" />
 						</div>
-						<h3 className="text-lg font-medium text-gray-900 mb-2">
+						<h3 className="mb-2 text-lg font-medium text-gray-900">
 							{searchTerm
 								? "No se encontraron modelos"
 								: "No hay modelos configurados"}
 						</h3>
-						<p className="text-gray-600 mb-4">
+						<p className="mb-4 text-gray-600">
 							{searchTerm
 								? "Intenta con otros términos de búsqueda"
 								: "Comienza creando tu primer modelo"}
 						</p>
 						{!searchTerm && (
 							<Button onClick={() => setIsCreateDialogOpen(true)}>
-								<Plus className="h-4 w-4 mr-2" />
+								<Plus className="mr-2 h-4 w-4" />
 								Crear Primer Modelo
 							</Button>
 						)}
 					</div>
 				) : (
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+					<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 						{filteredModels.map((model) => (
 							<Card
 								key={model.id}
-								className="hover:shadow-lg transition-shadow"
+								className="transition-shadow hover:shadow-lg"
 							>
 								<CardHeader className="pb-3">
 									<div className="flex items-start justify-between">
 										<div className="flex-1">
-											<CardTitle className="text-lg mb-1">
+											<CardTitle className="mb-1 text-lg">
 												{model.name}
 											</CardTitle>
 											<CardDescription className="text-sm">
@@ -276,7 +276,7 @@ export default function ModelsPage() {
 														)
 													}}
 												>
-													<Eye className="h-4 w-4 mr-2" />
+													<Eye className="mr-2 h-4 w-4" />
 													Ver Detalles
 												</DropdownMenuItem>
 												<DropdownMenuItem
@@ -287,7 +287,7 @@ export default function ModelsPage() {
 														)
 													}}
 												>
-													<Edit className="h-4 w-4 mr-2" />
+													<Edit className="mr-2 h-4 w-4" />
 													Editar
 												</DropdownMenuItem>
 												<DropdownMenuItem
@@ -299,7 +299,7 @@ export default function ModelsPage() {
 													}}
 													className="text-red-600"
 												>
-													<Trash2 className="h-4 w-4 mr-2" />
+													<Trash2 className="mr-2 h-4 w-4" />
 													Eliminar
 												</DropdownMenuItem>
 											</DropdownMenuContent>
@@ -323,14 +323,14 @@ export default function ModelsPage() {
 										</div>
 
 										{model.description && (
-											<p className="text-sm text-gray-600 line-clamp-2">
+											<p className="line-clamp-2 text-sm text-gray-600">
 												{model.description}
 											</p>
 										)}
 									</div>
 								</CardContent>
 
-								<CardFooter className="pt-3 border-t">
+								<CardFooter className="border-t pt-3">
 									<div className="w-full text-xs text-gray-500">
 										<div className="flex justify-between">
 											<span>

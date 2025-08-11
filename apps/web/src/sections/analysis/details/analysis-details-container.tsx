@@ -65,7 +65,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 			<div className="container mx-auto px-4 py-8">
 				{/* Header */}
 				<div className="mb-8">
-					<div className="flex items-center gap-4 mb-4">
+					<div className="mb-4 flex items-center gap-4">
 						<Link href="/analysis">
 							<Button variant="ghost" size="sm" className="gap-2">
 								<ArrowLeft className="h-4 w-4" />
@@ -74,9 +74,9 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 						</Link>
 					</div>
 
-					<div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+					<div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 						<div>
-							<h1 className="text-3xl font-bold text-gray-900 mb-2">
+							<h1 className="mb-2 text-3xl font-bold text-gray-900">
 								Detalles del Análisis
 							</h1>
 							<div className="flex items-center gap-4 text-sm text-gray-600">
@@ -101,7 +101,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 
 						<div className="flex items-center gap-3">
 							<Badge className={statusConfig.color}>
-								<StatusIcon className="h-3 w-3 mr-1" />
+								<StatusIcon className="mr-1 h-3 w-3" />
 								{statusConfig.label}
 							</Badge>
 							<Badge
@@ -180,13 +180,13 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 							</CardHeader>
 							<CardContent>
 								{showSensitiveContent ? (
-									<div className="bg-gray-50 rounded-lg p-4">
-										<p className="text-gray-900 leading-relaxed">
+									<div className="rounded-lg bg-gray-50 p-4">
+										<p className="leading-relaxed text-gray-900">
 											{analysis.originalText}
 										</p>
 									</div>
 								) : (
-									<div className="bg-gray-100 rounded-lg p-4 text-center">
+									<div className="rounded-lg bg-gray-100 p-4 text-center">
 										<p className="text-gray-500">
 											Contenido oculto por privacidad
 										</p>
@@ -196,7 +196,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 						</Card>
 
 						{/* Summary Stats */}
-						<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+						<div className="grid grid-cols-1 gap-4 md:grid-cols-4">
 							<Card>
 								<CardContent>
 									<div className="text-sm text-gray-600">
@@ -264,7 +264,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 									<CardTitle>Conclusión</CardTitle>
 								</CardHeader>
 								<CardContent>
-									<p className="text-gray-700 leading-relaxed">
+									<p className="leading-relaxed text-gray-700">
 										{analysis.conclusion}
 									</p>
 								</CardContent>
@@ -289,11 +289,11 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 								{analysis.biasedTerms.map((term, index) => (
 									<div
 										key={index}
-										className="border rounded-lg p-4 space-y-3"
+										className="space-y-3 rounded-lg border p-4"
 									>
 										<div className="flex items-center justify-between">
 											<div className="flex items-center gap-3">
-												<span className="font-medium text-lg">
+												<span className="text-lg font-medium">
 													"{term.content}"
 												</span>
 											</div>
@@ -316,7 +316,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 											}
 											className="h-2"
 										/>
-										<p className="text-gray-700 text-sm">
+										<p className="text-sm text-gray-700">
 											{term.explanation}
 										</p>
 									</div>
@@ -338,10 +338,10 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 									(metaphor, index) => (
 										<div
 											key={index}
-											className="border rounded-lg p-4 space-y-3"
+											className="space-y-3 rounded-lg border p-4"
 										>
 											<div className="flex items-center justify-between">
-												<span className="font-medium text-lg">
+												<span className="text-lg font-medium">
 													"{metaphor.content}"
 												</span>
 												<div className="text-right">
@@ -366,18 +366,18 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 											/>
 											<div className="space-y-2">
 												<div>
-													<h4 className="font-medium text-sm text-gray-700">
+													<h4 className="text-sm font-medium text-gray-700">
 														Explicación:
 													</h4>
-													<p className="text-gray-700 text-sm">
+													<p className="text-sm text-gray-700">
 														{metaphor.explanation}
 													</p>
 												</div>
 												<div>
-													<h4 className="font-medium text-sm text-gray-700">
+													<h4 className="text-sm font-medium text-gray-700">
 														Contexto Histórico:
 													</h4>
-													<p className="text-gray-700 text-sm">
+													<p className="text-sm text-gray-700">
 														{
 															metaphor.historicalContext
 														}
@@ -394,19 +394,19 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 					{/* Context Tab */}
 					<TabsContent value="context" className="space-y-6">
 						{analysis.additionalContextEvaluation && (
-							<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+							<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 								{/* Stereotype */}
 								<Card>
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2">
 											<div
-												className={`w-3 h-3 rounded-full ${analysis.additionalContextEvaluation.stereotype.presence ? "bg-red-500" : "bg-green-500"}`}
+												className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.stereotype.presence ? "bg-red-500" : "bg-green-500"}`}
 											/>
 											Estereotipos
 										</CardTitle>
 									</CardHeader>
 									<CardContent className="space-y-3">
-										<div className="flex justify-between items-center">
+										<div className="flex items-center justify-between">
 											<span className="text-sm text-gray-600">
 												Influencia
 											</span>
@@ -439,10 +439,10 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 										{analysis.additionalContextEvaluation
 											.stereotype.examples.length > 0 && (
 											<div>
-												<h4 className="font-medium text-sm text-gray-700 mb-2">
+												<h4 className="mb-2 text-sm font-medium text-gray-700">
 													Ejemplos:
 												</h4>
-												<ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+												<ul className="list-inside list-disc space-y-1 text-sm text-gray-600">
 													{analysis.additionalContextEvaluation.stereotype.examples.map(
 														(example, i) => (
 															<li key={i}>
@@ -461,13 +461,13 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2">
 											<div
-												className={`w-3 h-3 rounded-full ${analysis.additionalContextEvaluation.powerAsymmetry.presence ? "bg-red-500" : "bg-green-500"}`}
+												className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.powerAsymmetry.presence ? "bg-red-500" : "bg-green-500"}`}
 											/>
 											Asimetría de Poder
 										</CardTitle>
 									</CardHeader>
 									<CardContent className="space-y-3">
-										<div className="flex justify-between items-center">
+										<div className="flex items-center justify-between">
 											<span className="text-sm text-gray-600">
 												Influencia
 											</span>
@@ -501,10 +501,10 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 											.powerAsymmetry.examples.length >
 											0 && (
 											<div>
-												<h4 className="font-medium text-sm text-gray-700 mb-2">
+												<h4 className="mb-2 text-sm font-medium text-gray-700">
 													Ejemplos:
 												</h4>
-												<ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+												<ul className="list-inside list-disc space-y-1 text-sm text-gray-600">
 													{analysis.additionalContextEvaluation.powerAsymmetry.examples.map(
 														(example, i) => (
 															<li key={i}>
@@ -523,13 +523,13 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2">
 											<div
-												className={`w-3 h-3 rounded-full ${analysis.additionalContextEvaluation.genderRepresentationAbsence.presence ? "bg-red-500" : "bg-green-500"}`}
+												className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.genderRepresentationAbsence.presence ? "bg-red-500" : "bg-green-500"}`}
 											/>
 											Ausencia de Representación
 										</CardTitle>
 									</CardHeader>
 									<CardContent className="space-y-3">
-										<div className="flex justify-between items-center">
+										<div className="flex items-center justify-between">
 											<span className="text-sm text-gray-600">
 												Influencia
 											</span>
@@ -564,7 +564,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 											.genderRepresentationAbsence
 											.affectedGroups.length > 0 && (
 											<div>
-												<h4 className="font-medium text-sm text-gray-700 mb-2">
+												<h4 className="mb-2 text-sm font-medium text-gray-700">
 													Grupos Afectados:
 												</h4>
 												<div className="flex flex-wrap gap-2">
@@ -589,13 +589,13 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2">
 											<div
-												className={`w-3 h-3 rounded-full ${analysis.additionalContextEvaluation.intersectionality.presence ? "bg-red-500" : "bg-green-500"}`}
+												className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.intersectionality.presence ? "bg-red-500" : "bg-green-500"}`}
 											/>
 											Interseccionalidad
 										</CardTitle>
 									</CardHeader>
 									<CardContent className="space-y-3">
-										<div className="flex justify-between items-center">
+										<div className="flex items-center justify-between">
 											<span className="text-sm text-gray-600">
 												Influencia
 											</span>
@@ -630,7 +630,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 											.intersectionality.excludedGroups
 											.length > 0 && (
 											<div>
-												<h4 className="font-medium text-sm text-gray-700 mb-2">
+												<h4 className="mb-2 text-sm font-medium text-gray-700">
 													Grupos Excluidos:
 												</h4>
 												<div className="flex flex-wrap gap-2">
@@ -655,13 +655,13 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2">
 											<div
-												className={`w-3 h-3 rounded-full ${analysis.additionalContextEvaluation.systemicBiases.presence ? "bg-red-500" : "bg-green-500"}`}
+												className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.systemicBiases.presence ? "bg-red-500" : "bg-green-500"}`}
 											/>
 											Sesgos Sistémicos
 										</CardTitle>
 									</CardHeader>
 									<CardContent className="space-y-3">
-										<div className="flex justify-between items-center">
+										<div className="flex items-center justify-between">
 											<span className="text-sm text-gray-600">
 												Influencia
 											</span>
@@ -695,10 +695,10 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 											.systemicBiases.examples.length >
 											0 && (
 											<div>
-												<h4 className="font-medium text-sm text-gray-700 mb-2">
+												<h4 className="mb-2 text-sm font-medium text-gray-700">
 													Ejemplos:
 												</h4>
-												<ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+												<ul className="list-inside list-disc space-y-1 text-sm text-gray-600">
 													{analysis.additionalContextEvaluation.systemicBiases.examples.map(
 														(example, i) => (
 															<li key={i}>
@@ -731,8 +731,8 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 										</CardDescription>
 									</CardHeader>
 									<CardContent className="space-y-4">
-										<div className="bg-green-50 border border-green-200 rounded-lg p-4">
-											<p className="text-gray-900 leading-relaxed">
+										<div className="rounded-lg border border-green-200 bg-green-50 p-4">
+											<p className="leading-relaxed text-gray-900">
 												{alternative.alternativeText}
 											</p>
 										</div>
@@ -740,7 +740,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 										<Separator />
 
 										<div>
-											<h4 className="font-medium text-gray-900 mb-3">
+											<h4 className="mb-3 font-medium text-gray-900">
 												Modificaciones Realizadas:
 											</h4>
 											<div className="space-y-3">
@@ -748,14 +748,14 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 													(mod, modIndex) => (
 														<div
 															key={modIndex}
-															className="border rounded-lg p-3 space-y-2"
+															className="space-y-2 rounded-lg border p-3"
 														>
-															<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+															<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 																<div>
-																	<h5 className="text-sm font-medium text-red-700 mb-1">
+																	<h5 className="mb-1 text-sm font-medium text-red-700">
 																		Original:
 																	</h5>
-																	<p className="text-sm bg-red-50 p-2 rounded">
+																	<p className="rounded bg-red-50 p-2 text-sm">
 																		"
 																		{
 																			mod.originalFragment
@@ -764,10 +764,10 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 																	</p>
 																</div>
 																<div>
-																	<h5 className="text-sm font-medium text-green-700 mb-1">
+																	<h5 className="mb-1 text-sm font-medium text-green-700">
 																		Modificado:
 																	</h5>
-																	<p className="text-sm bg-green-50 p-2 rounded">
+																	<p className="rounded bg-green-50 p-2 text-sm">
 																		"
 																		{
 																			mod.modifiedFragment
@@ -777,7 +777,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 																</div>
 															</div>
 															<div>
-																<h5 className="text-sm font-medium text-gray-700 mb-1">
+																<h5 className="mb-1 text-sm font-medium text-gray-700">
 																	Razón:
 																</h5>
 																<p className="text-sm text-gray-600">
@@ -798,12 +798,12 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 					{/* Impact Tab */}
 					<TabsContent value="impact" className="space-y-6">
 						{analysis.impactAnalysis && (
-							<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+							<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 								<Card>
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2">
 											<div
-												className={`w-3 h-3 rounded-full ${analysis.impactAnalysis.accessToCare.affected ? "bg-red-500" : "bg-green-500"}`}
+												className={`h-3 w-3 rounded-full ${analysis.impactAnalysis.accessToCare.affected ? "bg-red-500" : "bg-green-500"}`}
 											/>
 											Acceso a la Atención
 										</CardTitle>
@@ -826,7 +826,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 														: "No Afectado"}
 												</Badge>
 											</div>
-											<p className="text-gray-700 text-sm leading-relaxed">
+											<p className="text-sm leading-relaxed text-gray-700">
 												{
 													analysis.impactAnalysis
 														.accessToCare
@@ -841,7 +841,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2">
 											<div
-												className={`w-3 h-3 rounded-full ${analysis.impactAnalysis.stigmatization.affected ? "bg-red-500" : "bg-green-500"}`}
+												className={`h-3 w-3 rounded-full ${analysis.impactAnalysis.stigmatization.affected ? "bg-red-500" : "bg-green-500"}`}
 											/>
 											Estigmatización
 										</CardTitle>
@@ -864,7 +864,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 														: "No Afectado"}
 												</Badge>
 											</div>
-											<p className="text-gray-700 text-sm leading-relaxed">
+											<p className="text-sm leading-relaxed text-gray-700">
 												{
 													analysis.impactAnalysis
 														.stigmatization

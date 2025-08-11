@@ -304,7 +304,7 @@ export default function PresetsPage() {
 			<div className="container mx-auto px-4 py-8">
 				{/* Header */}
 				<div className="mb-8">
-					<h1 className="text-3xl font-bold text-gray-900 mb-2">
+					<h1 className="mb-2 text-3xl font-bold text-gray-900">
 						Gestión de Presets
 					</h1>
 					<p className="text-gray-600">
@@ -314,9 +314,9 @@ export default function PresetsPage() {
 				</div>
 
 				{/* Actions Bar */}
-				<div className="flex flex-col lg:flex-row gap-4 mb-6">
+				<div className="mb-6 flex flex-col gap-4 lg:flex-row">
 					<div className="relative flex-1">
-						<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+						<Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
 						<Input
 							placeholder="Buscar presets..."
 							value={searchTerm}
@@ -352,7 +352,7 @@ export default function PresetsPage() {
 								Nuevo Preset
 							</Button>
 						</DialogTrigger>
-						<DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+						<DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
 							<DialogHeader>
 								<DialogTitle>Crear Nuevo Preset</DialogTitle>
 								<DialogDescription>
@@ -367,38 +367,38 @@ export default function PresetsPage() {
 
 				{/* Presets Grid */}
 				{filteredPresets.length === 0 ? (
-					<div className="text-center py-12">
-						<div className="text-gray-400 mb-4">
-							<Zap className="h-16 w-16 mx-auto" />
+					<div className="py-12 text-center">
+						<div className="mb-4 text-gray-400">
+							<Zap className="mx-auto h-16 w-16" />
 						</div>
-						<h3 className="text-lg font-medium text-gray-900 mb-2">
+						<h3 className="mb-2 text-lg font-medium text-gray-900">
 							{searchTerm || selectedCategory !== "Todos"
 								? "No se encontraron presets"
 								: "No hay presets configurados"}
 						</h3>
-						<p className="text-gray-600 mb-4">
+						<p className="mb-4 text-gray-600">
 							{searchTerm || selectedCategory !== "Todos"
 								? "Intenta con otros términos de búsqueda o categorías"
 								: "Comienza creando tu primer preset"}
 						</p>
 						{!searchTerm && selectedCategory === "Todos" && (
 							<Button onClick={() => setIsCreateDialogOpen(true)}>
-								<Plus className="h-4 w-4 mr-2" />
+								<Plus className="mr-2 h-4 w-4" />
 								Crear Primer Preset
 							</Button>
 						)}
 					</div>
 				) : (
-					<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+					<div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
 						{filteredPresets.map((preset) => (
 							<Card
 								key={preset.id}
-								className="hover:shadow-lg transition-shadow"
+								className="transition-shadow hover:shadow-lg"
 							>
 								<CardHeader className="pb-3">
 									<div className="flex items-start justify-between">
 										<div className="flex-1">
-											<div className="flex items-center gap-2 mb-1">
+											<div className="mb-1 flex items-center gap-2">
 												<CardTitle className="text-lg">
 													{preset.name}
 												</CardTitle>
@@ -433,7 +433,7 @@ export default function PresetsPage() {
 														)
 													}}
 												>
-													<Eye className="h-4 w-4 mr-2" />
+													<Eye className="mr-2 h-4 w-4" />
 													Ver Detalles
 												</DropdownMenuItem>
 												<DropdownMenuItem
@@ -446,7 +446,7 @@ export default function PresetsPage() {
 														)
 													}}
 												>
-													<Edit className="h-4 w-4 mr-2" />
+													<Edit className="mr-2 h-4 w-4" />
 													Editar
 												</DropdownMenuItem>
 												<DropdownMenuItem
@@ -456,7 +456,7 @@ export default function PresetsPage() {
 														)
 													}
 												>
-													<Copy className="h-4 w-4 mr-2" />
+													<Copy className="mr-2 h-4 w-4" />
 													Duplicar
 												</DropdownMenuItem>
 												<DropdownMenuItem
@@ -470,7 +470,7 @@ export default function PresetsPage() {
 													}}
 													className="text-red-600"
 												>
-													<Trash2 className="h-4 w-4 mr-2" />
+													<Trash2 className="mr-2 h-4 w-4" />
 													Eliminar
 												</DropdownMenuItem>
 											</DropdownMenuContent>
@@ -481,13 +481,13 @@ export default function PresetsPage() {
 								<CardContent className="pb-3">
 									<div className="space-y-3">
 										{preset.description && (
-											<p className="text-sm text-gray-600 line-clamp-2">
+											<p className="line-clamp-2 text-sm text-gray-600">
 												{preset.description}
 											</p>
 										)}
 
 										<div className="space-y-2">
-											<div className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+											<div className="text-xs font-medium tracking-wide text-gray-500 uppercase">
 												Modelos
 											</div>
 											{preset.models.map(
@@ -496,7 +496,7 @@ export default function PresetsPage() {
 														key={index}
 														className="flex items-center justify-between text-sm"
 													>
-														<span className="font-medium truncate">
+														<span className="truncate font-medium">
 															{model.modelName}
 														</span>
 														<Badge
@@ -535,9 +535,9 @@ export default function PresetsPage() {
 									</div>
 								</CardContent>
 
-								<CardFooter className="pt-3 border-t">
+								<CardFooter className="border-t pt-3">
 									<div className="w-full text-xs text-gray-500">
-										<div className="flex justify-between items-center">
+										<div className="flex items-center justify-between">
 											<span>
 												Creado:{" "}
 												{new Date(
@@ -545,7 +545,7 @@ export default function PresetsPage() {
 												).toLocaleDateString()}
 											</span>
 											<div className="flex items-center gap-1">
-												<div className="w-2 h-2 rounded-full bg-green-500" />
+												<div className="h-2 w-2 rounded-full bg-green-500" />
 												<span>
 													{preset.models.length}{" "}
 													modelo
@@ -567,7 +567,7 @@ export default function PresetsPage() {
 					open={isEditDialogOpen}
 					onOpenChange={setIsEditDialogOpen}
 				>
-					<DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+					<DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
 						<DialogHeader>
 							<DialogTitle>Editar Preset</DialogTitle>
 							<DialogDescription>
@@ -590,7 +590,7 @@ export default function PresetsPage() {
 					open={isDetailsDialogOpen}
 					onOpenChange={setIsDetailsDialogOpen}
 				>
-					<DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+					<DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
 						<DialogHeader>
 							<DialogTitle>Detalles del Preset</DialogTitle>
 							<DialogDescription>

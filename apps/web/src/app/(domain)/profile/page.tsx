@@ -264,7 +264,7 @@ export default function ProfilePage() {
 			<div className="container mx-auto px-4 py-8">
 				{/* Header */}
 				<div className="mb-8">
-					<h1 className="text-3xl font-bold text-gray-900 mb-2">
+					<h1 className="mb-2 text-3xl font-bold text-gray-900">
 						Mi Perfil
 					</h1>
 					<p className="text-gray-600">
@@ -273,20 +273,20 @@ export default function ProfilePage() {
 					</p>
 				</div>
 
-				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+				<div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
 					{/* Profile Card */}
 					<div className="lg:col-span-1">
 						<Card className="sticky top-8">
-							<CardHeader className="text-center pb-4">
+							<CardHeader className="pb-4 text-center">
 								<div className="relative mx-auto mb-4">
-									<Avatar className="h-24 w-24 mx-auto">
+									<Avatar className="mx-auto h-24 w-24">
 										<AvatarImage
 											src={
 												user.image || "/placeholder.svg"
 											}
 											alt={user.name}
 										/>
-										<AvatarFallback className="text-lg font-semibold bg-blue-100 text-blue-600">
+										<AvatarFallback className="bg-blue-100 text-lg font-semibold text-blue-600">
 											{getInitials(user.name)}
 										</AvatarFallback>
 									</Avatar>
@@ -294,7 +294,7 @@ export default function ProfilePage() {
 										<DialogTrigger asChild>
 											<Button
 												size="sm"
-												className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full p-0 bg-blue-600 hover:bg-blue-700"
+												className="absolute -right-2 -bottom-2 h-8 w-8 rounded-full bg-blue-600 p-0 hover:bg-blue-700"
 											>
 												<CameraIcon className="h-4 w-4" />
 											</Button>
@@ -319,7 +319,7 @@ export default function ProfilePage() {
 															}
 															alt={user.name}
 														/>
-														<AvatarFallback className="text-2xl font-semibold bg-blue-100 text-blue-600">
+														<AvatarFallback className="bg-blue-100 text-2xl font-semibold text-blue-600">
 															{getInitials(
 																user.name,
 															)}
@@ -359,7 +359,7 @@ export default function ProfilePage() {
 									{user.emailVerified && (
 										<Badge
 											variant="outline"
-											className="bg-green-50 text-green-700 border-green-200"
+											className="border-green-200 bg-green-50 text-green-700"
 										>
 											Verificado
 										</Badge>
@@ -376,7 +376,7 @@ export default function ProfilePage() {
 										<Badge
 											className={getRoleColor(user.role)}
 										>
-											<ShieldIcon className="h-3 w-3 mr-1" />
+											<ShieldIcon className="mr-1 h-3 w-3" />
 											{getRoleLabel(user.role)}
 										</Badge>
 									</div>
@@ -432,7 +432,7 @@ export default function ProfilePage() {
 										<AlertDialogTrigger asChild>
 											<Button
 												variant="outline"
-												className="w-full justify-start gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 bg-transparent"
+												className="w-full justify-start gap-2 bg-transparent text-red-600 hover:bg-red-50 hover:text-red-700"
 											>
 												<LogOutIcon className="h-4 w-4" />
 												Cerrar Sesión
@@ -587,7 +587,7 @@ export default function ProfilePage() {
 													>
 														{isLoading ? (
 															<>
-																<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+																<div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
 																Guardando...
 															</>
 														) : (
@@ -611,7 +611,7 @@ export default function ProfilePage() {
 											</div>
 										) : (
 											<div className="space-y-4">
-												<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+												<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 													<div className="space-y-2">
 														<Label className="text-sm font-medium text-gray-700">
 															Nombre Completo
@@ -658,8 +658,8 @@ export default function ProfilePage() {
 														<Label className="text-sm font-medium text-gray-700">
 															Biografía
 														</Label>
-														<div className="bg-gray-50 rounded-lg p-4">
-															<p className="text-gray-900 leading-relaxed">
+														<div className="rounded-lg bg-gray-50 p-4">
+															<p className="leading-relaxed text-gray-900">
 																{user.biography}
 															</p>
 														</div>
@@ -691,19 +691,19 @@ export default function ProfilePage() {
 												(activity, index) => (
 													<div
 														key={activity.id}
-														className="flex items-start gap-4 pb-4 border-b border-gray-100 last:border-0"
+														className="flex items-start gap-4 border-b border-gray-100 pb-4 last:border-0"
 													>
 														<div
-															className={`p-2 rounded-lg ${getActivityColor(activity.type, activity.status)} bg-opacity-10`}
+															className={`rounded-lg p-2 ${getActivityColor(activity.type, activity.status)} bg-opacity-10`}
 														>
 															{getActivityIcon(
 																activity.type,
 															)}
 														</div>
 
-														<div className="flex-1 min-w-0">
+														<div className="min-w-0 flex-1">
 															<div className="flex items-center justify-between">
-																<h4 className="font-medium text-gray-900 truncate">
+																<h4 className="truncate font-medium text-gray-900">
 																	{
 																		activity.title
 																	}
@@ -715,7 +715,7 @@ export default function ProfilePage() {
 																	)}
 																</div>
 															</div>
-															<p className="text-sm text-gray-600 mt-1">
+															<p className="mt-1 text-sm text-gray-600">
 																{
 																	activity.description
 																}
@@ -726,11 +726,11 @@ export default function ProfilePage() {
 																	className={`mt-2 ${
 																		activity.status ===
 																		"completed"
-																			? "bg-green-50 text-green-700 border-green-200"
+																			? "border-green-200 bg-green-50 text-green-700"
 																			: activity.status ===
 																				  "failed"
-																				? "bg-red-50 text-red-700 border-red-200"
-																				: "bg-blue-50 text-blue-700 border-blue-200"
+																				? "border-red-200 bg-red-50 text-red-700"
+																				: "border-blue-200 bg-blue-50 text-blue-700"
 																	}`}
 																>
 																	{activity.status ===
@@ -751,9 +751,9 @@ export default function ProfilePage() {
 										</div>
 
 										{mockActivities.length === 0 && (
-											<div className="text-center py-8">
-												<ActivityIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-												<h3 className="text-lg font-medium text-gray-900 mb-2">
+											<div className="py-8 text-center">
+												<ActivityIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+												<h3 className="mb-2 text-lg font-medium text-gray-900">
 													No hay actividad reciente
 												</h3>
 												<p className="text-gray-600">

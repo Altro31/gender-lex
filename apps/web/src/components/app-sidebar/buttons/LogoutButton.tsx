@@ -21,7 +21,7 @@ export default function LogoutButton({ redirect }: Props) {
 			}}
 		>
 			<LogOut />
-			{t('Actions.log-out')}
+			{t("Actions.log-out")}
 		</DropdownMenuItem>
 	)
 }
