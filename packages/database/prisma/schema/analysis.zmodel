@@ -17,14 +17,11 @@ model Analysis extends RawAnalysis {
     createdAt   DateTime       @default(now())
     updatedAt   DateTime       @updatedAt
 
-    // Everyone can create
-    @@allow('create,read',true)
-
     // Anyone can read public analysis
-    @@deny("read",visibility == private && auth()!=User)
+    @@allow("read",visibility == public)
 
-    // Only owners can view it's analysis
-    @@allow("read,update,delete",auth()==User)
+    // Owners can do anything
+    @@allow("all",auth()==User)
 }
 
 abstract model RawAnalysis {

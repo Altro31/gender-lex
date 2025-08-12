@@ -1,6 +1,6 @@
 "use server"
 
-import { auth } from "@/lib/auth/auth-server"
+import { auth, getSession } from "@/lib/auth/auth-server"
 import envs from "@/lib/env/env-server"
 import { actionClient } from "@/lib/safe-action"
 import { LoginSchema } from "@/sections/auth/login/form/login-schema"
@@ -46,3 +46,8 @@ export const signUp = actionClient
 			success: true,
 		}
 	})
+
+export async function getLocale() {
+	const session = await getSession()
+	return session?.session.lang ?? "en"
+}

@@ -1,22 +1,12 @@
 {
 	"name": "@repo/auth",
 	"version": "0.0.0",
-	"scripts": {
-		"build": "tsup"
-	},
 	"dependencies": {
 		"tsup": "catalog:",
 		"better-auth": "catalog:",
 		"@repo/db": "workspace:*"
 	},
 	"exports": {
-		".": {
-			"types": {
-				"import": "./dist/index.d.mjs",
-				"require": "./dist/index.d.js"
-			},
-			"require": "./dist/index.js",
-			"import": "./dist/index.mjs"
-		}
+		".": "./index.ts"
 	}
 }

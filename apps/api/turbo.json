@@ -8,7 +8,7 @@
 			"with": ["@repo/db#studio"]
 		},
 		"generate": {
-			"dependsOn": ["@repo/auth#build", "@repo/db#generate"],
+			"dependsOn": ["@repo/db#generate"],
 			"cache": true,
 			"inputs": [
 				"$TURBO_ROOT$/packages/database/openapi.yaml",

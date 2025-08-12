@@ -39,6 +39,7 @@
 		"@nestjs/serve-static": "^5.0.3",
 		"@repo/auth": "workspace:*",
 		"@repo/db": "workspace:*",
+		"@scalar/nestjs-api-reference": "^0.5.12",
 		"@zenstackhq/server": "catalog:",
 		"adm-zip": "^0.5.16",
 		"ai": "^5.0.0-beta.18",

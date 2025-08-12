@@ -31,7 +31,7 @@
 			]
 		},
 		"generate": {
-			"dependsOn": ["api#generate", "@repo/auth#build"],
+			"dependsOn": ["api#generate"],
 			"cache": true,
 			"inputs": ["$TURBO_ROOT$/apps/api/public/openapi.yaml"],
 			"outputs": ["./src/lib/api/types.d.ts"],

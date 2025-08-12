@@ -28,7 +28,7 @@ model User {
 
   image         String?
 
-  lang      String   @default("en")
+  isAnonymous   Boolean?   @default(false)
 
   // Only users can update it's last time login
   loggedAt      DateTime?  @allow('update', auth() == this)
@@ -75,8 +75,12 @@ model Session {
   updatedAt DateTime
   ipAddress String?
   userAgent String?
+  lang      String   @default("en")
+
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@allow('all', auth() == user)
 
   @@unique([token])
   @@map("session")

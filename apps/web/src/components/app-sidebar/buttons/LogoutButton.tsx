@@ -3,15 +3,10 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { authClient } from "@/lib/auth/auth-client"
 import { LogOut } from "lucide-react"
-import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
+import type { PropsWithChildren } from "react"
 
-interface Props {
-	redirect?: string
-}
-
-export default function LogoutButton({ redirect }: Props) {
-	const t = useTranslations()
+export default function LogoutButton({ children }: PropsWithChildren) {
 	const router = useRouter()
 	return (
 		<DropdownMenuItem
@@ -21,7 +16,7 @@ export default function LogoutButton({ redirect }: Props) {
 			}}
 		>
 			<LogOut />
-			{t("Actions.log-out")}
+			{children}
 		</DropdownMenuItem>
 	)
 }

@@ -7,27 +7,27 @@ import {
 	RefreshCwIcon,
 	SearchCodeIcon,
 } from "lucide-react"
-import { useTranslations, MarkupTagsFunction } from "next-intl"
+import { useTranslations } from "next-intl"
 
-const getCards = (t: MarkupTagsFunction) => [
+const cards = [
 	{
 		icon: SearchCodeIcon,
-		text: t("Home.card.1"),
+		text: "Home.card.1",
 		ready: true,
 	},
 	{
 		icon: ChartColumnIcon,
-		text: t("Home.card.2"),
+		text: "Home.card.2",
 		ready: true,
 	},
 	{
 		icon: RefreshCwIcon,
-		text: t("Home.card.3"),
+		text: "Home.card.3",
 		ready: true,
 	},
 	{
 		icon: FileTextIcon,
-		text: t("Home.card.4"),
+		text: "Home.card.4",
 		ready: false,
 	},
 ]
@@ -49,7 +49,7 @@ export default function HomeContainer() {
 					</div>
 				</div>
 				<div className="flex flex-wrap justify-center gap-4">
-					{getCards(t).map(({ icon: Icon, text, ready }) => (
+					{cards.map(({ icon: Icon, text, ready }) => (
 						<Card
 							key={text}
 							data-ready={ready}
@@ -57,7 +57,7 @@ export default function HomeContainer() {
 						>
 							<div className="flex h-full justify-between gap-1 sm:flex-col sm:gap-4">
 								<span className="text-xs sm:text-sm">
-									{text}
+									{t(text)}
 								</span>
 								<div className="flex flex-col items-end justify-between gap-1 sm:flex-row">
 									<Icon className="h-5 w-5 text-gray-500" />

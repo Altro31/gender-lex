@@ -3,8 +3,8 @@ import ProviderContainer from "@/components/provider-container"
 import ThemeRegister from "@/components/theme/theme-register"
 import { Toaster } from "@/components/ui/sonner"
 import "@/globals.css"
-import LocaleProvider from "@/locales/components/locale-provider"
 import type { Metadata } from "next"
+import { NextIntlClientProvider } from "next-intl"
 
 export const metadata: Metadata = {
 	title: "GenderLex",
@@ -20,12 +20,12 @@ export default async function RootLayout({
 		<html lang="en">
 			<body className="relative">
 				<ProviderContainer>
-					<LocaleProvider>
+					<NextIntlClientProvider>
 						{children}
 						<FloatingChatbot />
 						<Toaster richColors position="bottom-right" />
 						<ThemeRegister />
-					</LocaleProvider>
+					</NextIntlClientProvider>
 				</ProviderContainer>
 			</body>
 		</html>

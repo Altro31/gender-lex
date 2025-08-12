@@ -1,18 +1,19 @@
+import { AuthService } from '@mguay/nestjs-better-auth'
 import { ValidationPipe, type INestApplication } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import type { NestExpressApplication } from '@nestjs/platform-express'
-import { SwaggerModule, type OpenAPIObject } from '@nestjs/swagger'
+import { type OpenAPIObject } from '@nestjs/swagger'
+import { apiReference } from '@scalar/nestjs-api-reference'
+import * as cors from 'cors'
 import * as fs from 'fs'
 import * as yaml from 'js-yaml'
+import { ClsService } from 'nestjs-cls'
 import { patchNestJsSwagger } from 'nestjs-zod'
 import * as path from 'path'
 import { generateDocs } from 'src/core/utils/docs'
-import { AppModule, type EnvTypes } from './app.module'
 import { GlobalAuthGuard } from 'src/security/modules/auth/guards/global-auth.guard'
-import { ClsService } from 'nestjs-cls'
-import { AuthService } from '@mguay/nestjs-better-auth'
-import * as cors from 'cors'
+import { AppModule, type EnvTypes } from './app.module'
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -33,7 +34,7 @@ async function bootstrap() {
 	await app.listen(port)
 	const url = await app.getUrl()
 	console.log(`	🚀Server running at ${url}`)
-	console.log(`	Docs running at ${url}/api`)
+	console.log(`	Docs running at ${url}/docs`)
 }
 
 function openapi(app: INestApplication) {
@@ -49,7 +50,7 @@ function openapi(app: INestApplication) {
 		console.log(e)
 	}
 	if (!doc) return console.warn('OpenApi spec cannot be loaded')
-	SwaggerModule.setup('api', app, doc)
+	app.use('/docs', apiReference({ spec: { content: doc } }))
 }
 
 patchNestJsSwagger()

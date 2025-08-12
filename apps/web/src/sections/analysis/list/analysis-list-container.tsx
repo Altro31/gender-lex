@@ -32,6 +32,7 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { AnalysesResponse, StatusCountResponse } from "@/types/analyses"
+import { AnalysisStatus } from "@repo/db/models"
 import {
 	AlertTriangle,
 	CheckCircle,
@@ -46,6 +47,9 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
+import { useRouter } from "@bprogress/next"
+import Link from "next/link"
+import { deleteAnalysis, redoAnalysis } from "@/services/analysis"
 
 interface Props {
 	analysesResponse: AnalysesResponse
@@ -58,34 +62,29 @@ export default function AnalysisListContainer({
 	analysesResponse,
 	statusCount,
 }: Props) {
+	const router = useRouter()
+	console.log(analysesResponse)
+
 	const { data: analyses } = analysesResponse
 	const [searchTerm, setSearchTerm] = useState("")
-	const [statusFilter, setStatusFilter] = useState<string>("all")
-	const [selectedAnalysis, setSelectedAnalysis] =
-		useState<ResponseAnalysis | null>(null)
+	const [statusFilter, setStatusFilter] = useState<AnalysisStatus | "all">(
+		"all",
+	)
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 	const [analysisToDelete, setAnalysisToDelete] =
 		useState<ResponseAnalysis | null>(null)
 
-	const filteredAnalyses = analyses.filter(({ attributes }) => {
-		const matchesSearch = attributes.originalText
-			.toLowerCase()
-			.includes(searchTerm.toLowerCase())
-
-		const matchesStatus =
-			statusFilter === "all" || attributes.status === statusFilter
-
-		return matchesSearch && matchesStatus
-	})
-
-	const handleDeleteAnalysis = () => {
+	const handleDeleteAnalysis = async () => {
 		if (!analysisToDelete) return
+		await deleteAnalysis(analysisToDelete.id)
 		setIsDeleteDialogOpen(false)
 		setAnalysisToDelete(null)
 	}
 
-	const handleRedoAnalysis = (id: string) => {
-		// TODO: re-analice
+	const handleTab = (value: AnalysisStatus | "all") => {
+		setStatusFilter(value)
+		const redirect = value === "all" ? "?" : "?status=" + value
+		router.replace(redirect, { showProgress: false })
 	}
 
 	return (
@@ -106,7 +105,7 @@ export default function AnalysisListContainer({
 					{Object.entries(statusMapper).map(
 						([key, { label, color }]) => (
 							<Card key={key}>
-								<CardContent className="">
+								<CardContent>
 									<div className="text-sm text-gray-600">
 										{label}
 									</div>
@@ -144,250 +143,232 @@ export default function AnalysisListContainer({
 				{/* Analysis List with Tabs */}
 				<Tabs
 					value={statusFilter}
-					onValueChange={setStatusFilter}
+					onValueChange={handleTab as any}
 					className="w-full"
 				>
 					<TabsList className="mb-6 grid w-full grid-cols-5 lg:w-auto">
 						<TabsTrigger value="all">Todos</TabsTrigger>
 						<TabsTrigger value="pending">Pendientes</TabsTrigger>
-						<TabsTrigger value="running">En Progreso</TabsTrigger>
-						<TabsTrigger value="completed">Completados</TabsTrigger>
-						<TabsTrigger value="failed">Errores</TabsTrigger>
+						<TabsTrigger value="analyzing">En Progreso</TabsTrigger>
+						<TabsTrigger value="done">Completados</TabsTrigger>
+						<TabsTrigger value="error">Errores</TabsTrigger>
 					</TabsList>
 
-					<TabsContent value="all" className="mt-0">
-						{statusFilter === "all" && (
-							<>
-								{filteredAnalyses.length === 0 ? (
-									<div className="py-12 text-center">
-										<div className="mb-4 text-gray-400">
-											<AlertTriangle className="mx-auto h-16 w-16" />
-										</div>
-										<h3 className="mb-2 text-lg font-medium text-gray-900">
-											{searchTerm
-												? "No se encontraron análisis"
-												: "No hay análisis disponibles"}
-										</h3>
-										<p className="mb-4 text-gray-600">
-											{searchTerm
-												? "Intenta con otros términos de búsqueda"
-												: "Los análisis aparecerán aquí una vez que se ejecuten"}
-										</p>
-									</div>
-								) : (
-									<div className="space-y-4">
-										{filteredAnalyses.map((analysis) => {
-											const StatusIcon =
-												statusConfig[
-													analysis.attributes.status
-												].icon
-											return (
-												<Card
-													key={analysis.id}
-													className="transition-shadow hover:shadow-md"
-												>
-													<CardHeader className="pb-3">
-														<div className="flex items-start justify-between">
-															<div className="flex-1">
-																<div className="mb-2 flex items-center gap-3">
-																	<CardTitle className="text-lg">
-																		{
-																			analysis
-																				.attributes
-																				.name
-																		}
-																	</CardTitle>
-																	<Badge
-																		className={
-																			statusConfig[
-																				analysis
-																					.attributes
-																					.status
-																			]
-																				.color
-																		}
-																	>
-																		<StatusIcon className="mr-1 h-3 w-3" />
-																		{
-																			statusConfig[
-																				analysis
-																					.attributes
-																					.status
-																			]
-																				.label
-																		}
-																	</Badge>
-																</div>
-																<CardDescription className="flex items-center gap-4 text-sm">
-																	<span>
-																		Preset:
-																		{
-																			" Preset de prueba"
-																		}
-																		{/* {
+					<>
+						{analyses.length === 0 ? (
+							<div className="py-12 text-center">
+								<div className="mb-4 text-gray-400">
+									<AlertTriangle className="mx-auto h-16 w-16" />
+								</div>
+								<h3 className="mb-2 text-lg font-medium text-gray-900">
+									{searchTerm
+										? "No se encontraron análisis"
+										: "No hay análisis disponibles"}
+								</h3>
+								<p className="mb-4 text-gray-600">
+									{searchTerm
+										? "Intenta con otros términos de búsqueda"
+										: "Los análisis aparecerán aquí una vez que se ejecuten"}
+								</p>
+							</div>
+						) : (
+							<div className="space-y-4">
+								{analyses.map((analysis) => {
+									const StatusIcon =
+										statusConfig[analysis.attributes.status]
+											.icon
+									return (
+										<Card
+											key={analysis.id}
+											className="transition-shadow hover:shadow-md"
+										>
+											<CardHeader className="pb-3">
+												<div className="flex items-start justify-between">
+													<div className="flex-1">
+														<div className="mb-2 flex items-center gap-3">
+															<CardTitle className="text-lg">
+																{
+																	analysis
+																		.attributes
+																		.name
+																}
+															</CardTitle>
+															<Badge
+																className={
+																	statusConfig[
+																		analysis
+																			.attributes
+																			.status
+																	].color
+																}
+															>
+																<StatusIcon className="mr-1 h-3 w-3" />
+																{
+																	statusConfig[
+																		analysis
+																			.attributes
+																			.status
+																	].label
+																}
+															</Badge>
+														</div>
+														<CardDescription className="flex items-center gap-4 text-sm">
+															<span>
+																Preset:
+																{
+																	" Preset de prueba"
+																}
+																{/* {
 																			analysis.presetName
 																		} */}
-																	</span>
-																	<span>
-																		•
-																	</span>
-																	<span>
-																		Fuente:{" "}
-																		{analysis
-																			.attributes
-																			.inputSource ===
-																		"manual"
-																			? "Manual"
-																			: "Archivo"}
-																	</span>
-																	<span>
-																		•
-																	</span>
-																	<span>
-																		{new Date(
-																			analysis.attributes.createdAt,
-																		).toLocaleDateString()}
-																	</span>
-																</CardDescription>
-															</div>
-															<DropdownMenu>
-																<DropdownMenuTrigger
-																	asChild
+															</span>
+															<span>•</span>
+															<span>
+																Fuente:{" "}
+																{analysis
+																	.attributes
+																	.inputSource ===
+																"manual"
+																	? "Manual"
+																	: "Archivo"}
+															</span>
+															<span>•</span>
+															<span>
+																{new Date(
+																	analysis.attributes.createdAt,
+																).toLocaleDateString()}
+															</span>
+														</CardDescription>
+													</div>
+													<DropdownMenu>
+														<DropdownMenuTrigger
+															asChild
+														>
+															<Button
+																variant="ghost"
+																size="sm"
+																className="h-8 w-8 p-0"
+															>
+																<Filter className="h-4 w-4" />
+															</Button>
+														</DropdownMenuTrigger>
+														<DropdownMenuContent align="end">
+															<DropdownMenuLabel>
+																Acciones
+															</DropdownMenuLabel>
+															<DropdownMenuSeparator />
+															<DropdownMenuItem
+																asChild
+															>
+																<Link
+																	href={`/analysis/${analysis.id}`}
 																>
-																	<Button
-																		variant="ghost"
-																		size="sm"
-																		className="h-8 w-8 p-0"
-																	>
-																		<Filter className="h-4 w-4" />
-																	</Button>
-																</DropdownMenuTrigger>
-																<DropdownMenuContent align="end">
-																	<DropdownMenuLabel>
-																		Acciones
-																	</DropdownMenuLabel>
-																	<DropdownMenuSeparator />
-																	<DropdownMenuItem
-																		onClick={() => {
-																			// Navigate to details (placeholder)
-																			console.log(
-																				"Ver detalles:",
-																				analysis.id,
-																			)
-																		}}
-																	>
-																		<Eye className="mr-2 h-4 w-4" />
-																		Ver
-																		Detalles
-																	</DropdownMenuItem>
-																	<DropdownMenuItem
-																		onClick={() =>
-																			handleRedoAnalysis(
-																				analysis.id,
-																			)
-																		}
-																	>
-																		<RotateCcw className="mr-2 h-4 w-4" />
-																		Rehacer
-																		Análisis
-																	</DropdownMenuItem>
-																	<DropdownMenuSeparator />
-																	<DropdownMenuItem
-																		onClick={() => {
-																			setAnalysisToDelete(
-																				analysis,
-																			)
-																			setIsDeleteDialogOpen(
-																				true,
-																			)
-																		}}
-																		className="text-red-600"
-																	>
-																		<Trash2 className="mr-2 h-4 w-4" />
-																		Eliminar
-																	</DropdownMenuItem>
-																</DropdownMenuContent>
-															</DropdownMenu>
-														</div>
-													</CardHeader>
+																	<Eye className="mr-2 h-4 w-4" />
+																	Ver Detalles
+																</Link>
+															</DropdownMenuItem>
+															<DropdownMenuItem
+																onClick={() =>
+																	redoAnalysis(
+																		analysis.id,
+																	)
+																}
+															>
+																<RotateCcw className="mr-2 h-4 w-4" />
+																Rehacer Análisis
+															</DropdownMenuItem>
+															<DropdownMenuSeparator />
+															<DropdownMenuItem
+																onClick={() => {
+																	setAnalysisToDelete(
+																		analysis,
+																	)
+																	setIsDeleteDialogOpen(
+																		true,
+																	)
+																}}
+																className="text-red-600"
+															>
+																<Trash2 className="mr-2 h-4 w-4" />
+																Eliminar
+															</DropdownMenuItem>
+														</DropdownMenuContent>
+													</DropdownMenu>
+												</div>
+											</CardHeader>
 
-													<CardContent className="pb-3">
-														<div className="space-y-4">
-															{/* Progress Bar for Running Analysis */}
-															{analysis.attributes
-																.status ===
-																"analyzing" && (
-																<div className="space-y-2">
-																	<div className="flex justify-between text-sm">
-																		<span>
-																			Progreso
-																			del
-																			análisis
-																		</span>
-																		<span>
-																			{/* {
+											<CardContent className="pb-3">
+												<div className="space-y-4">
+													{/* Progress Bar for Running Analysis */}
+													{analysis.attributes
+														.status ===
+														"analyzing" && (
+														<div className="space-y-2">
+															<div className="flex justify-between text-sm">
+																<span>
+																	Progreso del
+																	análisis
+																</span>
+																<span>
+																	{/* {
 																				analysis
 																					.attributes
 																					.progress
 																			} */}
-																			%
-																		</span>
-																	</div>
-																	<Progress
-																		value={
-																			0
-																			// analysis
-																			// 	.attributes
-																			// 	.progress
-																		}
-																		className="h-2"
-																	/>
-																</div>
-															)}
-
-															{/* Input Preview */}
-															<div className="space-y-2">
-																<div className="text-sm font-medium text-gray-700">
-																	Texto
-																	Analizado:
-																</div>
-																<p className="line-clamp-2 rounded bg-gray-50 p-2 text-sm text-gray-600">
-																	{
-																		analysis
-																			.attributes
-																			.originalText
-																	}
-																</p>
-															</div>
-														</div>
-													</CardContent>
-
-													<CardFooter className="border-t pt-3">
-														<div className="flex w-full items-center justify-between text-xs text-gray-500">
-															<span>
-																ID:{" "}
-																{analysis.id}
-															</span>
-
-															{analysis.attributes
-																.updatedAt && (
-																<span>
-																	Completado:{" "}
-																	{new Date(
-																		analysis.attributes.updatedAt,
-																	).toLocaleString()}
+																	%
 																</span>
-															)}
+															</div>
+															<Progress
+																value={
+																	0
+																	// analysis
+																	// 	.attributes
+																	// 	.progress
+																}
+																className="h-2"
+															/>
 														</div>
-													</CardFooter>
-												</Card>
-											)
-										})}
-									</div>
-								)}
-							</>
+													)}
+
+													{/* Input Preview */}
+													<div className="space-y-2">
+														<div className="text-sm font-medium text-gray-700">
+															Texto Analizado:
+														</div>
+														<p className="line-clamp-2 rounded bg-gray-50 p-2 text-sm text-gray-600">
+															{
+																analysis
+																	.attributes
+																	.originalText
+															}
+														</p>
+													</div>
+												</div>
+											</CardContent>
+
+											<CardFooter className="border-t pt-3">
+												<div className="flex w-full items-center justify-between text-xs text-gray-500">
+													<span>
+														ID: {analysis.id}
+													</span>
+
+													{analysis.attributes
+														.updatedAt && (
+														<span>
+															Completado:{" "}
+															{new Date(
+																analysis.attributes.updatedAt,
+															).toLocaleString()}
+														</span>
+													)}
+												</div>
+											</CardFooter>
+										</Card>
+									)
+								})}
+							</div>
 						)}
-					</TabsContent>
+					</>
 				</Tabs>
 
 				{/* Delete Confirmation Dialog */}

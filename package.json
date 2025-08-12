@@ -6,7 +6,7 @@
 	"author": "",
 	"license": "UNLICENSED",
 	"scripts": {
-		"dev": "turbo watch dev",
+		"dev": "turbo dev",
 		"generate": "turbo run generate",
 		"build:api": "turbo api#build",
 		"build:web": "turbo web#build",

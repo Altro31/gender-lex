@@ -2,7 +2,6 @@
 
 import { client } from "@/lib/api/client"
 import { getSession } from "@/lib/auth/auth-server"
-import { endpoints } from "@/lib/endpoints"
 import type { Analysis } from "@repo/db/models"
 import { permanentRedirect, unauthorized } from "next/navigation"
 
@@ -30,21 +29,27 @@ export async function startAnalysis(id: string) {
 }
 
 export async function deleteAnalysis(id: string) {
-	const session = await getSession()
-	if (!session) unauthorized()
-	await fetch(endpoints.ai.analysis.id.replace(":id", id), {
-		method: "DELETE",
-		headers: {
-			Authorization: `Bearer ${session.session.token}`,
-		},
+	await client.DELETE("/zen/analysis/{id}", {
+		params: { path: { id } },
 	})
 }
 
-export async function findAnalyses(page: number) {
+export async function findAnalyses({
+	page,
+	status,
+}: {
+	page: number
+	status?: string
+}) {
 	const session = await getSession()
 	if (!session) unauthorized()
 	return client.GET("/zen/analysis", {
-		params: { query: { "page[offset]": (page - 1) * 10 } },
+		params: {
+			query: {
+				"page[offset]": (page - 1) * 10,
+				"filter[status]": status as any,
+			},
+		},
 	})
 }
 
@@ -60,4 +65,18 @@ export async function getStatusCount() {
 	const session = await getSession()
 	if (!session) unauthorized()
 	return client.GET("/analysis/status-count")
+}
+
+export async function redoAnalysis(id: string) {
+	const { data, error } = await client.PATCH("/zen/analysis/{id}", {
+		params: { path: { id } },
+		body: {
+			data: { id, type: "analysis", attributes: { status: "pending" } },
+		},
+	})
+	if (error) {
+		console.error(error)
+		throw new Error("An error occurred when trying access analysis with id")
+	}
+	permanentRedirect(`/analysis/${data.data.id}`)
 }

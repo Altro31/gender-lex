@@ -12,10 +12,14 @@ export async function setTheme(isDark: boolean) {
 export async function setLanguage(lang: string) {
 	const session = await auth.api.getSession({ headers: await headers() })
 	if (!session) throw new Error("")
-	const { error } = await client.PATCH("/zen/user/{id}", {
-		params: { path: { id: session.user.id } },
+	const { error } = await client.PATCH("/zen/session/{id}", {
+		params: { path: { id: session.session.id } },
 		body: {
-			data: { id: session.user.id, type: "user", attributes: { lang } },
+			data: {
+				id: session.session.id,
+				type: "session",
+				attributes: { lang },
+			},
 		},
 	})
 	if (!error) {
@@ -25,5 +29,7 @@ export async function setLanguage(lang: string) {
 		})
 		return false
 	}
+	console.log(error)
+
 	return true
 }

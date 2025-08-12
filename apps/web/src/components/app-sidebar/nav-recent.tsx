@@ -1,10 +1,9 @@
-"use client"
-
 import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react"
 
+import DropdownMenuResponsive from "@/components/app-sidebar/dropdown-menu-responsive"
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import {
 	DropdownMenu,
-	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
@@ -16,12 +15,10 @@ import {
 	SidebarMenuAction,
 	SidebarMenuButton,
 	SidebarMenuItem,
-	useSidebar,
 } from "@/components/ui/sidebar"
 import DeleteAnalysisAlertDialog from "@/sections/analysis/components/delete-analysis-alert-dialog"
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
-import Link from "next/link"
 import { useTranslations } from "next-intl"
+import Link from "next/link"
 
 export default function NavRecent({
 	projects,
@@ -32,7 +29,6 @@ export default function NavRecent({
 	}[]
 }) {
 	const t = useTranslations()
-	const { isMobile } = useSidebar()
 
 	return (
 		<SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -53,11 +49,7 @@ export default function NavRecent({
 										</span>
 									</SidebarMenuAction>
 								</DropdownMenuTrigger>
-								<DropdownMenuContent
-									className="w-48 rounded-lg"
-									side={isMobile ? "bottom" : "right"}
-									align={isMobile ? "end" : "start"}
-								>
+								<DropdownMenuResponsive>
 									<DropdownMenuItem>
 										<Eye className="text-muted-foreground" />
 										<span>{t("Actions.view-details")}</span>
@@ -73,7 +65,7 @@ export default function NavRecent({
 											<span>{t("Actions.delete")}</span>
 										</DropdownMenuItem>
 									</AlertDialogTrigger>
-								</DropdownMenuContent>
+								</DropdownMenuResponsive>
 							</DropdownMenu>
 							<DeleteAnalysisAlertDialog model={null} />
 						</AlertDialog>

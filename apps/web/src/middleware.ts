@@ -1,11 +1,11 @@
-import { protectedRoutes } from "@/middlewares/protected-routes"
+import { anonymousCheck } from "@/middlewares/anonymous-check"
 import { rejectAuthRoutes } from "@/middlewares/reject-auth-routes"
-import { NextResponse } from "next/server"
+import { NextResponse, type NextRequest } from "next/server"
 
-export async function middleware(req: any) {
+export async function middleware(req: NextRequest) {
 	return (
-		(await protectedRoutes(req)) ||
-		(await rejectAuthRoutes(req)) ||
+		(await anonymousCheck()) ??
+		(await rejectAuthRoutes(req)) ??
 		NextResponse.next()
 	)
 }

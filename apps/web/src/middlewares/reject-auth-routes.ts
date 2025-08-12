@@ -7,6 +7,7 @@ export async function rejectAuthRoutes(req: NextRequest) {
 	const session = await getSession()
 	if (
 		session &&
+		!session.user.isAnonymous &&
 		matches.some((route) => req.nextUrl.pathname.startsWith(route))
 	) {
 		return NextResponse.redirect(new URL("/", req.url))

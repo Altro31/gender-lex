@@ -24,7 +24,7 @@ export function NavMain({
 			<SidebarGroupLabel>{t("sidebar.platform")}</SidebarGroupLabel>
 			<SidebarMenu>
 				{items.map((item) => (
-					<SidebarMenuItem key={t(item.title)}>
+					<SidebarMenuItem key={item.title}>
 						<SidebarMenuButton tooltip={t(item.title)} asChild>
 							<Link href={item.url}>
 								{item.icon}

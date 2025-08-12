@@ -4,14 +4,15 @@ import { findAnalyses, getStatusCount } from "@/services/analysis"
 interface Props {
 	searchParams: Promise<{
 		page?: number
+		status?: string
 	}>
 }
 
 export default async function AnalysesPage({ searchParams }: Props) {
-	const { page = 1 } = await searchParams
+	const { page = 1, status } = await searchParams
 
 	const [analysesResponse, statusCountResponse] = await Promise.all([
-		findAnalyses(page),
+		findAnalyses({ page, status }),
 		getStatusCount(),
 	])
 

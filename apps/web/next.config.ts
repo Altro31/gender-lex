@@ -4,7 +4,6 @@ import createNextIntlPlugin from "next-intl/plugin"
 
 const nextConfig: NextConfig = {
 	experimental: {
-		cacheComponents: true,
 		reactCompiler: true,
 		nodeMiddleware: true,
 		browserDebugInfoInTerminal: false,

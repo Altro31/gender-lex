@@ -1,5 +1,5 @@
 import envs from "@/lib/env/env-server" with { type: "macro" }
-import { BadgeCheck, Bell, ChevronsUpDown, LogIn, UserIcon } from "lucide-react"
+import { BadgeCheck, ChevronsUpDown, LogIn, UserIcon } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -22,17 +22,20 @@ import GithubButton from "@/components/app-sidebar/buttons/GithubButton"
 import GoogleButton from "@/components/app-sidebar/buttons/GoogleButton"
 import LogoutButton from "@/components/app-sidebar/buttons/LogoutButton"
 import ThemeSwitcher from "@/components/theme/theme-switcher"
-import Link from "next/link"
-import { getTranslations } from "next-intl/server"
-import { useTranslations } from "next-intl"
 import LanguageSwitcher from "@/locales/components/language-switcher"
+import { useTranslations } from "next-intl"
+import { getTranslations } from "next-intl/server"
+import Link from "next/link"
+import { Suspense } from "react"
 
 export default async function NavUser() {
 	const session = await getSession()
 
 	return (
 		<SidebarMenu>
-			<SidebarMenuItem>{session ? <User /> : <Login />}</SidebarMenuItem>
+			<SidebarMenuItem>
+				{session && !session.user.isAnonymous ? <User /> : <Login />}
+			</SidebarMenuItem>
 		</SidebarMenu>
 	)
 }
@@ -103,7 +106,7 @@ async function User() {
 					<LanguageSwitcher />
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
-				<LogoutButton />
+				<LogoutButton>{t("Actions.log-out")}</LogoutButton>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	)
@@ -144,6 +147,11 @@ function Login() {
 					<DropdownMenuSeparator />
 					<GoogleButton redirect={envs.UI_URL} />
 					<GithubButton redirect={envs.UI_URL} />
+					<DropdownMenuSeparator />
+					<Suspense>
+						<ThemeSwitcher />
+					</Suspense>
+					<LanguageSwitcher />
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>

@@ -12,6 +12,7 @@ import { useState, type MouseEvent } from "react"
 
 export default function ThemeSwitcher() {
 	const t = useTranslations()
+	console.log(t("Commons.more"))
 	const [open, setOpen] = useState(false)
 	const changeTheme = (isDark: boolean) => async (e: MouseEvent) => {
 		const target = document.querySelector<HTMLDivElement>("#theme")

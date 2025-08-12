@@ -32,7 +32,7 @@ export default function LanguageSwitcher() {
 		<>
 			<DropdownMenuSub onOpenChange={setOpen} open={open}>
 				<DropdownMenuSubTrigger className="gap-2">
-					<span className="rounded-sm border px-0.5">{locale}</span>
+					<span className="rounded-sm border px-1">{locale}</span>
 					{t("sidebar.language.label")}
 				</DropdownMenuSubTrigger>
 				<DropdownMenuSubContent>
