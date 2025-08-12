@@ -1,10 +1,4 @@
-import {
-	AuthGuard,
-	Optional,
-	Public,
-	Session,
-	type UserSession,
-} from '@mguay/nestjs-better-auth'
+import { AuthGuard, Session, type UserSession } from '@mguay/nestjs-better-auth'
 import {
 	Body,
 	Controller,
@@ -35,7 +29,6 @@ export class AiController {
 	) {}
 
 	@Post('prepare')
-	@Optional()
 	@UseInterceptors(FileInterceptor('file'))
 	@ApiConsumes('multipart/form-data')
 	async prepare(
@@ -56,7 +49,6 @@ export class AiController {
 		return { data: { id: analysis.id } }
 	}
 
-	@Public()
 	@Post('start/:id')
 	async start(@Param('id') id: string) {
 		const analysis = await this.analysisService.findOne(id)
