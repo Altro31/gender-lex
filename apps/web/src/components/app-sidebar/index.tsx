@@ -54,7 +54,7 @@ const data = {
 	],
 }
 
-export default function AppSidebar({
+export default async function AppSidebar({
 	...props
 }: React.ComponentProps<typeof Sidebar>) {
 	return (

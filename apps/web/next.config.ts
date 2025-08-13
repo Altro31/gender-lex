@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
 		clientSegmentCache: true,
 		devtoolSegmentExplorer: true,
 		authInterrupts: true,
+		cacheComponents: true,
+		ppr: "incremental",
 	} as any,
 	async rewrites() {
 		return [

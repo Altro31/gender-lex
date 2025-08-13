@@ -4,9 +4,9 @@ import { NextResponse, type NextRequest } from "next/server"
 
 export async function middleware(req: NextRequest) {
 	return (
-		(await anonymousCheck()) ??
+		(await anonymousCheck(req)) ??
 		(await rejectAuthRoutes(req)) ??
-		NextResponse.next()
+		NextResponse.next({ request: req })
 	)
 }
 

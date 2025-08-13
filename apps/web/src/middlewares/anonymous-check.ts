@@ -1,9 +1,13 @@
-import { auth, getSession, refetchSession } from "@/lib/auth/auth-server"
+import { auth } from "@/lib/auth/auth-server"
+import { NextRequest } from "next/server"
 
-export async function anonymousCheck() {
-	const session = await getSession()
+export async function anonymousCheck(req: NextRequest) {
+	const session = await auth.api.getSession(req)
 	if (!session) {
-		await auth.api.signInAnonymous()
-		await refetchSession()
+		const { headers } = await auth.api.signInAnonymous({
+			returnHeaders: true,
+		})
+		const [cookie] = headers.getSetCookie()
+		req.cookies.set(cookie!, "")
 	}
 }
