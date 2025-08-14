@@ -1,3 +1,3 @@
 export class PrepareResponseDTO {
-	data: { id: string }
+	id: string
 }

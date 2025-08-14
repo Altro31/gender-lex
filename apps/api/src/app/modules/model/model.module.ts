@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { ModelController } from 'src/ai/modules/model/model.controller'
-import { ModelService } from 'src/ai/modules/model/model.service'
+import { ModelController } from 'src/app/modules/model/model.controller'
+import { ModelService } from 'src/app/modules/model/model.service'
 
 @Module({
 	controllers: [ModelController],

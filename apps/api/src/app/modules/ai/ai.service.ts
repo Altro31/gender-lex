@@ -3,8 +3,8 @@ import { groq } from '@ai-sdk/groq'
 import { Injectable } from '@nestjs/common'
 import { AnalysisSchema } from '@repo/db/zod'
 import { customProvider, generateText, Output, stepCountIs } from 'ai'
-import { RawAnalysis } from 'src/ai/lib/types'
-import { genderLexSystemPrompt } from 'src/ai/modules/ai/prompts/system.prompt'
+import { RawAnalysis } from 'src/app/lib/types'
+import { genderLexSystemPrompt } from 'src/app/modules/ai/prompts/system.prompt'
 
 export type Model = Parameters<(typeof provider)['languageModel']>[0]
 export const models = [
@@ -41,6 +41,8 @@ const schema = AnalysisSchema?.pick({
 
 @Injectable()
 export class AiService {
+	constructor() {}
+
 	async analice(content: string) {
 		const { experimental_output } = await generateText({
 			model: provider.languageModel('deepseek'),

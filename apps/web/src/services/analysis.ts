@@ -6,18 +6,18 @@ import type { Analysis } from "@repo/db/models"
 import { permanentRedirect, unauthorized } from "next/navigation"
 
 export async function prepareAnalysis(formData: FormData) {
-	const { data, error } = await client.POST("/ai/analysis/prepare", {
+	const { data, error } = await client.POST("/analysis/prepare", {
 		body: formData as any,
 	})
 	if (!data) {
 		console.error(error)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
-	permanentRedirect(`/analysis/${data.data.id}`)
+	permanentRedirect(`/analysis/${data.id}`)
 }
 
 export async function startAnalysis(id: string) {
-	const { data, error } = await client.POST("/ai/analysis/start/{id}", {
+	const { data, error } = await client.POST("/analysis/start/{id}", {
 		params: { path: { id } },
 	})
 	if (error) {

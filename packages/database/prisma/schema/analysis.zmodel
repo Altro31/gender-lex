@@ -7,7 +7,7 @@ model Analysis extends RawAnalysis {
     name        String?
 
     visibility  Visibility     @default(private)
-    status      AnalysisStatus @default(analyzing)
+    status      AnalysisStatus @default(pending)
     inputSource InputSource    @default(manual)
 
     Presets     Preset[]

@@ -1,70 +1,30 @@
-import { Inject, type OnModuleInit } from '@nestjs/common'
-import {
-	Analysis,
-	Model,
-	Preset,
-	Session,
-	Account,
-	Verification,
-	Prisma,
-	PrismaClient,
-	User,
-} from '@repo/db/models'
+import { Inject, type Provider, type Type } from '@nestjs/common'
+import { Prisma, PrismaClient } from '@repo/db/models'
 import { ENHANCED_PRISMA } from '@zenstackhq/server/nestjs'
-import { buildPaginatedResponse } from 'src/core/utils/pagination'
-type ModelMap = {
-	user: User
-	analysis: Analysis
-	model: Model
-	preset: Preset
-	session: Session
-	account: Account
-	verification: Verification
-}
 
-abstract class DynamicRepository<
-	T extends Lowercase<Exclude<Prisma.ModelName, 'PresetModel'>>,
-	Model = ModelMap[T],
-> implements OnModuleInit
-{
-	model: PrismaClient[T]
-	constructor(@Inject(ENHANCED_PRISMA) readonly prisma: PrismaClient) {}
+type CamelCase<S extends string> = S extends `${infer P1}${infer P2}`
+	? `${Lowercase<P1>}${P2}`
+	: Lowercase<S>
 
-	onModuleInit() {
-		this.model = this.prisma[(<any>this.constructor).model]
-	}
+type ModelName = CamelCase<Prisma.ModelName>
+class BaseRepository {
+	constructor(@Inject(ENHANCED_PRISMA) prisma: PrismaClient) {
+		// @ts-expect-error aaaaaaaaaaaaaaaaaaa
+		const model = this.model as ModelName
 
-	async findAll(params?: any) {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-		const [data, count] = await Promise.all([
-			// @ts-expect-error aaaaaaaaaaa
-			this.model.findMany({ ...params }),
-			// @ts-expect-error aaaaaaaaaaa
-			this.model.count({ where: params.where as object }),
-		])
-
-		const pagination = buildPaginatedResponse(count, params)
-		return { data: data as Model[], ...pagination }
-	}
-	findOneBy<T extends keyof Model>(
-		field: T,
-		value: Model[T],
-	): Promise<Model | null> {
-		// @ts-expect-error aaaaaaaaaaa
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-		return this.model.findFirst({ where: { [field]: value } })
-	}
-	remove(id: string): Promise<Model> {
-		// @ts-expect-error aaaaaaaaaaa
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-		return this.model.delete({ where: { id } })
+		Object.assign(this, prisma[model])
 	}
 }
 
-export function BaseRepository<
-	T extends Lowercase<Exclude<Prisma.ModelName, 'PresetModel'>>,
->(model: T) {
-	const Class = class extends DynamicRepository<T> {}
-	Object.assign(Class, { model })
-	return Class
+function base(model: ModelName) {
+	const classRef = BaseRepository
+	Object.assign(classRef.prototype, { model })
+	return classRef
 }
+
+function register(repository: Type<BaseRepository>): Provider {
+	return { provide: repository, useClass: repository }
+}
+
+const Repository = { base, register }
+export default Repository

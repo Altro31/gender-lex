@@ -9,17 +9,19 @@ import { ServeStaticModule } from '@nestjs/serve-static'
 import { ApiHandlerService } from '@zenstackhq/server/nestjs'
 import { ZodValidationPipe } from 'nestjs-zod'
 import * as path from 'path'
-import { ModelModule } from 'src/ai/modules/model/model.module'
+import { ModelModule } from 'src/app/modules/model/model.module'
 import { CrudMiddleware } from 'src/core/prisma/middlewares/crud.middleware'
 import { PrismaModule } from 'src/core/prisma/prisma.module'
 import { PrismaService } from 'src/core/prisma/prisma.service'
 import z from 'zod'
-import { AiModule } from './ai/modules/ai/ai.module'
-import { ExtractorModule } from './ai/modules/extractor/extractor.module'
-import { PresetModule } from './ai/modules/preset/preset.module'
+import { AiModule } from './app/modules/ai/ai.module'
+import { ExtractorModule } from './app/modules/extractor/extractor.module'
+import { PresetModule } from './app/modules/preset/preset.module'
 import { AuthModule } from './security/modules/auth/auth.module'
 import { UserModule } from './security/modules/user/user.module'
 import { JwtModule } from '@nestjs/jwt'
+import { AnalysisModule } from 'src/app/modules/analysis/analysis.module'
+import { ClsModule } from 'nestjs-cls'
 
 export type EnvTypes = z.infer<typeof EnvTypes>
 const EnvTypes = z.object({
@@ -42,8 +44,10 @@ const EnvTypes = z.object({
 			isGlobal: true,
 			validate: config => EnvTypes.parse(config),
 		}),
+		ClsModule.forRoot({ global: true, middleware: { mount: true } }),
 		PrismaModule,
 		ExtractorModule,
+		AnalysisModule,
 		AiModule,
 		AuthModule,
 		UserModule,
