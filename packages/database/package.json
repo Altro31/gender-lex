@@ -13,7 +13,6 @@
 	},
 	"devDependencies": {
 		"@zenstackhq/openapi": "catalog:",
-		"prisma": "6.12.0",
 		"zenstack": "catalog:"
 	},
 	"peerDependencies": {

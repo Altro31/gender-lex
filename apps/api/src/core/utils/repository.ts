@@ -1,28 +1,64 @@
-import { Inject, type Provider, type Type } from '@nestjs/common'
-import { Prisma, PrismaClient } from '@repo/db/models'
-import { ENHANCED_PRISMA } from '@zenstackhq/server/nestjs'
+import type { PrismaClient } from '@repo/db'
+import type { Prisma } from '@repo/db/models'
 
 type CamelCase<S extends string> = S extends `${infer P1}${infer P2}`
 	? `${Lowercase<P1>}${P2}`
 	: Lowercase<S>
 
 type ModelName = CamelCase<Prisma.ModelName>
-class BaseRepository {
-	prisma: any
-	constructor(@Inject(ENHANCED_PRISMA) prisma: PrismaClient) {
-		// @ts-expect-error this has meta.model attribute
-		this.prisma = prisma[this.meta.model]
+
+export abstract class PrismaRepository {
+	constructor(
+		protected readonly prisma: PrismaClient,
+		protected readonly model: ModelName,
+	) {
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
+		const self = this
+
+		return new Proxy(self as any, {
+			get(target, prop, receiver) {
+				// 1) Prioriza miembros propios de la clase (incluye getters)
+				if (Reflect.has(target, prop)) {
+					return Reflect.get(target, prop, receiver)
+				}
+
+				// 2) Fallback: delega en prismaService
+				const base = prisma[model] as any
+				const value = base[prop]
+
+				// a) Métodos top‑level de Prisma ($connect, $disconnect, $transaction, $on, etc.)
+				if (typeof value === 'function') {
+					return value.bind(base)
+				}
+
+				// b) Delegados de modelo: prisma.user, prisma.post, ...
+				if (value && typeof value === 'object') {
+					// Envuelve el delegado de modelo para bindear correctamente sus métodos (findMany, create, etc.)
+					return new Proxy(value, {
+						get(model, p) {
+							const mv = model[p]
+							if (typeof mv === 'function') return mv.bind(model)
+							return mv
+						},
+					})
+				}
+
+				// c) Propiedades simples (si existieran)
+				return value
+			},
+
+			has(target, prop) {
+				return (
+					Reflect.has(target, prop) || prop in (prisma[model] as any)
+				)
+			},
+
+			getOwnPropertyDescriptor(target, prop) {
+				return (
+					Reflect.getOwnPropertyDescriptor(target, prop) ??
+					Reflect.getOwnPropertyDescriptor(prisma[model] as any, prop)
+				)
+			},
+		})
 	}
 }
-
-export function base(model: ModelName) {
-	const classRef = class extends BaseRepository {}
-	Object.assign(classRef.prototype, { meta: { model } })
-	return classRef
-}
-
-export function register(repository: Type<BaseRepository>): Provider {
-	return { provide: repository, useClass: repository }
-}
-
-export type type<T> = { prisma: T }

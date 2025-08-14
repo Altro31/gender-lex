@@ -1,6 +1,5 @@
 import { google } from '@ai-sdk/google'
 import { groq } from '@ai-sdk/groq'
-import type { UserSession } from '@mguay/nestjs-better-auth'
 import { Injectable } from '@nestjs/common'
 import type { Session } from '@repo/db/models'
 import { AnalysisSchema } from '@repo/db/zod'
@@ -47,10 +46,10 @@ export class AiService {
 	constructor(private readonly clsService: ClsService) {}
 
 	async analice(content: string) {
-		const session = this.clsService.get<UserSession>('auth')
+		const session = this.clsService.get<Session>('session')
 		const { experimental_output } = await generateText({
 			model: provider.languageModel('deepseek'),
-			prompt: `lang=${(session.session as Session).lang} <analice>${content}</analice>`,
+			prompt: `lang=${session.lang} <analice>${content}</analice>`,
 			system: genderLexSystemPrompt,
 			stopWhen: stepCountIs(3),
 			experimental_output: Output.object({ schema }),

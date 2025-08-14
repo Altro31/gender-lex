@@ -1,21 +1,27 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
-import type { Analysis, AnalysisStatus } from '@repo/db/models'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import type {
+	Analysis,
+	AnalysisStatus,
+	Prisma,
+	PrismaClient,
+} from '@repo/db/models'
+import { ENHANCED_PRISMA } from '@zenstackhq/server/nestjs'
 import { AiService } from 'src/app/modules/ai/ai.service'
-import { AnalysisRepository } from 'src/app/modules/analysis/analysis.repository'
 import { ExtractorService } from 'src/app/modules/extractor/extractor.service'
 import { isFile } from 'src/core/utils/file'
 
 @Injectable()
 export class AnalysisService {
 	constructor(
-		public readonly repository: AnalysisRepository,
+		@Inject('hola') public readonly repository: Prisma.AnalysisDelegate,
+		@Inject(ENHANCED_PRISMA) public readonly prismaService: PrismaClient,
 		private readonly aiService: AiService,
 		private readonly extractorService: ExtractorService,
 	) {}
 
 	async statusCount() {
 		const [all, pending, analyzing, done, error] = await Promise.all([
-			this.repository.prisma.count(),
+			this.repository.count(),
 			this.countByStatus('pending'),
 			this.countByStatus('analyzing'),
 			this.countByStatus('done'),
@@ -25,13 +31,11 @@ export class AnalysisService {
 	}
 
 	countByStatus(status: AnalysisStatus) {
-		return this.repository.prisma.count({ where: { status } })
+		return this.repository.count({ where: { status } })
 	}
 
 	async start(id: string) {
-		const analysis = await this.repository.prisma.findUnique({
-			where: { id },
-		})
+		const analysis = await this.repository.findUnique({ where: { id } })
 		if (!analysis) {
 			throw new NotFoundException('Analysis not found')
 		}
@@ -43,10 +47,10 @@ export class AnalysisService {
 					: {}
 			) as Analysis
 			result.status = 'done'
-			void this.repository.prisma.update({ where: { id }, data: result })
+			void this.repository.update({ where: { id }, data: result })
 		} catch (error) {
 			console.error(error)
-			void this.repository.prisma.update({
+			void this.repository.update({
 				where: { id },
 				data: { ...result, status: 'error' },
 			})
@@ -58,7 +62,7 @@ export class AnalysisService {
 		const text = isFile(input)
 			? await this.extractorService.extractPDFText(input)
 			: input
-		const analysis = await this.repository.prisma.create({
+		const analysis = await this.repository.create({
 			data: {
 				originalText: text,
 				modifiedTextAlternatives: [],
