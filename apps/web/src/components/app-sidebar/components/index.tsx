@@ -1,10 +1,10 @@
 import { Bot, Clock, Plus, Settings } from "lucide-react"
 import * as React from "react"
 
-import { Logo } from "@/components/app-sidebar/logo"
-import { NavMain } from "@/components/app-sidebar/nav-main"
-import NavRecent from "@/components/app-sidebar/nav-recent"
-import NavUser from "@/components/app-sidebar/nav-user"
+import { Logo } from "@/components/app-sidebar/components/logo"
+import { NavMain } from "@/components/app-sidebar/components/nav-main"
+import NavRecent from "@/components/app-sidebar/components/nav-recent"
+import NavUser from "@/components/app-sidebar/components/nav-user"
 import {
 	Sidebar,
 	SidebarContent,

@@ -22,7 +22,7 @@ plugin openapi {
   output = 'openapi.yaml'
   prefix = "/zen"
   securitySchemes = {
-        bearer: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }
+        apiKey: { type: 'apiKey', in: 'cookie', name: 'better-auth.session' }
     }
 }
   

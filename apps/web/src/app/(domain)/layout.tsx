@@ -1,4 +1,4 @@
-import AppSidebar from "@/components/app-sidebar"
+import AppSidebar from "@/components/app-sidebar/components"
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import "@/globals.css"
 import type { Metadata } from "next"

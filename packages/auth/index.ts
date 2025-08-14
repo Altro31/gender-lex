@@ -36,7 +36,7 @@ export const auth = betterAuth({
 		}),
 		anonymous({
 			async onLinkAccount({ anonymousUser, newUser }) {
-				await Promise.all([
+				await prisma.$transaction([
 					prisma.analysis.updateMany({
 						where: { userId: anonymousUser.user.id },
 						data: { userId: newUser.user.id },

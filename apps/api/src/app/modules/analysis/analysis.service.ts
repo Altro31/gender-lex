@@ -5,6 +5,14 @@ import { AnalysisRepository } from 'src/app/modules/analysis/analysis.repository
 import { ExtractorService } from 'src/app/modules/extractor/extractor.service'
 import { isFile } from 'src/core/utils/file'
 
+class A {
+	str: string
+	getStr() {}
+}
+
+const a = new A()
+console.log(a)
+
 @Injectable()
 export class AnalysisService {
 	constructor(
@@ -53,6 +61,8 @@ export class AnalysisService {
 	}
 
 	async prepare(input: string | Express.Multer.File) {
+		console.log(this)
+
 		const text = isFile(input)
 			? await this.extractorService.extractPDFText(input)
 			: input
