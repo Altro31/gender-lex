@@ -29,7 +29,6 @@ export class CrudMiddleware implements NestMiddleware {
 		const inner = ZenStackMiddleware({
 			// get an enhanced PrismaClient for the current user
 			getPrisma: () => {
-				console.log('Middleware user: ', session?.user)
 				return enhance(
 					this.prismaService,
 					{ user: session?.user },
