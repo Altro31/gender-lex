@@ -97,7 +97,7 @@ async function User() {
 					</div>
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
-				<DropdownMenuGroup >
+				<DropdownMenuGroup>
 					<DropdownMenuItem>
 						<BadgeCheck />
 						{t("Profile.account")}
