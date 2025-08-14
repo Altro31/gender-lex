@@ -18,8 +18,7 @@ export class GlobalAuthGuard implements CanActivate {
 		const session = await this.authService.api.getSession({
 			headers: request.headers,
 		})
-		this.clsService.set('auth', session?.user)
-
+		this.clsService.set('auth', session)
 		return true
 	}
 }

@@ -5,14 +5,6 @@ import { AnalysisRepository } from 'src/app/modules/analysis/analysis.repository
 import { ExtractorService } from 'src/app/modules/extractor/extractor.service'
 import { isFile } from 'src/core/utils/file'
 
-class A {
-	str: string
-	getStr() {}
-}
-
-const a = new A()
-console.log(a)
-
 @Injectable()
 export class AnalysisService {
 	constructor(
@@ -23,7 +15,7 @@ export class AnalysisService {
 
 	async statusCount() {
 		const [all, pending, analyzing, done, error] = await Promise.all([
-			this.repository.count(),
+			this.repository.prisma.count(),
 			this.countByStatus('pending'),
 			this.countByStatus('analyzing'),
 			this.countByStatus('done'),
@@ -33,11 +25,13 @@ export class AnalysisService {
 	}
 
 	countByStatus(status: AnalysisStatus) {
-		return this.repository.count({ where: { status } })
+		return this.repository.prisma.count({ where: { status } })
 	}
 
 	async start(id: string) {
-		const analysis = await this.repository.findUnique({ where: { id } })
+		const analysis = await this.repository.prisma.findUnique({
+			where: { id },
+		})
 		if (!analysis) {
 			throw new NotFoundException('Analysis not found')
 		}
@@ -49,10 +43,10 @@ export class AnalysisService {
 					: {}
 			) as Analysis
 			result.status = 'done'
-			void this.repository.update({ where: { id }, data: result })
+			void this.repository.prisma.update({ where: { id }, data: result })
 		} catch (error) {
 			console.error(error)
-			void this.repository.update({
+			void this.repository.prisma.update({
 				where: { id },
 				data: { ...result, status: 'error' },
 			})
@@ -61,12 +55,10 @@ export class AnalysisService {
 	}
 
 	async prepare(input: string | Express.Multer.File) {
-		console.log(this)
-
 		const text = isFile(input)
 			? await this.extractorService.extractPDFText(input)
 			: input
-		const analysis = await this.repository.create({
+		const analysis = await this.repository.prisma.create({
 			data: {
 				originalText: text,
 				modifiedTextAlternatives: [],

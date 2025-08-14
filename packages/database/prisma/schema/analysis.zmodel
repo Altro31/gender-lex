@@ -11,7 +11,7 @@ model Analysis extends RawAnalysis {
     inputSource InputSource    @default(manual)
 
     Presets     Preset[]
-    userId      String?
+    userId      String?        @default(auth().id)
     User        User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
 
     createdAt   DateTime       @default(now())

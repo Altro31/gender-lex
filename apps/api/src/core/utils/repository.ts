@@ -8,23 +8,21 @@ type CamelCase<S extends string> = S extends `${infer P1}${infer P2}`
 
 type ModelName = CamelCase<Prisma.ModelName>
 class BaseRepository {
+	prisma: any
 	constructor(@Inject(ENHANCED_PRISMA) prisma: PrismaClient) {
-		// @ts-expect-error aaaaaaaaaaaaaaaaaaa
-		const model = this.model as ModelName
-
-		Object.assign(this, prisma[model])
+		// @ts-expect-error this has meta.model attribute
+		this.prisma = prisma[this.meta.model]
 	}
 }
 
-function base(model: ModelName) {
-	const classRef = BaseRepository
-	Object.assign(classRef.prototype, { model })
+export function base(model: ModelName) {
+	const classRef = class extends BaseRepository {}
+	Object.assign(classRef.prototype, { meta: { model } })
 	return classRef
 }
 
-function register(repository: Type<BaseRepository>): Provider {
+export function register(repository: Type<BaseRepository>): Provider {
 	return { provide: repository, useClass: repository }
 }
 
-const Repository = { base, register }
-export default Repository
+export type type<T> = { prisma: T }

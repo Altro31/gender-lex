@@ -1,3 +1,4 @@
+import type { UserSession } from '@mguay/nestjs-better-auth'
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { enhance } from '@repo/db'
@@ -19,10 +20,10 @@ import { getEncryptionKey } from 'src/core/utils/auth'
 				const key = config.getOrThrow<string>('BETTER_AUTH_SECRET')
 				return {
 					getEnhancedPrisma: () => {
-						const user = cls.get('auth')
+						const session = cls.get<UserSession>('auth')
 						return enhance(
 							prisma,
-							{ user: user ?? null },
+							{ user: session?.user ?? null },
 							{
 								encryption: {
 									encryptionKey: getEncryptionKey(key),
