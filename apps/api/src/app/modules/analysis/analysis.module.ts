@@ -7,10 +7,7 @@ import { AnalysisService } from './analysis.service'
 
 @Module({
 	controllers: [AnalysisController],
-	providers: [
-		AnalysisService,
-		{ provide: 'hola', useClass: AnalysisRepository },
-	],
+	providers: [AnalysisService, AnalysisRepository],
 	exports: [AnalysisService],
 	imports: [AiModule, ExtractorModule],
 })

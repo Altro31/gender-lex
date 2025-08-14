@@ -1,20 +1,14 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
-import type {
-	Analysis,
-	AnalysisStatus,
-	Prisma,
-	PrismaClient,
-} from '@repo/db/models'
-import { ENHANCED_PRISMA } from '@zenstackhq/server/nestjs'
+import { Injectable, NotFoundException } from '@nestjs/common'
+import type { Analysis, AnalysisStatus } from '@repo/db/models'
 import { AiService } from 'src/app/modules/ai/ai.service'
+import { AnalysisRepository } from 'src/app/modules/analysis/analysis.repository'
 import { ExtractorService } from 'src/app/modules/extractor/extractor.service'
 import { isFile } from 'src/core/utils/file'
 
 @Injectable()
 export class AnalysisService {
 	constructor(
-		@Inject('hola') public readonly repository: Prisma.AnalysisDelegate,
-		@Inject(ENHANCED_PRISMA) public readonly prismaService: PrismaClient,
+		public readonly repository: AnalysisRepository,
 		private readonly aiService: AiService,
 		private readonly extractorService: ExtractorService,
 	) {}

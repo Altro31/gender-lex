@@ -3,5 +3,5 @@ import { UserRepository } from 'src/security/modules/user/user.repository'
 
 @Injectable()
 export class UserService {
-	constructor(public readonly userRepository: UserRepository) {}
+	constructor(public readonly repository: UserRepository) {}
 }
