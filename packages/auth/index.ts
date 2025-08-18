@@ -4,7 +4,16 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { nextCookies } from 'better-auth/next-js'
 import { customSession, anonymous } from 'better-auth/plugins'
 
-const prisma = new PrismaClient()
+declare global {
+	var prisma: PrismaClient | undefined
+}
+
+const prisma = global.prisma || new PrismaClient()
+
+if (process.env.NODE_ENV !== 'production') {
+	global.prisma = prisma
+}
+
 export const auth = betterAuth({
 	trustedOrigins: [process.env.UI_URL ?? ''],
 	database: prismaAdapter(prisma, { provider: 'postgresql' }),

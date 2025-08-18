@@ -31,8 +31,9 @@
 		"register": "Crear Cuenta",
 		"view-details": "Ver detalles",
 		"edit": "Editar",
-		"delete": "Delete",
-		"log-out": "Cerrar Sessión"
+		"delete": "Eliminar",
+		"log-out": "Cerrar Sessión",
+		"deleting": "Eliminando..."
 	},
 	"Login": {
 		"back-to-home": "Volver al inicio",
@@ -75,7 +76,8 @@
 		"name-placeholder": "Tu nombre",
 		"recent": "Reciente",
 		"more": "Más",
-		"cancel": "Cancelar"
+		"cancel": "Cancelar",
+		"are-you-shure": "¿Estás seguro?"
 	},
 	"Register": {
 		"title": "Crear Cuenta",
@@ -109,7 +111,11 @@
 	"Analysis": {
 		"delete": {
 			"title": "Eliminar análisis",
-			"quest": "¿Estás shure que quieres delte este análisis?"
+			"quest": "¿Estás shure que quieres delte este análisis?",
+			"description": {
+				"1": "Esta acción no se puede deshacer. Se eliminará permanentemente el análisis",
+				"2": "y todos sus resultados."
+			}
 		}
 	},
 	"Profile": {

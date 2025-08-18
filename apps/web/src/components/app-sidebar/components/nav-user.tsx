@@ -26,7 +26,6 @@ import LanguageSwitcher from "@/locales/components/language-switcher"
 import { useTranslations } from "next-intl"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
-import { Suspense } from "react"
 
 export default async function NavUser() {
 	const session = await getSession()
@@ -148,9 +147,7 @@ function Login() {
 					<GoogleButton redirect={envs.UI_URL} />
 					<GithubButton redirect={envs.UI_URL} />
 					<DropdownMenuSeparator />
-					<Suspense>
-						<ThemeSwitcher />
-					</Suspense>
+					<ThemeSwitcher />
 					<LanguageSwitcher />
 				</DropdownMenuGroup>
 			</DropdownMenuContent>

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
+import { useSidebar } from "@/components/ui/sidebar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Analysis } from "@repo/db/models"
 import {
@@ -27,12 +28,13 @@ import {
 	User,
 } from "lucide-react"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 interface Props {
 	analysis: Analysis
 }
 export default function AnalysisDetailsContainer({ analysis }: Props) {
+	const sidebar = useSidebar()
 	const [showSensitiveContent, setShowSensitiveContent] = useState(true)
 
 	const getStatusConfig = (status: string) => {
@@ -60,6 +62,12 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 
 	const statusConfig = getStatusConfig(analysis.status)
 	const StatusIcon = statusConfig.icon
+
+	useEffect(() => {
+		sidebar.setOpen(false)
+		// oxlint-disable-next-line exhaustive-deps
+	}, [])
+
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<div className="container mx-auto px-4 py-8">

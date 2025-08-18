@@ -16,73 +16,78 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import DeleteAnalysisAlertDialog from "@/sections/analysis/components/delete-analysis-alert-dialog"
-import { useTranslations } from "next-intl"
+import DeleteAnalysisAlertDialogContent from "@/sections/analysis/components/delete-analysis-alert-dialog-content"
+import { findRecentAnalyses } from "@/services/analysis"
+import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 
-export default function NavRecent({
-	projects,
-}: {
-	projects: {
-		name: string
-		url: string
-	}[]
-}) {
-	const t = useTranslations()
+export default async function NavRecent() {
+	const t = await getTranslations()
+	const { data } = await findRecentAnalyses()
 
 	return (
-		<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-			<SidebarGroupLabel>{t("Commons.recent")}</SidebarGroupLabel>
-			<SidebarMenu>
-				{projects.map((item) => (
-					<SidebarMenuItem key={item.name}>
-						<SidebarMenuButton asChild>
-							<Link href={item.url}>{item.name}</Link>
-						</SidebarMenuButton>
-						<AlertDialog>
-							<DropdownMenu>
-								<DropdownMenuTrigger asChild>
-									<SidebarMenuAction showOnHover>
-										<MoreHorizontal />
-										<span className="sr-only">
-											{t("Commons.more")}
-										</span>
-									</SidebarMenuAction>
-								</DropdownMenuTrigger>
-								<DropdownMenuResponsive>
-									<DropdownMenuItem>
-										<Eye className="text-muted-foreground" />
-										<span>{t("Actions.view-details")}</span>
-									</DropdownMenuItem>
-									<DropdownMenuItem>
-										<Edit className="text-muted-foreground" />
-										<span>{t("Actions.edit")}</span>
-									</DropdownMenuItem>
-									<DropdownMenuSeparator />
-									<AlertDialogTrigger asChild>
-										<DropdownMenuItem variant="destructive">
-											<Trash2 className="text-muted-foreground" />
-											<span>{t("Actions.delete")}</span>
+		!!data?.data?.length && (
+			<SidebarGroup className="group-data-[collapsible=icon]:hidden">
+				<SidebarGroupLabel>{t("Commons.recent")}</SidebarGroupLabel>
+				<SidebarMenu>
+					{data?.data.map((item) => (
+						<SidebarMenuItem key={item.attributes.name}>
+							<SidebarMenuButton asChild>
+								<Link href={"/analysis/" + item.id}>
+									{item.attributes.name}
+								</Link>
+							</SidebarMenuButton>
+							<AlertDialog>
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<SidebarMenuAction showOnHover>
+											<MoreHorizontal />
+											<span className="sr-only">
+												{t("Commons.more")}
+											</span>
+										</SidebarMenuAction>
+									</DropdownMenuTrigger>
+									<DropdownMenuResponsive>
+										<DropdownMenuItem>
+											<Eye className="text-muted-foreground" />
+											<span>
+												{t("Actions.view-details")}
+											</span>
 										</DropdownMenuItem>
-									</AlertDialogTrigger>
-								</DropdownMenuResponsive>
-							</DropdownMenu>
-							<DeleteAnalysisAlertDialog model={null} />
-						</AlertDialog>
+										<DropdownMenuItem>
+											<Edit className="text-muted-foreground" />
+											<span>{t("Actions.edit")}</span>
+										</DropdownMenuItem>
+										<DropdownMenuSeparator />
+										<AlertDialogTrigger asChild>
+											<DropdownMenuItem variant="destructive">
+												<Trash2 className="text-muted-foreground" />
+												<span>
+													{t("Actions.delete")}
+												</span>
+											</DropdownMenuItem>
+										</AlertDialogTrigger>
+									</DropdownMenuResponsive>
+								</DropdownMenu>
+								<DeleteAnalysisAlertDialogContent
+									analysis={item}
+								/>
+							</AlertDialog>
+						</SidebarMenuItem>
+					))}
+					<SidebarMenuItem>
+						<SidebarMenuButton
+							asChild
+							className="text-sidebar-foreground/70"
+						>
+							<Link href="/analysis">
+								<MoreHorizontal className="text-sidebar-foreground/70" />
+								<span>{t("Commons.more")}</span>
+							</Link>
+						</SidebarMenuButton>
 					</SidebarMenuItem>
-				))}
-				<SidebarMenuItem>
-					<SidebarMenuButton
-						asChild
-						className="text-sidebar-foreground/70"
-					>
-						<Link href="/analysis">
-							<MoreHorizontal className="text-sidebar-foreground/70" />
-							<span>{t("Commons.more")}</span>
-						</Link>
-					</SidebarMenuButton>
-				</SidebarMenuItem>
-			</SidebarMenu>
-		</SidebarGroup>
+				</SidebarMenu>
+			</SidebarGroup>
+		)
 	)
 }

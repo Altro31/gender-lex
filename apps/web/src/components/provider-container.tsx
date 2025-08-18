@@ -2,6 +2,7 @@
 
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppProgressProvider as ProgressProvider } from "@bprogress/next"
+import { NuqsAdapter } from "nuqs/adapters/next"
 import type { PropsWithChildren } from "react"
 
 export default function ProviderContainer({
@@ -13,7 +14,9 @@ export default function ProviderContainer({
 			height="3px"
 			options={{ showSpinner: false }}
 		>
-			<SidebarProvider>{children}</SidebarProvider>
+			<NuqsAdapter>
+				<SidebarProvider>{children}</SidebarProvider>
+			</NuqsAdapter>
 		</ProgressProvider>
 	)
 }

@@ -1,15 +1,5 @@
 "use client"
 
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -30,8 +20,17 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import type { AnalysesResponse, StatusCountResponse } from "@/types/analyses"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { cn } from "@/lib/utils"
+import AnalysisActions from "@/sections/analysis/components/analysis-actions"
+import DeleteAnalysisAlertDialogContent from "@/sections/analysis/components/delete-analysis-alert-dialog-content"
+import { redoAnalysis } from "@/services/analysis"
+import type {
+	AnalysesResponse,
+	AnalysesResponseItem,
+	StatusCountResponse,
+} from "@/types/analyses"
+import { useRouter } from "@bprogress/next"
 import { AnalysisStatus } from "@repo/db/models"
 import {
 	AlertTriangle,
@@ -45,41 +44,25 @@ import {
 	Trash2,
 	XCircle,
 } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { useState } from "react"
-import { useRouter } from "@bprogress/next"
 import Link from "next/link"
-import { deleteAnalysis, redoAnalysis } from "@/services/analysis"
+import { Fragment, useState } from "react"
 
 interface Props {
 	analysesResponse: AnalysesResponse
 	statusCount: StatusCountResponse
 }
 
-type ResponseAnalysis = AnalysesResponse["data"][number]
-
 export default function AnalysisListContainer({
 	analysesResponse,
 	statusCount,
 }: Props) {
 	const router = useRouter()
-	console.log(analysesResponse)
 
 	const { data: analyses } = analysesResponse
 	const [searchTerm, setSearchTerm] = useState("")
 	const [statusFilter, setStatusFilter] = useState<AnalysisStatus | "all">(
 		"all",
 	)
-	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-	const [analysisToDelete, setAnalysisToDelete] =
-		useState<ResponseAnalysis | null>(null)
-
-	const handleDeleteAnalysis = async () => {
-		if (!analysisToDelete) return
-		await deleteAnalysis(analysisToDelete.id)
-		setIsDeleteDialogOpen(false)
-		setAnalysisToDelete(null)
-	}
 
 	const handleTab = (value: AnalysisStatus | "all") => {
 		setStatusFilter(value)
@@ -172,234 +155,174 @@ export default function AnalysisListContainer({
 								</p>
 							</div>
 						) : (
-							<div className="space-y-4">
-								{analyses.map((analysis) => {
-									const StatusIcon =
-										statusConfig[analysis.attributes.status]
-											.icon
-									return (
-										<Card
-											key={analysis.id}
-											className="transition-shadow hover:shadow-md"
-										>
-											<CardHeader className="pb-3">
-												<div className="flex items-start justify-between">
-													<div className="flex-1">
-														<div className="mb-2 flex items-center gap-3">
-															<CardTitle className="text-lg">
-																{
-																	analysis
-																		.attributes
-																		.name
-																}
-															</CardTitle>
-															<Badge
-																className={
-																	statusConfig[
-																		analysis
-																			.attributes
-																			.status
-																	].color
-																}
-															>
-																<StatusIcon className="mr-1 h-3 w-3" />
-																{
-																	statusConfig[
-																		analysis
-																			.attributes
-																			.status
-																	].label
-																}
-															</Badge>
-														</div>
-														<CardDescription className="flex items-center gap-4 text-sm">
-															<span>
-																Preset:
-																{
-																	" Preset de prueba"
-																}
-																{/* {
+							<>
+								<div className="space-y-4">
+									{analyses.map((analysis) => {
+										const StatusIcon =
+											statusConfig[
+												analysis.attributes.status
+											].icon
+										return (
+											<Fragment key={analysis.id}>
+												<Card className="transition-shadow hover:shadow-md">
+													<CardHeader className="pb-3">
+														<div className="flex items-start justify-between">
+															<div className="flex-1">
+																<div className="mb-2 flex items-center gap-3">
+																	<CardTitle className="text-lg">
+																		{
+																			analysis
+																				.attributes
+																				.name
+																		}
+																	</CardTitle>
+																	<Badge
+																		className={
+																			statusConfig[
+																				analysis
+																					.attributes
+																					.status
+																			]
+																				.color
+																		}
+																	>
+																		<StatusIcon className="mr-1 h-3 w-3" />
+																		{
+																			statusConfig[
+																				analysis
+																					.attributes
+																					.status
+																			]
+																				.label
+																		}
+																	</Badge>
+																</div>
+																<CardDescription className="flex items-center gap-4 text-sm">
+																	<span>
+																		Preset:
+																		{
+																			" Preset de prueba"
+																		}
+																		{/* {
 																			analysis.presetName
 																		} */}
-															</span>
-															<span>•</span>
-															<span>
-																Fuente:{" "}
-																{analysis
-																	.attributes
-																	.inputSource ===
-																"manual"
-																	? "Manual"
-																	: "Archivo"}
-															</span>
-															<span>•</span>
-															<span>
-																{new Date(
-																	analysis.attributes.createdAt,
-																).toLocaleDateString()}
-															</span>
-														</CardDescription>
-													</div>
-													<DropdownMenu>
-														<DropdownMenuTrigger
-															asChild
-														>
-															<Button
-																variant="ghost"
-																size="sm"
-																className="h-8 w-8 p-0"
-															>
-																<Filter className="h-4 w-4" />
-															</Button>
-														</DropdownMenuTrigger>
-														<DropdownMenuContent align="end">
-															<DropdownMenuLabel>
-																Acciones
-															</DropdownMenuLabel>
-															<DropdownMenuSeparator />
-															<DropdownMenuItem
-																asChild
-															>
-																<Link
-																	href={`/analysis/${analysis.id}`}
-																>
-																	<Eye className="mr-2 h-4 w-4" />
-																	Ver Detalles
-																</Link>
-															</DropdownMenuItem>
-															<DropdownMenuItem
-																onClick={() =>
-																	redoAnalysis(
-																		analysis.id,
-																	)
+																	</span>
+																	<span>
+																		•
+																	</span>
+																	<span>
+																		Fuente:{" "}
+																		{analysis
+																			.attributes
+																			.inputSource ===
+																		"manual"
+																			? "Manual"
+																			: "Archivo"}
+																	</span>
+																	<span>
+																		•
+																	</span>
+																	<span>
+																		{new Date(
+																			analysis.attributes.createdAt,
+																		).toLocaleDateString()}
+																	</span>
+																</CardDescription>
+															</div>
+
+															<AnalysisActions
+																analysis={
+																	analysis
 																}
 															>
-																<RotateCcw className="mr-2 h-4 w-4" />
-																Rehacer Análisis
-															</DropdownMenuItem>
-															<DropdownMenuSeparator />
-															<DropdownMenuItem
-																onClick={() => {
-																	setAnalysisToDelete(
-																		analysis,
-																	)
-																	setIsDeleteDialogOpen(
-																		true,
-																	)
-																}}
-																className="text-red-600"
-															>
-																<Trash2 className="mr-2 h-4 w-4" />
-																Eliminar
-															</DropdownMenuItem>
-														</DropdownMenuContent>
-													</DropdownMenu>
-												</div>
-											</CardHeader>
-
-											<CardContent className="pb-3">
-												<div className="space-y-4">
-													{/* Progress Bar for Running Analysis */}
-													{analysis.attributes
-														.status ===
-														"analyzing" && (
-														<div className="space-y-2">
-															<div className="flex justify-between text-sm">
-																<span>
-																	Progreso del
-																	análisis
-																</span>
-																<span>
-																	{/* {
+																<Button
+																	variant="ghost"
+																	size="sm"
+																	className="h-8 w-8 p-0"
+																>
+																	<Filter className="h-4 w-4" />
+																</Button>
+															</AnalysisActions>
+														</div>
+													</CardHeader>
+													<CardContent className="pb-3">
+														<div className="space-y-4">
+															{/* Progress Bar for Running Analysis */}
+															{analysis.attributes
+																.status ===
+																"analyzing" && (
+																<div className="space-y-2">
+																	<div className="flex justify-between text-sm">
+																		<span>
+																			Progreso
+																			del
+																			análisis
+																		</span>
+																		<span>
+																			{/* {
 																				analysis
 																					.attributes
 																					.progress
 																			} */}
-																	%
-																</span>
+																			%
+																		</span>
+																	</div>
+																	<Progress
+																		value={
+																			0
+																			// analysis
+																			// 	.attributes
+																			// 	.progress
+																		}
+																		className="h-2"
+																	/>
+																</div>
+															)}
+
+															{/* Input Preview */}
+															<div className="space-y-2">
+																<div className="text-sm font-medium text-gray-700">
+																	Texto
+																	Analizado:
+																</div>
+																<p className="line-clamp-2 rounded bg-gray-50 p-2 text-sm text-gray-600">
+																	{
+																		analysis
+																			.attributes
+																			.originalText
+																	}
+																</p>
 															</div>
-															<Progress
-																value={
-																	0
-																	// analysis
-																	// 	.attributes
-																	// 	.progress
-																}
-																className="h-2"
-															/>
 														</div>
-													)}
+													</CardContent>
 
-													{/* Input Preview */}
-													<div className="space-y-2">
-														<div className="text-sm font-medium text-gray-700">
-															Texto Analizado:
+													<CardFooter className="border-t pt-3">
+														<div className="flex w-full items-center justify-between text-xs text-gray-500">
+															<span>
+																ID:{" "}
+																{analysis.id}
+															</span>
+
+															{analysis.attributes
+																.updatedAt && (
+																<span>
+																	Completado:{" "}
+																	{new Date(
+																		analysis.attributes.updatedAt,
+																	).toLocaleString()}
+																</span>
+															)}
 														</div>
-														<p className="line-clamp-2 rounded bg-gray-50 p-2 text-sm text-gray-600">
-															{
-																analysis
-																	.attributes
-																	.originalText
-															}
-														</p>
-													</div>
-												</div>
-											</CardContent>
-
-											<CardFooter className="border-t pt-3">
-												<div className="flex w-full items-center justify-between text-xs text-gray-500">
-													<span>
-														ID: {analysis.id}
-													</span>
-
-													{analysis.attributes
-														.updatedAt && (
-														<span>
-															Completado:{" "}
-															{new Date(
-																analysis.attributes.updatedAt,
-															).toLocaleString()}
-														</span>
-													)}
-												</div>
-											</CardFooter>
-										</Card>
-									)
-								})}
-							</div>
+													</CardFooter>
+												</Card>
+											</Fragment>
+										)
+									})}
+								</div>
+							</>
 						)}
 					</>
 				</Tabs>
-
-				{/* Delete Confirmation Dialog */}
-				<AlertDialog
-					open={isDeleteDialogOpen}
-					onOpenChange={setIsDeleteDialogOpen}
-				>
-					<AlertDialogContent>
-						<AlertDialogHeader>
-							<AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-							<AlertDialogDescription>
-								Esta acción no se puede deshacer. Se eliminará
-								permanentemente el análisis
-								<strong className="font-medium">
-									{" "}
-									{analysisToDelete?.attributes.name}
-								</strong>{" "}
-								y todos sus resultados.
-							</AlertDialogDescription>
-						</AlertDialogHeader>
-						<AlertDialogFooter>
-							<AlertDialogCancel>Cancelar</AlertDialogCancel>
-							<AlertDialogAction
-								onClick={handleDeleteAnalysis}
-								className="bg-red-600 hover:bg-red-700"
-							>
-								Eliminar
-							</AlertDialogAction>
-						</AlertDialogFooter>
-					</AlertDialogContent>
-				</AlertDialog>
 			</div>
 		</div>
 	)

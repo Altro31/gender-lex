@@ -32,7 +32,8 @@
 		"log-out": "Log out",
 		"register": "Create account",
 		"registering": "Creating account ...",
-		"view-details": "View details"
+		"view-details": "View details",
+		"deleting": "Deleting..."
 	},
 	"Commons": {
 		"email": "Email",
@@ -44,7 +45,8 @@
 		"more": "More",
 		"name": "Name",
 		"name-placeholder": "Your name",
-		"recent": "Recent"
+		"recent": "Recent",
+		"are-you-shure": "Are you shure?"
 	},
 	"Login": {
 		"back-to-home": "Back to home",
@@ -80,7 +82,11 @@
 	"Analysis": {
 		"delete": {
 			"quest": "Are You Shure Yo Want Delte This Analysis?",
-			"title": "Delete analysis"
+			"title": "Delete analysis",
+			"description": {
+				"1": "This action cannot be undone. \nWill be permanently eliminated the analysis",
+				"2": "and all its results."
+			}
 		}
 	},
 	"Profile": {

@@ -1,12 +1,7 @@
 import { cookies } from "next/headers"
-import { Suspense } from "react"
 
 export default function ThemeRegister() {
-	return (
-		<Suspense>
-			<Register />
-		</Suspense>
-	)
+	return <Register />
 }
 
 async function Register() {

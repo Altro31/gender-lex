@@ -7,17 +7,19 @@ model Model {
     settings     Settings      @json
     name         String
     apiKey       String?       @encrypted
+    provider     Provider
 
     User         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId       String        @default(auth().id)
 
+    createdAt    DateTime      @default(now())
+    updatedAt    DateTime      @updatedAt
+    usedAt       DateTime?
+
     PresetModels PresetModel[]
 
-    // Require login
-    @@deny('all', auth() == null)
-
-    // User can do everything
-    @@allow('all', auth() == User)
+    // Owners can do anything
+    @@allow("all",auth()==User)
 
     // Admins can delete models
     @@allow('delete', auth().role == admin)
@@ -30,7 +32,14 @@ enum Provider {
 
 type Connection {
     identifier String
-    url        String @url("Connection url must me a valid URL")
+    url        String           @url("Connection url must me a valid URL")
+    status     ConnectionStatus
+}
+
+enum ConnectionStatus {
+    active
+    inactive
+    error
 }
 
 type Settings {

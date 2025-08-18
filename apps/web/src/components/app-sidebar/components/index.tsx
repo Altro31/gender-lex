@@ -12,7 +12,6 @@ import {
 	SidebarHeader,
 	SidebarRail,
 } from "@/components/ui/sidebar"
-import { Skeleton } from "@/components/ui/skeleton"
 
 const data = {
 	navMain: [
@@ -63,15 +62,11 @@ export default async function AppSidebar({
 				<Logo />
 			</SidebarHeader>
 			<SidebarContent>
-				<React.Suspense>
-					<NavMain items={data.navMain} />
-				</React.Suspense>
+				<NavMain items={data.navMain} />
 				<NavRecent projects={data.projects} />
 			</SidebarContent>
 			<SidebarFooter>
-				<React.Suspense fallback={<Skeleton className="h-12 w-full" />}>
-					<NavUser />
-				</React.Suspense>
+				<NavUser />
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>
