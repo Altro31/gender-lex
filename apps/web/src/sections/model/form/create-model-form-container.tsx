@@ -1,6 +1,5 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { MultiStepViewer } from "@/sections/model/form/model-form"
 import { ModelSchema } from "@/sections/model/form/model-schema"
@@ -10,7 +9,7 @@ import { useAction } from "next-safe-action/hooks"
 import { useForm } from "react-hook-form"
 
 export default function CreateModelFormContainer() {
-	const form = useForm<ModelSchema>({
+	const form = useForm({
 		resolver: zodResolver(ModelSchema),
 		defaultValues: {
 			apiKey: "",

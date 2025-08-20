@@ -37,20 +37,6 @@ const data = {
 			icon: <Settings />,
 		},
 	],
-	projects: [
-		{
-			name: "Design Engineering",
-			url: "#",
-		},
-		{
-			name: "Sales & Marketing",
-			url: "#",
-		},
-		{
-			name: "Travel",
-			url: "#",
-		},
-	],
 }
 
 export default async function AppSidebar({
@@ -63,7 +49,7 @@ export default async function AppSidebar({
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={data.navMain} />
-				<NavRecent projects={data.projects} />
+				<NavRecent />
 			</SidebarContent>
 			<SidebarFooter>
 				<NavUser />

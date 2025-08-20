@@ -76,7 +76,9 @@ export default function ModelListsContainer({ modelsResponse }: Props) {
 						<Input
 							value={searchTerm}
 							placeholder="Buscar modelos..."
-							onInput={(e) => setSearchTerm(e.target.value)}
+							onInput={(e) =>
+								setSearchTerm((e.target as any).value)
+							}
 							className="pl-10"
 						/>
 					</div>

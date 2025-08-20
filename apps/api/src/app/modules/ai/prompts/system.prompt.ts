@@ -57,8 +57,8 @@ Act as an expert in gender bias analysis in texts, specializing in women’s hea
 
 ## Output Format in JSON:
 {
+    "name": "Title for originalText text (no more than 10 words)",
     "originalText": "<Original text here>",
-    
     "biasedTerms": [
         {
             "content": "<Identified term>",

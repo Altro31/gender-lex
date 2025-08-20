@@ -32,6 +32,7 @@ const provider = customProvider({
 
 // @ts-nocheck
 const schema = AnalysisSchema?.pick({
+	name: true,
 	originalText: true,
 	modifiedTextAlternatives: true,
 	biasedTerms: true,
