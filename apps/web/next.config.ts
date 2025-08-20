@@ -13,10 +13,6 @@ const nextConfig: NextConfig = {
 	} as any,
 	rewrites: async () => [
 		{
-			source: "/sse",
-			destination: `${envs.API_URL}/sse`,
-		},
-		{
 			source: "/api/:path*",
 			destination: `${envs.API_URL}/api/:path*`,
 		},
