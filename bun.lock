@@ -63,6 +63,7 @@
         "@nestjs/schematics": "^11.0.0",
         "@nestjs/swagger": "^11.1.0",
         "@nestjs/testing": "^11.0.1",
+        "@repo/types": "workspace:*",
         "@swc/cli": "^0.6.0",
         "@swc/core": "^1.10.7",
         "@types/adm-zip": "^0.5.6",
@@ -140,6 +141,7 @@
         "zustand": "^5.0.6",
       },
       "devDependencies": {
+        "@repo/types": "workspace:*",
         "@tailwindcss/postcss": "^4",
         "@types/react": "^19",
         "@types/react-dom": "^19",
@@ -175,6 +177,10 @@
       "peerDependencies": {
         "zod": "catalog:",
       },
+    },
+    "packages/types": {
+      "name": "@repo/types",
+      "version": "0.0.0",
     },
   },
   "catalog": {
@@ -748,6 +754,8 @@
     "@repo/auth": ["@repo/auth@workspace:packages/auth"],
 
     "@repo/db": ["@repo/db@workspace:packages/database"],
+
+    "@repo/types": ["@repo/types@workspace:packages/types"],
 
     "@scalar/nestjs-api-reference": ["@scalar/nestjs-api-reference@0.5.12", "", { "dependencies": { "@scalar/types": "0.2.11" } }, "sha512-hv8ycGXAPmzu66m7ttzgbG9jJyM3a4dYsCsC6gVVUJ1FyjWzMcy8MJeuQ13LXi1cnR6v/KAPtOfmFGBLx4+3lQ=="],
 

@@ -30,6 +30,7 @@ async function bootstrap() {
 	const configService = app.get(ConfigService<EnvTypes>)
 	const uiURL = configService.get<string>('UI_URL')
 	app.use(cors({ origin: uiURL }))
+
 	const port = configService.get<number>('PORT') ?? 4000
 	await app.listen(port)
 	const url = await app.getUrl()

@@ -4,10 +4,6 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { nextCookies } from 'better-auth/next-js'
 import { customSession, anonymous } from 'better-auth/plugins'
 
-declare global {
-	var prisma: PrismaClient | undefined
-}
-
 const prisma = global.prisma || new PrismaClient()
 
 if (process.env.NODE_ENV !== 'production') {

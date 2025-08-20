@@ -1,6 +1,7 @@
 "use client"
 
 import { SidebarProvider } from "@/components/ui/sidebar"
+import { EventSourceProvider } from "@/lib/sse"
 import { AppProgressProvider as ProgressProvider } from "@bprogress/next"
 import { NuqsAdapter } from "nuqs/adapters/next"
 import type { PropsWithChildren } from "react"
@@ -15,7 +16,9 @@ export default function ProviderContainer({
 			options={{ showSpinner: false }}
 		>
 			<NuqsAdapter>
-				<SidebarProvider>{children}</SidebarProvider>
+				<EventSourceProvider url={"/sse"}>
+					<SidebarProvider>{children}</SidebarProvider>
+				</EventSourceProvider>
 			</NuqsAdapter>
 		</ProgressProvider>
 	)

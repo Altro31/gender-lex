@@ -13,12 +13,15 @@ import { AnaliceDTO } from 'src/app/modules/analysis/dto/analice.dto'
 import { PrepareResponseDTO } from 'src/app/modules/analysis/dto/prepare-response.dto'
 import { StatusCountDTO } from 'src/app/modules/analysis/dto/status-count.dto'
 import { isFile } from 'src/core/utils/file'
+import { Item } from 'src/item.dto'
 import { Auth } from 'src/security/modules/auth/decorators/auth.decorator'
 import { AnalysisService } from './analysis.service'
 
 @Auth()
 @Controller('analysis')
 export class AnalysisController {
+	private readonly items = [] as Item[]
+
 	constructor(private readonly analysisService: AnalysisService) {}
 
 	@Post('prepare')

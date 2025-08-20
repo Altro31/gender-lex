@@ -11,14 +11,16 @@ const nextConfig: NextConfig = {
 		devtoolSegmentExplorer: true,
 		authInterrupts: true,
 	} as any,
-	async rewrites() {
-		return [
-			{
-				source: "/api/:path*",
-				destination: `${envs.API_URL}/api/:path*`,
-			},
-		]
-	},
+	rewrites: async () => [
+		{
+			source: "/sse",
+			destination: `${envs.API_URL}/sse`,
+		},
+		{
+			source: "/api/:path*",
+			destination: `${envs.API_URL}/api/:path*`,
+		},
+	],
 }
 
 const withNextIntl = createNextIntlPlugin({
