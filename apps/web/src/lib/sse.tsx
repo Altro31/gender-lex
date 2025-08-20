@@ -9,18 +9,16 @@ import type { MessageMapper } from "@repo/types/sse"
 
 const EventSourceContext = createContext<EventSource | null>(null)
 
-interface Props extends PropsWithChildren {
-	url: string
-}
+interface Props extends PropsWithChildren {}
 
-export function EventSourceProvider({ url, children }: Props) {
+export function EventSourceProvider({ children }: Props) {
 	const [eventSource, setEventSource] = useState<EventSource | null>(null)
 	// oxlint-disable-next-line exhaustive-deps
 	useEffect(() => {
-		const source = new EventSource(url, { withCredentials: true })
+		const source = new EventSource("/sse", { withCredentials: true })
 		setEventSource(source)
 		return () => source.close()
-	}, [setEventSource, url])
+	}, [setEventSource])
 	return (
 		<EventSourceContext value={eventSource}>{children}</EventSourceContext>
 	)

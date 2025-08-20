@@ -16,7 +16,7 @@ export default function ProviderContainer({
 			options={{ showSpinner: false }}
 		>
 			<NuqsAdapter>
-				<EventSourceProvider url={"/sse"}>
+				<EventSourceProvider>
 					<SidebarProvider>{children}</SidebarProvider>
 				</EventSourceProvider>
 			</NuqsAdapter>
