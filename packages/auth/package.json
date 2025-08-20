@@ -6,6 +6,6 @@
 		"@repo/db": "workspace:*"
 	},
 	"exports": {
-		".": "./index.ts"
+		".": "./index.js"
 	}
 }
