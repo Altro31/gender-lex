@@ -4,13 +4,13 @@ import { Form } from "@/components/ui/form"
 import { MultiStepViewer } from "@/sections/model/form/model-form"
 import { ModelSchema } from "@/sections/model/form/model-schema"
 import { createModel } from "@/services/model"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema"
 import { useAction } from "next-safe-action/hooks"
 import { useForm } from "react-hook-form"
 
 export default function CreateModelFormContainer() {
-	const form = useForm({
-		resolver: zodResolver(ModelSchema),
+	const form = useForm<ModelSchema>({
+		resolver: standardSchemaResolver(ModelSchema),
 		defaultValues: {
 			apiKey: "",
 			connection: { identifier: "", url: "" },
