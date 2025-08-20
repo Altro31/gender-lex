@@ -1,4 +1,4 @@
-import z from "zod/mini"
+import { z } from "zod/mini"
 
 export type ModelSchema = z.infer<typeof ModelSchema>
 export const ModelSchema = z.object({

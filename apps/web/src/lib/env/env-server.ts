@@ -1,15 +1,15 @@
-import * as v from "valibot"
+import { z } from "zod"
 
-const Envs = v.object({
-	API_URL: v.pipe(v.string(), v.url()),
-	AUTH_GOOGLE_ID: v.string(),
-	AUTH_GOOGLE_SECRET: v.string(),
-	AUTH_GITHUB_ID: v.string(),
-	AUTH_GITHUB_SECRET: v.string(),
-	BETTER_AUTH_SECRET: v.string(),
-	BETTER_AUTH_URL: v.pipe(v.string(), v.url()),
-	UI_URL: v.pipe(v.string(), v.url()),
+const Envs = z.object({
+	API_URL: z.url(),
+	AUTH_GOOGLE_ID: z.string(),
+	AUTH_GOOGLE_SECRET: z.string(),
+	AUTH_GITHUB_ID: z.string(),
+	AUTH_GITHUB_SECRET: z.string(),
+	BETTER_AUTH_SECRET: z.string(),
+	BETTER_AUTH_URL: z.url(),
+	UI_URL: z.url(),
 })
 
-const envs = v.parse(Envs, process.env)
+const envs = z.parse(Envs, process.env)
 export default envs
