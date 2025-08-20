@@ -4,7 +4,6 @@ import ThemeRegister from "@/components/theme/theme-register"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
 import "@/globals.css"
-import envs from "@/lib/env/env-server"
 import { EventSourceProvider } from "@/lib/sse"
 import type { Metadata } from "next"
 import { NextIntlClientProvider } from "next-intl"
@@ -26,7 +25,7 @@ export default async function RootLayout({
 				<ProgressProvider>
 					<NuqsAdapter>
 						<NextIntlClientProvider>
-							<EventSourceProvider url={envs.API_URL + "/sse"}>
+							<EventSourceProvider>
 								<SidebarProvider>
 									{children}
 									<FloatingChatbot />
