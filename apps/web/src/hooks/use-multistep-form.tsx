@@ -1,50 +1,84 @@
-import { useState } from "react"
+import type { Decrement } from "@/types/utils"
+import { AnimatePresence, motion } from "motion/react"
+import { useState, type ComponentProps, type MouseEvent } from "react"
 
-type UseFormStepsProps = {
-	initialSteps: any[]
-	onStepValidation?: (step: any) => Promise<boolean> | boolean
+type Steps<S extends number> = S extends 0
+	? 0
+	: S extends 1
+		? 1
+		: S | Steps<Decrement<S>>
+
+type ReadonlyArray = readonly any[]
+
+type UseFormStepsProps<T extends ReadonlyArray> = {
+	steps: T
+	onStepValidation?: (
+		step: Steps<T["length"]>,
+		currentStepData: T[number],
+	) => Promise<boolean> | boolean
 }
-export type UseMultiFormStepsReturn = {
-	steps: any[]
-	currentStep: number
-	currentStepData: any
-	progress: number
-	isFirstStep: boolean
-	isLastStep: boolean
-	goToNext: () => Promise<boolean>
-	goToPrevious: () => void
-}
-export function useMultiStepForm({
-	initialSteps,
-	onStepValidation,
-}: UseFormStepsProps): UseMultiFormStepsReturn {
-	const steps = initialSteps
-	const [currentStep, setCurrentStep] = useState(1)
-	const goToNext = async () => {
-		const currentStepData = initialSteps[currentStep - 1]
+
+export function useMultiStepForm<
+	T extends ReadonlyArray,
+	AvailableSteps = Steps<T["length"]>,
+>({ steps, onStepValidation }: UseFormStepsProps<T>) {
+	const [currentStep, setCurrentStep] = useState<AvailableSteps>(1 as any)
+	const currentStepData = steps[(currentStep as any) - 1]! as T[number]
+	const goToNext = async (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault()
 		if (onStepValidation) {
-			const isValid = await onStepValidation(currentStepData)
+			// @ts-ignore
+			const isValid = await onStepValidation(currentStep, currentStepData)
 			if (!isValid) return false
 		}
+		// @ts-ignore
 		if (currentStep < steps.length) {
-			setCurrentStep((prev) => prev + 1)
+			// @ts-ignore
+			setCurrentStep((step) => step + 1)
 			return true
 		}
 		return false
 	}
-	const goToPrevious = () => {
+	const goToPrevious = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault()
+		// @ts-ignore
 		if (currentStep > 1) {
-			setCurrentStep((prev) => prev - 1)
+			// @ts-ignore
+			setCurrentStep((step) => step - 1)
 		}
 	}
+
+	const AnimateContainer = ({
+		children,
+		className,
+	}: ComponentProps<"div">) => (
+		<AnimatePresence mode="popLayout">
+			<motion.div
+				// @ts-ignore
+				key={currentStep}
+				initial={{ opacity: 0, x: 15 }}
+				animate={{ opacity: 1, x: 0 }}
+				exit={{ opacity: 0, x: -15 }}
+				transition={{ duration: 0.4, type: "spring" }}
+				className={className}
+			>
+				{children}
+			</motion.div>
+		</AnimatePresence>
+	)
+
 	return {
 		steps,
 		currentStep,
-		currentStepData: steps[currentStep - 1],
-		progress: (currentStep / steps.length) * 100,
+		currentStepData,
+		progress: ((1 / (steps.length - 1)) *
+			// @ts-ignore
+			(currentStep - 1) *
+			100) as number,
 		isFirstStep: currentStep === 1,
 		isLastStep: currentStep === steps.length,
 		goToNext,
 		goToPrevious,
+		AnimateContainer,
 	}
 }

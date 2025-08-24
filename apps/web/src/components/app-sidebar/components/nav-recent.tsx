@@ -31,9 +31,12 @@ export default async function NavRecent() {
 				<SidebarGroupLabel>{t("Commons.recent")}</SidebarGroupLabel>
 				<SidebarMenu>
 					{data?.data.map((item) => (
-						<SidebarMenuItem key={item.attributes.name}>
+						<SidebarMenuItem key={item.id}>
 							<SidebarMenuButton asChild>
-								<Link href={"/analysis/" + item.id}>
+								<Link
+									href={"/analysis/" + item.id}
+									className=""
+								>
 									{item.attributes.name}
 								</Link>
 							</SidebarMenuButton>

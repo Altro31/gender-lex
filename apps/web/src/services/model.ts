@@ -5,6 +5,7 @@ import { getSession } from "@/lib/auth/auth-server"
 import { actionClient } from "@/lib/safe-action"
 import { ModelSchema } from "@/sections/model/form/model-schema"
 import { unauthorized } from "next/navigation"
+import { returnValidationErrors } from "next-safe-action"
 
 export async function findModels({
 	page,
@@ -28,11 +29,17 @@ export async function findModels({
 export const createModel = actionClient
 	.inputSchema(ModelSchema)
 	.action(async ({ parsedInput }) => {
-		await client.POST("/zen/model", {
+		const { data, error } = await client.POST("/zen/model", {
 			body: { data: { type: "model", attributes: parsedInput as any } },
 		})
+		if (error)
+			return returnValidationErrors(
+				ModelSchema,
+				error.errors[0]!.zodErrors!,
+			)
+
 		return {
 			success: true,
-			message: "Form submitted successfully",
+			data,
 		}
 	})

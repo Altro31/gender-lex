@@ -2,11 +2,13 @@ import { z } from "zod/mini"
 
 export type ModelSchema = z.infer<typeof ModelSchema>
 export const ModelSchema = z.object({
-	name: z.string(),
-	provider: z.string(),
+	name: z.string().check(z.minLength(1, "Name field is required")),
+	provider: z.string().check(z.minLength(1, "Provider field is required")),
 	connection: z.object({
-		identifier: z.string(),
-		url: z.string(),
+		identifier: z
+			.string()
+			.check(z.minLength(1, "Identifier field is required")),
+		url: z.url("Url field is required"),
 	}),
 	apiKey: z.optional(z.string()),
 	settings: z.object({

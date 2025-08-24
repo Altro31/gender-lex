@@ -32,8 +32,8 @@ enum Provider {
 
 type Connection {
     identifier String
-    url        String           @url("Connection url must me a valid URL")
-    status     ConnectionStatus
+    url        String            @url("Connection url must me a valid URL")
+    status     ConnectionStatus?
 }
 
 enum ConnectionStatus {
@@ -45,5 +45,5 @@ enum ConnectionStatus {
 type Settings {
     temperature Float
 
-    @@validate(temperature < 0 || temperature > 10, "Temperature must be in range of 0 to 10")
+    @@validate(temperature > 0 || temperature <= 1, "Temperature must be in range of 0 to 1")
 }

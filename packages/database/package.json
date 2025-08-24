@@ -8,7 +8,7 @@
 		"migrate:prod": "prisma migrate deploy"
 	},
 	"dependencies": {
-		"@prisma/client": "6.13.0",
+		"@prisma/client": "6.14.0",
 		"@zenstackhq/runtime": "catalog:"
 	},
 	"devDependencies": {
