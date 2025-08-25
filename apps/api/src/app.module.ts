@@ -9,21 +9,22 @@ import { JwtModule } from '@nestjs/jwt'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { ApiHandlerService } from '@zenstackhq/server/nestjs'
 import { ClsModule } from 'nestjs-cls'
-import { ZodValidationPipe } from 'nestjs-zod'
+
 import * as path from 'path'
+import { AppController } from 'src/app.controller'
 import { AnalysisModule } from 'src/app/modules/analysis/analysis.module'
 import { ModelModule } from 'src/app/modules/model/model.module'
-import { CrudMiddleware } from 'src/core/prisma/middlewares/crud.middleware'
-import { PrismaModule } from 'src/core/prisma/prisma.module'
-import { PrismaService } from 'src/core/prisma/prisma.service'
+import { SseModule } from 'src/core/modules/sse/sse.module'
+import { CrudMiddleware } from 'src/core/modules/prisma/middlewares/crud.middleware'
+import { PrismaModule } from 'src/core/modules/prisma/prisma.module'
+import { PrismaService } from 'src/core/modules/prisma/prisma.service'
 import z from 'zod'
 import { AiModule } from './app/modules/ai/ai.module'
 import { ExtractorModule } from './app/modules/extractor/extractor.module'
 import { PresetModule } from './app/modules/preset/preset.module'
 import { AuthModule } from './security/modules/auth/auth.module'
 import { UserModule } from './security/modules/user/user.module'
-import { SseGateway } from 'src/core/sse/sse-gateway.service'
-import { AppController } from 'src/app.controller'
+import { BiasDetectionModule } from 'src/app/modules/bias-detection/bias-detection.module'
 
 export type EnvTypes = z.infer<typeof EnvTypes>
 const EnvTypes = z.object({
@@ -38,6 +39,7 @@ const EnvTypes = z.object({
 	AUTH_GOOGLE_SECRET: z.string(),
 	AUTH_GITHUB_ID: z.string(),
 	AUTH_GITHUB_SECRET: z.string(),
+	ENCRYPTION_KEY: z.string().base64(),
 })
 
 @Module({
@@ -68,13 +70,10 @@ const EnvTypes = z.object({
 			},
 		}),
 		PresetModule,
+		SseModule,
+		BiasDetectionModule,
 	],
-	providers: [
-		{ provide: APP_PIPE, useClass: ZodValidationPipe },
-		PrismaService,
-		ApiHandlerService,
-		SseGateway,
-	],
+	providers: [PrismaService, ApiHandlerService],
 	controllers: [AppController],
 })
 export class AppModule implements NestModule {

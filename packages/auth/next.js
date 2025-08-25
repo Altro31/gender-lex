@@ -1,5 +1,5 @@
 import { PrismaClient } from '@repo/db/client'
-import { betterAuth } from 'better-auth'
+import { betterAuth, } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { nextCookies } from 'better-auth/next-js'
 import { customSession, anonymous } from 'better-auth/plugins'
@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const auth = betterAuth({
-	trustedOrigins: [process.env.UI_URL ?? ''],
+	// trustedOrigins: [process.env.UI_URL ?? ''],
 	database: prismaAdapter(prisma, { provider: 'postgresql' }),
 	session: {
 		additionalFields: { lang: { type: 'string', defaultValue: 'es' } },

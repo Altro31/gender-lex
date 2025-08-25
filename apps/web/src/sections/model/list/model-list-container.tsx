@@ -1,35 +1,11 @@
 "use client"
 
-import ModelForm from "@/components/model-form"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card"
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import CreateModelDialog from "@/sections/model/components/dialogs/create-model-dialog"
-import type { ModelsResponse } from "@/types/models"
-import type { Model } from "@repo/db/models"
-import { Edit, Eye, Plus, Search, Settings, Trash2 } from "lucide-react"
+import ModelListItem from "@/sections/model/list/model-list-item"
+import type { ModelsResponse } from "@/types/model"
+import { Plus, Search, Settings } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useQueryState } from "nuqs"
 
@@ -41,19 +17,6 @@ export default function ModelListsContainer({ modelsResponse }: Props) {
 	const { data: models } = modelsResponse
 	const t = useTranslations()
 	const [searchTerm, setSearchTerm] = useQueryState("q", { defaultValue: "" })
-
-	const getStatusColor = (status: Model["connection"]["status"]) => {
-		switch (status) {
-			case "active":
-				return "bg-green-100 text-green-800 hover:bg-green-200"
-			case "inactive":
-				return "bg-gray-100 text-gray-800 hover:bg-gray-200"
-			case "error":
-				return "bg-red-100 text-red-800 hover:bg-red-200"
-			default:
-				return "bg-gray-100 text-gray-800 hover:bg-gray-200"
-		}
-	}
 
 	return (
 		<div className="min-h-screen bg-gray-50">
@@ -93,7 +56,7 @@ export default function ModelListsContainer({ modelsResponse }: Props) {
 
 				{/* Models Grid */}
 				{models.length === 0 ? (
-					<div className="py-12 text-center">
+					<div className="py-6 text-center">
 						<div className="mb-4 text-gray-400">
 							<Settings className="mx-auto h-16 w-16" />
 						</div>
@@ -115,118 +78,9 @@ export default function ModelListsContainer({ modelsResponse }: Props) {
 						)}
 					</div>
 				) : (
-					<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+					<div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
 						{models.map((model) => (
-							<Card
-								key={model.id}
-								className="transition-shadow hover:shadow-lg"
-							>
-								<CardHeader className="pb-3">
-									<div className="flex items-start justify-between">
-										<div className="flex-1">
-											<CardTitle className="mb-1 text-lg">
-												{model.attributes.name}
-											</CardTitle>
-											<CardDescription className="text-sm">
-												{model.attributes.provider} •{" "}
-												{
-													model.attributes.connection
-														.identifier
-												}
-											</CardDescription>
-										</div>
-										<DropdownMenu>
-											<DropdownMenuTrigger asChild>
-												<Button
-													variant="ghost"
-													size="sm"
-													className="h-8 w-8 p-0"
-												>
-													<Settings className="h-4 w-4" />
-												</Button>
-											</DropdownMenuTrigger>
-											<DropdownMenuContent align="end">
-												<DropdownMenuItem
-													onClick={() => {
-														// setSelectedModel(model)
-														// setIsDetailsDialogOpen(
-														// 	true,
-														// )
-													}}
-												>
-													<Eye className="mr-2 h-4 w-4" />
-													Ver Detalles
-												</DropdownMenuItem>
-												<DropdownMenuItem
-													onClick={() => {
-														// setSelectedModel(model)
-														// setIsEditDialogOpen(
-														// 	true,
-														// )
-													}}
-												>
-													<Edit className="mr-2 h-4 w-4" />
-													Editar
-												</DropdownMenuItem>
-												<DropdownMenuItem
-													onClick={() => {
-														// setModelToDelete(model)
-														// setIsDeleteDialogOpen(
-														// 	true,
-														// )
-													}}
-													className="text-red-600"
-												>
-													<Trash2 className="mr-2 h-4 w-4" />
-													Eliminar
-												</DropdownMenuItem>
-											</DropdownMenuContent>
-										</DropdownMenu>
-									</div>
-								</CardHeader>
-
-								<CardContent className="pb-3">
-									<div className="space-y-2">
-										<div className="flex items-center justify-between">
-											<span className="text-sm text-gray-600">
-												Estado:
-											</span>
-											<Badge
-												className={getStatusColor(
-													model.attributes.connection
-														.status ?? "inactive",
-												)}
-											>
-												{t(
-													"Model.status." +
-														model.attributes
-															.connection.status,
-												)}
-											</Badge>
-										</div>
-									</div>
-								</CardContent>
-								<CardFooter className="border-t">
-									<div className="w-full text-xs text-gray-500">
-										<div className="flex justify-between">
-											<span>
-												Creado:{" "}
-												{new Date(
-													model.attributes.createdAt,
-												).toLocaleDateString()}
-											</span>
-											{model.attributes.usedAt && (
-												<span>
-													Último uso:{" "}
-													{new Date(
-														model.attributes.usedAt,
-													).toLocaleDateString()}
-												</span>
-											)}
-										</div>
-									</div>
-								</CardFooter>
-							</Card>
+							<ModelListItem model={model} key={model.id} />
 						))}
 					</div>
 				)}

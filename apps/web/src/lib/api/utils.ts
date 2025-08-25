@@ -1,9 +1,12 @@
 import type { paths } from "@/lib/api/types"
+import type { paths as zenPaths } from "@/lib/api/zen-types"
+
+type Paths = paths & zenPaths
 
 export type HttpActions = "get" | "post" | "delete" | "put" | "patch"
 
-export type ApiResponse<Path extends keyof paths> =
-	paths[Path][HttpActions] extends infer P
+export type ApiResponse<Path extends keyof Paths> =
+	Paths[Path][HttpActions] extends infer P
 		? P extends undefined
 			? never
 			: P extends {

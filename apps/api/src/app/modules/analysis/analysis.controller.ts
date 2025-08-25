@@ -1,37 +1,27 @@
-import {
-	Body,
-	Controller,
-	Get,
-	Param,
-	Post,
-	UploadedFile,
-	UseInterceptors,
-} from '@nestjs/common'
-import { FileInterceptor } from '@nestjs/platform-express'
-import { ApiConsumes } from '@nestjs/swagger'
+import { TypedFormData, TypedRoute } from '@nestia/core'
+import { Controller, Get, Param, Post } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import * as Multer from 'multer'
 import { AnaliceDTO } from 'src/app/modules/analysis/dto/analice.dto'
-import { PrepareResponseDTO } from 'src/app/modules/analysis/dto/prepare-response.dto'
-import { StatusCountDTO } from 'src/app/modules/analysis/dto/status-count.dto'
+import { Item } from 'src/app/modules/analysis/dto/item.dto'
+import { BaseController } from 'src/core/utils/controller'
 import { isFile } from 'src/core/utils/file'
-import { Item } from 'src/item.dto'
 import { Auth } from 'src/security/modules/auth/decorators/auth.decorator'
 import { AnalysisService } from './analysis.service'
 
+@ApiTags('Analysis')
 @Auth()
 @Controller('analysis')
-export class AnalysisController {
+export class AnalysisController extends BaseController {
 	private readonly items = [] as Item[]
 
-	constructor(private readonly analysisService: AnalysisService) {}
+	constructor(private readonly analysisService: AnalysisService) {
+		super()
+	}
 
-	@Post('prepare')
-	@UseInterceptors(FileInterceptor('file'))
-	@ApiConsumes('multipart/form-data')
-	prepare(
-		@UploadedFile() file: Express.Multer.File,
-		@Body() body: AnaliceDTO,
-	): Promise<PrepareResponseDTO> {
-		return this.analysisService.prepare(isFile(file) ? file : body.text!)
+	@TypedRoute.Post('prepare')
+	prepare(@TypedFormData.Body(() => Multer()) { file, text }: AnaliceDTO) {
+		return this.analysisService.prepare(isFile(file) ? file : text!)
 	}
 
 	@Post('start/:id')
@@ -40,7 +30,7 @@ export class AnalysisController {
 	}
 
 	@Get('status-count')
-	statusCount(): Promise<StatusCountDTO> {
+	statusCount() {
 		return this.analysisService.statusCount()
 	}
 }

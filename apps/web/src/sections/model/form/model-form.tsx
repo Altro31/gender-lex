@@ -19,11 +19,12 @@ import {
 import { Slider } from "@/components/ui/slider"
 import { useMultiStepForm } from "@/hooks/use-multistep-form"
 import type { ModelSchema } from "@/sections/model/form/model-schema"
-import { useFormContext } from "react-hook-form"
+import { Loader2 } from "lucide-react"
+import { useFormContext, useFormState } from "react-hook-form"
 
 export function MultiStepViewer() {
-	const { formState, trigger } = useFormContext<ModelSchema>()
-
+	const { trigger } = useFormContext<ModelSchema>()
+	const form = useFormState<ModelSchema>()
 	const {
 		currentStep,
 		currentStepData,
@@ -44,6 +45,8 @@ export function MultiStepViewer() {
 			return true
 		},
 	})
+
+	const submitting = form.isSubmitting || form.isSubmitSuccessful
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -67,8 +70,9 @@ export function MultiStepViewer() {
 					Previous
 				</Button>
 				{isLastStep ? (
-					<Button size="sm" type="submit">
-						{formState.isSubmitting ? "Submitting..." : "Submit"}
+					<Button size="sm" type="submit" disabled={submitting}>
+						{submitting && <Loader2 className="animate-spin" />}
+						{submitting ? "Submitting..." : "Submit"}
 					</Button>
 				) : (
 					<Button
@@ -191,7 +195,7 @@ const stepFormElements = [
 					<FormControl>
 						<Input
 							placeholder="Inserte la Api Key"
-							type={"text"}
+							type={"password"}
 							value={field.value}
 							onChange={(e) => {
 								const val = e.target.value

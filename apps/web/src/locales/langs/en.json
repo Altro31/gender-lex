@@ -124,5 +124,21 @@
 	"Languages": {
 		"en": "English",
 		"es": "Spanish"
+	},
+	"Model": {
+		"delete": {
+			"description": {
+				"1": "This action cannot be undone. \nThe model will be permanently eliminated"
+			},
+			"quest": "Are you sure you want to eliminate this model?",
+			"title": "Delete model"
+		},
+		"status": {
+			"active": "Active",
+			"error": "Error",
+			"inactive": "Inactive",
+			"undefined": "undefined",
+			"connecting": "Connecting"
+		}
 	}
 }

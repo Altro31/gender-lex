@@ -1,7 +1,11 @@
 import { AuthGuard } from '@mguay/nestjs-better-auth'
 import { applyDecorators, UseGuards } from '@nestjs/common'
-import { ApiBearerAuth, ApiUnauthorizedResponse } from '@nestjs/swagger'
+import { ApiSecurity, ApiUnauthorizedResponse } from '@nestjs/swagger'
 
 export function Auth() {
-	return applyDecorators(UseGuards(AuthGuard), ApiUnauthorizedResponse())
+	return applyDecorators(
+		ApiSecurity('better-auth.session'),
+		UseGuards(AuthGuard),
+		ApiUnauthorizedResponse(),
+	)
 }

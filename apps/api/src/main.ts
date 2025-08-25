@@ -1,5 +1,5 @@
 import { AuthService } from '@mguay/nestjs-better-auth'
-import { ValidationPipe, type INestApplication } from '@nestjs/common'
+import { type INestApplication } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import type { NestExpressApplication } from '@nestjs/platform-express'
@@ -9,18 +9,16 @@ import * as cors from 'cors'
 import * as fs from 'fs'
 import * as yaml from 'js-yaml'
 import { ClsService } from 'nestjs-cls'
-import { patchNestJsSwagger } from 'nestjs-zod'
 import * as path from 'path'
 import { generateDocs } from 'src/core/utils/docs'
 import { GlobalAuthGuard } from 'src/security/modules/auth/guards/global-auth.guard'
 import { AppModule, type EnvTypes } from './app.module'
+import { Console, Effect } from 'effect'
 
-async function bootstrap() {
+const program = Effect.tryPromise(async () => {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
 		bodyParser: false,
 	})
-
-	app.useGlobalPipes(new ValidationPipe({ transform: true }))
 	app.useGlobalGuards(
 		new GlobalAuthGuard(app.get(ClsService), app.get(AuthService)),
 	)
@@ -33,26 +31,40 @@ async function bootstrap() {
 
 	const port = configService.get<number>('PORT') ?? 4000
 	await app.listen(port)
-	const url = await app.getUrl()
-	console.log(`	🚀Server running at ${url}`)
-	console.log(`	Docs running at ${url}/docs`)
-}
+	return app.getUrl()
+}).pipe(
+	Effect.tap(url => Console.log(`	🚀Server running at ${url}`)),
+	Effect.tap(url => Console.log(`	Docs running at ${url}/docs`)),
+	Effect.tap(url => Console.log(`	Zen docs running at ${url}/docs/zen`)),
+)
 
 function openapi(app: INestApplication) {
-	let doc: OpenAPIObject | undefined
 	try {
-		doc = yaml.load(
+		const doc: OpenAPIObject | undefined = yaml.load(
 			fs.readFileSync(
 				path.join(process.cwd(), './public/openapi.yaml'),
 				'utf8',
 			),
 		) as OpenAPIObject
+
+		app.use('/docs', apiReference({ spec: { content: doc } }))
 	} catch (e) {
 		console.log(e)
+		console.warn('OpenApi spec cannot be loaded')
 	}
-	if (!doc) return console.warn('OpenApi spec cannot be loaded')
-	app.use('/docs', apiReference({ spec: { content: doc } }))
+
+	try {
+		const doc: OpenAPIObject | undefined = yaml.load(
+			fs.readFileSync(
+				path.join(process.cwd(), './public/openapi-zen.yaml'),
+				'utf8',
+			),
+		) as OpenAPIObject
+		app.use('/docs-zen', apiReference({ spec: { content: doc } }))
+	} catch (e) {
+		console.log(e)
+		console.warn('OpenApi-Zen spec cannot be loaded')
+	}
 }
 
-patchNestJsSwagger()
-void bootstrap()
+void Effect.runPromise(program)

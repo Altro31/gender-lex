@@ -1,19 +1,10 @@
-import { Controller, Get, Sse } from '@nestjs/common'
-import { SseGateway } from 'src/core/sse/sse-gateway.service'
-import { Auth } from 'src/security/modules/auth/decorators/auth.decorator'
+import { Controller, Get } from '@nestjs/common'
+import { BaseController } from 'src/core/utils/controller'
 
 @Controller()
-export class AppController {
-	constructor(private readonly sse: SseGateway) {}
-
+export class AppController extends BaseController {
 	@Get()
 	hello() {
 		return { ok: true }
-	}
-
-	@Auth()
-	@Sse('sse')
-	events() {
-		return this.sse.stream
 	}
 }

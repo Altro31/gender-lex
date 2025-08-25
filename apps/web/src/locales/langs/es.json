@@ -111,11 +111,27 @@
 	"Analysis": {
 		"delete": {
 			"title": "Eliminar análisis",
-			"quest": "¿Estás shure que quieres delte este análisis?",
+			"quest": "¿Estás seguro que quieres eliminar este análisis?",
 			"description": {
 				"1": "Esta acción no se puede deshacer. Se eliminará permanentemente el análisis",
 				"2": "y todos sus resultados."
 			}
+		}
+	},
+	"Model": {
+		"delete": {
+			"title": "Eliminar modelo",
+			"quest": "¿Estás seguro que quieres eliminar este modelo?",
+			"description": {
+				"1": "Esta acción no se puede deshacer. Se eliminará permanentemente el modelo"
+			}
+		},
+		"status": {
+			"error": "Error",
+			"active": "Activo",
+			"inactive": "Inactivo",
+			"undefined": "Indefinido",
+			"connecting": "Conectando"
 		}
 	},
 	"Profile": {

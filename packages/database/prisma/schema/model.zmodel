@@ -6,8 +6,9 @@ model Model {
     connection   Connection    @json
     settings     Settings      @json
     name         String
-    apiKey       String?       @encrypted
+    apiKey       String?
     provider     Provider
+    status       ModelStatus   @default(inactive)
 
     User         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId       String        @default(auth().id)
@@ -32,14 +33,14 @@ enum Provider {
 
 type Connection {
     identifier String
-    url        String            @url("Connection url must me a valid URL")
-    status     ConnectionStatus?
+    url        String @url("Connection url must me a valid URL")
 }
 
-enum ConnectionStatus {
+enum ModelStatus {
     active
-    inactive
+    connecting
     error
+    inactive
 }
 
 type Settings {

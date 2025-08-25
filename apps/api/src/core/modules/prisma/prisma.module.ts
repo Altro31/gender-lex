@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { type User } from '@repo/db/models'
 import { enhance } from '@repo/db'
+import { type User } from '@repo/db/models'
 import { ZenStackModule } from '@zenstackhq/server/nestjs'
 import { ClsService } from 'nestjs-cls'
 import type { EnvTypes } from 'src/app.module'
-import { PrismaService } from 'src/core/prisma/prisma.service'
+import { ModelModule } from 'src/app/modules/model/model.module'
+import { ModelService } from 'src/app/modules/model/model.service'
+import { PrismaService } from 'src/core/modules/prisma/prisma.service'
 import { getEncryptionKey } from 'src/core/utils/auth'
 
 @Module({
@@ -17,7 +19,7 @@ import { getEncryptionKey } from 'src/core/utils/auth'
 				cls: ClsService,
 				config: ConfigService<EnvTypes>,
 			) => {
-				const key = config.getOrThrow<string>('BETTER_AUTH_SECRET')
+				const key = config.getOrThrow<string>('ENCRYPTION_KEY')
 				return {
 					getEnhancedPrisma: () => {
 						const user = cls.get<User>('user')

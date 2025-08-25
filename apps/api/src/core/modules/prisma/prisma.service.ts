@@ -5,6 +5,12 @@ import { PrismaClient } from '@repo/db/client'
 export class PrismaService extends PrismaClient implements OnModuleInit {
 	private readonly logger = new Logger(PrismaService.name)
 
+	constructor() {
+		super()
+		const instance = this.$extends({})
+		return instance as typeof instance & PrismaService
+	}
+
 	async onModuleInit() {
 		try {
 			await this.$connect()

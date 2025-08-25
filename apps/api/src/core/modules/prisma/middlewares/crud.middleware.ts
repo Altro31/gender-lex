@@ -6,7 +6,7 @@ import RESTHandler from '@zenstackhq/server/api/rest'
 import { ZenStackMiddleware } from '@zenstackhq/server/express'
 import { Request, Response } from 'express'
 import type { EnvTypes } from 'src/app.module'
-import { PrismaService } from 'src/core/prisma/prisma.service'
+import { PrismaService } from 'src/core/modules/prisma/prisma.service'
 import { getEncryptionKey } from 'src/core/utils/auth'
 
 @Injectable()
@@ -23,7 +23,7 @@ export class CrudMiddleware implements NestMiddleware {
 		const session = await this.authService.api.getSession({
 			headers: req.headers as any,
 		})
-		const key = this.config.getOrThrow('BETTER_AUTH_SECRET')
+		const key = this.config.getOrThrow('ENCRYPTION_KEY')
 
 		// construct an Express middleware and forward the request/response
 		const inner = ZenStackMiddleware({
