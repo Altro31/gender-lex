@@ -21,7 +21,7 @@
 		"test:cov": "jest --coverage",
 		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
 		"test:e2e": "jest --config ./test/jest-e2e.json",
-		"generate": "nest start --entryFile generate.js --preserveWatchOutput -p tsconfig.generate.json",
+		"generate": "ts-patch install && nest start --entryFile generate.js --preserveWatchOutput -p tsconfig.generate.json",
 		"prepare": "ts-patch install"
 	},
 	"dependencies": {
