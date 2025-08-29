@@ -11,12 +11,10 @@ interface Props extends Omit<ComponentProps<"div">, "children"> {
 export default function SearchInput({ name, className, ...props }: Props) {
 	const [searchTerm, setSearchTerm] = useQueryState(
 		name,
-		parseAsString
-			.withDefault("")
-			.withOptions({
-				shallow: false,
-				limitUrlUpdates: { method: "debounce", timeMs: 1000 },
-			}),
+		parseAsString.withDefault("").withOptions({
+			shallow: false,
+			limitUrlUpdates: { method: "debounce", timeMs: 1000 },
+		}),
 	)
 	return (
 		<div className={cn(className, "relative")} {...props}>

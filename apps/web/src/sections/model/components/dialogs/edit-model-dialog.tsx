@@ -5,7 +5,7 @@ import {
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
-	DialogTitle
+	DialogTitle,
 } from "@/components/ui/dialog"
 import EditModelFormContainer from "@/sections/model/form/edit-model-form-container"
 import type { ModelsResponseItem } from "@/types/model"
@@ -16,7 +16,6 @@ interface Props extends PropsWithChildren {
 }
 
 export default function EditModelDialog({ children, model }: Props) {
-	
 	return (
 		<BaseDialog trigger={children}>
 			<DialogContent className="max-w-2xl">

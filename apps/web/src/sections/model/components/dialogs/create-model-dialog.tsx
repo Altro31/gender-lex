@@ -5,7 +5,7 @@ import {
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
-	DialogTitle
+	DialogTitle,
 } from "@/components/ui/dialog"
 import CreateModelFormContainer from "@/sections/model/form/create-model-form-container"
 import { type PropsWithChildren } from "react"

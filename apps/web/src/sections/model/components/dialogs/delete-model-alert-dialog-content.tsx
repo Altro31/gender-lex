@@ -8,7 +8,7 @@ import {
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
-	AlertDialogTitle
+	AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { deleteModel } from "@/services/model"
 import type { ModelsResponseItem } from "@/types/model"

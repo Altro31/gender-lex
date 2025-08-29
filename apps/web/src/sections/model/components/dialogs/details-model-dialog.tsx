@@ -26,7 +26,7 @@ export default function DetailsModelDialog({ children, model }: Props) {
 						Información completa del modelo seleccionado
 					</DialogDescription>
 				</DialogHeader>
-				<ScrollArea className="max-h-[80vh] pr-4 py-4">
+				<ScrollArea className="max-h-[80vh] py-4 pr-4">
 					<ModelDetails model={model} />
 				</ScrollArea>
 			</DialogContent>
