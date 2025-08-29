@@ -33,10 +33,7 @@ export default async function NavRecent() {
 					{data?.data.map((item) => (
 						<SidebarMenuItem key={item.id}>
 							<SidebarMenuButton asChild>
-								<Link
-									href={"/analysis/" + item.id}
-									className=""
-								>
+								<Link href={`/analysis/${item.id}`}>
 									{item.attributes.name}
 								</Link>
 							</SidebarMenuButton>

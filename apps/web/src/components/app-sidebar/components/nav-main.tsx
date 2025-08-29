@@ -5,6 +5,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import type { Route } from "next"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 
@@ -13,7 +14,7 @@ export function NavMain({
 }: {
 	items: {
 		title: string
-		url: string
+		url: Route
 		icon?: React.ReactNode
 		isActive?: boolean
 	}[]

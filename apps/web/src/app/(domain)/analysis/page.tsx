@@ -1,15 +1,15 @@
 import AnalysisListContainer from "@/sections/analysis/list/analysis-list-container"
 import { findAnalyses, getStatusCount } from "@/services/analysis"
 
-interface Props {
+interface Props extends PageProps<"/analysis/[id]"> {
 	searchParams: Promise<{
-		page?: number
+		page?: string
 		status?: string
 	}>
 }
 
 export default async function AnalysesPage({ searchParams }: Props) {
-	const { page = 1, status } = await searchParams
+	const { page = "1", status } = await searchParams
 
 	const [analysesResponse, statusCountResponse] = await Promise.all([
 		findAnalyses({ page, status }),

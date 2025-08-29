@@ -12,6 +12,7 @@ import {
 	SidebarHeader,
 	SidebarRail,
 } from "@/components/ui/sidebar"
+import type { Route } from "next"
 
 const data = {
 	navMain: [
@@ -36,7 +37,12 @@ const data = {
 			url: "/presets",
 			icon: <Settings />,
 		},
-	],
+	] as {
+		title: string
+		url: Route
+		icon?: React.ReactNode
+		isActive?: boolean
+	}[],
 }
 
 export default async function AppSidebar({

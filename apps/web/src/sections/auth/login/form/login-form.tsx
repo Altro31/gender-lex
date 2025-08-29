@@ -76,12 +76,6 @@ export default function LoginForm() {
 						</FormItem>
 					)}
 				/>
-				<Link
-					href="/auth/forgot-password"
-					className="text-sm text-blue-600 hover:text-blue-800"
-				>
-					{t("Login.forgot-password-q")}
-				</Link>
 			</div>
 		</>
 	)

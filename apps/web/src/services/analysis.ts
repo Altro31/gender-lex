@@ -50,7 +50,7 @@ export async function findAnalyses({
 	page,
 	status,
 }: {
-	page: number
+	page: string
 	status?: string
 }) {
 	const session = await getSession()
@@ -58,7 +58,7 @@ export async function findAnalyses({
 	return client.GET("/zen/analysis", {
 		params: {
 			query: {
-				"page[offset]": (page - 1) * 10,
+				"page[offset]": (Number(page) - 1) * 10,
 				"filter[status]": status as any,
 			},
 		},
