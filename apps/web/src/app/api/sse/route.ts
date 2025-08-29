@@ -1,8 +1,24 @@
 import envs from "@/lib/env/env-server"
+import { Console, Effect, Schedule } from "effect"
 import { type NextRequest } from "next/server"
 
 export function GET(req: NextRequest) {
-	return fetch(envs.API_URL + "/sse", {
-		headers: req.headers,
-	})
+	const sseConnection = Effect.tryPromise(() =>
+		fetch(envs.API_URL + "/sse", {
+			headers: req.headers,
+		}),
+	).pipe(
+		Effect.tap(() => Console.log("Connection stablish!")),
+		Effect.tapError(() =>
+			Console.log(
+				"Connection failed, trying to reconnect in 5 seconds...",
+			),
+		),
+		Effect.retry({
+			schedule: Schedule.linear("5 seconds"),
+			times: 5,
+		}),
+	)
+
+	return Effect.runPromise(sseConnection)
 }

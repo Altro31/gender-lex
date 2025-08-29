@@ -1,4 +1,4 @@
-import { createOpenAI } from '@ai-sdk/openai'
+import { createAnthropic } from '@ai-sdk/anthropic'
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 import type { LanguageModelV2 } from '@ai-sdk/provider'
 import { Injectable } from '@nestjs/common'
@@ -51,6 +51,8 @@ export class AiService {
 }
 
 const providerMap = {
-	[$Enums.Provider.local]: createOpenAICompatible,
-	[$Enums.Provider.openai]: createOpenAI,
+	[$Enums.Provider.openai]: createOpenAICompatible,
+	[$Enums.Provider.anthropic]: createAnthropic,
 }
+
+createAnthropic()

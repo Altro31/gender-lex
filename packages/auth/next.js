@@ -11,7 +11,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const auth = betterAuth({
-	// trustedOrigins: [process.env.UI_URL ?? ''],
 	database: prismaAdapter(prisma, { provider: 'postgresql' }),
 	session: {
 		additionalFields: { lang: { type: 'string', defaultValue: 'es' } },

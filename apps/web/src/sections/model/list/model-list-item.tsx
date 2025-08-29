@@ -1,7 +1,5 @@
 "use client"
 
-import type { ModelsResponseItem } from "@/types/model"
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,16 +16,16 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useSse } from "@/lib/sse"
 import DeleteModelAlertDialog from "@/sections/model/components/dialogs/delete-model-alert-dialog-content"
-import type { Model } from "@repo/db/models"
+import DetailsModelDialog from "@/sections/model/components/dialogs/details-model-dialog"
+import EditModelDialog from "@/sections/model/components/dialogs/edit-model-dialog"
+import TestConnectionButton from "@/sections/model/components/test-connection-button"
+import { getStatusColor } from "@/sections/model/utils/status"
+import type { ModelsResponseItem } from "@/types/model"
 import { Edit, Eye, Loader2, Settings, Trash2 } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { useAction } from "next-safe-action/hooks"
-import { testConnection } from "@/services/model"
 import { useState } from "react"
-import { useSse } from "@/lib/sse"
-import EditModelDialog from "@/sections/model/components/dialogs/edit-model-dialog"
-import { DialogTrigger } from "@/components/ui/dialog"
 
 interface Props {
 	model: ModelsResponseItem
@@ -37,16 +35,10 @@ export default function ModelListItem({ model }: Props) {
 	const [status, setStatus] = useState(model.attributes.status)
 	const t = useTranslations()
 
-	const { execute, isPending } = useAction(testConnection, {
-		onSuccess() {
-			setStatus("active")
-		},
-		onError() {
-			setStatus("error")
-		},
-		onExecute() {
-			setStatus("connecting")
-		},
+	useSse("model.status.change", ({ id, status }) => {
+		if (id === model.id) {
+			setStatus(status)
+		}
 	})
 
 	return (
@@ -74,17 +66,13 @@ export default function ModelListItem({ model }: Props) {
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
-							<DropdownMenuItem
-								onClick={() => {
-									// setSelectedModel(model)
-									// setIsDetailsDialogOpen(
-									// 	true,
-									// )
-								}}
-							>
-								<Eye />
-								Ver Detalles
-							</DropdownMenuItem>
+							<DetailsModelDialog model={model}>
+								<DropdownMenuItem>
+									<Eye />
+									Ver Detalles
+								</DropdownMenuItem>
+							</DetailsModelDialog>
+
 							<EditModelDialog model={model}>
 								<DropdownMenuItem>
 									<Edit />
@@ -112,15 +100,12 @@ export default function ModelListItem({ model }: Props) {
 							)}
 							{t("Model.status." + status)}
 						</Badge>
-						<Button
-							onClick={() => execute(model.id)}
-							variant="outline"
-							size="sm"
-							disabled={isPending}
-							className="text-sm"
-						>
-							Test Connection
-						</Button>
+						<TestConnectionButton
+							id={model.id}
+							onExecute={() => setStatus("connecting")}
+							onSuccess={() => setStatus("active")}
+							onError={() => setStatus("error")}
+						/>
 					</div>
 				</div>
 			</CardContent>
@@ -146,17 +131,4 @@ export default function ModelListItem({ model }: Props) {
 			</CardFooter>
 		</Card>
 	)
-}
-
-const getStatusColor = (status: Model["status"]) => {
-	switch (status) {
-		case "active":
-			return "bg-green-100 text-green-800 hover:bg-green-200"
-		case "inactive":
-			return "bg-gray-100 text-gray-800 hover:bg-gray-200"
-		case "error":
-			return "bg-red-100 text-red-800 hover:bg-red-200"
-		default:
-			return "bg-gray-100 text-gray-800 hover:bg-gray-200"
-	}
 }

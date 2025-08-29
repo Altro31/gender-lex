@@ -17,7 +17,11 @@ export class SseController extends BaseController {
 	@Sse()
 	events(@Session() session: UserSession): any {
 		return this.sseService.stream.pipe(
-			filter(message => message.sessionId === session.session.id),
+			filter(
+				message =>
+					message.sessionId === session.session.id ||
+					message.userId === session.user.id,
+			),
 		)
 	}
 }

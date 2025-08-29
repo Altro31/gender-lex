@@ -17,6 +17,8 @@ model Model {
     updatedAt    DateTime      @updatedAt
     usedAt       DateTime?
 
+    isDefault    Boolean       @default(false)
+
     PresetModels PresetModel[]
 
     // Owners can do anything
@@ -24,11 +26,14 @@ model Model {
 
     // Admins can delete models
     @@allow('delete', auth().role == admin)
+
+    // Default models can be view by everybody
+    @@allow('read', isDefault)
 }
 
 enum Provider {
-    local
     openai
+    anthropic
 }
 
 type Connection {

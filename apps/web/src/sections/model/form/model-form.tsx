@@ -19,6 +19,7 @@ import {
 import { Slider } from "@/components/ui/slider"
 import { useMultiStepForm } from "@/hooks/use-multistep-form"
 import type { ModelSchema } from "@/sections/model/form/model-schema"
+import { $Enums } from "@repo/db/models"
 import { Loader2 } from "lucide-react"
 import { useFormContext, useFormState } from "react-hook-form"
 
@@ -115,10 +116,7 @@ const stepFormElements = [
 			<FormField
 				name="provider"
 				render={({ field }) => {
-					const options = [
-						{ value: "local", label: "Local" },
-						{ value: "openai", label: "OpenAI" },
-					]
+					const options = Object.values($Enums.Provider)
 					return (
 						<FormItem className="w-full">
 							<FormLabel>Proveedor *</FormLabel>
@@ -132,9 +130,13 @@ const stepFormElements = [
 									</SelectTrigger>
 								</FormControl>
 								<SelectContent>
-									{options.map(({ label, value }) => (
-										<SelectItem key={value} value={value}>
-											{label}
+									{options.map((value) => (
+										<SelectItem
+											key={value}
+											value={value}
+											className="capitalize"
+										>
+											{value}
 										</SelectItem>
 									))}
 								</SelectContent>
@@ -174,7 +176,7 @@ const stepFormElements = [
 						<FormControl>
 							<Input
 								placeholder="URL del modelo"
-								type={"url"}
+								type="url"
 								value={field.value}
 								onChange={(e) => {
 									const val = e.target.value

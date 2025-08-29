@@ -8,93 +8,44 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
-import { Calendar, Key, Link, Server, Tag, User } from "lucide-react"
-
-interface Model {
-	id: string
-	name: string
-	provider: string
-	model: string
-	apiKey: string
-	endpoint?: string
-	status: "active" | "inactive" | "error"
-	createdAt: string
-	lastUsed?: string
-	description?: string
-}
+import { useSse } from "@/lib/sse"
+import TestConnectionButton from "@/sections/model/components/test-connection-button"
+import { getStatusColor } from "@/sections/model/utils/status"
+import type { ModelsResponseItem } from "@/types/model"
+import { Calendar, Key, Link, Loader2, Server, Tag, User } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useState } from "react"
 
 interface ModelDetailsProps {
-	model: Model
+	model: ModelsResponseItem
 }
 
 export default function ModelDetails({ model }: ModelDetailsProps) {
-	const getStatusColor = (status: Model["status"]) => {
-		switch (status) {
-			case "active":
-				return "bg-green-100 text-green-800"
-			case "inactive":
-				return "bg-gray-100 text-gray-800"
-			case "error":
-				return "bg-red-100 text-red-800"
-			default:
-				return "bg-gray-100 text-gray-800"
+	const [status, setStatus] = useState(model.attributes.status)
+	const t = useTranslations()
+
+	useSse("model.status.change", ({ id, status }) => {
+		if (id === model.id) {
+			setStatus(status)
 		}
-	}
-
-	const getStatusText = (status: Model["status"]) => {
-		switch (status) {
-			case "active":
-				return "Activo"
-			case "inactive":
-				return "Inactivo"
-			case "error":
-				return "Error"
-			default:
-				return "Desconocido"
-		}
-	}
-
-	const maskApiKey = (apiKey: string) => {
-		if (!apiKey) return "No configurada"
-		if (apiKey.length <= 8) return "*".repeat(apiKey.length)
-		return (
-			apiKey.substring(0, 4) +
-			"*".repeat(apiKey.length - 8) +
-			apiKey.substring(apiKey.length - 4)
-		)
-	}
-
+	})
 	return (
-		<div className="space-y-6">
+		<div className="space-y-2 text-wrap! wrap-break-word!">
 			{/* Header */}
 			<div className="flex items-start justify-between">
 				<div>
 					<h3 className="text-2xl font-semibold text-gray-900">
-						{model.name}
+						{model.attributes.name}
 					</h3>
 					<p className="mt-1 text-gray-600">
-						{model.provider} • {model.model}
+						{model.attributes.provider} •{" "}
+						{model.attributes.connection.identifier}
 					</p>
 				</div>
-				<Badge className={getStatusColor(model.status)}>
-					{getStatusText(model.status)}
+				<Badge className={getStatusColor(model.attributes.status)}>
+					{t("Model.status." + model.attributes.status)}
 				</Badge>
 			</div>
-
-			{/* Description */}
-			{model.description && (
-				<Card>
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2 text-lg">
-							<Tag className="h-5 w-5" />
-							Descripción
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<p className="text-gray-700">{model.description}</p>
-					</CardContent>
-				</Card>
-			)}
 
 			{/* Configuration Details */}
 			<Card>
@@ -115,7 +66,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 								Proveedor
 							</div>
 							<p className="font-mono text-gray-900">
-								{model.provider}
+								{model.attributes.provider}
 							</p>
 						</div>
 
@@ -125,7 +76,7 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 								Modelo
 							</div>
 							<p className="font-mono text-gray-900">
-								{model.model}
+								{model.attributes.connection.identifier}
 							</p>
 						</div>
 
@@ -135,18 +86,18 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 								Clave API
 							</div>
 							<p className="font-mono text-gray-900">
-								{maskApiKey(model.apiKey)}
+								{model.attributes.apiKey}
 							</p>
 						</div>
 
-						{model.endpoint && (
+						{model.attributes.connection.url && (
 							<div className="space-y-2">
 								<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
 									<Link className="h-4 w-4" />
 									Endpoint
 								</div>
 								<p className="font-mono break-all text-gray-900">
-									{model.endpoint}
+									{model.attributes.connection.url}
 								</p>
 							</div>
 						)}
@@ -172,25 +123,24 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 								Fecha de Creación
 							</div>
 							<p className="text-gray-900">
-								{new Date(model.createdAt).toLocaleDateString(
-									"es-ES",
-									{
-										year: "numeric",
-										month: "long",
-										day: "numeric",
-									},
-								)}
+								{new Date(
+									model.attributes.createdAt,
+								).toLocaleDateString("es-ES", {
+									year: "numeric",
+									month: "long",
+									day: "numeric",
+								})}
 							</p>
 						</div>
 
-						{model.lastUsed && (
+						{model.attributes.usedAt && (
 							<div className="space-y-2">
 								<div className="text-sm font-medium text-gray-700">
 									Último Uso
 								</div>
 								<p className="text-gray-900">
 									{new Date(
-										model.lastUsed,
+										model.attributes.usedAt,
 									).toLocaleDateString("es-ES", {
 										year: "numeric",
 										month: "long",
@@ -223,28 +173,21 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="flex items-center justify-between rounded-lg bg-gray-50 p-4">
-						<div className="flex items-center gap-3">
-							<div
-								className={`h-3 w-3 rounded-full ${
-									model.status === "active"
-										? "bg-green-500"
-										: model.status === "error"
-											? "bg-red-500"
-											: "bg-gray-400"
-								}`}
-							/>
-							<span className="text-sm font-medium">
-								{model.status === "active"
-									? "Conexión exitosa"
-									: model.status === "error"
-										? "Error de conexión"
-										: "Sin probar"}
-							</span>
-						</div>
-						<button className="text-sm font-medium text-blue-600 hover:text-blue-800">
-							Probar Conexión
-						</button>
+					<div className="flex flex-wrap items-center gap-2">
+						<span className="text-sm text-gray-600">Estado:</span>
+						<Badge className={getStatusColor(status)}>
+							{status === "connecting" && (
+								<Loader2 className="animate-spin" />
+							)}
+							{t("Model.status." + status)}
+						</Badge>
+						<TestConnectionButton
+							id={model.id}
+							className="ml-auto"
+							onExecute={() => setStatus("connecting")}
+							onSuccess={() => setStatus("active")}
+							onError={() => setStatus("error")}
+						/>
 					</div>
 				</CardContent>
 			</Card>

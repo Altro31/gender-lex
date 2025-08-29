@@ -1,5 +1,6 @@
 import { $Enums } from "@repo/db/models"
 import { z } from "zod/mini"
+import isLocalhostIP from "is-local-address"
 
 export type ModelSchema = z.infer<typeof ModelSchema>
 export const ModelSchema = z.object({
@@ -9,7 +10,16 @@ export const ModelSchema = z.object({
 		identifier: z
 			.string()
 			.check(z.minLength(1, "Identifier field is required")),
-		url: z.url("Url field is required"),
+		url: z.url("Url field is required").check(
+			z.refine((value) => {
+				try {
+					const url = new URL(value)
+					return !isLocalhostIP(url.hostname)
+				} catch {
+					return false
+				}
+			}, "Local urls cannot be used due to network restrictions"),
+		),
 	}),
 	apiKey: z.optional(z.string()),
 	settings: z.object({

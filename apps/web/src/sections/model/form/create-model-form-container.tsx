@@ -20,7 +20,7 @@ export default function CreateModelFormContainer() {
 			apiKey: "",
 			connection: { identifier: "", url: "" },
 			name: "",
-			provider: null as any,
+			provider: "" as any,
 			settings: { temperature: 0.8 },
 		},
 		mode: "onChange",

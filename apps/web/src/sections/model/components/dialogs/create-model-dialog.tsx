@@ -1,12 +1,11 @@
 "use client"
 
+import BaseDialog from "@/components/dialog/base-dialog"
 import {
-	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
+	DialogTitle
 } from "@/components/ui/dialog"
 import CreateModelFormContainer from "@/sections/model/form/create-model-form-container"
 import { type PropsWithChildren } from "react"
@@ -15,8 +14,7 @@ interface Props extends PropsWithChildren {}
 
 export default function CreateModelDialog({ children }: Props) {
 	return (
-		<Dialog>
-			<DialogTrigger asChild>{children}</DialogTrigger>
+		<BaseDialog trigger={children}>
 			<DialogContent className="max-w-2xl">
 				<DialogHeader>
 					<DialogTitle>Crear Nuevo Modelo</DialogTitle>
@@ -26,6 +24,6 @@ export default function CreateModelDialog({ children }: Props) {
 				</DialogHeader>
 				<CreateModelFormContainer />
 			</DialogContent>
-		</Dialog>
+		</BaseDialog>
 	)
 }

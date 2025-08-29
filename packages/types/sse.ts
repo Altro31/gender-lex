@@ -1,3 +1,5 @@
+import type { $Enums } from '@repo/db/models'
+
 export type MessageMapper = {
-	'model.status.change': { id: string; status: string }
+	'model.status.change': { id: string; status: $Enums.ModelStatus }
 }

@@ -1,22 +1,21 @@
 "use client"
 
+import BaseAlertDialog from "@/components/dialog/base-alert-dialog"
 import {
-	AlertDialog,
 	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
+	AlertDialogTitle
 } from "@/components/ui/alert-dialog"
 import { deleteModel } from "@/services/model"
 import type { ModelsResponseItem } from "@/types/model"
 import { Loader2 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useAction } from "next-safe-action/hooks"
-import { useState, type MouseEvent, type PropsWithChildren } from "react"
+import { type MouseEvent, type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {
 	model: ModelsResponseItem
@@ -24,15 +23,10 @@ interface Props extends PropsWithChildren {
 
 export default function DeleteModelAlertDialog({ model, children }: Props) {
 	const t = useTranslations()
-	const [open, setOpen] = useState(false)
+
 	const { executeAsync, status: deleteStatus } = useAction(deleteModel)
 	const isDeleting =
 		deleteStatus === "executing" || deleteStatus === "transitioning"
-
-	const handleOpen = (e: MouseEvent<HTMLButtonElement>) => {
-		e.preventDefault()
-		setOpen(true)
-	}
 
 	const handleDeleteModel = async (e: MouseEvent<HTMLButtonElement>) => {
 		if (!isDeleting) {
@@ -43,10 +37,7 @@ export default function DeleteModelAlertDialog({ model, children }: Props) {
 	}
 
 	return (
-		<AlertDialog open={open} onOpenChange={setOpen}>
-			<AlertDialogTrigger onClickCapture={handleOpen} asChild>
-				{children}
-			</AlertDialogTrigger>
+		<BaseAlertDialog trigger={children}>
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
@@ -75,6 +66,6 @@ export default function DeleteModelAlertDialog({ model, children }: Props) {
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
-		</AlertDialog>
+		</BaseAlertDialog>
 	)
 }
