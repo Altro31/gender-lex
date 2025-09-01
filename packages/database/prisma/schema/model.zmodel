@@ -8,10 +8,12 @@ model Model {
     name         String
     apiKey       String?
     provider     Provider
-    status       ModelStatus   @default(inactive)
 
-    User         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId       String        @default(auth().id)
+    status       ModelStatus   @default(inactive) @allow("update", true, true)
+    error        ModelError?   @allow("update", true, true)
+
+    User         User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId       String?       @default(auth().id)
 
     createdAt    DateTime      @default(now())
     updatedAt    DateTime      @updatedAt
@@ -34,6 +36,8 @@ model Model {
 enum Provider {
     openai
     anthropic
+    google
+    azure_openai
 }
 
 type Connection {
@@ -52,4 +56,12 @@ type Settings {
     temperature Float
 
     @@validate(temperature > 0 || temperature <= 1, "Temperature must be in range of 0 to 1")
+}
+
+enum ModelError {
+    INVALID_API_KEY
+    INVALID_IDENTIFIER
+    INVALID_CONNECTION_URL
+    INACTIVE_MODEL
+    MAX_ATTEMPTS_REACHED
 }

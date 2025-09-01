@@ -5,10 +5,11 @@
 	"tasks": {
 		"generate": {
 			"cache": true,
-			"inputs": ["**/*.zmodel"],
+			"inputs": ["./prisma/schema/**/*.zmodel", "./schema.zmodel"],
 			"outputs": [
 				"$TURBO_ROOT$/node_modules/.zenstack/**",
 				"$TURBO_ROOT$/node_modules/.prisma/client/**",
+				"./prisma/schema.prisma",
 				"./openapi.yaml"
 			],
 			"env": ["DATABASE_URL"]

@@ -1,5 +1,7 @@
 import { Controller } from '@nestjs/common'
-import { BaseController } from 'src/core/utils/controller'
+import { bindLogger } from 'src/core/utils/log'
 
 @Controller('User')
-export class UserController extends BaseController {}
+export class UserController {
+	private readonly logger = bindLogger(this)
+}

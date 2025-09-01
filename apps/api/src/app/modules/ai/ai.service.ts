@@ -1,11 +1,10 @@
-import { createAnthropic } from '@ai-sdk/anthropic'
-import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 import type { LanguageModelV2 } from '@ai-sdk/provider'
 import { Injectable } from '@nestjs/common'
-import { $Enums } from '@repo/db/models'
+import { $Enums, type Model } from '@repo/db/models'
 import { ClsService } from 'nestjs-cls'
 import { RawAnalysis } from 'src/app/lib/types'
 import type { LanguageModelConnectionOptions } from 'src/app/modules/ai/interfaces/language-model-connection-options.interface'
+import { providerMap } from '@repo/utils/ai/model.js'
 
 // @ts-nocheck
 // const schema = AnalysisSchema?.pick({
@@ -41,18 +40,20 @@ export class AiService {
 		providerName: $Enums.Provider,
 		{ identifier, url, apiKey }: LanguageModelConnectionOptions,
 	): LanguageModelV2 {
-		const provider = providerMap[providerName]({
+		const provider = providerMap[providerName].create({
 			baseURL: url,
 			name: '',
 			apiKey,
 		})
 		return provider(identifier)
 	}
-}
 
-const providerMap = {
-	[$Enums.Provider.openai]: createOpenAICompatible,
-	[$Enums.Provider.anthropic]: createAnthropic,
+	getProviderInfo(model: Model) {
+		const providerInfo = providerMap[model.provider]
+		return {
+			authHeaders: model.apiKey
+				? providerInfo.getHeaders(model.apiKey)
+				: undefined,
+		}
+	}
 }
-
-createAnthropic()

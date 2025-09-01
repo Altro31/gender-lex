@@ -46,10 +46,11 @@ export const createModel = actionClient
 export const editModel = actionClient
 	.inputSchema(z.tuple([z.string(), ModelSchema]))
 	.action(async ({ parsedInput: [id, body] }) => {
-		const { data } = await client.PUT("/zen/model/{id}", {
+		const { data, error } = await client.PUT("/zen/model/{id}", {
 			params: { path: { id } },
 			body: { data: { id, type: "model", attributes: body } },
 		})
+		console.log(error)
 
 		revalidatePath("/models", "page")
 

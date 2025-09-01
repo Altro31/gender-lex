@@ -3,16 +3,15 @@ import { Controller } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import type { Prisma } from '@repo/db/models'
 import { ModelService } from 'src/app/modules/model/model.service'
-import { BaseController } from 'src/core/utils/controller'
+import { bindLogger } from 'src/core/utils/log'
 import { Auth } from 'src/security/modules/auth/decorators/auth.decorator'
 
 @Auth()
 @ApiTags('Model')
 @Controller('model')
-export class ModelController extends BaseController {
-	constructor(private readonly modelService: ModelService) {
-		super()
-	}
+export class ModelController {
+	private readonly logger = bindLogger(this)
+	constructor(private readonly modelService: ModelService) {}
 
 	@TypedRoute.Post()
 	async create(

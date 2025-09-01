@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Model" ALTER COLUMN "userId" DROP NOT NULL;

@@ -6,6 +6,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express'
 import { type OpenAPIObject } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
 import * as cors from 'cors'
+import { Console, Effect } from 'effect'
 import * as fs from 'fs'
 import * as yaml from 'js-yaml'
 import { ClsService } from 'nestjs-cls'
@@ -13,7 +14,6 @@ import * as path from 'path'
 import { generateDocs } from 'src/core/utils/docs'
 import { GlobalAuthGuard } from 'src/security/modules/auth/guards/global-auth.guard'
 import { AppModule, type EnvTypes } from './app.module'
-import { Console, Effect } from 'effect'
 
 const program = Effect.tryPromise(async () => {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -34,8 +34,8 @@ const program = Effect.tryPromise(async () => {
 	return app.getUrl()
 }).pipe(
 	Effect.tap(url => Console.log(`	🚀Server running at ${url}`)),
-	Effect.tap(url => Console.log(`	Docs running at ${url}/docs`)),
-	Effect.tap(url => Console.log(`	Zen docs running at ${url}/docs/zen`)),
+	Effect.tap(url => Console.log(`	📖Docs running at ${url}/docs`)),
+	Effect.tap(url => Console.log(`	📖Zen docs running at ${url}/docs/zen`)),
 )
 
 function openapi(app: INestApplication) {

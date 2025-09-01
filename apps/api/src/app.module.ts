@@ -4,7 +4,6 @@ import {
 	type NestModule,
 } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { ApiHandlerService } from '@zenstackhq/server/nestjs'
@@ -13,18 +12,18 @@ import { ClsModule } from 'nestjs-cls'
 import * as path from 'path'
 import { AppController } from 'src/app.controller'
 import { AnalysisModule } from 'src/app/modules/analysis/analysis.module'
+import { BiasDetectionModule } from 'src/app/modules/bias-detection/bias-detection.module'
 import { ModelModule } from 'src/app/modules/model/model.module'
-import { SseModule } from 'src/core/modules/sse/sse.module'
 import { CrudMiddleware } from 'src/core/modules/prisma/middlewares/crud.middleware'
 import { PrismaModule } from 'src/core/modules/prisma/prisma.module'
 import { PrismaService } from 'src/core/modules/prisma/prisma.service'
+import { SseModule } from 'src/core/modules/sse/sse.module'
 import z from 'zod'
 import { AiModule } from './app/modules/ai/ai.module'
 import { ExtractorModule } from './app/modules/extractor/extractor.module'
 import { PresetModule } from './app/modules/preset/preset.module'
 import { AuthModule } from './security/modules/auth/auth.module'
 import { UserModule } from './security/modules/user/user.module'
-import { BiasDetectionModule } from 'src/app/modules/bias-detection/bias-detection.module'
 
 export type EnvTypes = z.infer<typeof EnvTypes>
 const EnvTypes = z.object({

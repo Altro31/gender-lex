@@ -3,15 +3,14 @@ import { Controller, Sse } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { filter } from 'rxjs'
 import { SseService } from 'src/core/modules/sse/sse.service'
-import { BaseController } from 'src/core/utils/controller'
+import { bindLogger } from 'src/core/utils/log'
 import { Auth } from 'src/security/modules/auth/decorators/auth.decorator'
 
 @ApiTags('Server-sent events')
 @Controller('sse')
-export class SseController extends BaseController {
-	constructor(private readonly sseService: SseService) {
-		super()
-	}
+export class SseController {
+	private readonly logger = bindLogger(this)
+	constructor(private readonly sseService: SseService) {}
 
 	@Auth()
 	@Sse()

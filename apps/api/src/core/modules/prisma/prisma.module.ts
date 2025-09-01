@@ -5,8 +5,6 @@ import { type User } from '@repo/db/models'
 import { ZenStackModule } from '@zenstackhq/server/nestjs'
 import { ClsService } from 'nestjs-cls'
 import type { EnvTypes } from 'src/app.module'
-import { ModelModule } from 'src/app/modules/model/model.module'
-import { ModelService } from 'src/app/modules/model/model.service'
 import { PrismaService } from 'src/core/modules/prisma/prisma.service'
 import { getEncryptionKey } from 'src/core/utils/auth'
 

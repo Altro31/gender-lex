@@ -1,10 +1,9 @@
 import { Controller } from '@nestjs/common'
+import { bindLogger } from 'src/core/utils/log'
 import { PresetService } from './preset.service'
-import { BaseController } from 'src/core/utils/controller'
 
 @Controller('Preset')
-export class PresetController extends BaseController {
-	constructor(private readonly presetService: PresetService) {
-		super()
-	}
+export class PresetController {
+	private readonly logger = bindLogger(this)
+	constructor(private readonly presetService: PresetService) {}
 }

@@ -34,7 +34,7 @@
 			"dependsOn": ["api#generate"],
 			"cache": true,
 			"inputs": ["$TURBO_ROOT$/apps/api/public/openapi.yaml"],
-			"outputs": ["./src/lib/api/types.d.ts"],
+			"outputs": ["./src/lib/api/*types.d.ts"],
 			"env": [
 				"AUTH_TRUST_HOST",
 				"AUTH_SECRET",

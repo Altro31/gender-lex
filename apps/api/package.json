@@ -26,13 +26,8 @@
 	},
 	"dependencies": {
 		"@adobe/pdfservices-node-sdk": "^4.1.0",
-		"@ai-sdk/anthropic": "^2.0.9",
-		"@ai-sdk/google": "^2.0.0-beta.9",
-		"@ai-sdk/groq": "^2.0.0-beta.2",
-		"@ai-sdk/openai": "^2.0.0-beta.7",
-		"@ai-sdk/openai-compatible": "^1.0.11",
-		"@ai-sdk/provider": "^2.0.0-beta.1",
-		"@ai-sdk/provider-utils": "^3.0.0-beta.2",
+		"@effect/platform": "^0.90.6",
+		"@effect/platform-node": "^0.96.1",
 		"@mguay/nestjs-better-auth": "^1.0.2",
 		"@nestia/core": "^7.4.0",
 		"@nestia/e2e": "^7.4.0",
@@ -63,7 +58,8 @@
 		"passport-local": "^1.0.0",
 		"reflect-metadata": "^0.2.2",
 		"rxjs": "^7.8.1",
-		"typia": "^9.7.1"
+		"typia": "^9.7.1",
+		"@repo/utils": "workspace:*"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.2.0",

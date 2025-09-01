@@ -1,6 +1,7 @@
 {
 	"name": "@repo/db",
 	"version": "0.0.0",
+	"type": "module",
 	"scripts": {
 		"generate": "zenstack generate",
 		"migrate": "prisma migrate dev --skip-generate",
@@ -8,7 +9,7 @@
 		"migrate:prod": "prisma migrate deploy"
 	},
 	"dependencies": {
-		"@prisma/client": "6.15.0",
+		"@prisma/client": "^6.15.0",
 		"@zenstackhq/runtime": "catalog:"
 	},
 	"devDependencies": {
