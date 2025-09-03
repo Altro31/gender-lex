@@ -4,7 +4,7 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 
 /**
- * 
+ *
  * @satisfies {{[K in import("@repo/db/models").$Enums.Provider]:any}}
  */
 export const providerMap = {
