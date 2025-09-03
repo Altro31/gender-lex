@@ -10,5 +10,8 @@
 	},
 	"devDependencies": {
 		"@repo/db": "workspace:*"
+	},
+	"exports": {
+		"./ai/model": "./ai/model.js"
 	}
 }

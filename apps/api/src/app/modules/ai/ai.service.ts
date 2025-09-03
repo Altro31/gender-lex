@@ -1,10 +1,10 @@
 import type { LanguageModelV2 } from '@ai-sdk/provider'
 import { Injectable } from '@nestjs/common'
 import { $Enums, type Model } from '@repo/db/models'
+import { providerMap } from '@repo/utils/ai/model'
 import { ClsService } from 'nestjs-cls'
 import { RawAnalysis } from 'src/app/lib/types'
 import type { LanguageModelConnectionOptions } from 'src/app/modules/ai/interfaces/language-model-connection-options.interface'
-import { providerMap } from '@repo/utils/ai/model.js'
 
 // @ts-nocheck
 // const schema = AnalysisSchema?.pick({
