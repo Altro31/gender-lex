@@ -27,7 +27,6 @@ interface Props {
 }
 
 export default function PresetDetails({ preset }: Props) {
-
 	const models = preset.relationships?.Models?.data
 
 	const getRoleColor = (role: string) => {
@@ -111,7 +110,9 @@ export default function PresetDetails({ preset }: Props) {
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<p className="text-gray-700">{preset.attributes.description}</p>
+						<p className="text-gray-700">
+							{preset.attributes.description}
+						</p>
 					</CardContent>
 				</Card>
 			)}
