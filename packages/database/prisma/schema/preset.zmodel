@@ -4,24 +4,30 @@ import "analysis"
 
 model Preset {
 
-    id        String        @id @default(cuid())
+    id          String        @id @default(cuid())
+    name        String
+    description String?
 
-    Models    PresetModel[]
+    Models      PresetModel[]
 
-    User      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    String        @default(auth().id)
+    User        User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId      String?       @default(auth().id)
 
-    Analysis  Analysis[]
+    Analysis    Analysis[]
 
-    isDefault Boolean       @default(false)
+    isDefault   Boolean       @default(false)
 
-    /** Require login */
-    @@deny('all', auth() == null)
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+    usedAt      DateTime?
 
-    /** Only owners can view its own presets */
+    // Owners can do anything
     @@allow("all",auth()==User)
 
-    // Default models can be view by everybody
+    // Admins can delete presets
+    @@allow('delete', auth().role == admin)
+
+    // Default presets can be view by everybody
     @@allow('read', isDefault)
 }
 

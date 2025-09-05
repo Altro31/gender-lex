@@ -35,7 +35,7 @@ const program = Effect.tryPromise(async () => {
 }).pipe(
 	Effect.tap(url => Console.log(`	🚀Server running at ${url}`)),
 	Effect.tap(url => Console.log(`	📖Docs running at ${url}/docs`)),
-	Effect.tap(url => Console.log(`	📖Zen docs running at ${url}/docs/zen`)),
+	Effect.tap(url => Console.log(`	📖Zen docs running at ${url}/docs-zen`)),
 )
 
 function openapi(app: INestApplication) {
