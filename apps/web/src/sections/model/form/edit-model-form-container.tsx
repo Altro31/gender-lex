@@ -28,7 +28,6 @@ export default function EditModelFormContainer({ model }: Props) {
 				url: model.attributes.connection.url ?? "",
 			},
 			name: model.attributes.name ?? "",
-			provider: model.attributes.provider ?? null,
 			settings: {
 				temperature: model.attributes.settings.temperature ?? 0.8,
 			},

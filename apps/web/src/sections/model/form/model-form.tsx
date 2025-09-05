@@ -9,17 +9,9 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
 import { useMultiStepForm } from "@/hooks/use-multistep-form"
 import type { ModelSchema } from "@/sections/model/form/model-schema"
-import { $Enums } from "@repo/db/models"
 import { Loader2 } from "lucide-react"
 import { useFormContext, useFormState } from "react-hook-form"
 
@@ -39,7 +31,7 @@ export function MultiStepViewer() {
 		steps: stepFormElements,
 		onStepValidation: async (step) => {
 			if (step === 1) {
-				return trigger(["apiKey", "connection", "name", "provider"], {
+				return trigger(["apiKey", "connection", "name"], {
 					shouldFocus: true,
 				})
 			}
@@ -112,39 +104,6 @@ const stepFormElements = [
 						<FormMessage />
 					</FormItem>
 				)}
-			/>
-			<FormField
-				name="provider"
-				render={({ field }) => {
-					const options = Object.values($Enums.Provider)
-					return (
-						<FormItem className="w-full">
-							<FormLabel>Proveedor *</FormLabel>
-							<Select
-								onValueChange={field.onChange}
-								defaultValue={field.value}
-							>
-								<FormControl>
-									<SelectTrigger className="w-full">
-										<SelectValue placeholder="Seleccione un proveedor" />
-									</SelectTrigger>
-								</FormControl>
-								<SelectContent>
-									{options.map((value) => (
-										<SelectItem
-											key={value}
-											value={value}
-											className="capitalize"
-										>
-											{value}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-							<FormMessage />
-						</FormItem>
-					)
-				}}
 			/>
 		</div>
 		<div className="flex w-full flex-wrap items-center justify-between gap-2 sm:flex-nowrap">

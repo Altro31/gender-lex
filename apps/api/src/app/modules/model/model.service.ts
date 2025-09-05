@@ -19,9 +19,7 @@ import { PrismaService } from 'src/core/modules/prisma/prisma.service'
 import { SseService } from 'src/core/modules/sse/sse.service'
 import { bindLogger } from 'src/core/utils/log'
 
-type ModelListResponse = {
-	data: { id: string; active: boolean; context_window: number }[]
-}
+type ModelListResponse = { data: { id: string; active: boolean }[] }
 
 @Injectable()
 export class ModelService implements OnModuleInit {
@@ -40,32 +38,21 @@ export class ModelService implements OnModuleInit {
 		void this.testConnection(model.id)
 	}
 
-	private async getLanguageModel(id: string) {
-		const model = await this.repository.findUnique({ where: { id } })
-		if (!model) {
-			throw new NotFoundException(`Model with id: ${id} not found`)
-		}
-
-		return this.aiService.buildLanguageModel(model.provider, {
-			...model.connection,
-			apiKey: model.apiKey ?? undefined,
-		})
-	}
-
 	async testConnection(id: string) {
 		const model = await this.repository.findUnique({ where: { id } })
 		if (!model) {
 			throw new NotFoundException(`Model with id: ${id} not found`)
 		}
 		await this.updateModelStatus(id, 'connecting')
-		const providerInfo = this.aiService.getProviderInfo(model)
 
 		const testConnectionProgram = Effect.gen(this, function* () {
 			const client = yield* HttpClient.HttpClient
 			const url = model.connection.url + '/models'
 
-			const data = yield* client
-				.get(url, { headers: providerInfo.authHeaders })
+			const res = yield* client
+				.get(url, {
+					headers: { Authorization: `Bearer ${model.apiKey}` },
+				})
 				.pipe(
 					Effect.andThen(res => {
 						const reqMatcher = Match.type<number>().pipe(
@@ -85,16 +72,18 @@ export class ModelService implements OnModuleInit {
 					}),
 				)
 
-			const modelItem = data.data.find(
+			const modelItem = res.data.find(
 				m => m.id === model.connection.identifier,
 			)
 
 			if (!modelItem) {
 				return yield* Effect.fail(new InvalidModelIdentifierError())
 			}
+
 			if (!modelItem.active) {
 				return yield* Effect.fail(new InactiveModelError())
 			}
+
 			yield* Effect.promise(() => this.updateModelStatus(id, 'active'))
 			return true
 		})
@@ -144,7 +133,7 @@ export class ModelService implements OnModuleInit {
 					identifier: 'qwen/qwen3-32b',
 					url: 'https://api.groq.com/openai/v1',
 				},
-				provider: 'openai',
+
 				settings: { temperature: 0.2 },
 				apiKey: this.configService.getOrThrow('GROQ_API_KEY'),
 				isDefault: true,
@@ -155,7 +144,7 @@ export class ModelService implements OnModuleInit {
 					identifier: 'openai/gpt-oss-120b',
 					url: 'https://api.groq.com/openai/v1',
 				},
-				provider: 'openai',
+
 				settings: { temperature: 0.2 },
 				apiKey: this.configService.getOrThrow('GROQ_API_KEY'),
 				isDefault: true,
@@ -166,7 +155,7 @@ export class ModelService implements OnModuleInit {
 					identifier: 'deepseek-r1-distill-qwen-32b',
 					url: 'https://api.groq.com/openai/v1',
 				},
-				provider: 'openai',
+
 				settings: { temperature: 0.2 },
 				apiKey: this.configService.getOrThrow('GROQ_API_KEY'),
 				isDefault: true,

@@ -7,7 +7,6 @@ model Model {
     settings     Settings      @json
     name         String
     apiKey       String?
-    provider     Provider
 
     status       ModelStatus   @default(inactive) @allow("update", true, true)
     error        ModelError?   @allow("update", true, true)
@@ -31,13 +30,6 @@ model Model {
 
     // Default models can be view by everybody
     @@allow('read', isDefault)
-}
-
-enum Provider {
-    openai
-    anthropic
-    google
-    azure_openai
 }
 
 type Connection {

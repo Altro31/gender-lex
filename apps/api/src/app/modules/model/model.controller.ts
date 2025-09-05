@@ -18,7 +18,7 @@ export class ModelController {
 		@TypedBody()
 		input: Pick<
 			Prisma.ModelCreateInput,
-			'apiKey' | 'connection' | 'name' | 'provider' | 'settings'
+			'apiKey' | 'connection' | 'name' | 'settings'
 		>,
 	) {
 		await this.modelService.create(input)

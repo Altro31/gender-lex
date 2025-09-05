@@ -38,7 +38,6 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 						{model.attributes.name}
 					</h3>
 					<p className="mt-1 text-gray-600">
-						{model.attributes.provider} •{" "}
 						{model.attributes.connection.identifier}
 					</p>
 				</div>
@@ -60,16 +59,6 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 				</CardHeader>
 				<CardContent className="space-y-4">
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-						<div className="space-y-2">
-							<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-								<User className="h-4 w-4" />
-								Proveedor
-							</div>
-							<p className="font-mono text-gray-900">
-								{model.attributes.provider}
-							</p>
-						</div>
-
 						<div className="space-y-2">
 							<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
 								<Tag className="h-4 w-4" />

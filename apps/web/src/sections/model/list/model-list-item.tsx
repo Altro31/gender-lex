@@ -50,7 +50,6 @@ export default function ModelListItem({ model }: Props) {
 							{model.attributes.name}
 						</CardTitle>
 						<CardDescription className="text-sm">
-							{model.attributes.provider} •{" "}
 							{model.attributes.connection.identifier}
 						</CardDescription>
 					</div>

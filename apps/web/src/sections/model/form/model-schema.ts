@@ -1,11 +1,9 @@
-import { $Enums } from "@repo/db/models"
-import { z } from "zod/mini"
 import isLocalhostIP from "is-local-address"
+import { z } from "zod/mini"
 
 export type ModelSchema = z.infer<typeof ModelSchema>
 export const ModelSchema = z.object({
 	name: z.string().check(z.minLength(1, "Name field is required")),
-	provider: z.enum($Enums.Provider),
 	connection: z.object({
 		identifier: z
 			.string()
