@@ -1,33 +1,40 @@
 "use server"
 
 import { client } from "@/lib/api/client"
-import { getSession } from "@/lib/auth/auth-server"
+import { getPrisma } from "@/lib/prisma/client"
 import { actionClient } from "@/lib/safe-action"
 import { PresetSchema } from "@/sections/preset/form/preset-schema"
-import { unauthorized } from "next/navigation"
+import type { Route } from "next"
 import { returnValidationErrors } from "next-safe-action"
 import { revalidatePath } from "next/cache"
 import { z } from "zod/mini"
-import type { Route } from "next"
 
 export async function findPresets({ page, q }: { page: number; q?: string }) {
-	const session = await getSession()
-	if (!session) unauthorized()
-	return client.GET("/zen/preset", {
-		params: {
-			query: {
-				"page[offset]": (page - 1) * 10,
-				"filter[name$contains]": q,
-			},
-		},
+	const prisma = await getPrisma()
+
+	return prisma.preset.findMany({
+		where: { name: { contains: q, mode: "insensitive" } },
+		skip: (page - 1) * 10,
+		take: 10,
+		include: { Models: { include: { Model: true } } },
+		orderBy: [{ createdAt: "desc" }, { updatedAt: "desc" }],
 	})
 }
 
 export const createPreset = actionClient
 	.inputSchema(PresetSchema)
-	.action(async ({ parsedInput: body }) => {
-		const { data } = await client.POST("/zen/preset", {
-			body,
+	.action(async ({ parsedInput: { Models, ...rest } }) => {
+		const prisma = await getPrisma()
+		const data = await prisma.preset.create({
+			data: {
+				...rest,
+				Models: {
+					create: Models.map((model) => ({
+						role: model.role,
+						Model: { connect: { id: model.Model.id } },
+					})),
+				},
+			},
 		})
 
 		revalidatePath("/presets" as Route, "page")
@@ -40,12 +47,33 @@ export const createPreset = actionClient
 
 export const editPreset = actionClient
 	.inputSchema(z.tuple([z.string(), PresetSchema]))
-	.action(async ({ parsedInput: [id, body] }) => {
-		const { data, error } = await client.PUT("/zen/preset/{id}", {
-			params: { path: { id } },
-			body: { data: { id, type: "model", attributes: body } },
+	.action(async ({ parsedInput: [id, { Models, ...rest }] }) => {
+		const prisma = await getPrisma()
+
+		const data = await prisma.$transaction(async (tx) => {
+			await prisma.preset.update({
+				where: { id },
+				data: {
+					Models: {
+						deleteMany: {},
+					},
+				},
+				select: { id: true },
+			})
+			return prisma.preset.update({
+				where: { id },
+				data: {
+					...rest,
+					Models: {
+						create: Models.map((model) => ({
+							role: model.role,
+							Model: { connect: { id: model.Model.id } },
+						})),
+					},
+				},
+				select: { id: true },
+			})
 		})
-		console.log(error)
 
 		revalidatePath("/presets" as Route, "page")
 
@@ -72,5 +100,49 @@ export const deletePreset = actionClient
 		return {
 			success: true,
 			data,
+		}
+	})
+
+export const clonePreset = actionClient
+	.inputSchema(z.string())
+	.action(async ({ parsedInput: id }) => {
+		const prisma = await getPrisma()
+
+		const { Models, ...rest } = await prisma.preset.findUniqueOrThrow({
+			where: { id },
+			omit: {
+				id: true,
+				createdAt: true,
+				isDefault: true,
+				updatedAt: true,
+				usedAt: true,
+				userId: true,
+			},
+			include: {
+				Models: {
+					// select: { role: true, Model: { select: { id: true } } },
+					include: { Model: true },
+				},
+			},
+		})
+
+		const cloned = await prisma.preset.create({
+			data: {
+				name: rest.name + " (Copy)",
+				description: rest.description,
+				Models: {
+					create: Models.map((pm) => ({
+						role: pm.role,
+						Model: { connect: { id: pm.modelId } },
+					})),
+				},
+			},
+		})
+
+		revalidatePath("/presets" as Route, "page")
+
+		return {
+			success: true,
+			data: cloned,
 		}
 	})

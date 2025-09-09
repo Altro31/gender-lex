@@ -10,30 +10,30 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 import { deleteModel } from "@/services/model"
 import type { ModelsResponseItem } from "@/types/model"
-import { Loader2 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useAction } from "next-safe-action/hooks"
-import { type MouseEvent, type PropsWithChildren } from "react"
+import { type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {
 	model: ModelsResponseItem
+	onDelete?: () => void
 }
 
-export default function DeleteModelAlertDialog({ model, children }: Props) {
+export default function DeleteModelAlertDialog({
+	model,
+	children,
+	onDelete,
+}: Props) {
 	const t = useTranslations()
 
-	const { executeAsync, status: deleteStatus } = useAction(deleteModel)
-	const isDeleting =
-		deleteStatus === "executing" || deleteStatus === "transitioning"
+	const { execute } = useAction(deleteModel)
 
-	const handleDeleteModel = async (e: MouseEvent<HTMLButtonElement>) => {
-		if (!isDeleting) {
-			e.stopPropagation()
-			await executeAsync(model.id)
-			e.currentTarget?.click()
-		}
+	const handleDeleteModel = async () => {
+		execute(model.id)
+		onDelete?.()
 	}
 
 	return (
@@ -45,25 +45,16 @@ export default function DeleteModelAlertDialog({ model, children }: Props) {
 					</AlertDialogTitle>
 					<AlertDialogDescription>
 						{t("Model.delete.description.1")}
-						<strong className="font-medium">
-							{" "}
-							{model.attributes.name}
-						</strong>{" "}
-						.
+						<strong className="font-medium"> {model.name}</strong> .
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>{t("Commons.cancel")}</AlertDialogCancel>
-					<AlertDialogAction
-						disabled={isDeleting}
-						onClick={handleDeleteModel}
-						className="bg-red-600 hover:bg-red-700"
-					>
-						{isDeleting && <Loader2 className="animate-spin" />}
-						{isDeleting
-							? t("Actions.deleting")
-							: t("Actions.delete")}
-					</AlertDialogAction>
+					<Button variant="destructive" asChild>
+						<AlertDialogAction onClick={handleDeleteModel}>
+							{t("Actions.delete")}
+						</AlertDialogAction>
+					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</BaseAlertDialog>

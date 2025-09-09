@@ -89,7 +89,14 @@ export class ModelService implements OnModuleInit {
 		})
 			.pipe(
 				Effect.catchTags({
-					RequestError: e => Console.log('RequestError', e),
+					RequestError: () =>
+						Effect.promise(() =>
+							this.updateModelStatus(
+								id,
+								'error',
+								'INVALID_CONNECTION_URL',
+							),
+						),
 					ResponseError: e => Console.log('ResponseError', e),
 				}),
 				Effect.catchAll(e => {
@@ -122,7 +129,11 @@ export class ModelService implements OnModuleInit {
 			where: { id },
 			data: { status, error: error || null },
 		})
-		this.sseService.broadcast('model.status.change', { id, status })
+		this.sseService.broadcast('model.status.change', {
+			id,
+			status,
+			message: error!,
+		})
 	}
 
 	async onModuleInit() {
@@ -162,7 +173,7 @@ export class ModelService implements OnModuleInit {
 			},
 		] satisfies Prisma.ModelCreateInput[]
 
-		await this.prismaService.$transaction(async tx => {
+		await this.prismaService.prisma.$transaction(async tx => {
 			await Promise.all(
 				models.map(async model => {
 					const exist = await tx.model.findFirst({

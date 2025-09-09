@@ -1,4 +1,5 @@
 import type { ApiResponse } from "@/lib/api/utils"
+import type { findModels } from "@/services/model"
 
-export type ModelsResponse = ApiResponse<"/zen/model">
-export type ModelsResponseItem = ModelsResponse["data"][number]
+export type ModelsResponse = Awaited<ReturnType<typeof findModels>>
+export type ModelsResponseItem = ModelsResponse[number]

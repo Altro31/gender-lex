@@ -8,27 +8,26 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import type { PresetsResponseItem } from "@/types/preset"
+import type { PresetsResponse } from "@/types/preset"
 import {
-	Calendar,
-	Tag,
-	Zap,
-	Settings,
-	Thermometer,
-	Hash,
-	Percent,
 	Brain,
+	Calendar,
+	Hash,
 	MessageSquare,
+	Percent,
+	Settings,
+	Tag,
+	Thermometer,
+	Zap,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 interface Props {
-	preset: PresetsResponseItem
+	preset: PresetsResponse[number]
 }
 
 export default function PresetDetails({ preset }: Props) {
-	const models = preset.relationships?.Models?.data
-
+	const t = useTranslations()
 	const getRoleColor = (role: string) => {
 		switch (role) {
 			case "primary":
@@ -55,64 +54,28 @@ export default function PresetDetails({ preset }: Props) {
 		}
 	}
 
-	const getParameterIcon = (param: string) => {
-		switch (param) {
-			case "temperature":
-				return <Thermometer className="h-4 w-4" />
-			case "maxTokens":
-				return <Hash className="h-4 w-4" />
-			case "topP":
-				return <Percent className="h-4 w-4" />
-			case "frequencyPenalty":
-				return <Brain className="h-4 w-4" />
-			case "presencePenalty":
-				return <MessageSquare className="h-4 w-4" />
-			default:
-				return <Settings className="h-4 w-4" />
-		}
-	}
-
-	const getParameterLabel = (param: string) => {
-		switch (param) {
-			case "temperature":
-				return "Temperatura"
-			case "maxTokens":
-				return "Tokens Máximos"
-			case "topP":
-				return "Top P"
-			case "frequencyPenalty":
-				return "Penalización de Frecuencia"
-			case "presencePenalty":
-				return "Penalización de Presencia"
-			default:
-				return param
-		}
-	}
-
 	return (
 		<div className="space-y-6">
 			{/* Header */}
 			<div className="flex items-start justify-between">
 				<div>
 					<h3 className="text-2xl font-semibold text-gray-900">
-						{preset.attributes.name}
+						{preset.name}
 					</h3>
 				</div>
 			</div>
 
 			{/* Description */}
-			{preset.attributes.description && (
+			{preset.description && (
 				<Card>
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2 text-lg">
 							<Tag className="h-5 w-5" />
-							Descripción
+							{t("Commons.description")}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<p className="text-gray-700">
-							{preset.attributes.description}
-						</p>
+						<p className="text-gray-700">{preset.description}</p>
 					</CardContent>
 				</Card>
 			)}
@@ -122,23 +85,23 @@ export default function PresetDetails({ preset }: Props) {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2 text-lg">
 						<Zap className="h-5 w-5" />
-						Configuración de Modelos
+						{t("Preset.form.models.title")}
 					</CardTitle>
 					<CardDescription>
-						Modelos y parámetros configurados en este preset
+						{t("Preset.details.description")}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-6">
-					{preset.models.map((model, index) => (
+					{preset.Models.map((model) => (
 						<div
-							key={index}
+							key={model.modelId + "_" + model.presetId}
 							className="space-y-4 rounded-lg border p-4"
 						>
 							{/* Model Header */}
 							<div className="flex items-center justify-between">
 								<div>
 									<h4 className="text-lg font-semibold">
-										{model.modelName}
+										{model.Model.name}
 									</h4>
 									<p className="text-sm text-gray-600">
 										ID: {model.modelId}
@@ -148,75 +111,6 @@ export default function PresetDetails({ preset }: Props) {
 									{getRoleText(model.role)}
 								</Badge>
 							</div>
-
-							{/* Parameters Grid */}
-							<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-								{Object.entries(model.parameters).map(
-									([key, value]) => {
-										if (key === "systemPrompt") return null // Handle separately
-
-										return (
-											<div
-												key={key}
-												className="space-y-2"
-											>
-												<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-													{getParameterIcon(key)}
-													{getParameterLabel(key)}
-												</div>
-												<div className="space-y-1">
-													<div className="flex justify-between text-sm">
-														<span className="text-gray-600">
-															Valor:
-														</span>
-														<span className="font-mono font-medium">
-															{value}
-														</span>
-													</div>
-													{(key === "temperature" ||
-														key === "topP" ||
-														key ===
-															"frequencyPenalty" ||
-														key ===
-															"presencePenalty") && (
-														<Progress
-															value={
-																key ===
-																"temperature"
-																	? (value as number) *
-																		50
-																	: key ===
-																		  "topP"
-																		? (value as number) *
-																			100
-																		: ((value as number) +
-																				2) *
-																			25
-															}
-															className="h-2"
-														/>
-													)}
-												</div>
-											</div>
-										)
-									},
-								)}
-							</div>
-
-							{/* System Prompt */}
-							{model.parameters.systemPrompt && (
-								<div className="space-y-2 border-t pt-4">
-									<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-										<MessageSquare className="h-4 w-4" />
-										Prompt del Sistema
-									</div>
-									<div className="rounded-lg bg-gray-50 p-3">
-										<p className="text-sm whitespace-pre-wrap text-gray-700">
-											{model.parameters.systemPrompt}
-										</p>
-									</div>
-								</div>
-							)}
 						</div>
 					))}
 				</CardContent>
@@ -227,17 +121,17 @@ export default function PresetDetails({ preset }: Props) {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2 text-lg">
 						<Calendar className="h-5 w-5" />
-						Información de Uso
+						{t("Model.details.usage-info.title")}
 					</CardTitle>
 					<CardDescription>
-						Estadísticas y fechas importantes
+						{t("Model.details.usage-info.description")}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 						<div className="space-y-2">
 							<div className="text-sm font-medium text-gray-700">
-								Fecha de Creación
+								{t("Commons.creation-date")}
 							</div>
 							<p className="text-gray-900">
 								{new Date(preset.createdAt).toLocaleDateString(
@@ -251,66 +145,32 @@ export default function PresetDetails({ preset }: Props) {
 							</p>
 						</div>
 
-						{preset.lastUsed && (
+						{preset.usedAt && (
 							<div className="space-y-2">
 								<div className="text-sm font-medium text-gray-700">
-									Último Uso
+									{t("Commons.last-use")}
 								</div>
 								<p className="text-gray-900">
-									{new Date(
-										preset.lastUsed,
-									).toLocaleDateString("es-ES", {
-										year: "numeric",
-										month: "long",
-										day: "numeric",
-									})}
+									{new Date(preset.usedAt).toLocaleDateString(
+										"es-ES",
+										{
+											year: "numeric",
+											month: "long",
+											day: "numeric",
+										},
+									)}
 								</p>
 							</div>
 						)}
-
-						<div className="space-y-2">
-							<div className="text-sm font-medium text-gray-700">
-								Total de Usos
-							</div>
-							<p className="text-2xl font-bold text-gray-900">
-								{preset.usageCount}
-							</p>
-						</div>
 					</div>
 
 					<div className="space-y-2">
 						<div className="text-sm font-medium text-gray-700">
-							ID del Preset
+							{t("Preset.id")}
 						</div>
 						<p className="font-mono text-sm text-gray-900">
 							{preset.id}
 						</p>
-					</div>
-				</CardContent>
-			</Card>
-
-			{/* Quick Actions */}
-			<Card>
-				<CardHeader>
-					<CardTitle className="text-lg">Acciones Rápidas</CardTitle>
-					<CardDescription>
-						Operaciones comunes para este preset
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<div className="flex flex-wrap gap-3">
-						<button className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700">
-							Usar Preset
-						</button>
-						<button className="rounded-lg border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-50">
-							Duplicar
-						</button>
-						<button className="rounded-lg border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-50">
-							Exportar Configuración
-						</button>
-						<button className="rounded-lg border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-50">
-							Probar Conexiones
-						</button>
 					</div>
 				</CardContent>
 			</Card>

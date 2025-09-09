@@ -1,5 +1,6 @@
 import FloatingChatbot from "@/components/floating-chatbot"
 import ProgressProvider from "@/components/progress-provider"
+import QueryProvider from "@/components/providers/query-provider"
 import ThemeRegister from "@/components/theme/theme-register"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
@@ -20,19 +21,21 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
 			<body className="relative">
 				<ProgressProvider>
 					<NuqsAdapter>
-						<NextIntlClientProvider>
-							<EventSourceProvider>
-								<SidebarProvider>
-									{children}
-									<FloatingChatbot />
-									<Toaster
-										richColors
-										position="bottom-right"
-									/>
-									<ThemeRegister />
-								</SidebarProvider>
-							</EventSourceProvider>
-						</NextIntlClientProvider>
+						<QueryProvider>
+							<NextIntlClientProvider>
+								<EventSourceProvider>
+									<SidebarProvider>
+										{children}
+										<FloatingChatbot />
+										<Toaster
+											richColors
+											position="bottom-right"
+										/>
+										<ThemeRegister />
+									</SidebarProvider>
+								</EventSourceProvider>
+							</NextIntlClientProvider>
+						</QueryProvider>
 					</NuqsAdapter>
 				</ProgressProvider>
 			</body>

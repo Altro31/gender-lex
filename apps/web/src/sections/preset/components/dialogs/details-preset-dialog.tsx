@@ -1,5 +1,3 @@
-"use client"
-
 import BaseDialog from "@/components/dialog/base-dialog"
 import {
 	DialogContent,
@@ -8,26 +6,28 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import ModelDetails from "@/sections/model/details/model-details"
-import type { PresetsResponseItem } from "@/types/preset"
+import PresetDetails from "@/sections/preset/details/preset-details"
+import type { PresetsResponse } from "@/types/preset"
+import { useTranslations } from "next-intl"
 import { type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {
-	preset: PresetsResponseItem
+	preset: PresetsResponse[number]
 }
 
 export default function DetailsPresetDialog({ children, preset }: Props) {
+	const t = useTranslations()
 	return (
 		<BaseDialog trigger={children}>
 			<DialogContent className="max-w-none">
 				<DialogHeader>
-					<DialogTitle>Detalles del Preset</DialogTitle>
+					<DialogTitle>{t("Preset.details.title")}</DialogTitle>
 					<DialogDescription>
-						Información completa del preset seleccionado
+						{t("Preset.details.description-details")}
 					</DialogDescription>
 				</DialogHeader>
 				<ScrollArea className="max-h-[80vh] py-4 pr-4">
-					<ModelDetails model={preset} />
+					<PresetDetails preset={preset} />
 				</ScrollArea>
 			</DialogContent>
 		</BaseDialog>

@@ -22,14 +22,14 @@ export default function EditModelFormContainer({ model }: Props) {
 	const form = useForm<ModelSchema>({
 		resolver: standardSchemaResolver(ModelSchema),
 		defaultValues: {
-			apiKey: model.attributes.apiKey ?? "",
+			apiKey: model.apiKey ?? "",
 			connection: {
-				identifier: model.attributes.connection.identifier ?? "",
-				url: model.attributes.connection.url ?? "",
+				identifier: model.connection.identifier ?? "",
+				url: model.connection.url ?? "",
 			},
-			name: model.attributes.name ?? "",
+			name: model.name ?? "",
 			settings: {
-				temperature: model.attributes.settings.temperature ?? 0.8,
+				temperature: model.settings.temperature ?? 0.8,
 			},
 		},
 		mode: "onChange",

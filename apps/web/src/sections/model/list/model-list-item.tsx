@@ -1,5 +1,6 @@
 "use client"
 
+import Loader from "@/components/loader"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -25,15 +26,22 @@ import { getStatusColor } from "@/sections/model/utils/status"
 import type { ModelsResponseItem } from "@/types/model"
 import { Edit, Eye, Loader2, Settings, Trash2 } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 interface Props {
-	model: ModelsResponseItem
+	model: ModelsResponseItem & {
+		itemStatus?: "deleting"
+	}
 }
 
-export default function ModelListItem({ model }: Props) {
-	const [status, setStatus] = useState(model.attributes.status)
+export default function ModelListItem({ model: initialModel }: Props) {
+	const [model, setModel] = useState(initialModel)
+	const [status, setStatus] = useState(model.status)
 	const t = useTranslations()
+
+	useEffect(() => {
+		setModel(initialModel)
+	}, [initialModel, setModel])
 
 	useSse("model.status.change", ({ id, status }) => {
 		if (id === model.id) {
@@ -41,16 +49,28 @@ export default function ModelListItem({ model }: Props) {
 		}
 	})
 
+	const handleItemStatus = (status: Props["model"]["itemStatus"]) => () => {
+		setModel((model) => ({ ...model, itemStatus: status }))
+	}
+
+	const isDeleting = model.itemStatus === "deleting"
+	const isDisabled = isDeleting
+	const isDefault = model.isDefault
+
 	return (
-		<Card key={model.id} className="transition-shadow hover:shadow-lg">
+		<Card
+			key={model.id}
+			data-disabled={isDisabled || undefined}
+			className="after:bg-muted/80 relative overflow-clip transition-shadow after:absolute after:top-0 after:size-full not-data-disabled:after:hidden hover:shadow-lg"
+		>
 			<CardHeader>
 				<div className="flex items-start justify-between">
 					<div className="flex-1">
 						<CardTitle className="mb-1 text-lg">
-							{model.attributes.name}
+							{model.name}
 						</CardTitle>
 						<CardDescription className="text-sm">
-							{model.attributes.connection.identifier}
+							{model.connection.identifier}
 						</CardDescription>
 					</div>
 
@@ -66,24 +86,38 @@ export default function ModelListItem({ model }: Props) {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
 							<DetailsModelDialog model={model}>
-								<DropdownMenuItem>
+								<DropdownMenuItem disabled={isDeleting}>
 									<Eye />
 									Ver Detalles
 								</DropdownMenuItem>
 							</DetailsModelDialog>
 
-							<EditModelDialog model={model}>
-								<DropdownMenuItem>
-									<Edit />
-									Editar
-								</DropdownMenuItem>
-							</EditModelDialog>
-							<DeleteModelAlertDialog model={model}>
-								<DropdownMenuItem variant="destructive">
-									<Trash2 />
-									Eliminar
-								</DropdownMenuItem>
-							</DeleteModelAlertDialog>
+							{!isDefault && (
+								<>
+									<EditModelDialog model={model}>
+										<DropdownMenuItem disabled={isDeleting}>
+											<Edit />
+											Editar
+										</DropdownMenuItem>
+									</EditModelDialog>
+									<DeleteModelAlertDialog
+										model={model}
+										onDelete={handleItemStatus("deleting")}
+									>
+										<DropdownMenuItem
+											variant="destructive"
+											disabled={isDeleting}
+										>
+											{isDeleting ? (
+												<Loader />
+											) : (
+												<Trash2 />
+											)}
+											Eliminar
+										</DropdownMenuItem>
+									</DeleteModelAlertDialog>
+								</>
+							)}
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</div>
@@ -114,20 +148,28 @@ export default function ModelListItem({ model }: Props) {
 						<span>
 							Creado:{" "}
 							{new Date(
-								model.attributes.createdAt,
+								model.createdAt,
 							).toLocaleDateString()}
 						</span>
-						{model.attributes.usedAt && (
+						{model.usedAt && (
 							<span>
 								Último uso:{" "}
 								{new Date(
-									model.attributes.usedAt,
+									model.usedAt,
 								).toLocaleDateString()}
 							</span>
 						)}
 					</div>
 				</div>
 			</CardFooter>
+			{isDisabled && (
+				<div className="text-muted-foreground absolute top-0 z-10 size-full">
+					<div className="flex size-full items-center justify-center gap-2">
+						<Loader />
+						{isDeleting && <span>Deleting...</span>}
+					</div>
+				</div>
+			)}
 		</Card>
 	)
 }

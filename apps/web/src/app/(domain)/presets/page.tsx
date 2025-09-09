@@ -5,7 +5,6 @@ export default async function PresetsPage({
 	searchParams,
 }: PageProps<"/presets">) {
 	const { page = 1, q } = await searchParams
-	const { data, error } = await findPresets({ page: Number(page), q })
-	if (error) throw new Error("Failed to retrieve presets")
-	return <PresetsListContainer presetResponse={data} />
+	const presets = await findPresets({ page: Number(page), q: q as string })
+	return <PresetsListContainer presets={presets} q={q as string} />
 }

@@ -8,23 +8,30 @@ import { unauthorized } from "next/navigation"
 import { returnValidationErrors } from "next-safe-action"
 import { revalidatePath } from "next/cache"
 import { z } from "zod/mini"
+import { getPrisma } from "@/lib/prisma/client"
 
 export async function findModels({
-	page,
+	q,
+	page = "1",
 	status,
 }: {
-	page: number
+	q?: string
+	page?: string
 	status?: string
 }) {
-	const session = await getSession()
-	if (!session) unauthorized()
-	return client.GET("/zen/model", {
-		params: {
-			query: {
-				"page[offset]": (page - 1) * 10,
-				"filter[status]": status as any,
-			},
+	const prisma = await getPrisma()
+	return prisma.model.findMany({
+		where: {
+			name: { contains: q, mode: "insensitive" },
+			status: status as any,
 		},
+		skip: (Number(page) - 1) * 10,
+		take: 10,
+		orderBy: [
+			{ isDefault: "asc" },
+			{ createdAt: "desc" },
+			{ updatedAt: "desc" },
+		],
 	})
 }
 
@@ -94,3 +101,13 @@ export const testConnection = actionClient
 			data,
 		}
 	})
+
+export const getModelsSelect = async ({ page }: { page: number }) => {
+	const prisma = await getPrisma()
+
+	return prisma.model.findMany({
+		skip: page * 20,
+		take: 20,
+		select: { id: true, name: true },
+	})
+}

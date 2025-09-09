@@ -8,6 +8,7 @@ import "./prisma/schema/user"
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 datasource db {

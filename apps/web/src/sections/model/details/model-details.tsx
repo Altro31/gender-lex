@@ -1,5 +1,6 @@
 "use client"
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import {
 	Card,
@@ -12,7 +13,17 @@ import { useSse } from "@/lib/sse"
 import TestConnectionButton from "@/sections/model/components/test-connection-button"
 import { getStatusColor } from "@/sections/model/utils/status"
 import type { ModelsResponseItem } from "@/types/model"
-import { Calendar, Key, Link, Loader2, Server, Tag, User } from "lucide-react"
+import type { $Enums } from "@repo/db/models"
+import {
+	AlertTriangleIcon,
+	Calendar,
+	Key,
+	Link,
+	Loader2,
+	Server,
+	Tag,
+	User,
+} from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 
@@ -20,29 +31,40 @@ interface ModelDetailsProps {
 	model: ModelsResponseItem
 }
 
-export default function ModelDetails({ model }: ModelDetailsProps) {
-	const [status, setStatus] = useState(model.attributes.status)
+export default function ModelDetails({
+	model: initialModel,
+}: ModelDetailsProps) {
+	const [model, setModel] = useState(initialModel)
 	const t = useTranslations()
 
-	useSse("model.status.change", ({ id, status }) => {
-		if (id === model.id) {
-			setStatus(status)
+	useSse("model.status.change", (e) => {
+		if (e.id === model.id) {
+			setModel((model) => ({
+				...model,
+				status: e.status,
+				...(e.status === "error" && { error: e.message }),
+			}))
 		}
 	})
+
+	const handleStatus = (status: $Enums.ModelStatus) => () => {
+		setModel((model) => ({ ...model, status }))
+	}
+
 	return (
 		<div className="space-y-2 text-wrap! wrap-break-word!">
 			{/* Header */}
 			<div className="flex items-start justify-between">
 				<div>
 					<h3 className="text-2xl font-semibold text-gray-900">
-						{model.attributes.name}
+						{model.name}
 					</h3>
 					<p className="mt-1 text-gray-600">
-						{model.attributes.connection.identifier}
+						{model.connection.identifier}
 					</p>
 				</div>
-				<Badge className={getStatusColor(model.attributes.status)}>
-					{t("Model.status." + model.attributes.status)}
+				<Badge className={getStatusColor(model.status)}>
+					{t("Model.status." + model.status)}
 				</Badge>
 			</div>
 
@@ -51,10 +73,10 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2 text-lg">
 						<Server className="h-5 w-5" />
-						Configuración
+						{t("Commons.settings")}
 					</CardTitle>
 					<CardDescription>
-						Detalles técnicos de la conexión al modelo
+						{t("Model.details.settings.description")}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
@@ -62,31 +84,31 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 						<div className="space-y-2">
 							<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
 								<Tag className="h-4 w-4" />
-								Modelo
+								{t("Model.item")}
 							</div>
 							<p className="font-mono text-gray-900">
-								{model.attributes.connection.identifier}
+								{model.connection.identifier}
 							</p>
 						</div>
 
 						<div className="space-y-2">
 							<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
 								<Key className="h-4 w-4" />
-								Clave API
+								{t("Commons.api-key")}
 							</div>
 							<p className="font-mono text-gray-900">
-								{model.attributes.apiKey}
+								{model.apiKey}
 							</p>
 						</div>
 
-						{model.attributes.connection.url && (
+						{model.connection.url && (
 							<div className="space-y-2">
 								<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
 									<Link className="h-4 w-4" />
-									Endpoint
+									{t("Commons.endpoint")}
 								</div>
 								<p className="font-mono break-all text-gray-900">
-									{model.attributes.connection.url}
+									{model.connection.url}
 								</p>
 							</div>
 						)}
@@ -99,49 +121,51 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2 text-lg">
 						<Calendar className="h-5 w-5" />
-						Información de Uso
+						{t("Model.details.usage-info.title")}
 					</CardTitle>
 					<CardDescription>
-						Fechas importantes y estadísticas de uso
+						{t("Model.details.usage-info.description")}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div className="space-y-2">
 							<div className="text-sm font-medium text-gray-700">
-								Fecha de Creación
+								{t("Commons.creation-date")}
 							</div>
 							<p className="text-gray-900">
-								{new Date(
-									model.attributes.createdAt,
-								).toLocaleDateString("es-ES", {
-									year: "numeric",
-									month: "long",
-									day: "numeric",
-								})}
-							</p>
-						</div>
-
-						{model.attributes.usedAt && (
-							<div className="space-y-2">
-								<div className="text-sm font-medium text-gray-700">
-									Último Uso
-								</div>
-								<p className="text-gray-900">
-									{new Date(
-										model.attributes.usedAt,
-									).toLocaleDateString("es-ES", {
+								{new Date(model.createdAt).toLocaleDateString(
+									"es-ES",
+									{
 										year: "numeric",
 										month: "long",
 										day: "numeric",
-									})}
+									},
+								)}
+							</p>
+						</div>
+
+						{model.usedAt && (
+							<div className="space-y-2">
+								<div className="text-sm font-medium text-gray-700">
+									{t("Commons.last-use")}
+								</div>
+								<p className="text-gray-900">
+									{new Date(model.usedAt).toLocaleDateString(
+										"es-ES",
+										{
+											year: "numeric",
+											month: "long",
+											day: "numeric",
+										},
+									)}
 								</p>
 							</div>
 						)}
 
 						<div className="space-y-2">
 							<div className="text-sm font-medium text-gray-700">
-								ID del Modelo
+								{t("Model.id")}
 							</div>
 							<p className="font-mono text-gray-900">
 								{model.id}
@@ -155,28 +179,39 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
 			<Card>
 				<CardHeader>
 					<CardTitle className="text-lg">
-						Prueba de Conexión
+						{t("Model.test-connection.title")}
 					</CardTitle>
 					<CardDescription>
-						Verifica que la configuración del modelo sea correcta
+						{t("Model.test-connection.description")}
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<div className="flex flex-wrap items-center gap-2">
-						<span className="text-sm text-gray-600">Estado:</span>
-						<Badge className={getStatusColor(status)}>
-							{status === "connecting" && (
+						<span className="text-sm text-gray-600">
+							{t("Commons.status")}:
+						</span>
+						<Badge className={getStatusColor(model.status)}>
+							{model.status === "connecting" && (
 								<Loader2 className="animate-spin" />
 							)}
-							{t("Model.status." + status)}
+							{t("Model.status." + model.status)}
 						</Badge>
 						<TestConnectionButton
 							id={model.id}
 							className="ml-auto"
-							onExecute={() => setStatus("connecting")}
-							onSuccess={() => setStatus("active")}
-							onError={() => setStatus("error")}
+							onExecute={handleStatus("connecting")}
+							onSuccess={handleStatus("active")}
+							onError={handleStatus("error")}
 						/>
+						<Alert variant="destructive">
+							<AlertTriangleIcon />
+							<AlertTitle>
+								{t("Model.status." + model.status)}
+							</AlertTitle>
+							<AlertDescription>
+								{t("Model.status.message." + model.status)}
+							</AlertDescription>
+						</Alert>
 					</div>
 				</CardContent>
 			</Card>

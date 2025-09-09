@@ -33,7 +33,8 @@
 		"register": "Create account",
 		"registering": "Creating account ...",
 		"view-details": "View details",
-		"deleting": "Deleting..."
+		"deleting": "Deleting...",
+		"clonning": "Creating clone..."
 	},
 	"Commons": {
 		"email": "Email",
@@ -46,7 +47,8 @@
 		"name": "Name",
 		"name-placeholder": "Your name",
 		"recent": "Recent",
-		"are-you-shure": "Are you shure?"
+		"are-you-shure": "Are you shure?",
+		"endpoint": "Endpoint"
 	},
 	"Login": {
 		"back-to-home": "Back to home",

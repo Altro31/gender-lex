@@ -13,8 +13,7 @@ interface Props {
 	modelsResponse: ModelsResponse
 }
 
-export default function ModelListsContainer({ modelsResponse }: Props) {
-	const { data: models } = modelsResponse
+export default function ModelListsContainer({ modelsResponse: models }: Props) {
 	const t = useTranslations()
 	const [searchTerm] = useQueryState("q")
 	return (

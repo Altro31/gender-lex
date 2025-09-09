@@ -30,7 +30,7 @@ export class CrudMiddleware implements NestMiddleware {
 			// get an enhanced PrismaClient for the current user
 			getPrisma: () => {
 				return enhance(
-					this.prismaService,
+					this.prismaService.prisma,
 					{ user: session?.user },
 					{ encryption: { encryptionKey: getEncryptionKey(key) } },
 				)

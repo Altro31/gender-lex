@@ -106,7 +106,7 @@ const stepFormElements = [
 				)}
 			/>
 		</div>
-		<div className="flex w-full flex-wrap items-center justify-between gap-2 sm:flex-nowrap">
+		<div className="flex w-full flex-wrap items-start justify-between gap-2 sm:flex-nowrap">
 			<FormField
 				name="connection.identifier"
 				render={({ field }) => (

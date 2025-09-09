@@ -10,30 +10,29 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { deleteModel } from "@/services/model"
-import type { ModelsResponseItem } from "@/types/model"
-import { Loader2 } from "lucide-react"
+import { deletePreset } from "@/services/preset"
+import type { PresetsResponse } from "@/types/preset"
 import { useTranslations } from "next-intl"
 import { useAction } from "next-safe-action/hooks"
-import { type MouseEvent, type PropsWithChildren } from "react"
+import { type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {
-	model: ModelsResponseItem
+	preset: PresetsResponse[number]
+	onDelete?: () => void
 }
 
-export default function DeleteModelAlertDialog({ model, children }: Props) {
+export default function DeletePresetAlertDialog({
+	preset,
+	children,
+	onDelete,
+}: Props) {
 	const t = useTranslations()
 
-	const { executeAsync, status: deleteStatus } = useAction(deleteModel)
-	const isDeleting =
-		deleteStatus === "executing" || deleteStatus === "transitioning"
+	const { execute } = useAction(deletePreset)
 
-	const handleDeleteModel = async (e: MouseEvent<HTMLButtonElement>) => {
-		if (!isDeleting) {
-			e.stopPropagation()
-			await executeAsync(model.id)
-			e.currentTarget?.click()
-		}
+	const handleDeletePreset = () => {
+		onDelete?.()
+		execute(preset.id)
 	}
 
 	return (
@@ -44,10 +43,10 @@ export default function DeleteModelAlertDialog({ model, children }: Props) {
 						{t("Commons.are-you-shure")}
 					</AlertDialogTitle>
 					<AlertDialogDescription>
-						{t("Model.delete.description.1")}
+						{t("Preset.delete.description.1")}
 						<strong className="font-medium">
 							{" "}
-							{model.attributes.name}
+							{preset.name}
 						</strong>{" "}
 						.
 					</AlertDialogDescription>
@@ -55,14 +54,10 @@ export default function DeleteModelAlertDialog({ model, children }: Props) {
 				<AlertDialogFooter>
 					<AlertDialogCancel>{t("Commons.cancel")}</AlertDialogCancel>
 					<AlertDialogAction
-						disabled={isDeleting}
-						onClick={handleDeleteModel}
+						onClick={handleDeletePreset}
 						className="bg-red-600 hover:bg-red-700"
 					>
-						{isDeleting && <Loader2 className="animate-spin" />}
-						{isDeleting
-							? t("Actions.deleting")
-							: t("Actions.delete")}
+						{t("Actions.delete")}
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

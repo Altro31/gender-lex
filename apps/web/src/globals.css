@@ -117,4 +117,7 @@ body:has(#theme[data-dark]) {
 	body {
 		@apply bg-background text-foreground;
 	}
+	form {
+		display: contents;
+	}
 }

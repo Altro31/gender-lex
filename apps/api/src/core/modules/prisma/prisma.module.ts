@@ -22,7 +22,7 @@ import { getEncryptionKey } from 'src/core/utils/auth'
 					getEnhancedPrisma: () => {
 						const user = cls.get<User>('user')
 						return enhance(
-							prisma,
+							prisma.prisma,
 							{ user: user ?? null },
 							{
 								encryption: {

@@ -11,7 +11,7 @@ import { SessionService } from 'src/security/modules/auth/session.service'
 	imports: [
 		BetterAuthModuleLibrary.forRootAsync({
 			useFactory(prisma: PrismaService, config: ConfigService) {
-				const auth = getBetterAuth(prisma, (key: string) =>
+				const auth = getBetterAuth(prisma.prisma, (key: string) =>
 					config.get(key),
 				)
 				return { auth }

@@ -32,17 +32,27 @@ model Preset {
 }
 
 model PresetModel {
-    role     ModelRole
 
-    Preset   Preset    @relation(fields: [presetId], references: [id], onDelete: Cascade)
-    presetId String
+    id        String    @id @default(cuid())
 
-    Model    Model     @relation(fields: [modelId], references: [id], onDelete: Cascade)
-    modelId  String
+    isDefault Boolean   @default(false)
 
-    @@id([role, presetId])
+    role      ModelRole
 
-    @@allow("all",check(Preset) && check(Model))
+    Preset    Preset    @relation(fields: [presetId], references: [id], onDelete: Cascade)
+    presetId  String
+
+    Model     Model     @relation(fields: [modelId], references: [id], onDelete: Cascade)
+    modelId   String
+
+
+    // Default presetModels can be view by everybody
+    // @@allow("read",isDefault)
+
+    // Owners can do anything
+    // @@allow("all",auth()==Preset.User)
+    @@allow("all",true)
+
 
     @@openapi.ignore()
 }

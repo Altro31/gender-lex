@@ -33,7 +33,11 @@
 		"edit": "Editar",
 		"delete": "Eliminar",
 		"log-out": "Cerrar Sessión",
-		"deleting": "Eliminando..."
+		"deleting": "Eliminando...",
+		"clonning": "Creating clone...",
+		"clone": "Duplicar",
+		"create": "Crear",
+		"update": "Actualizar"
 	},
 	"Login": {
 		"back-to-home": "Volver al inicio",
@@ -77,7 +81,17 @@
 		"recent": "Reciente",
 		"more": "Más",
 		"cancel": "Cancelar",
-		"are-you-shure": "¿Estás seguro?"
+		"are-you-shure": "¿Estás seguro?",
+		"settings": "Configuración",
+		"api-key": "Clave API",
+		"creation-date": "Fecha de Creación",
+		"last-use": "Último Uso",
+		"status": "Estado",
+		"details": "Ver Detalles",
+		"clone": "Duplicar",
+		"created-at": "Creado",
+		"role": "Rol",
+		"description": "Descripción"
 	},
 	"Register": {
 		"title": "Crear Cuenta",
@@ -132,6 +146,26 @@
 			"inactive": "Inactivo",
 			"undefined": "Indefinido",
 			"connecting": "Conectando"
+		},
+		"details": {
+			"settings": {
+				"description": "Detalles técnicos de la conexión al modelo"
+			},
+			"usage-info": {
+				"title": "Información de Uso",
+				"description": "Fechas importantes y estadísticas de uso"
+			}
+		},
+		"item": "Modelo",
+		"id": "ID del Modelo",
+		"test-connection": {
+			"title": "Prueba de Conexión",
+			"description": "Verifica que la configuración del modelo sea correcta"
+		},
+		"root": "Modelos",
+		"create": {
+			"action": "Agregar Modelo",
+			"empty-action": "Agregar Primer Modelo"
 		}
 	},
 	"Profile": {
@@ -140,5 +174,61 @@
 	"Languages": {
 		"en": "Inglés",
 		"es": "Español"
+	},
+	"Preset": {
+		"list": {
+			"title": "Gestión de Presets",
+			"description": "Administra combinaciones de modelos con configuraciones específicas",
+			"empty-title": "No hay presets configurados",
+			"no-result-title": "No se encontraron presets",
+			"no-result-description": "Intenta con otros términos de búsqueda o categorías",
+			"empty-description": "Comienza creando tu primer preset"
+		},
+		"create": {
+			"action": "Nuevo Preset",
+			"empty-action": "Crear Primer Preset",
+			"title": "Crear Nuevo Preset",
+			"description": "Configura una nueva combinación de modelos con parámetros específicos"
+		},
+		"form": {
+			"name": {
+				"label": "Nombre del Preset",
+				"placeholder": "ej. Análisis Creativo"
+			},
+			"description": {
+				"label": "Descripción",
+				"placeholder": "Describe el propósito y uso de este preset..."
+			},
+			"models": {
+				"title": "Configuración de Modelos",
+				"description": "Agrega y configura los modelos que formarán parte de este preset",
+				"no-set-model": "Modelo sin configurar",
+				"no-set-role": "Rol sin especificar",
+				"model-select": {
+					"placeholder": "Elija un modelo"
+				},
+				"role-select": "Elija el rol"
+			}
+		},
+		"details": {
+			"description": "Modelos configurados en este preset",
+			"title": "Detalles del Preset",
+			"description-details": "Información completa del preset seleccionado"
+		},
+		"id": "ID del Preset",
+		"clone": {
+			"description": {
+				"1": "Se creará un nuevo preset con el mismo nombre, descripción y configuración de modelos"
+			}
+		},
+		"delete": {
+			"description": {
+				"1": "Esta acción no se puede deshacer. Se eliminará permanentemente el preset"
+			}
+		},
+		"edit": {
+			"title": "Editar preset",
+			"description": "Edita la conexión de un preseto de lenguaje"
+		}
 	}
 }

@@ -1,20 +1,18 @@
 import ModelListsContainer from "@/sections/model/list/model-list-container"
 import { findModels } from "@/services/model"
 
-interface Props {
+interface Props extends PageProps<"/models"> {
 	searchParams: Promise<{
-		page?: number
+		q?: string
+		page?: string
 		status?: string
 	}>
 }
 
 export default async function ModelsPage({ searchParams }: Props) {
-	const { page = 1, status } = await searchParams
+	const data = await findModels(await searchParams)
 
-	const { data, error } = await findModels({ page, status })
-
-	if (error) {
-		console.log(error)
+	if (!data) {
 		throw new Error("No se pudieron obtener los modelos")
 	}
 
