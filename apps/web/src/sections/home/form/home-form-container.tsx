@@ -1,50 +1,40 @@
 "use client"
 
-import { Textarea } from "@/components/ui/textarea"
+import RHFSelectAutofetcher from "@/components/rhf/rhf-select-autofetcher"
+import RHFTextarea from "@/components/rhf/rhf-textarea"
 import UploadButton from "@/sections/home/components/upload/upload-button"
+import HomeFiles from "@/sections/home/form/home-files"
 import FormSendButton from "@/sections/home/form/home-form-send-button"
-import { useDroppedFile } from "@/sections/home/stores/dropped-file"
-import { prepareAnalysis } from "@/services/analysis"
+import type { HomeSchema } from "@/sections/home/form/home-schema"
+import { getPresetsSelect } from "@/services/preset"
 import { useTranslations } from "next-intl"
-import Form from "next/form"
-import { useEffect, useState, type FormEventHandler } from "react"
-
-type Input = string | undefined
+import { useWatch } from "react-hook-form"
 
 export default function HomeFormContainer() {
 	const t = useTranslations()
-	const [inputValue, setInputValue] = useState<Input>("")
-	const { file } = useDroppedFile()
-
-	const onFileUpload = (file: File) => {
-		setInputValue(`📃 ${file.name} (${(file.size / 1024).toFixed(2)}KB)`)
-	}
-
-	const handleInput: FormEventHandler<HTMLTextAreaElement> = (e) => {
-		setInputValue(e.currentTarget.value)
-	}
-
-	useEffect(() => {
-		if (file !== null) onFileUpload(file)
-	}, [file, onFileUpload])
-
+	const [files] = useWatch<HomeSchema>({ name: ["files"] })
 	return (
-		<Form action={prepareAnalysis} className="group flex h-full gap-2 pr-2">
-			<Textarea
-				name="text"
-				className="bg-background resize-none px-4"
-				placeholder={t("Home.form.text.placeholder")}
-				id="analyze-text"
-				value={inputValue}
-				onInput={handleInput}
-			/>
-			<div className="flex flex-col gap-1">
-				<FormSendButton disabled={!inputValue} />
-				<UploadButton
-					disabled={!inputValue}
-					onFileUpload={onFileUpload}
+		<>
+			<HomeFiles />
+			<div className="space-y-2">
+				<RHFTextarea
+					name="text"
+					disabled={!!(files as Array<any>).length}
+					placeholder={t("Home.form.text.placeholder")}
 				/>
+				<div className="flex justify-between">
+					<RHFSelectAutofetcher
+						name="preset"
+						fetcherFunc={getPresetsSelect}
+						getKey={(i) => i.id}
+						getLabel={(i) => i.name}
+					/>
+					<div className="flex gap-1">
+						<FormSendButton />
+						<UploadButton />
+					</div>
+				</div>
 			</div>
-		</Form>
+		</>
 	)
 }

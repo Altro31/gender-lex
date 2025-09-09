@@ -1,20 +1,44 @@
 {
 	"$schema": "https://turborepo.com/schema.json",
-	"extends": ["//"],
+	"extends": [
+		"//"
+	],
 	"tasks": {
 		"dev": {
 			"cache": false,
 			"persistent": true,
-			"with": ["@repo/db#studio"]
+			"with": [
+				"@repo/db#studio"
+			],
+			"env": [
+				"AUTH_GOOGLE_ID",
+				"BETTER_AUTH_SECRET",
+				"BETTER_AUTH_URL",
+				"UI_URL",
+				"AUTH_GITHUB_ID",
+				"AUTH_GITHUB_SECRET",
+				"GEMINI_API_KEY",
+				"GROQ_API_KEY",
+				"PDF_SERVICES_CLIENT_ID",
+				"PDF_SERVICES_CLIENT_SECRET",
+				"PORT",
+				"AUTH_GOOGLE_SECRET",
+				"ENCRYPTION_KEY",
+				"UMLS_API_KEY"
+			]
 		},
 		"generate": {
-			"dependsOn": ["@repo/db#generate"],
+			"dependsOn": [
+				"@repo/db#generate"
+			],
 			"cache": true,
 			"inputs": [
 				"$TURBO_ROOT$/packages/database/openapi.yaml",
 				"**/*.ts"
 			],
-			"outputs": ["./public/openapi.yaml"],
+			"outputs": [
+				"./public/openapi.yaml"
+			],
 			"env": [
 				"AUTH_GOOGLE_ID",
 				"BETTER_AUTH_SECRET",
@@ -28,12 +52,18 @@
 				"PDF_SERVICES_CLIENT_SECRET",
 				"PORT",
 				"AUTH_GOOGLE_SECRET",
-				"ENCRYPTION_KEY"
+				"ENCRYPTION_KEY",
+				"UMLS_API_KEY"
 			]
 		},
 		"build": {
-			"dependsOn": ["generate"],
-			"outputs": ["dist/**", "!tsconfig.build.tsbuildinfo"],
+			"dependsOn": [
+				"generate"
+			],
+			"outputs": [
+				"dist/**",
+				"!tsconfig.build.tsbuildinfo"
+			],
 			"env": [
 				"AUTH_GOOGLE_ID",
 				"BETTER_AUTH_SECRET",
@@ -47,7 +77,8 @@
 				"PDF_SERVICES_CLIENT_SECRET",
 				"PORT",
 				"AUTH_GOOGLE_SECRET",
-				"ENCRYPTION_KEY"
+				"ENCRYPTION_KEY",
+				"UMLS_API_KEY"
 			]
 		}
 	}

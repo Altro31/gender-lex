@@ -45,12 +45,12 @@ export default function PresetsListContainer({ presets, q }: Props) {
 						</div>
 						<h3 className="mb-2 text-lg font-medium text-gray-900">
 							{q
-								? t("Preset.list.no-result-title")
+								? t("Commons.no-search-result")
 								: t("Preset.list.empty-title")}
 						</h3>
 						<p className="mb-4 text-gray-600">
 							{q
-								? t("Preset.list.no-result-description")
+								? t("Commons.retry-search-result")
 								: t("Preset.list.empty-description")}
 						</p>
 						{!q && (

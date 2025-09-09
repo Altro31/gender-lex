@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import type { Analysis, AnalysisStatus } from '@repo/db/models'
-import { AiService } from 'src/app/modules/ai/ai.service'
 import { AnalysisRepository } from 'src/app/modules/analysis/analysis.repository'
+import { BiasDetectionService } from 'src/app/modules/bias-detection/bias-detection.service'
 import { ExtractorService } from 'src/app/modules/extractor/extractor.service'
 import { isFile } from 'src/core/utils/file'
 
@@ -9,8 +9,8 @@ import { isFile } from 'src/core/utils/file'
 export class AnalysisService {
 	constructor(
 		public readonly repository: AnalysisRepository,
-		private readonly aiService: AiService,
 		private readonly extractorService: ExtractorService,
+		private readonly biasDetectionService: BiasDetectionService,
 	) {}
 
 	async statusCount() {
@@ -29,7 +29,12 @@ export class AnalysisService {
 	}
 
 	async start(id: string) {
-		const analysis = await this.repository.findUnique({ where: { id } })
+		const analysis = await this.repository.findUnique({
+			where: { id },
+			include: {
+				Preset: { include: { Models: { include: { Model: true } } } },
+			},
+		})
 		if (!analysis) {
 			throw new NotFoundException('Analysis not found')
 		}
@@ -37,7 +42,7 @@ export class AnalysisService {
 		try {
 			result = (
 				analysis.status === 'pending'
-					? await this.aiService.analice(analysis.originalText)
+					? await this.biasDetectionService.analice(analysis)
 					: {}
 			) as Analysis
 			result.status = 'done'
@@ -52,7 +57,7 @@ export class AnalysisService {
 		return { ...analysis, ...result }
 	}
 
-	async prepare(input: string | Express.Multer.File) {
+	async prepare(input: string | File, preset: string) {
 		const text = isFile(input)
 			? await this.extractorService.extractPDFText(input)
 			: input
@@ -62,6 +67,7 @@ export class AnalysisService {
 				modifiedTextAlternatives: [],
 				biasedTerms: [],
 				biasedMetaphors: [],
+				Preset: { connect: { id: preset } },
 			},
 		})
 		return { id: analysis.id }

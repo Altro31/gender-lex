@@ -2,15 +2,26 @@
 
 import { client } from "@/lib/api/client"
 import { getSession } from "@/lib/auth/auth-server"
+import { getPrisma } from "@/lib/prisma/client"
 import { actionClient } from "@/lib/safe-action"
+import type { HomeSchema } from "@/sections/home/form/home-schema"
 import type { Analysis } from "@repo/db/models"
 import { revalidatePath } from "next/cache"
 import { permanentRedirect, unauthorized } from "next/navigation"
 import z from "zod"
 
-export async function prepareAnalysis(formData: FormData) {
+export async function prepareAnalysis(input: HomeSchema) {
 	const session = await getSession()
 	if (!session) unauthorized()
+	const formData = new FormData()
+	formData.append("preset", input.preset.id)
+	if (input.files.length) {
+		for (const file of input.files) {
+			formData.append("files", file.file)
+		}
+	} else {
+		formData.append("text", input.text)
+	}
 	const { data, error } = await client.POST("/analysis/prepare", {
 		body: formData as any,
 	})
@@ -47,21 +58,24 @@ export const deleteAnalysis = actionClient
 	})
 
 export async function findAnalyses({
-	page,
+	q,
+	page = "1",
 	status,
 }: {
-	page: string
+	q?: string
+	page?: string
 	status?: string
 }) {
-	const session = await getSession()
-	if (!session) unauthorized()
-	return client.GET("/zen/analysis", {
-		params: {
-			query: {
-				"page[offset]": (Number(page) - 1) * 10,
-				"filter[status]": status as any,
-			},
+	const prisma = await getPrisma()
+	return prisma.analysis.findMany({
+		where: {
+			name: { contains: q, mode: "insensitive" },
+			status: status as any,
 		},
+		include: { Preset: true },
+		skip: (Number(page) - 1) * 10,
+		take: 10,
+		orderBy: [{ createdAt: "desc" }, { updatedAt: "desc" }],
 	})
 }
 
@@ -74,10 +88,10 @@ export async function findOneAnalysis(id: string) {
 }
 
 export async function findRecentAnalyses() {
-	const session = await getSession()
-	if (!session) unauthorized()
-	return client.GET("/zen/analysis", {
-		params: { query: { "page[limit]": 5 } },
+	const prisma = await getPrisma()
+	return prisma.analysis.findMany({
+		orderBy: [{ createdAt: "desc" }],
+		take: 5,
 	})
 }
 

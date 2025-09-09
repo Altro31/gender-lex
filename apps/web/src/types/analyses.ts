@@ -1,6 +1,7 @@
 import type { ApiResponse } from "@/lib/api/utils"
+import type { findAnalyses } from "@/services/analysis"
 
-export type AnalysesResponse = ApiResponse<"/zen/analysis">
-export type AnalysesResponseItem = AnalysesResponse["data"][number]
+export type AnalysesResponse = Awaited<ReturnType<typeof findAnalyses>>
+export type AnalysesResponseItem = AnalysesResponse[number]
 
 export type StatusCountResponse = ApiResponse<"/analysis/status-count">

@@ -146,3 +146,22 @@ export const clonePreset = actionClient
 			data: cloned,
 		}
 	})
+
+export const getPresetsSelect = async ({ page }: { page: number }) => {
+	const prisma = await getPrisma()
+
+	return prisma.preset.findMany({
+		skip: page * 20,
+		take: 20,
+		select: { id: true, name: true },
+	})
+}
+
+export const getLastUsedPreset = async () => {
+	const prisma = await getPrisma()
+
+	return prisma.preset.findFirst({
+		select: { id: true, name: true },
+		orderBy: [{usedAt: "desc"}]
+	})
+}

@@ -133,7 +133,7 @@ export class ModelService implements OnModuleInit {
 			id,
 			status,
 			message: error!,
-		})
+		} as any)
 	}
 
 	async onModuleInit() {

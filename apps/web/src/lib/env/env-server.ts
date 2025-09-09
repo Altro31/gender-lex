@@ -9,6 +9,8 @@ const Envs = z.object({
 	BETTER_AUTH_SECRET: z.string(),
 	BETTER_AUTH_URL: z.url(),
 	UI_URL: z.url(),
+	ENCRYPTION_KEY: z.string().length(32),
+	UMLS_API_KEY: z.string(),
 })
 
 const envs = z.parse(Envs, process.env)

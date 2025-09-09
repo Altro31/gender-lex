@@ -26,8 +26,9 @@
 	},
 	"dependencies": {
 		"@adobe/pdfservices-node-sdk": "^4.1.0",
-		"@effect/platform": "^0.90.6",
-		"@effect/platform-node": "^0.96.1",
+		"@ai-sdk/openai-compatible": "^1.0.11",
+		"@effect/platform": "catalog:",
+		"@effect/platform-node": "catalog:",
 		"@mguay/nestjs-better-auth": "^1.0.2",
 		"@nestia/core": "^8.0.2",
 		"@nestia/e2e": "^8.0.2",
@@ -43,7 +44,6 @@
 		"@repo/db": "workspace:*",
 		"@scalar/nestjs-api-reference": "^0.5.12",
 		"@zenstackhq/server": "catalog:",
-		"@ai-sdk/openai-compatible": "^1.0.11",
 		"adm-zip": "^0.5.16",
 		"ai": "^5.0.22",
 		"axios": "^1.8.4",
@@ -59,7 +59,8 @@
 		"passport-local": "^1.0.0",
 		"reflect-metadata": "^0.2.2",
 		"rxjs": "^7.8.1",
-		"typia": "^9.7.2"
+		"typia": "^9.7.2",
+		"umlsjs": "^1.2.1"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.2.0",

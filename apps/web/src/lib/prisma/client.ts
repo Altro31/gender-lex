@@ -1,7 +1,9 @@
 import { getSession } from "@/lib/auth/auth-server"
-import { auth } from "@repo/auth/next"
 import { enhance } from "@repo/db"
 import { extension, PrismaClient } from "@repo/db/client"
+// @ts-ignore
+import { encrypt, decrypt } from "@repo/auth/encrypt"
+import envs from "@/lib/env/env-server"
 
 const prisma = (<any>global).prisma || new PrismaClient()
 
@@ -11,5 +13,15 @@ if (process.env.NODE_ENV !== "production") {
 
 export async function getPrisma() {
 	const session = await getSession()
-	return enhance(prisma, { user: session?.user }).$extends(extension)
+	const key = envs.ENCRYPTION_KEY
+	return enhance(
+		prisma,
+		{ user: session?.user },
+		{
+			encryption: {
+				encrypt: async (_, __, plain) => encrypt(plain, key),
+				decrypt: async (_, __, plain) => decrypt(plain, key),
+			},
+		},
+	).$extends(extension)
 }

@@ -27,6 +27,7 @@ import type { ModelsResponseItem } from "@/types/model"
 import { Edit, Eye, Loader2, Settings, Trash2 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
+import { toast } from "sonner"
 
 interface Props {
 	model: ModelsResponseItem & {
@@ -43,9 +44,16 @@ export default function ModelListItem({ model: initialModel }: Props) {
 		setModel(initialModel)
 	}, [initialModel, setModel])
 
-	useSse("model.status.change", ({ id, status }) => {
-		if (id === model.id) {
-			setStatus(status)
+	useSse("model.status.change", (event) => {
+		if (event.id === model.id) {
+			setStatus(event.status)
+			if (event.status === "error") {
+				toast.error(
+					model.name +
+						": " +
+						t(`Model.status.message.${event.message}.title`),
+				)
+			}
 		}
 	})
 
@@ -88,7 +96,7 @@ export default function ModelListItem({ model: initialModel }: Props) {
 							<DetailsModelDialog model={model}>
 								<DropdownMenuItem disabled={isDeleting}>
 									<Eye />
-									Ver Detalles
+									{t("Commons.details")}
 								</DropdownMenuItem>
 							</DetailsModelDialog>
 
@@ -97,7 +105,7 @@ export default function ModelListItem({ model: initialModel }: Props) {
 									<EditModelDialog model={model}>
 										<DropdownMenuItem disabled={isDeleting}>
 											<Edit />
-											Editar
+											{t("Actions.edit")}
 										</DropdownMenuItem>
 									</EditModelDialog>
 									<DeleteModelAlertDialog
@@ -113,7 +121,7 @@ export default function ModelListItem({ model: initialModel }: Props) {
 											) : (
 												<Trash2 />
 											)}
-											Eliminar
+											{t("Actions.delete")}
 										</DropdownMenuItem>
 									</DeleteModelAlertDialog>
 								</>
@@ -126,7 +134,9 @@ export default function ModelListItem({ model: initialModel }: Props) {
 			<CardContent>
 				<div className="space-y-2">
 					<div className="flex flex-wrap items-center gap-2">
-						<span className="text-sm text-gray-600">Estado:</span>
+						<span className="text-sm text-gray-600">
+							{t("Commons.status")}:
+						</span>
 						<Badge className={getStatusColor(status)}>
 							{status === "connecting" && (
 								<Loader2 className="animate-spin" />
@@ -146,12 +156,12 @@ export default function ModelListItem({ model: initialModel }: Props) {
 				<div className="w-full text-xs text-gray-500">
 					<div className="flex justify-between">
 						<span>
-							Creado:{" "}
+							{t("Commons.created-at")}:{" "}
 							{new Date(model.createdAt).toLocaleDateString()}
 						</span>
 						{model.usedAt && (
 							<span>
-								Último uso:{" "}
+								{t("Commons.last-use")}:{" "}
 								{new Date(model.usedAt).toLocaleDateString()}
 							</span>
 						)}
@@ -162,7 +172,7 @@ export default function ModelListItem({ model: initialModel }: Props) {
 				<div className="text-muted-foreground absolute top-0 z-10 size-full">
 					<div className="flex size-full items-center justify-center gap-2">
 						<Loader />
-						{isDeleting && <span>Deleting...</span>}
+						{isDeleting && <span>{t("Actions.deleting")}</span>}
 					</div>
 				</div>
 			)}

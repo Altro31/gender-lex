@@ -52,7 +52,9 @@
 		"@zenstackhq/server": "^2.18.1",
 		"@zenstackhq/runtime": "^2.18.1",
 		"@zenstackhq/openapi": "^2.18.1",
-		"zod": "^4.0.17"
+		"zod": "^4.0.17",
+		"@effect/platform": "^0.90.6",
+		"@effect/platform-node": "^0.96.1"
 	},
 	"lint-staged": {
 		"!(package-lock).{ts,json}": "prettier . -w"

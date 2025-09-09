@@ -8,18 +8,20 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog"
 import CreateModelFormContainer from "@/sections/model/form/create-model-form-container"
+import { useTranslations } from "next-intl"
 import { type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {}
 
 export default function CreateModelDialog({ children }: Props) {
+	const t = useTranslations()
 	return (
 		<BaseDialog trigger={children}>
 			<DialogContent className="max-w-2xl">
 				<DialogHeader>
-					<DialogTitle>Crear Nuevo Modelo</DialogTitle>
+					<DialogTitle>{t('Model.create.title')}</DialogTitle>
 					<DialogDescription>
-						Configura una nueva conexión a un modelo de lenguaje
+						{t('Model.create.description')}
 					</DialogDescription>
 				</DialogHeader>
 				<CreateModelFormContainer />

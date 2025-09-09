@@ -1,24 +1,25 @@
-import type { AnalysesResponseItem } from "@/types/analyses"
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuLabel,
 	DropdownMenuSeparator,
-	DropdownMenuTrigger,
+	DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-import { type PropsWithChildren } from "react"
-import Link from "next/link"
-import { Eye, RotateCcw, Trash2 } from "lucide-react"
 import DeleteAnalysisAlertDialogContent from "@/sections/analysis/components/delete-analysis-alert-dialog-content"
 import { redoAnalysis } from "@/services/analysis"
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import type { AnalysesResponseItem } from "@/types/analyses"
+import { Eye, RotateCcw, Trash2 } from "lucide-react"
+import { useTranslations } from "next-intl"
+import Link from "next/link"
+import { type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {
 	analysis: AnalysesResponseItem
 }
 
 export default function AnalysisActions({ analysis, children }: Props) {
+	const t = useTranslations()
 	const handleRedoAnalysis = (analysis: AnalysesResponseItem) => async () => {
 		await redoAnalysis(analysis.id)
 	}
@@ -27,24 +28,23 @@ export default function AnalysisActions({ analysis, children }: Props) {
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
-					<DropdownMenuLabel>Acciones</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem asChild>
 						<Link href={`/analysis/${analysis.id}`}>
 							<Eye className="mr-2 h-4 w-4" />
-							Ver Detalles
+							{t("Commons.details")}
 						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem onClick={handleRedoAnalysis(analysis)}>
 						<RotateCcw className="mr-2 h-4 w-4" />
-						Rehacer Análisis
+						{t("Analysis.redo.title")}
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
 
 					<AlertDialogTrigger asChild>
 						<DropdownMenuItem variant="destructive">
 							<Trash2 className="mr-2 h-4 w-4" />
-							Eliminar
+							{t("Actions.delete")}
 						</DropdownMenuItem>
 					</AlertDialogTrigger>
 				</DropdownMenuContent>

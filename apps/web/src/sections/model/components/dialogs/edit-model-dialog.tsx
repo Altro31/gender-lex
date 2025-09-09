@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog"
 import EditModelFormContainer from "@/sections/model/form/edit-model-form-container"
 import type { ModelsResponseItem } from "@/types/model"
+import { useTranslations } from "next-intl"
 import { type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {
@@ -16,13 +17,14 @@ interface Props extends PropsWithChildren {
 }
 
 export default function EditModelDialog({ children, model }: Props) {
+	const t = useTranslations()
 	return (
 		<BaseDialog trigger={children}>
 			<DialogContent className="max-w-2xl">
 				<DialogHeader>
-					<DialogTitle>Editar Modelo</DialogTitle>
+					<DialogTitle>{t("Model.edit.title")}</DialogTitle>
 					<DialogDescription>
-						Edita la conexión de un modelo de lenguaje
+						{t("Model.edit.description")}
 					</DialogDescription>
 				</DialogHeader>
 				<EditModelFormContainer model={model} />

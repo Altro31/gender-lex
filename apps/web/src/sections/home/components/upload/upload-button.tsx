@@ -1,26 +1,27 @@
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import type { HomeSchema } from "@/sections/home/form/home-schema"
 import { PaperclipIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
-import type { ComponentProps } from "react"
+import type { ChangeEvent } from "react"
+import { useFormContext } from "react-hook-form"
 
-interface Props extends ComponentProps<typeof Button> {
-	onFileUpload: (file: File) => void
-}
-
-export default function UploadButton({
-	onFileUpload,
-	className,
-	...props
-}: Props) {
+export default function UploadButton() {
 	const t = useTranslations()
+	const { setValue, getValues } = useFormContext<HomeSchema>()
+	const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
+		const file = e.currentTarget.files?.item(0)!
+		const files = getValues("files")
+		setValue("files", [...files, { file }])
+		e.currentTarget.value = ""
+	}
+
 	return (
 		<Button
 			asChild
-			className={cn("cursor-pointer", className)}
+			className="cursor-pointer"
 			size="icon"
 			variant="outline"
-			{...props}
+			type="button"
 		>
 			<label>
 				<span className="sr-only">
@@ -32,9 +33,7 @@ export default function UploadButton({
 					type="file"
 					className="hidden"
 					accept=".pdf"
-					onChange={(e) => {
-						onFileUpload(e.currentTarget.files?.item(0)!)
-					}}
+					onChange={handleUpload}
 				/>
 			</label>
 		</Button>

@@ -42,7 +42,7 @@ export default function ModelDetails({
 			setModel((model) => ({
 				...model,
 				status: e.status,
-				...(e.status === "error" && { error: e.message }),
+				error: e.message!,
 			}))
 		}
 	})
@@ -203,15 +203,25 @@ export default function ModelDetails({
 							onSuccess={handleStatus("active")}
 							onError={handleStatus("error")}
 						/>
-						<Alert variant="destructive">
-							<AlertTriangleIcon />
-							<AlertTitle>
-								{t("Model.status." + model.status)}
-							</AlertTitle>
-							<AlertDescription>
-								{t("Model.status.message." + model.status)}
-							</AlertDescription>
-						</Alert>
+						{model.error && (
+							<Alert variant="destructive">
+								<AlertTriangleIcon />
+								<AlertTitle>
+									{t(
+										"Model.status.message." +
+											model.error +
+											".title",
+									)}
+								</AlertTitle>
+								<AlertDescription>
+									{t(
+										"Model.status.message." +
+											model.error +
+											".description",
+									)}
+								</AlertDescription>
+							</Alert>
+						)}
 					</div>
 				</CardContent>
 			</Card>

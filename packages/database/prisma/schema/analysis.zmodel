@@ -10,7 +10,9 @@ model Analysis extends RawAnalysis {
     status      AnalysisStatus @default(pending)
     inputSource InputSource    @default(manual)
 
-    Presets     Preset[]
+    presetId    String
+    Preset     Preset         @relation(fields: [presetId], references: [id])
+
     userId      String?        @default(auth().id)
     User        User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
 

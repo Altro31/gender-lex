@@ -23,18 +23,18 @@ import Link from "next/link"
 
 export default async function NavRecent() {
 	const t = await getTranslations()
-	const { data } = await findRecentAnalyses()
+	const data = await findRecentAnalyses()
 
 	return (
-		!!data?.data?.length && (
+		Boolean(data.length) && (
 			<SidebarGroup className="group-data-[collapsible=icon]:hidden">
 				<SidebarGroupLabel>{t("Commons.recent")}</SidebarGroupLabel>
 				<SidebarMenu>
-					{data?.data.map((item) => (
+					{data.map((item) => (
 						<SidebarMenuItem key={item.id}>
 							<SidebarMenuButton asChild>
 								<Link href={`/analysis/${item.id}`}>
-									{item.attributes.name}
+									{item.name}
 								</Link>
 							</SidebarMenuButton>
 							<AlertDialog>
@@ -70,7 +70,7 @@ export default async function NavRecent() {
 									</DropdownMenuResponsive>
 								</DropdownMenu>
 								<DeleteAnalysisAlertDialogContent
-									analysis={item}
+									analysis={item as any}
 								/>
 							</AlertDialog>
 						</SidebarMenuItem>

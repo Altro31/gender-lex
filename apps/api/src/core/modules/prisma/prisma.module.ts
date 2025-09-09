@@ -6,7 +6,7 @@ import { ZenStackModule } from '@zenstackhq/server/nestjs'
 import { ClsService } from 'nestjs-cls'
 import type { EnvTypes } from 'src/app.module'
 import { PrismaService } from 'src/core/modules/prisma/prisma.service'
-import { getEncryptionKey } from 'src/core/utils/auth'
+import { encrypt, decrypt } from '@repo/auth/encrypt'
 
 @Module({
 	imports: [
@@ -26,7 +26,10 @@ import { getEncryptionKey } from 'src/core/utils/auth'
 							{ user: user ?? null },
 							{
 								encryption: {
-									encryptionKey: getEncryptionKey(key),
+									encrypt: (_, __, plain) =>
+										encrypt(plain, key),
+									decrypt: (_, __, plain) =>
+										decrypt(plain, key),
 								},
 							},
 						)

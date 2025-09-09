@@ -1,14 +1,12 @@
 "use server"
 
 import { client } from "@/lib/api/client"
-import { getSession } from "@/lib/auth/auth-server"
+import { getPrisma } from "@/lib/prisma/client"
 import { actionClient } from "@/lib/safe-action"
 import { ModelSchema } from "@/sections/model/form/model-schema"
-import { unauthorized } from "next/navigation"
 import { returnValidationErrors } from "next-safe-action"
 import { revalidatePath } from "next/cache"
 import { z } from "zod/mini"
-import { getPrisma } from "@/lib/prisma/client"
 
 export async function findModels({
 	q,
@@ -57,8 +55,7 @@ export const editModel = actionClient
 			params: { path: { id } },
 			body: { data: { id, type: "model", attributes: body } },
 		})
-		console.log(error)
-
+		void testConnection(id)
 		revalidatePath("/models", "page")
 
 		return {

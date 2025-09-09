@@ -14,6 +14,8 @@
 	},
 	"dependencies": {
 		"@bprogress/next": "^3.2.12",
+		"@effect/platform": "catalog:",
+		"@effect/platform-node": "catalog:",
 		"@hookform/resolvers": "^5.2.1",
 		"@icons-pack/react-simple-icons": "^13.7.0",
 		"@radix-ui/react-accordion": "^1.2.11",
@@ -52,6 +54,7 @@
 		"next-safe-action": "^8.0.8",
 		"next-themes": "^0.4.6",
 		"nuqs": "^2.5.1",
+		"radix-ui": "^1.4.3",
 		"react": "19.1.0",
 		"react-dom": "19.1.0",
 		"react-hook-form": "^7.62.0",

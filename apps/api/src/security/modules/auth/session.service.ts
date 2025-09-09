@@ -1,16 +1,16 @@
-import type { UserSession } from '@mguay/nestjs-better-auth'
 import { Injectable } from '@nestjs/common'
+import type { Session, User } from '@repo/db/models'
 import { ClsService } from 'nestjs-cls'
 
 @Injectable()
 export class SessionService {
 	constructor(private readonly clsService: ClsService) {}
 
-	getSession(): UserSession['session'] {
+	getSession(): Session {
 		return this.clsService.get('session')
 	}
 
-	getUser(): UserSession['user'] {
+	getUser(): User {
 		return this.clsService.get('user')
 	}
 }

@@ -4,7 +4,6 @@ import { ApiTags } from '@nestjs/swagger'
 import * as Multer from 'multer'
 import { AnaliceDTO } from 'src/app/modules/analysis/dto/analice.dto'
 import { Item } from 'src/app/modules/analysis/dto/item.dto'
-import { isFile } from 'src/core/utils/file'
 import { bindLogger } from 'src/core/utils/log'
 import { Auth } from 'src/security/modules/auth/decorators/auth.decorator'
 import { AnalysisService } from './analysis.service'
@@ -19,8 +18,23 @@ export class AnalysisController {
 	constructor(private readonly analysisService: AnalysisService) {}
 
 	@TypedRoute.Post('prepare')
-	prepare(@TypedFormData.Body(() => Multer()) { file, text }: AnaliceDTO) {
-		return this.analysisService.prepare(isFile(file) ? file : text!)
+	prepare(
+		@TypedFormData.Body(() => Multer())
+		{ files = [], text, preset }: AnaliceDTO,
+	) {
+		const toAnalice = [] as { input: File | string; preset: string }[]
+		if (files.length) {
+			for (const file of files) {
+				toAnalice.push({ input: file, preset })
+			}
+		}
+		if (text) {
+			toAnalice.push({ input: text, preset })
+		}
+
+		return Promise.race(
+			toAnalice.map(i => this.analysisService.prepare(i.input, i.preset)),
+		)
 	}
 
 	@Post('start/:id')

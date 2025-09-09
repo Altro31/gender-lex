@@ -43,7 +43,7 @@ export default function DeleteAnalysisAlertDialogContent({ analysis }: Props) {
 					{t("Analysis.delete.description.1")}
 					<strong className="font-medium">
 						{" "}
-						{analysis.attributes.name}
+						{analysis.name}
 					</strong>{" "}
 					{t("Analysis.delete.description.2")}
 				</AlertDialogDescription>

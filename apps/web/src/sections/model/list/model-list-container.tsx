@@ -22,11 +22,10 @@ export default function ModelListsContainer({ modelsResponse: models }: Props) {
 				{/* Header */}
 				<div className="mb-8">
 					<h1 className="mb-2 text-3xl font-bold text-gray-900">
-						Gestión de Modelos
+						{t("Model.list.title")}
 					</h1>
 					<p className="text-gray-600">
-						Administra tus conexiones a modelos de lenguaje de gran
-						tamaño
+						{t("Model.list.description")}
 					</p>
 				</div>
 
@@ -36,7 +35,7 @@ export default function ModelListsContainer({ modelsResponse: models }: Props) {
 					<CreateModelDialog>
 						<Button className="flex items-center gap-2">
 							<Plus className="h-4 w-4" />
-							Nuevo Modelo
+							{t("Model.create.action")}
 						</Button>
 					</CreateModelDialog>
 				</div>
@@ -48,18 +47,20 @@ export default function ModelListsContainer({ modelsResponse: models }: Props) {
 							<Settings className="mx-auto h-16 w-16" />
 						</div>
 						<h3 className="mb-2 text-lg font-medium text-gray-900">
-							No se encontraron modelos
+							{searchTerm
+								? t("Commons.no-search-result")
+								: t('Model.list.empty-title')}
 						</h3>
 						<p className="mb-4 text-gray-600">
 							{searchTerm
-								? "Intenta con otros términos de búsqueda"
-								: "Comienza creando tu primer modelo"}
+								? t('Commons.retry-search-result')
+								: t('Model.list.empty-description')}
 						</p>
 						{!searchTerm && (
 							<CreateModelDialog>
 								<Button>
 									<Plus className="mr-2 h-4 w-4" />
-									Crear Primer Modelo
+									{t('Model.empty-action')}
 								</Button>
 							</CreateModelDialog>
 						)}

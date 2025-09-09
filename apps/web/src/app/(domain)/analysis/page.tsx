@@ -5,24 +5,23 @@ interface Props extends PageProps<"/analysis/[id]"> {
 	searchParams: Promise<{
 		page?: string
 		status?: string
+		q?: string
 	}>
 }
 
 export default async function AnalysesPage({ searchParams }: Props) {
-	const { page = "1", status } = await searchParams
-
 	const [analysesResponse, statusCountResponse] = await Promise.all([
-		findAnalyses({ page, status }),
+		findAnalyses(await searchParams),
 		getStatusCount(),
 	])
 
-	if (analysesResponse.error)
+	if (!analysesResponse)
 		throw new Error("No se pudieron obtener los análisis")
 	if (statusCountResponse.error)
 		throw new Error("No se pudieron contar los análisis")
 	return (
 		<AnalysisListContainer
-			analysesResponse={analysesResponse.data}
+			analysesResponse={analysesResponse}
 			statusCount={statusCountResponse.data!}
 		/>
 	)

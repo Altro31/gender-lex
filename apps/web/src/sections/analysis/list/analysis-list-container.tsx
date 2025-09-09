@@ -1,5 +1,6 @@
 "use client"
 
+import SearchInput from "@/components/search-input"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,42 +11,22 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 import AnalysisActions from "@/sections/analysis/components/analysis-actions"
-import DeleteAnalysisAlertDialogContent from "@/sections/analysis/components/delete-analysis-alert-dialog-content"
-import { redoAnalysis } from "@/services/analysis"
-import type {
-	AnalysesResponse,
-	AnalysesResponseItem,
-	StatusCountResponse,
-} from "@/types/analyses"
-import { useRouter } from "@bprogress/next"
-import { AnalysisStatus } from "@repo/db/models"
+import type { AnalysesResponse, StatusCountResponse } from "@/types/analyses"
+import { $Enums, AnalysisStatus } from "@repo/db/models"
 import {
 	AlertTriangle,
 	CheckCircle,
 	Clock,
-	Eye,
 	Filter,
 	Play,
-	RotateCcw,
-	Search,
-	Trash2,
-	XCircle,
+	XCircle
 } from "lucide-react"
-import Link from "next/link"
-import { Fragment, useState } from "react"
+import { useTranslations } from "next-intl"
+import { debounce, parseAsStringEnum, useQueryState } from "nuqs"
+import { Fragment } from "react"
 
 interface Props {
 	analysesResponse: AnalysesResponse
@@ -53,21 +34,65 @@ interface Props {
 }
 
 export default function AnalysisListContainer({
-	analysesResponse,
+	analysesResponse: analyses,
 	statusCount,
 }: Props) {
-	const router = useRouter()
+	const t = useTranslations()
+	
 
-	const { data: analyses } = analysesResponse
-	const [searchTerm, setSearchTerm] = useState("")
-	const [statusFilter, setStatusFilter] = useState<AnalysisStatus | "all">(
-		"all",
+	const [searchTerm] = useQueryState("q")
+	const [statusFilter, setStatusFilter] = useQueryState(
+		"status",
+		parseAsStringEnum([...Object.values($Enums.AnalysisStatus), ""])
+			.withDefault("")
+			.withOptions({
+				shallow: false,
+				limitUrlUpdates: debounce(500),
+			}),
 	)
 
-	const handleTab = (value: AnalysisStatus | "all") => {
-		setStatusFilter(value)
-		const redirect = value === "all" ? "?" : "?status=" + value
-		router.replace(redirect, { showProgress: false })
+	const statusConfig = {
+		pending: {
+			label: t("Analysis.status.pending"),
+			color: "bg-gray-100 text-gray-800",
+			icon: Clock,
+		},
+		analyzing: {
+			label: t("Analysis.status.analyzing"),
+			color: "bg-blue-100 text-blue-800",
+			icon: Play,
+		},
+		done: {
+			label: t("Analysis.status.done"),
+			color: "bg-green-100 text-green-800",
+			icon: CheckCircle,
+		},
+		error: {
+			label: t("Analysis.status.error"),
+			color: "bg-red-100 text-red-800",
+			icon: XCircle,
+		},
+	}
+
+	const statusMapper = {
+		all: { label: t("Commons.all"), color: "text-gray-900" },
+		analyzing: {
+			label: t("Analysis.status.analyzing"),
+			color: "text-blue-600",
+		},
+		done: { label: t("Analysis.status.done"), color: "text-green-600" },
+		error: { label: t("Analysis.status.error"), color: "text-red-600" },
+		pending: {
+			label: t("Analysis.status.pending"),
+			color: "text-gray-600",
+		},
+	} as const satisfies Record<
+		keyof StatusCountResponse,
+		{ label: string; color: `text-${string}-${number}00` }
+	>
+
+	const handleTab = (value: AnalysisStatus | "") => {
+		setStatusFilter(value || null)
 	}
 
 	return (
@@ -76,10 +101,10 @@ export default function AnalysisListContainer({
 				{/* Header */}
 				<div className="mb-8">
 					<h1 className="mb-2 text-3xl font-bold text-gray-900">
-						Gestión de Análisis
+						{t("Analysis.list.title")}
 					</h1>
 					<p className="text-gray-600">
-						Administra los análisis de detección de sesgos de género
+						{t("Analysis.list.description")}
 					</p>
 				</div>
 
@@ -112,15 +137,7 @@ export default function AnalysisListContainer({
 
 				{/* Filters and Search */}
 				<div className="mb-6 flex flex-col gap-4 lg:flex-row">
-					<div className="relative flex-1">
-						<Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
-						<Input
-							placeholder="Buscar análisis..."
-							value={searchTerm}
-							onChange={(e) => setSearchTerm(e.target.value)}
-							className="pl-10"
-						/>
-					</div>
+					<SearchInput name="q" />
 				</div>
 
 				{/* Analysis List with Tabs */}
@@ -130,11 +147,19 @@ export default function AnalysisListContainer({
 					className="w-full"
 				>
 					<TabsList className="mb-6 grid w-full grid-cols-5 lg:w-auto">
-						<TabsTrigger value="all">Todos</TabsTrigger>
-						<TabsTrigger value="pending">Pendientes</TabsTrigger>
-						<TabsTrigger value="analyzing">En Progreso</TabsTrigger>
-						<TabsTrigger value="done">Completados</TabsTrigger>
-						<TabsTrigger value="error">Errores</TabsTrigger>
+						<TabsTrigger value="">{t("Commons.all")}</TabsTrigger>
+						<TabsTrigger value="pending">
+							{t("Analysis.list.status-tabs.pending")}
+						</TabsTrigger>
+						<TabsTrigger value="analyzing">
+							{t("Analysis.list.status-tabs.analyzing")}
+						</TabsTrigger>
+						<TabsTrigger value="done">
+							{t("Analysis.list.status-tabs.done")}
+						</TabsTrigger>
+						<TabsTrigger value="error">
+							{t("Analysis.list.status-tabs.error")}
+						</TabsTrigger>
 					</TabsList>
 
 					<>
@@ -145,13 +170,13 @@ export default function AnalysisListContainer({
 								</div>
 								<h3 className="mb-2 text-lg font-medium text-gray-900">
 									{searchTerm
-										? "No se encontraron análisis"
-										: "No hay análisis disponibles"}
+										? t("Commons.no-search-result")
+										: t("Analysis.list.empty-title")}
 								</h3>
 								<p className="mb-4 text-gray-600">
 									{searchTerm
-										? "Intenta con otros términos de búsqueda"
-										: "Los análisis aparecerán aquí una vez que se ejecuten"}
+										? t("Commons.retry-search-result")
+										: t("Analysis.list.empty-description")}
 								</p>
 							</div>
 						) : (
@@ -159,9 +184,7 @@ export default function AnalysisListContainer({
 								<div className="space-y-4">
 									{analyses.map((analysis) => {
 										const StatusIcon =
-											statusConfig[
-												analysis.attributes.status
-											].icon
+											statusConfig[analysis.status].icon
 										return (
 											<Fragment key={analysis.id}>
 												<Card className="transition-shadow hover:shadow-md">
@@ -171,16 +194,13 @@ export default function AnalysisListContainer({
 																<div className="mb-2 flex items-center gap-3">
 																	<CardTitle className="text-lg">
 																		{
-																			analysis
-																				.attributes
-																				.name
+																			analysis.name
 																		}
 																	</CardTitle>
 																	<Badge
 																		className={
 																			statusConfig[
 																				analysis
-																					.attributes
 																					.status
 																			]
 																				.color
@@ -190,7 +210,6 @@ export default function AnalysisListContainer({
 																		{
 																			statusConfig[
 																				analysis
-																					.attributes
 																					.status
 																			]
 																				.label
@@ -199,21 +218,23 @@ export default function AnalysisListContainer({
 																</div>
 																<CardDescription className="flex items-center gap-4 text-sm">
 																	<span>
-																		Preset:
+																		{t(
+																			"Preset.item",
+																		)}
+																		:
 																		{
-																			" Preset de prueba"
+																			analysis
+																				.Preset
+																				.name
 																		}
-																		{/* {
-																			analysis.presetName
-																		} */}
 																	</span>
 																	<span>
 																		•
 																	</span>
-																	<span>
+																	{/* <span>
 																		Fuente:{" "}
 																		{analysis
-																			.attributes
+																			
 																			.inputSource ===
 																		"manual"
 																			? "Manual"
@@ -221,10 +242,10 @@ export default function AnalysisListContainer({
 																	</span>
 																	<span>
 																		•
-																	</span>
+																	</span> */}
 																	<span>
 																		{new Date(
-																			analysis.attributes.createdAt,
+																			analysis.createdAt,
 																		).toLocaleDateString()}
 																	</span>
 																</CardDescription>
@@ -247,49 +268,17 @@ export default function AnalysisListContainer({
 													</CardHeader>
 													<CardContent className="pb-3">
 														<div className="space-y-4">
-															{/* Progress Bar for Running Analysis */}
-															{analysis.attributes
-																.status ===
-																"analyzing" && (
-																<div className="space-y-2">
-																	<div className="flex justify-between text-sm">
-																		<span>
-																			Progreso
-																			del
-																			análisis
-																		</span>
-																		<span>
-																			{/* {
-																				analysis
-																					.attributes
-																					.progress
-																			} */}
-																			%
-																		</span>
-																	</div>
-																	<Progress
-																		value={
-																			0
-																			// analysis
-																			// 	.attributes
-																			// 	.progress
-																		}
-																		className="h-2"
-																	/>
-																</div>
-															)}
-
 															{/* Input Preview */}
 															<div className="space-y-2">
 																<div className="text-sm font-medium text-gray-700">
-																	Texto
-																	Analizado:
+																	{t(
+																		"Analysis.details.analiced-text",
+																	)}
+																	:
 																</div>
 																<p className="line-clamp-2 rounded bg-gray-50 p-2 text-sm text-gray-600">
 																	{
-																		analysis
-																			.attributes
-																			.originalText
+																		analysis.originalText
 																	}
 																</p>
 															</div>
@@ -303,12 +292,14 @@ export default function AnalysisListContainer({
 																{analysis.id}
 															</span>
 
-															{analysis.attributes
-																.updatedAt && (
+															{analysis.updatedAt && (
 																<span>
-																	Completado:{" "}
+																	{t(
+																		"Commons.completed",
+																	)}
+																	:{" "}
 																	{new Date(
-																		analysis.attributes.updatedAt,
+																		analysis.updatedAt,
 																	).toLocaleString()}
 																</span>
 															)}
@@ -327,37 +318,3 @@ export default function AnalysisListContainer({
 		</div>
 	)
 }
-
-const statusConfig = {
-	pending: {
-		label: "Pendiente",
-		color: "bg-gray-100 text-gray-800",
-		icon: Clock,
-	},
-	analyzing: {
-		label: "En Progreso",
-		color: "bg-blue-100 text-blue-800",
-		icon: Play,
-	},
-	done: {
-		label: "Completado",
-		color: "bg-green-100 text-green-800",
-		icon: CheckCircle,
-	},
-	error: {
-		label: "Error",
-		color: "bg-red-100 text-red-800",
-		icon: XCircle,
-	},
-}
-
-const statusMapper = {
-	all: { label: "Todos", color: "text-gray-900" },
-	analyzing: { label: "Analizando", color: "text-blue-600" },
-	done: { label: "Completado", color: "text-green-600" },
-	error: { label: "Fallido", color: "text-red-600" },
-	pending: { label: "Pendiente", color: "text-gray-600" },
-} as const satisfies Record<
-	keyof StatusCountResponse,
-	{ label: string; color: `text-${string}-${number}00` }
->

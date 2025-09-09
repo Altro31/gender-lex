@@ -7,6 +7,7 @@
 	},
 	"exports": {
 		"./nest": "./nest.js",
-		"./next": "./next.js"
+		"./next": "./next.js",
+		"./encrypt": "./encrypt.js"
 	}
 }

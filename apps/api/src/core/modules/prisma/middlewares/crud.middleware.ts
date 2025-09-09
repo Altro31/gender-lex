@@ -7,7 +7,7 @@ import { ZenStackMiddleware } from '@zenstackhq/server/express'
 import { Request, Response } from 'express'
 import type { EnvTypes } from 'src/app.module'
 import { PrismaService } from 'src/core/modules/prisma/prisma.service'
-import { getEncryptionKey } from 'src/core/utils/auth'
+import { encrypt, decrypt } from '@repo/auth/encrypt'
 
 @Injectable()
 export class CrudMiddleware implements NestMiddleware {
@@ -32,7 +32,12 @@ export class CrudMiddleware implements NestMiddleware {
 				return enhance(
 					this.prismaService.prisma,
 					{ user: session?.user },
-					{ encryption: { encryptionKey: getEncryptionKey(key) } },
+					{
+						encryption: {
+							encrypt: (_, __, plain) => encrypt(plain, key),
+							decrypt: (_, __, plain) => decrypt(plain, key),
+						},
+					},
 				)
 			},
 			// use RESTful style API

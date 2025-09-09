@@ -6,7 +6,7 @@ model Model {
     connection   Connection    @json
     settings     Settings      @json
     name         String
-    apiKey       String?
+    apiKey       String?       @encrypted
 
     status       ModelStatus   @default(inactive) @allow("update", true, true)
     error        ModelError?   @allow("update", true, true)

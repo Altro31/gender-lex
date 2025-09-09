@@ -1,5 +1,5 @@
 export interface AnaliceDTO {
-	file?: File
-
+	files?: File[]
 	text?: string
+	preset: string
 }

@@ -13,7 +13,7 @@ import {
 	ExtractPDFResult,
 	MimeType,
 } from '@adobe/pdfservices-node-sdk'
-import AdmZip from 'adm-zip'
+import * as AdmZip from 'adm-zip'
 import { Readable, Writable } from 'node:stream'
 
 @Injectable()
@@ -34,8 +34,8 @@ export class ExtractorService extends PDFServices {
 		super({ credentials })
 	}
 
-	async extractPDFText(file: Express.Multer.File) {
-		const bytes = new Uint8Array(file.buffer)
+	async extractPDFText(file: File) {
+		const bytes = new Uint8Array(await file.arrayBuffer())
 		const newFile = new File([bytes], 'file')
 
 		const fileResponse = await fetch(URL.createObjectURL(newFile))

@@ -1,15 +1,20 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { useDroppedFile } from "@/sections/home/stores/dropped-file"
+import type { HomeSchema } from "@/sections/home/form/home-schema"
 import { useTranslations } from "next-intl"
 import { useRef, useState, type ComponentProps, type DragEvent } from "react"
+import { useFormContext } from "react-hook-form"
 
 interface Props extends ComponentProps<"div"> {}
 
-export default function UploadArea({ children, className, ...props }: Props) {
-	const t = useTranslations("")
-	const { setFile } = useDroppedFile()
+export default function RHFUploadArea({
+	children,
+	className,
+	...props
+}: Props) {
+	const t = useTranslations()
+	const { setValue, getValues } = useFormContext<HomeSchema>()
 	const [isDragging, setIsDragging] = useState(false)
 	const dropAreaRef = useRef<HTMLDivElement>(null)
 
@@ -36,7 +41,8 @@ export default function UploadArea({ children, className, ...props }: Props) {
 		e.preventDefault()
 		const file = e.dataTransfer?.files.item(0)!
 		setIsDragging(false)
-		setFile(file)
+		const files = getValues("files")
+		setValue("files", [...files, { file }])
 	}
 
 	return (

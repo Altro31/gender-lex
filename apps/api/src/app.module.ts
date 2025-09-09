@@ -24,6 +24,7 @@ import { ExtractorModule } from './app/modules/extractor/extractor.module'
 import { PresetModule } from './app/modules/preset/preset.module'
 import { AuthModule } from './security/modules/auth/auth.module'
 import { UserModule } from './security/modules/user/user.module'
+import { TerminologyModule } from 'src/app/modules/terminology/terminology.module'
 
 export type EnvTypes = z.infer<typeof EnvTypes>
 const EnvTypes = z.object({
@@ -38,7 +39,9 @@ const EnvTypes = z.object({
 	AUTH_GOOGLE_SECRET: z.string(),
 	AUTH_GITHUB_ID: z.string(),
 	AUTH_GITHUB_SECRET: z.string(),
-	ENCRYPTION_KEY: z.string().base64(),
+	ENCRYPTION_KEY: z.string().length(32),
+	UMLS_API_KEY: z.string(),
+	UMLS_API_URL: z.string().url(),
 })
 
 @Module({
@@ -71,6 +74,7 @@ const EnvTypes = z.object({
 		PresetModule,
 		SseModule,
 		BiasDetectionModule,
+		TerminologyModule,
 	],
 	providers: [PrismaService, ApiHandlerService],
 	controllers: [AppController],
