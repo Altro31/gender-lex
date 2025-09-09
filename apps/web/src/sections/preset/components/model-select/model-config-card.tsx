@@ -44,8 +44,10 @@ export default function ModelConfigCard({ index, onRemove }: Props) {
 				<div className="flex items-center justify-between gap-1">
 					<div className="flex-1">
 						<CardTitle className="text-base">
-							{model.Model?.name || t('Preset.form.models.no-set-model')} -{" "}
-							{model.role || t('Preset.form.models.no-set-role')}
+							{model.Model?.name ||
+								t("Preset.form.models.no-set-model")}{" "}
+							-{" "}
+							{model.role || t("Preset.form.models.no-set-role")}
 						</CardTitle>
 					</div>
 					<Button
@@ -65,8 +67,10 @@ export default function ModelConfigCard({ index, onRemove }: Props) {
 				<div className="flex flex-wrap items-start gap-2">
 					<RHFSelectAutofetcher
 						name={`Models.${index}.Model`}
-						label={t('Model.item')}
-						placeholder={t('Preset.form.models.model-select.placeholder')}
+						label={t("Model.item")}
+						placeholder={t(
+							"Preset.form.models.model-select.placeholder",
+						)}
 						required
 						fetcherFunc={getModelsSelect}
 						getKey={(item) => item.id}
@@ -75,8 +79,8 @@ export default function ModelConfigCard({ index, onRemove }: Props) {
 					<RHFSelect
 						name={`Models.${index}.role`}
 						options={roleOptions}
-						label={t('Commons.role')}
-						placeholder={t('Preset.form.models.role-select')}
+						label={t("Commons.role")}
+						placeholder={t("Preset.form.models.role-select")}
 						required
 					/>
 				</div>

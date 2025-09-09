@@ -21,7 +21,6 @@ export default function TestConnectionButton({
 	children,
 	...props
 }: Props) {
-
 	const { execute, isPending } = useAction(testConnection, {
 		onSuccess,
 		onError,

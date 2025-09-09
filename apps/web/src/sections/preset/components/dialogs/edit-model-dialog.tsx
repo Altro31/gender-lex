@@ -30,9 +30,9 @@ export default function EditpresetDialog({ children, preset }: Props) {
 		<BaseDialog trigger={children}>
 			<DialogContent className="max-w-2xl">
 				<DialogHeader>
-					<DialogTitle>{t('Preset.edit.title')}</DialogTitle>
+					<DialogTitle>{t("Preset.edit.title")}</DialogTitle>
 					<DialogDescription>
-						{t('Preset.edit.description')}
+						{t("Preset.edit.description")}
 					</DialogDescription>
 				</DialogHeader>
 				<EditPresetFormContainer
@@ -44,9 +44,11 @@ export default function EditpresetDialog({ children, preset }: Props) {
 					</DialogScrollArea>
 					<DialogFooter>
 						<DialogClose asChild ref={ref}>
-							<Button variant="secondary">{t('Commons.cancel')}</Button>
+							<Button variant="secondary">
+								{t("Commons.cancel")}
+							</Button>
 						</DialogClose>
-						<RHFSubmitButton>{t('Actions.update')}</RHFSubmitButton>
+						<RHFSubmitButton>{t("Actions.update")}</RHFSubmitButton>
 					</DialogFooter>
 				</EditPresetFormContainer>
 			</DialogContent>

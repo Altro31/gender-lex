@@ -147,16 +147,12 @@ export default function ModelListItem({ model: initialModel }: Props) {
 					<div className="flex justify-between">
 						<span>
 							Creado:{" "}
-							{new Date(
-								model.createdAt,
-							).toLocaleDateString()}
+							{new Date(model.createdAt).toLocaleDateString()}
 						</span>
 						{model.usedAt && (
 							<span>
 								Último uso:{" "}
-								{new Date(
-									model.usedAt,
-								).toLocaleDateString()}
+								{new Date(model.usedAt).toLocaleDateString()}
 							</span>
 						)}
 					</div>

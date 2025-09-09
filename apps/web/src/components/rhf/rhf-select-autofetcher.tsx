@@ -117,9 +117,7 @@ export default function RHFSelectAutofetcher<T>({
 													return (
 														<SelectItem
 															key={itemKey + ""}
-															value={
-																itemKey + ""
-															}
+															value={itemKey + ""}
 															disabled={
 																itemDisabled
 															}

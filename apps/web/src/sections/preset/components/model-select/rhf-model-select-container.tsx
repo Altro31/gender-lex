@@ -25,7 +25,7 @@ export default function RHFModelSelectContainer() {
 					<div>
 						<div className="flex justify-between">
 							<CardTitle className="text-lg">
-								{t('Preset.form.models.title')}
+								{t("Preset.form.models.title")}
 							</CardTitle>
 							<Button
 								type="button"
@@ -39,11 +39,11 @@ export default function RHFModelSelectContainer() {
 								size="sm"
 							>
 								<Plus />
-								{t('Model.create.action')}
+								{t("Model.create.action")}
 							</Button>
 						</div>
 						<CardDescription>
-							{t('Preset.form.models.description')}
+							{t("Preset.form.models.description")}
 						</CardDescription>
 					</div>
 				</div>
@@ -59,7 +59,7 @@ export default function RHFModelSelectContainer() {
 							variant="outline"
 						>
 							<Plus />
-							{t('Model.create.empty-action')}
+							{t("Model.create.empty-action")}
 						</Button>
 					</div>
 				)}

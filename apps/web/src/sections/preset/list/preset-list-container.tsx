@@ -57,7 +57,7 @@ export default function PresetsListContainer({ presets, q }: Props) {
 							<CreatePresetDialog>
 								<Button>
 									<Plus />
-									{t('Preset.create.empty-action')}
+									{t("Preset.create.empty-action")}
 								</Button>
 							</CreatePresetDialog>
 						)}

@@ -6,5 +6,7 @@ export default function DialogScrollArea({
 	className,
 	...props
 }: ComponentProps<typeof ScrollArea>) {
-	return <ScrollArea {...props} className={cn("max-h-[70vh] pr-2", className)} />
+	return (
+		<ScrollArea {...props} className={cn("max-h-[70vh] pr-2", className)} />
+	)
 }
