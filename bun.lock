@@ -146,6 +146,7 @@
         "react": "19.1.0",
         "react-dom": "19.1.0",
         "react-hook-form": "^7.62.0",
+        "reconnecting-eventsource": "^1.6.4",
         "server-only": "^0.0.1",
         "sonner": "^2.0.6",
         "tailwind-merge": "^3.3.1",
@@ -2368,6 +2369,8 @@
     "readable-stream": ["readable-stream@3.6.2", "", { "dependencies": { "inherits": "^2.0.3", "string_decoder": "^1.1.1", "util-deprecate": "^1.0.1" } }, "sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA=="],
 
     "readdirp": ["readdirp@4.1.2", "", {}, "sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg=="],
+
+    "reconnecting-eventsource": ["reconnecting-eventsource@1.6.4", "", {}, "sha512-0L3IS3wxcNFApTPPHkcbY8Aya7XZIpYDzhxa8j6QSufVkUN018XJKfh2ZaThLBGP/iN5UTz2yweMhkqr0PKa7A=="],
 
     "reflect-metadata": ["reflect-metadata@0.2.2", "", {}, "sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q=="],
 

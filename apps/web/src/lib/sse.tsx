@@ -8,6 +8,7 @@ import {
 	type PropsWithChildren,
 } from "react"
 import type { MessageMapper } from "@repo/types/sse"
+import ReconnectingEventSource from "reconnecting-eventsource"
 
 const EventSourceContext = createContext<EventSource | null>(null)
 
@@ -17,7 +18,7 @@ export function EventSourceProvider({ children }: Props) {
 	const [eventSource, setEventSource] = useState<EventSource | null>(null)
 	// oxlint-disable-next-line exhaustive-deps
 	useEffect(() => {
-		const source = new EventSource("/api/sse", { withCredentials: true })
+		const source = new ReconnectingEventSource("/api/sse", { withCredentials: true })
 		setEventSource(source)
 		return () => source.close()
 	}, [setEventSource])
