@@ -23,12 +23,8 @@ export default function LoginContainer() {
 				{/* Back Button */}
 				<div className="mb-6">
 					<Link href="/">
-						<Button
-							variant="ghost"
-							size="sm"
-							className="gap-2 text-gray-600 hover:text-gray-900"
-						>
-							<ArrowLeft className="h-4 w-4" />
+						<Button variant="ghost" size="sm">
+							<ArrowLeft />
 							{t("Login.back-to-home")}
 						</Button>
 					</Link>
@@ -41,10 +37,10 @@ export default function LoginContainer() {
 								<Lock className="h-6 w-6 text-white" />
 							</div>
 						</div>
-						<CardTitle className="text-center text-2xl font-bold text-gray-900">
+						<CardTitle className="text-muted-foreground text-center text-2xl font-bold">
 							{t("Login.title")}
 						</CardTitle>
-						<CardDescription className="text-center text-gray-600">
+						<CardDescription className="text-muted-foreground text-center">
 							{t("Login.subtitle")}
 						</CardDescription>
 					</CardHeader>
@@ -80,7 +76,7 @@ export default function LoginContainer() {
 								<Separator className="w-full" />
 							</div>
 							<div className="relative flex justify-center text-xs uppercase">
-								<span className="bg-white px-2 text-gray-500">
+								<span className="text-muted-foreground bg-white px-2">
 									{t("Login.continue-with-email")}
 								</span>
 							</div>

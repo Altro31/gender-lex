@@ -162,6 +162,6 @@ export const getLastUsedPreset = async () => {
 
 	return prisma.preset.findFirst({
 		select: { id: true, name: true },
-		orderBy: [{usedAt: "desc"}]
+		orderBy: [{ usedAt: "desc" }],
 	})
 }

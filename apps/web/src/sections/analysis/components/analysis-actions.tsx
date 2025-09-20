@@ -4,7 +4,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
-	DropdownMenuTrigger
+	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import DeleteAnalysisAlertDialogContent from "@/sections/analysis/components/delete-analysis-alert-dialog-content"
 import { redoAnalysis } from "@/services/analysis"

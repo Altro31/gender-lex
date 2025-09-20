@@ -7,6 +7,6 @@ import { AuthModule } from 'src/security/modules/auth/auth.module'
 	exports: [AiService],
 	controllers: [AiController],
 	providers: [AiService],
-	imports: []
+	imports: [],
 })
 export class AiModule {}

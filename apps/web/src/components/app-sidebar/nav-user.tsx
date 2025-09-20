@@ -18,9 +18,9 @@ import {
 } from "@/components/ui/sidebar"
 import { getSession } from "@/lib/auth/auth-server"
 
-import GithubButton from "@/components/app-sidebar/components/buttons/GithubButton"
-import GoogleButton from "@/components/app-sidebar/components/buttons/GoogleButton"
-import LogoutButton from "@/components/app-sidebar/components/buttons/LogoutButton"
+import GithubButton from "@/components/app-sidebar/buttons/GithubButton"
+import GoogleButton from "@/components/app-sidebar/buttons/GoogleButton"
+import LogoutButton from "@/components/app-sidebar/buttons/LogoutButton"
 import ThemeSwitcher from "@/components/theme/theme-switcher"
 import LanguageSwitcher from "@/locales/components/language-switcher"
 import { useTranslations } from "next-intl"

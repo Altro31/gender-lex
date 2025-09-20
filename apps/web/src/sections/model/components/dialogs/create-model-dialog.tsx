@@ -19,9 +19,9 @@ export default function CreateModelDialog({ children }: Props) {
 		<BaseDialog trigger={children}>
 			<DialogContent className="max-w-2xl">
 				<DialogHeader>
-					<DialogTitle>{t('Model.create.title')}</DialogTitle>
+					<DialogTitle>{t("Model.create.title")}</DialogTitle>
 					<DialogDescription>
-						{t('Model.create.description')}
+						{t("Model.create.description")}
 					</DialogDescription>
 				</DialogHeader>
 				<CreateModelFormContainer />

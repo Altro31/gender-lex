@@ -1,31 +1,6 @@
 import "user"
 import "preset"
 
-model Analysis extends RawAnalysis {
-    id          String         @id @default(cuid())
-
-    name        String?
-
-    visibility  Visibility     @default(private)
-    status      AnalysisStatus @default(pending)
-    inputSource InputSource    @default(manual)
-
-    presetId    String
-    Preset     Preset         @relation(fields: [presetId], references: [id])
-
-    userId      String?        @default(auth().id)
-    User        User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
-
-    createdAt   DateTime       @default(now())
-    updatedAt   DateTime       @updatedAt
-
-    // Anyone can read public analysis
-    @@allow("read",visibility == public)
-
-    // Owners can do anything
-    @@allow("all",auth()==User)
-}
-
 abstract model RawAnalysis {
     originalText                String
     modifiedTextAlternatives    ModifiedAlternative[]        @json
@@ -35,6 +10,22 @@ abstract model RawAnalysis {
     impactAnalysis              ImpactAnalysis?              @json
     conclusion                  String?
 }
+
+model Analysis extends RawAnalysis {
+    id          String         @id @default(cuid())
+    name        String?
+    visibility  Visibility     @default(private)
+    status      AnalysisStatus @default(pending)
+    inputSource InputSource    @default(manual)
+    presetId    String
+    Preset      Preset         @relation(fields: [presetId], references: [id])
+    userId      String?        @default(auth().id)
+    User        User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+    createdAt   DateTime       @default(now())
+    updatedAt   DateTime       @updatedAt
+}
+
+
 
 enum Visibility {
     public

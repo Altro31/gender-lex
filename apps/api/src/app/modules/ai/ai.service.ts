@@ -3,7 +3,6 @@ import type { LanguageModelV2 } from '@ai-sdk/provider'
 import { Injectable } from '@nestjs/common'
 import { type Model } from '@repo/db/models'
 
-
 @Injectable()
 export class AiService {
 	buildLanguageModel(model: Model): LanguageModelV2 {

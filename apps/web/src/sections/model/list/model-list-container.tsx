@@ -49,18 +49,18 @@ export default function ModelListsContainer({ modelsResponse: models }: Props) {
 						<h3 className="mb-2 text-lg font-medium text-gray-900">
 							{searchTerm
 								? t("Commons.no-search-result")
-								: t('Model.list.empty-title')}
+								: t("Model.list.empty-title")}
 						</h3>
 						<p className="mb-4 text-gray-600">
 							{searchTerm
-								? t('Commons.retry-search-result')
-								: t('Model.list.empty-description')}
+								? t("Commons.retry-search-result")
+								: t("Model.list.empty-description")}
 						</p>
 						{!searchTerm && (
 							<CreateModelDialog>
 								<Button>
 									<Plus className="mr-2 h-4 w-4" />
-									{t('Model.empty-action')}
+									{t("Model.empty-action")}
 								</Button>
 							</CreateModelDialog>
 						)}

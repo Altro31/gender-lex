@@ -172,7 +172,7 @@ export default function AnalysisDetailsContainer({ analysis }: Props) {
 							{t("Analysis.details.impact.title")}
 						</TabsTrigger>
 					</TabsList>
-					<TabsContents >
+					<TabsContents>
 						{/* Overview Tab */}
 						<TabsContent value="overview" className="space-y-6">
 							{/* Original Text */}

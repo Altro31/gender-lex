@@ -6,7 +6,7 @@ import { genderLexSystemPrompt } from 'src/app/modules/ai/prompts/system.prompt'
 import { generateText, Output, stepCountIs } from 'ai'
 import { AnalysisSchema } from '@repo/db/zod'
 import type { RawAnalysis } from 'src/app/lib/types'
-import type { TerminologyService } from 'src/app/modules/terminology/terminology.service'
+import { TerminologyService } from 'src/app/modules/terminology/terminology.service'
 
 // @ts-nocheck
 const schema = AnalysisSchema?.pick({
@@ -32,9 +32,11 @@ export class BiasDetectionService {
 		analysis: Analysis & { Preset: { Models: { Model: Model }[] } },
 	) {
 		const session = this.sessionService.getSession()
+
 		const languageModel = this.aiService.buildLanguageModel(
 			analysis.Preset.Models[0].Model,
 		)
+		console.log(analysis)
 		const { experimental_output } = await generateText({
 			model: languageModel,
 			prompt: `lang=${session.lang} <analice>${analysis.originalText}</analice>`,

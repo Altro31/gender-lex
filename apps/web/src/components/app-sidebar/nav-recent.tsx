@@ -1,6 +1,6 @@
 import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react"
 
-import DropdownMenuResponsive from "@/components/app-sidebar/components/dropdown-menu-responsive"
+import DropdownMenuResponsive from "@/components/app-sidebar/dropdown-menu-responsive"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import {
 	DropdownMenu,
