@@ -1,7 +1,2 @@
-node_modules
-dist
-/prisma/schema.prisma
-.env*
-!.env.example
 public/openapi.json
 openapi*.yaml
