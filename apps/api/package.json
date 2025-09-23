@@ -15,7 +15,6 @@
         "@elysiajs/openapi": "^1.4.10",
         "@repo/auth": "workspace:*",
         "@repo/db": "workspace:*",
-        "@yolk-oss/elysia-env": "^3.0.0",
         "@zenstackhq/server": "^2.19.0",
         "adm-zip": "^0.5.16",
         "ai": "^5.0.22",
@@ -23,7 +22,8 @@
         "effect": "^3.17.9",
         "elysia": "latest",
         "umlsjs": "^1.2.1",
-        "zod-to-json-schema": "^3.24.6"
+        "zod-to-json-schema": "^3.24.6",
+        "zod": "catalog:"
     },
     "devDependencies": {
         "bun-types": "latest",
