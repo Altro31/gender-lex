@@ -11,7 +11,7 @@
 		"build:api": "turbo api#build",
 		"build:web": "turbo web#build",
 		"build": "turbo run build",
-		"prod:api": "turbo api#prod",
+		"prod:api": "turbo api#start",
 		"prod:web": "turbo web#start",
 		"migrate": "turbo migrate",
 		"migrate:prod": "turbo migrate:prod",
