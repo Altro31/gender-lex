@@ -1,5 +1,0 @@
--- CreateEnum
-CREATE TYPE "ModelError" AS ENUM ('MISSING_API_KEY', 'INVALID_IDENTIFIER', 'INVALID_CONNECTION_URL', 'MAX_ATTEMPTS_REACHED');
-
--- AlterTable
-ALTER TABLE "Model" ADD COLUMN     "error" "ModelError";
