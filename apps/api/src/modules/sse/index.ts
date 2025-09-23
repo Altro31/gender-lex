@@ -22,13 +22,14 @@ export default new Elysia({
                     () => resolve({ event: "ping" }),
                     15000,
                 )
-                sseService.subscribe(e => {
+                const func = (e: any) => {
                     resolve(e)
                     clearTimeout(timer)
-                })
+                }
+                sseService.subscribe(func)
                 const data = await promise
                 yield sse(data)
-                sseService.unsubscribe(resolve)
+                sseService.unsubscribe(func)
             }
         },
         { response: { "model.status.change": "model.status.change" } },

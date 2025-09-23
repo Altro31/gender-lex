@@ -40,7 +40,7 @@ export const biasDetectionService = new Elysia({
                 analysis: Analysis & { Preset: { Models: { Model: Model }[] } },
             ) {
                 const languageModel = aiService!.buildLanguageModel(
-                    analysis.Preset.Models[0].Model,
+                    analysis!.Preset!.Models![0]!.Model,
                 )
                 console.log(analysis)
                 const { experimental_output } = await generateText({

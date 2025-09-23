@@ -22,7 +22,9 @@ export const sseService = new Elysia({ name: "sse.service" })
                 eventBus.on("sse", func)
             },
 
-            unsubscribe(func: () => void) {
+            unsubscribe<Type extends keyof MessageMapper>(
+                func: (event: MessageEvent<Type>) => void,
+            ) {
                 eventBus.off("sse", func)
             },
 

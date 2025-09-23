@@ -15,7 +15,7 @@
         "@elysiajs/openapi": "^1.4.10",
         "@repo/auth": "workspace:*",
         "@repo/db": "workspace:*",
-        "@zenstackhq/server": "^2.19.0",
+        "@zenstackhq/server": "catalog:",
         "adm-zip": "^0.5.16",
         "ai": "^5.0.22",
         "better-auth": "catalog:",

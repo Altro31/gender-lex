@@ -197,7 +197,7 @@ export const modelService = new Elysia({ name: "model.service" })
                             create: {
                                 role: "primary",
                                 isDefault: true,
-                                Model: { connect: { id: model.id } },
+                                Model: { connect: { id: model!.id } },
                             },
                         },
                     },
