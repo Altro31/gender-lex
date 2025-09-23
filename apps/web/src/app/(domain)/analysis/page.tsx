@@ -22,7 +22,7 @@ export default async function AnalysesPage({ searchParams }: Props) {
 	return (
 		<AnalysisListContainer
 			analysesResponse={analysesResponse}
-			statusCount={statusCountResponse.data!}
+			statusCount={statusCountResponse!}
 		/>
 	)
 }

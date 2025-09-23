@@ -54,6 +54,8 @@ export default new Elysia({
         { response: "findOneOutput" },
     )
 
-    .post(":id/redo", ({ analysisService, params }) => {
-        analysisService.redo(params.id)
-    })
+    .post(
+        ":id/redo",
+        ({ analysisService, params }) => analysisService.redo(params.id),
+        { response: "redoOutput" },
+    )

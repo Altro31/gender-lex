@@ -7,5 +7,5 @@ interface Props {
 export default async function AnalysisDetailsPage({ params }: Props) {
 	const { id } = await params
 	const analysis = await startAnalysis(id)
-	return <AnalysisDetailsContainer analysis={analysis} />
+	return <AnalysisDetailsContainer analysis={analysis as any} />
 }

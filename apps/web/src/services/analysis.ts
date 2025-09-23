@@ -24,6 +24,7 @@ export async function prepareAnalysis(input: HomeSchema) {
 	}
 	const { data, error } = await client.analysis.prepare.post({
 		...input,
+		files: input.files.map(({ file }) => file),
 		preset: input.preset.id,
 	})
 	if (error) {
@@ -38,7 +39,7 @@ export async function startAnalysis(id: string) {
 	if (!session) unauthorized()
 	const { data, error } = await client.analysis.start({ id }).post()
 	if (error) {
-		console.error(error.value.summary)
+		console.error(error.value)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
 	return data
@@ -79,7 +80,7 @@ export async function findOneAnalysis(id: string) {
 	const session = await getSession()
 	if (!session) unauthorized()
 	const { data, error } = await client.analysis({ id }).get()
-	if (error) throw new Error(error.value.sumary)
+	if (error) throw new Error(error.value.summary)
 	return data
 }
 
@@ -95,7 +96,7 @@ export async function getStatusCount() {
 	const session = await getSession()
 	if (!session) unauthorized()
 	const { error, data } = await client.analysis["status-count"].get()
-	if (error) throw new Error(error.value.sumary)
+	if (error) throw new Error(error.value.summary)
 	return data
 }
 
@@ -107,5 +108,5 @@ export async function redoAnalysis(id: string) {
 		console.error(error)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
-	permanentRedirect(`/analysis/${data.data.id}`)
+	permanentRedirect(`/analysis/${data.id}`)
 }

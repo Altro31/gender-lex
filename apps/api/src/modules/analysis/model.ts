@@ -28,4 +28,5 @@ export const analysisModels = {
     findOneOutput: AnalysisSchema.extend({ Preset: PresetSchema }).omit({
         User: true,
     }),
+    redoOutput: AnalysisSchema.omit({ User: true }),
 }
