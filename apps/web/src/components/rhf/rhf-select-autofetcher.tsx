@@ -65,8 +65,8 @@ export default function RHFSelectAutofetcher<T>({
 		<FormField
 			name={name}
 			render={({ field }) => {
-				const selectedKey = getKey?.(field.value) ?? field.value
-				const selectedLabel = getLabel?.(field.value) ?? field.value
+				const selectedKey = field.value ? getKey?.(field.value) : field.value
+				const selectedLabel = field.value ? getLabel?.(field.value) : field.value
 				return (
 					<FormItem>
 						{label && (

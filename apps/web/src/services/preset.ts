@@ -161,7 +161,6 @@ export const getLastUsedPreset = async () => {
 	const prisma = await getPrisma()
 
 	return prisma.preset.findFirst({
-		select: { id: true, name: true },
 		orderBy: [{ usedAt: "desc" }],
 	})
 }

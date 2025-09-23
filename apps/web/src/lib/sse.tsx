@@ -18,7 +18,9 @@ export function EventSourceProvider({ children }: Props) {
 	const [eventSource, setEventSource] = useState<EventSource | null>(null)
 	// oxlint-disable-next-line exhaustive-deps
 	useEffect(() => {
-		const source = new ReconnectingEventSource("/api/sse", { withCredentials: true })
+		const source = new ReconnectingEventSource("/api/sse", {
+			withCredentials: true,
+		})
 		setEventSource(source)
 		return () => source.close()
 	}, [setEventSource])

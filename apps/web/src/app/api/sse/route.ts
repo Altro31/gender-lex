@@ -14,18 +14,18 @@ export async function GET(req: NextRequest) {
 				"Connection failed, trying to reconnect in 5 seconds...",
 			),
 		),
-		Effect.retry({
-			schedule: Schedule.linear("5 seconds"),
-			times: 5,
-		}),
+		// Effect.retry({
+		// 	schedule: Schedule.linear("5 seconds"),
+		// 	times: 5,
+		// }),
 		Effect.tapError(() =>
 			Console.log(
 				"Connection failed, trying to reconnect in 30 seconds...",
 			),
 		),
-		Effect.retry({
-			schedule: Schedule.linear("30 seconds"),
-		}),
+		// Effect.retry({
+		// 	schedule: Schedule.linear("30 seconds"),
+		// }),
 	)
 	return Effect.runPromise(sseConnection)
 }
