@@ -107,7 +107,6 @@ export const clonePreset = actionClient
 	.inputSchema(z.string())
 	.action(async ({ parsedInput: id }) => {
 		const prisma = await getPrisma()
-
 		const { Models, ...rest } = await prisma.preset.findUniqueOrThrow({
 			where: { id },
 			omit: {
@@ -153,7 +152,6 @@ export const getPresetsSelect = async ({ page }: { page: number }) => {
 	return prisma.preset.findMany({
 		skip: page * 20,
 		take: 20,
-		select: { id: true, name: true },
 	})
 }
 

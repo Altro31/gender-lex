@@ -6,8 +6,8 @@
 		"@repo/db": "workspace:*"
 	},
 	"exports": {
-		"./nest": "./nest.js",
-		"./next": "./next.js",
-		"./encrypt": "./encrypt.js"
+		"./nest": "./nest.ts",
+		"./next": "./next.ts",
+		"./encrypt": "./encrypt.ts"
 	}
 }

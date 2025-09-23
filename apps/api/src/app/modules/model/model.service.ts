@@ -174,17 +174,36 @@ export class ModelService implements OnModuleInit {
 		] satisfies Prisma.ModelCreateInput[]
 
 		await this.prismaService.prisma.$transaction(async tx => {
-			await Promise.all(
+			const [model] = await Promise.all(
 				models.map(async model => {
 					const exist = await tx.model.findFirst({
 						where: { name: model.name, isDefault: true },
 					})
-					if (exist) return
+					if (exist) return Promise.resolve(exist)
 					return tx.model.create({ data: model })
 				}),
 			)
-		})
 
+			const defaultPreset = await tx.preset.findFirst({
+				where: { isDefault: true },
+			})
+			if (!defaultPreset) {
+				await tx.preset.create({
+					data: {
+						name: 'Default',
+						description: 'Default preset',
+						isDefault: true,
+						Models: {
+							create: {
+								role: 'primary',
+								isDefault: true,
+								Model: { connect: { id: model.id } },
+							},
+						},
+					},
+				})
+			}
+		})
 		this.logger.log('Default models initialized!')
 	}
 }
