@@ -45,7 +45,7 @@ export default new Elysia({
     )
 
     .delete(":id", async ({ analysisService, params }) => {
-        analysisService.delete(params.id)
+        analysisService.delete(params.id!)
     })
 
     .get(
