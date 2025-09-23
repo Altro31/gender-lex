@@ -18,7 +18,6 @@
 			"persistent": true
 		},
 		"build": {
-			"dependsOn": ["generate"],
 			"outputs": [".next/**", "!.next/cache/**"],
 			"env": [
 				"API_URL",
