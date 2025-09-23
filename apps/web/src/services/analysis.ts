@@ -22,11 +22,12 @@ export async function prepareAnalysis(input: HomeSchema) {
 	} else {
 		formData.append("text", input.text)
 	}
-	const { data, error } = await client.POST("/analysis/prepare", {
-		body: formData as any,
+	const { data, error } = await client.analysis.prepare.post({
+		...input,
+		preset: input.preset.id,
 	})
-	if (!data) {
-		console.error(error)
+	if (error) {
+		console.error(error.value.summary)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
 	permanentRedirect(`/analysis/${data.id}`)
@@ -35,15 +36,12 @@ export async function prepareAnalysis(input: HomeSchema) {
 export async function startAnalysis(id: string) {
 	const session = await getSession()
 	if (!session) unauthorized()
-	const { data, error } = await client.POST("/analysis/start/{id}", {
-		params: { path: { id } },
-	})
+	const { data, error } = await client.analysis.start({ id }).post()
 	if (error) {
-		console.error(error)
+		console.error(error.value.summary)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
-
-	return data as unknown as Analysis
+	return data
 }
 
 export const deleteAnalysis = actionClient
@@ -51,9 +49,7 @@ export const deleteAnalysis = actionClient
 	.action(async ({ parsedInput: id }) => {
 		const session = await getSession()
 		if (!session) unauthorized()
-		await client.DELETE("/zen/analysis/{id}", {
-			params: { path: { id } },
-		})
+		await client.analysis({ id }).delete()
 		revalidatePath("/analysis")
 	})
 
@@ -82,9 +78,9 @@ export async function findAnalyses({
 export async function findOneAnalysis(id: string) {
 	const session = await getSession()
 	if (!session) unauthorized()
-	return client.GET("/zen/analysis/{id}", {
-		params: { path: { id }, query: { include: "Presets" } },
-	})
+	const { data, error } = await client.analysis({ id }).get()
+	if (error) throw new Error(error.value.sumary)
+	return data
 }
 
 export async function findRecentAnalyses() {
@@ -98,18 +94,15 @@ export async function findRecentAnalyses() {
 export async function getStatusCount() {
 	const session = await getSession()
 	if (!session) unauthorized()
-	return client.GET("/analysis/status-count")
+	const { error, data } = await client.analysis["status-count"].get()
+	if (error) throw new Error(error.value.sumary)
+	return data
 }
 
 export async function redoAnalysis(id: string) {
 	const session = await getSession()
 	if (!session) unauthorized()
-	const { data, error } = await client.PATCH("/zen/analysis/{id}", {
-		params: { path: { id } },
-		body: {
-			data: { id, type: "analysis", attributes: { status: "pending" } },
-		},
-	})
+	const { data, error } = await client.analysis({ id }).redo.post()
 	if (error) {
 		console.error(error)
 		throw new Error("An error occurred when trying access analysis with id")

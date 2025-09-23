@@ -84,6 +84,24 @@ export const analysisService = new Elysia({ name: "analysis.service" })
                         })
                         return { id: analysis.id }
                     },
+
+                    async delete(id: string) {
+                        return repository.delete({ where: { id } })
+                    },
+
+                    async findOne(id: string) {
+                        return repository.findUniqueOrThrow({
+                            where: { id },
+                            include: { Preset: true },
+                        })
+                    },
+
+                    async redo(id: string) {
+                        return repository.update({
+                            where: { id },
+                            data: { status: "pending" },
+                        })
+                    },
                 },
             }
         },

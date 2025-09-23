@@ -43,3 +43,17 @@ export default new Elysia({
         ({ analysisService }) => analysisService.statusCount(),
         { response: "statusCountOutput" },
     )
+
+    .delete(":id", async ({ analysisService, params }) => {
+        analysisService.delete(params.id)
+    })
+
+    .get(
+        ":id",
+        ({ analysisService, params }) => analysisService.findOne(params.id),
+        { response: "findOneOutput" },
+    )
+
+    .post(":id/redo", ({ analysisService, params }) => {
+        analysisService.redo(params.id)
+    })

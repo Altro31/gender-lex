@@ -25,4 +25,7 @@ export const analysisModels = {
         done: t.Integer(),
         error: t.Integer(),
     }),
+    findOneOutput: AnalysisSchema.extend({ Preset: PresetSchema }).omit({
+        User: true,
+    }),
 }

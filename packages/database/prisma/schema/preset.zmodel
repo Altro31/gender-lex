@@ -54,7 +54,6 @@ model PresetModel {
     @@allow("all",true)
 
 
-    @@openapi.ignore()
 }
 
 enum ModelRole {

@@ -1,6 +1,7 @@
 import cluster from "node:cluster"
 import os from "node:os"
 import process from "node:process"
+export type { App } from "./server"
 
 if (cluster.isPrimary) {
     for (let i = 0; i < os.availableParallelism(); i++) cluster.fork()

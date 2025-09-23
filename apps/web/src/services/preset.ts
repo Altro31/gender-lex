@@ -1,11 +1,9 @@
 "use server"
 
-import { client } from "@/lib/api/client"
 import { getPrisma } from "@/lib/prisma/client"
 import { actionClient } from "@/lib/safe-action"
 import { PresetSchema } from "@/sections/preset/form/preset-schema"
 import type { Route } from "next"
-import { returnValidationErrors } from "next-safe-action"
 import { revalidatePath } from "next/cache"
 import { z } from "zod/mini"
 
@@ -86,20 +84,14 @@ export const editPreset = actionClient
 export const deletePreset = actionClient
 	.inputSchema(z.string())
 	.action(async ({ parsedInput: id }) => {
-		const { data, error } = await client.DELETE("/zen/preset/{id}", {
-			params: { path: { id } },
-		})
-		if (error)
-			return returnValidationErrors(
-				PresetSchema,
-				error.errors[0]!.zodErrors!,
-			)
+		const prisma = await getPrisma()
+
+		await prisma.preset.delete({ where: { id } })
 
 		revalidatePath("/presets" as Route, "page")
 
 		return {
 			success: true,
-			data,
 		}
 	})
 

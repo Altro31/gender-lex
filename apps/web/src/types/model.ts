@@ -1,4 +1,3 @@
-import type { ApiResponse } from "@/lib/api/utils"
 import type { findModels } from "@/services/model"
 
 export type ModelsResponse = Awaited<ReturnType<typeof findModels>>

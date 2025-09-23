@@ -15,16 +15,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
-plugin openapi {
-  provider = '@zenstackhq/openapi'
-  flavor = 'rest'
-  output = 'openapi.yaml'
-  prefix = "/zen"
-  securitySchemes = {
-        apiKey: { type: 'apiKey', in: 'cookie', name: 'better-auth.session' }
-    }
-}
   
 
 

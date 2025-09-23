@@ -8,13 +8,14 @@ import zen from "@/modules/zen"
 import cors from "@elysiajs/cors"
 import openapi, { fromTypes } from "@elysiajs/openapi"
 import { Elysia, env } from "elysia"
-import zodToJsonSchema from "zod-to-json-schema"
+import z from "zod"
 
+export type App = typeof app
 const app = new Elysia()
     .use(
         openapi({
             references: fromTypes(),
-            mapJsonSchema: { zod: zodToJsonSchema },
+            mapJsonSchema: { zod: z.toJSONSchema },
         }),
     )
     .use(cors())

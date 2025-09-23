@@ -3,8 +3,8 @@
     "version": "1.0.50",
     "scripts": {
         "dev": "bun run --watch src/server.ts",
-        "start": "./dist/server",
-        "build": "bun build --compile --minify --outfile dist/server src/index.ts"
+        "start": "bun ./dist/index.js",
+        "build": "bun build --target=node --minify-whitespace --minify-syntax --outfile ./dist/index.js src/index.ts"
     },
     "dependencies": {
         "@adobe/pdfservices-node-sdk": "^4.1.0",
@@ -20,9 +20,8 @@
         "ai": "^5.0.22",
         "better-auth": "catalog:",
         "effect": "^3.17.9",
-        "elysia": "latest",
+        "elysia": "catalog:",
         "umlsjs": "^1.2.1",
-        "zod-to-json-schema": "^3.24.6",
         "zod": "catalog:"
     },
     "devDependencies": {
@@ -30,5 +29,6 @@
         "@repo/types": "workspace:*",
         "@types/adm-zip": "^0.5.6"
     },
-    "module": "src/index.js"
+    "module": "src/index.js",
+    "types": "src/index.ts"
 }

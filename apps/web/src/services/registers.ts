@@ -1,7 +1,8 @@
 "use server"
 
 import { client } from "@/lib/api/client"
-import { auth } from "@/lib/auth/auth-server"
+import { auth, getSession } from "@/lib/auth/auth-server"
+import { getPrisma } from "@/lib/prisma/client"
 import { cookies, headers } from "next/headers"
 
 export async function setTheme(isDark: boolean) {
@@ -10,26 +11,21 @@ export async function setTheme(isDark: boolean) {
 }
 
 export async function setLanguage(lang: string) {
-	const session = await auth.api.getSession({ headers: await headers() })
-	if (!session) throw new Error("")
-	const { error } = await client.PATCH("/zen/session/{id}", {
-		params: { path: { id: session.session.id } },
-		body: {
-			data: {
-				id: session.session.id,
-				type: "session",
-				attributes: { lang },
-			},
-		},
+	const session = await getSession()
+	if (!session) throw new Error("Unauthorized")
+	const prisma = await getPrisma()
+
+	const data = await prisma.session.update({
+		where: { id: session.session.id },
+		data: { lang },
 	})
-	if (!error) {
+	if (data) {
 		await auth.api.getSession({
 			headers: await headers(),
 			query: { disableCookieCache: true },
 		})
 		return false
 	}
-	console.log(error)
 
 	return true
 }
