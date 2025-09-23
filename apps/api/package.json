@@ -3,8 +3,8 @@
     "version": "1.0.50",
     "scripts": {
         "dev": "bun run --watch src/server.ts",
-        "start": "./dist/server",
-        "build": "bun build --compile --minify --outfile ./dist/server src/server.ts"
+        "start": "bun ./dist/index.ts",
+        "build": "bun build --minify-whitespace --minify-syntax --target=node --outfile ./dist/index.js src/server.ts"
     },
     "dependencies": {
         "@adobe/pdfservices-node-sdk": "^4.1.0",
