@@ -1,51 +1,13 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-		"declaration": false,
-		"removeComments": true,
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"allowSyntheticDefaultImports": true,
-		"target": "ES2023",
-		"sourceMap": true,
-		"outDir": "./dist",
-		"baseUrl": "./",
-		"incremental": true,
-		"skipLibCheck": true,
-		"strictNullChecks": true,
-		"forceConsistentCasingInFileNames": true,
-		"noImplicitAny": false,
-		"strictBindCallApply": false,
-		"noFallthroughCasesInSwitch": false,
-		"preserveWatchOutput": true,
-		"plugins": [
-			{
-				"transform": "@nestia/core/lib/transform",
-				/**
-				 * Validate request body.
-				 *
-				 *   - "assert": Use typia.assert() function
-				 *   - "is": Use typia.is() function
-				 *   - "validate": Use typia.validate() function
-				 *   - "assertEquals": Use typia.assertEquals() function
-				 *   - "equals": Use typia.equals() function
-				 *   - "validateEquals": Use typia.validateEquals() function
-				 */
-				"validate": "validate",
-				/**
-				 * Validate JSON typed response body.
-				 *
-				 *   - "assert": Use typia.assertStringify() function
-				 *   - "is": Use typia.isStringify() function
-				 *   - "validate": Use typia.validateStringify() function
-				 *   - "validate.log": typia.validateStringify(), but do not throw and just log it
-				 *   - "stringify": Use typia.stringify() function, but dangerous
-				 *   - null: Just use JSON.stringify() function, without boosting
-				 */
-				"stringify": "assert"
-			},
-			{ "transform": "@nestia/sdk/lib/transform" },
-			{ "transform": "typia/lib/transform" }
-		]
-	}
+    "compilerOptions": {
+        "target": "ES2021" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+        "module": "ES2022" /* Specify what module code is generated. */,
+        "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
+        "types": ["bun-types"],
+        "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+        "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+        "strict": true /* Enable all strict type-checking options. */,
+        "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+        "paths": { "@/*": ["./src/*"] }
+    }
 }

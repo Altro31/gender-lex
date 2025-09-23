@@ -1,0 +1,45 @@
+import { analysisModels } from "@/modules/analysis/model"
+import { analysisService } from "@/modules/analysis/service"
+import Elysia, { t } from "elysia"
+
+export default new Elysia({
+    name: "analysis.controller",
+    tags: ["Analysis"],
+    prefix: "analysis",
+})
+    .use(analysisService)
+    .model(analysisModels)
+    .post(
+        "prepare",
+        ({ analysisService, body }) => {
+            const toAnalice = [] as { input: File | string; preset: string }[]
+            if (body.files.length) {
+                for (const file of body.files) {
+                    toAnalice.push({ input: file, preset: body.preset })
+                }
+            }
+            if (body.text) {
+                toAnalice.push({ input: body.text, preset: body.preset })
+            }
+            return Promise.race(
+                toAnalice.map(i => analysisService.prepare(i.input, i.preset)),
+            )
+        },
+        {
+            body: "prepareInput",
+            response: "prepareOutput",
+            parse: "multipart/form-data",
+        },
+    )
+
+    .post(
+        "start/:id",
+        ({ analysisService, params }) => analysisService.start(params.id),
+        { response: { 200: "startOutput", 404: t.String() } },
+    )
+
+    .get(
+        "status-count",
+        ({ analysisService }) => analysisService.statusCount(),
+        { response: "statusCountOutput" },
+    )
