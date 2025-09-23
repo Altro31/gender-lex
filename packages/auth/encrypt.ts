@@ -2,7 +2,7 @@ import * as crypto from 'node:crypto'
 
 const ALGORITHM = 'aes-256-gcm'
 
-export function encrypt(text, key) {
+export function encrypt(text: string, key: string) {
 	const iv = crypto.randomBytes(16)
 	const cipher = crypto.createCipheriv(ALGORITHM, key, iv)
 
@@ -15,7 +15,7 @@ export function encrypt(text, key) {
 	return Buffer.concat([iv, authTag, encrypted]).toString('base64')
 }
 
-export function decrypt(encryptedBase64, key) {
+export function decrypt(encryptedBase64: string, key: string) {
 	const data = Buffer.from(encryptedBase64, 'base64')
 
 	const iv = data.subarray(0, 16)

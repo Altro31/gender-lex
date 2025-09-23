@@ -26,7 +26,6 @@ const app = new Elysia()
     .use(preset)
     .use(zen)
     .get("/", ({ userService }) => {
-        console.log(userService)
         return { ok: true }
     })
     .listen(Number(env.PORT))
