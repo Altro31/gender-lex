@@ -12,7 +12,5 @@ export class UserService {
 export const userService = new Elysia({ name: "user.service" })
     .use(prisma)
     .derive({ as: "global" }, ({ prisma }) => {
-        console.log(prisma)
-        const model = prisma?.user
         return { userService: {} }
     })

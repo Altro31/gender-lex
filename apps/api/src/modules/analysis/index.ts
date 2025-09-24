@@ -25,11 +25,7 @@ export default new Elysia({
                 toAnalice.map(i => analysisService.prepare(i.input, i.preset)),
             )
         },
-        {
-            body: "prepareInput",
-            response: "prepareOutput",
-            parse: "multipart/form-data",
-        },
+        { body: "prepareInput", response: "prepareOutput" },
     )
 
     .post(

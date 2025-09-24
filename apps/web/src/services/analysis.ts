@@ -13,22 +13,22 @@ import z from "zod"
 export async function prepareAnalysis(input: HomeSchema) {
 	const session = await getSession()
 	if (!session) unauthorized()
-	const formData = new FormData()
-	formData.append("preset", input.preset.id)
-	if (input.files.length) {
-		for (const file of input.files) {
-			formData.append("files", file.file)
-		}
-	} else {
-		formData.append("text", input.text)
-	}
+	// const formData = new FormData()
+	// formData.append("preset", input.preset.id)
+	// if (input.files.length) {
+	// 	for (const file of input.files) {
+	// 		formData.append("files", file.file)
+	// 	}
+	// } else {
+	// 	formData.append("text", input.text)
+	// }
 	const { data, error } = await client.analysis.prepare.post({
 		...input,
 		files: input.files.map(({ file }) => file),
 		preset: input.preset.id,
 	})
 	if (error) {
-		console.error(error.value.summary)
+		console.error(error)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
 	permanentRedirect(`/analysis/${data.id}`)

@@ -28,7 +28,6 @@ export default function AnalysisActions({ analysis, children }: Props) {
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
-					<DropdownMenuSeparator />
 					<DropdownMenuItem asChild>
 						<Link href={`/analysis/${analysis.id}`}>
 							<Eye className="mr-2 h-4 w-4" />

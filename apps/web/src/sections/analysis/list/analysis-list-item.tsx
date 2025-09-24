@@ -10,7 +10,14 @@ import {
 import { Badge } from "@/components/ui/badge"
 import AnalysisActions from "@/sections/analysis/components/analysis-actions"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, Clock, Filter, Play, XCircle } from "lucide-react"
+import {
+	CheckCircle,
+	Clock,
+	Filter,
+	Play,
+	Settings,
+	XCircle,
+} from "lucide-react"
 import { useTranslations } from "next-intl"
 
 interface Props {
@@ -72,12 +79,8 @@ export default function AnalysisListItem({ analysis }: Props) {
 					</div>
 
 					<AnalysisActions analysis={analysis}>
-						<Button
-							variant="ghost"
-							size="sm"
-							className="h-8 w-8 p-0"
-						>
-							<Filter className="h-4 w-4" />
+						<Button variant="ghost" size="icon">
+							<Settings />
 						</Button>
 					</AnalysisActions>
 				</div>

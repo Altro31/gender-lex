@@ -9,9 +9,11 @@ export default function UploadButton() {
 	const t = useTranslations()
 	const { setValue, getValues } = useFormContext<HomeSchema>()
 	const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
-		const file = e.currentTarget.files?.item(0)!
-		const files = getValues("files")
-		setValue("files", [...files, { file }])
+		const files = Array.from(e.currentTarget.files ?? []).map((file) => ({
+			file,
+		}))
+		const previousFiles = getValues("files")
+		setValue("files", [...previousFiles, ...files])
 		e.currentTarget.value = ""
 	}
 
