@@ -14,7 +14,6 @@ if (process.env.NODE_ENV !== "production") {
 export async function getPrisma() {
 	const session = await getSession()
 	const key = envs.ENCRYPTION_KEY
-	console.log("User", session?.user)
 	return enhance(
 		prisma,
 		{ user: session?.user },
