@@ -64,7 +64,12 @@ export async function findAnalyses({
 	status?: string
 }) {
 	const prisma = await getPrisma()
-	const res = await prisma.analysis.findMany({
+	console.log(
+		await prisma.analysis.findMany({
+			include: { Preset: true },
+		}),
+	)
+	return prisma.analysis.findMany({
 		where: {
 			name: { contains: q, mode: "insensitive" },
 			status: status as any,
@@ -74,9 +79,6 @@ export async function findAnalyses({
 		take: 10,
 		orderBy: [{ createdAt: "desc" }, { updatedAt: "desc" }],
 	})
-
-	console.log(res)
-	return res
 }
 
 export async function findOneAnalysis(id: string) {
