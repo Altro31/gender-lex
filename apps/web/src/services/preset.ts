@@ -36,6 +36,7 @@ export const createPreset = actionClient
 		})
 
 		revalidatePath("/presets" as Route, "page")
+		revalidatePath("" as Route, "page")
 
 		return {
 			success: true,

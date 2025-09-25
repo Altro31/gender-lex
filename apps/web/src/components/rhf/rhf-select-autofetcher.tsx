@@ -11,14 +11,12 @@ import {
 	SelectGroup,
 	SelectItem,
 	SelectLabel,
-	SelectTrigger,
-	SelectValue,
+	SelectTrigger
 } from "@/components/ui/select"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { Loader2 } from "lucide-react"
-import type { ComponentProps } from "react"
+import type { ComponentProps, PropsWithChildren } from "react"
 
-interface Props<T> {
+interface Props<T> extends PropsWithChildren {
 	name: string
 	label?: string
 	required?: boolean
@@ -40,6 +38,7 @@ export default function RHFSelectAutofetcher<T>({
 	placeholder,
 	size,
 	initialData = [],
+	children,
 	fetcherFunc,
 	getKey,
 	getLabel,
@@ -133,6 +132,7 @@ export default function RHFSelectAutofetcher<T>({
 											</SelectGroup>
 										),
 								)}
+								{children}
 							</SelectContent>
 						</Select>
 						<FormMessage />

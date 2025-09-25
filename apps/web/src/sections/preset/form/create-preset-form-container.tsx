@@ -4,6 +4,7 @@ import { Form } from "@/components/ui/form"
 import { PresetSchema } from "@/sections/preset/form/preset-schema"
 import { createPreset } from "@/services/preset"
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema"
+import { useQueryClient } from "@tanstack/react-query"
 import { useAction } from "next-safe-action/hooks"
 import { type PropsWithChildren } from "react"
 import { useForm } from "react-hook-form"
@@ -17,6 +18,7 @@ export default function CreatePresetFormContainer({
 	onSuccess,
 	children,
 }: Props) {
+	const queryClient = useQueryClient()
 	const form = useForm({
 		resolver: standardSchemaResolver(PresetSchema),
 		defaultValues: {
@@ -30,6 +32,9 @@ export default function CreatePresetFormContainer({
 		onSuccess: () => {
 			toast.success("Ok")
 			onSuccess?.()
+			console.log("Hola");
+			
+			queryClient.invalidateQueries({ queryKey: ["selectedPreset"] })
 		},
 		onError: ({ error }) => {
 			console.log("error", error)

@@ -5,7 +5,6 @@ interface Props extends PageProps<"/models"> {
 	searchParams: Promise<{
 		q?: string
 		page?: string
-		status?: string
 	}>
 }
 

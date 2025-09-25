@@ -2,10 +2,13 @@
 
 import RHFSelectAutofetcher from "@/components/rhf/rhf-select-autofetcher"
 import RHFTextarea from "@/components/rhf/rhf-textarea"
+import { Button } from "@/components/ui/button"
 import UploadButton from "@/sections/home/components/upload/upload-button"
 import HomeFiles from "@/sections/home/form/home-files"
 import FormSendButton from "@/sections/home/form/home-form-send-button"
+import CreatePresetDialog from "@/sections/preset/components/dialogs/create-preset-dialog"
 import { getPresetsSelect } from "@/services/preset"
+import { Plus } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 export default function HomeFormContainer() {
@@ -24,11 +27,22 @@ export default function HomeFormContainer() {
 					<div className="flex gap-1">
 						<UploadButton />
 						<RHFSelectAutofetcher
-							name="preset"
+							name="selectedPreset"
 							fetcherFunc={getPresetsSelect}
 							getKey={(i) => i.id}
 							getLabel={(i) => i.name}
-						/>
+						>
+							<CreatePresetDialog>
+								<Button
+									size="sm"
+									variant="outline"
+									className="mt-1 w-full"
+								>
+									<Plus />
+									{t("Preset.create.action")}
+								</Button>
+							</CreatePresetDialog>
+						</RHFSelectAutofetcher>
 					</div>
 					<FormSendButton />
 				</div>

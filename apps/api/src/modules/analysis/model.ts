@@ -13,7 +13,7 @@ export const analysisModels = {
     prepareInput: t.Object({
         files: t.Files({ default: [] }),
         text: t.Optional(t.String()),
-        preset: t.String(),
+        selectedPreset: t.String(),
     }),
     prepareOutput: t.Object({ id: t.String() }),
     startOutput: AnalysisSchema.extend({
@@ -34,7 +34,7 @@ export const analysisModels = {
     redoOutput: AnalysisSchema.omit({ User: true }),
     findManyQueryParams: paginationSchema.extend({
         q: z.string().optional(),
-        status: z.enum($Enums.ModelStatus).optional(),
+        status: z.enum($Enums.AnalysisStatus).optional(),
     }),
 }
 

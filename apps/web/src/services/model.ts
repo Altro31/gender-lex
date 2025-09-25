@@ -10,17 +10,14 @@ import { z } from "zod/mini"
 export async function findModels({
 	q,
 	page = "1",
-	status,
 }: {
 	q?: string
 	page?: string
-	status?: string
 }) {
 	const prisma = await getPrisma()
 	return prisma.model.findMany({
 		where: {
 			name: { contains: q, mode: "insensitive" },
-			status: status as any,
 		},
 		skip: (Number(page) - 1) * 10,
 		take: 10,

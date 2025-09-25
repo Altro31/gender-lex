@@ -18,7 +18,7 @@ export default function HomeFormProvider({ children, lastUsedPreset }: Props) {
 		defaultValues: {
 			files: [],
 			text: "",
-			preset: lastUsedPreset,
+			selectedPreset: lastUsedPreset,
 		},
 		mode: "all",
 	})

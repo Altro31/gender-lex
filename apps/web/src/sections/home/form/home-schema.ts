@@ -9,7 +9,7 @@ export const HomeSchema = z
 			}),
 		),
 		text: z.string(),
-		preset: z.object({
+		selectedPreset: z.object({
 			id: z.string(),
 		}),
 	})

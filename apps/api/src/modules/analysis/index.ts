@@ -15,11 +15,14 @@ export default new Elysia({
             const toAnalice = [] as { input: File | string; preset: string }[]
             if (body.files.length) {
                 for (const file of body.files) {
-                    toAnalice.push({ input: file, preset: body.preset })
+                    toAnalice.push({ input: file, preset: body.selectedPreset })
                 }
             }
             if (body.text) {
-                toAnalice.push({ input: body.text, preset: body.preset })
+                toAnalice.push({
+                    input: body.text,
+                    preset: body.selectedPreset,
+                })
             }
             return Promise.race(
                 toAnalice.map(i => analysisService.prepare(i.input, i.preset)),

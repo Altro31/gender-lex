@@ -24,7 +24,7 @@ export async function prepareAnalysis(input: HomeSchema) {
 	const { data, error } = await client.analysis.prepare.post({
 		...input,
 		files: input.files.map(({ file }) => file),
-		preset: input.preset.id,
+		selectedPreset: input.selectedPreset.id,
 	})
 	if (error) {
 		console.error(error)
@@ -58,21 +58,14 @@ export async function findAnalyses(query: {
 	page?: string
 	status?: string
 }) {
-	// Normalizar tipos: el backend espera ints para page/pageSize y no acepta "" como status
-	const parsedQuery: Record<string, any> = { ...query }
-	if (parsedQuery.page !== undefined) {
-		const p = parseInt(String(parsedQuery.page), 10)
-		parsedQuery.page = Number.isFinite(p) ? p : undefined
-	}
-	if (parsedQuery.pageSize !== undefined) {
-		const ps = parseInt(String(parsedQuery.pageSize), 10)
-		parsedQuery.pageSize = Number.isFinite(ps) ? ps : undefined
-	}
-	if (parsedQuery.status === "" || parsedQuery.status == null) {
-		delete parsedQuery.status
-	}
-	const { error, data } = await client.analysis.get({ query: parsedQuery })
-	if (error) throw new Error(error.value.summary)
+	const { error, data } = await client.analysis.get({
+		query: {
+			q: query.q || "",
+			page: query.page ? Number(query.page) : 1,
+			status: query.status || undefined,
+		},
+	})
+	if (error) throw new Error(JSON.stringify(error))
 	return data
 }
 
