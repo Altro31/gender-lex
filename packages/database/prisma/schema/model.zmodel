@@ -8,8 +8,8 @@ model Model {
     name         String
     apiKey       String?       @encrypted
 
-    status       ModelStatus   @default(inactive) @allow("update", true, true)
-    error        ModelError?   @allow("update", true, true)
+    status       ModelStatus   @default(inactive)
+    error        ModelError?
 
     User         User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId       String?       @default(auth().id)
@@ -29,7 +29,7 @@ model Model {
     @@allow('delete', auth().role == admin)
 
     // Default models can be view by everybody
-    @@allow('read', isDefault)
+    @@allow('read,update', isDefault)
 }
 
 type Connection {

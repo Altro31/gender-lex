@@ -6,6 +6,7 @@ import {
 } from "@/modules/model/exceptions/tagged-errors"
 import { sseService } from "@/modules/sse/service"
 import { FetchHttpClient, HttpClient } from "@effect/platform"
+import { decrypt, encrypt } from "@repo/auth/encrypt"
 import type { $Enums, Prisma } from "@repo/db/models"
 import { Console, Effect, Match } from "effect"
 import Elysia, { env } from "elysia"
@@ -29,8 +30,9 @@ export const modelService = new Elysia({ name: "model.service" })
                     if (!model) {
                         return status(404, `Model with id: ${id} not found`)
                     }
+                    console.log("Hola")
                     await this.updateModelStatus(id, "connecting")
-
+                    console.log("Hola")
                     const testConnectionProgram = Effect.gen(
                         this,
                         function* () {
@@ -89,14 +91,16 @@ export const modelService = new Elysia({ name: "model.service" })
                     )
                         .pipe(
                             Effect.catchTags({
-                                RequestError: () =>
-                                    Effect.promise(() =>
+                                RequestError: e => {
+                                    console.log(e)
+                                    return Effect.promise(() =>
                                         this.updateModelStatus(
                                             id,
                                             "error",
                                             "INVALID_CONNECTION_URL",
                                         ),
-                                    ),
+                                    )
+                                },
                                 ResponseError: e =>
                                     Console.log("ResponseError", e),
                             }),
@@ -123,9 +127,13 @@ export const modelService = new Elysia({ name: "model.service" })
                     status: $Enums.ModelStatus,
                     error?: $Enums.ModelError,
                 ) {
+                    const model = await repository.findUnique({ where: { id } })
+                    if (!model) {
+                        throw new Error(`Model with id: ${id} not found`)
+                    }
                     await repository.update({
                         where: { id },
-                        data: { status, error: error || null },
+                        data: { ...model, status, error: error || null },
                     })
                     sseService!.broadcast("model.status.change", {
                         id,
@@ -146,7 +154,7 @@ export const modelService = new Elysia({ name: "model.service" })
                 },
 
                 settings: { temperature: 0.2 },
-                apiKey: env.GROQ_API_KEY,
+                apiKey: encrypt(env.GROQ_API_KEY!, env.ENCRYPTION_KEY!),
                 isDefault: true,
             },
             {
@@ -157,7 +165,7 @@ export const modelService = new Elysia({ name: "model.service" })
                 },
 
                 settings: { temperature: 0.2 },
-                apiKey: env.GROQ_API_KEY,
+                apiKey: encrypt(env.GROQ_API_KEY!, env.ENCRYPTION_KEY!),
                 isDefault: true,
             },
         ] satisfies Prisma.ModelCreateInput[]

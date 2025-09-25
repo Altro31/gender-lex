@@ -13,7 +13,7 @@ export default new Elysia({
     .model(sseModels)
     .get(
         "",
-        async function* ({ sseService }) {
+        async function* ({ sseService, user, session }) {
             yield sse("Connected!!!")
 
             while (true) {
@@ -28,7 +28,12 @@ export default new Elysia({
                 }
                 sseService.subscribe(func)
                 const data = await promise
-                yield sse(data)
+                if (
+                    data.sessionId === session?.id ||
+                    data.userId === user?.id
+                ) {
+                    yield sse(data)
+                }
                 sseService.unsubscribe(func)
             }
         },

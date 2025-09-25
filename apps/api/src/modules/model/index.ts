@@ -20,6 +20,6 @@ export default new Elysia({
     .post(
         ":id/test-connection",
         async ({ modelService, params }) =>
-            await modelService.testConnection(params.id),
+            modelService.testConnection(params.id),
         { response: { 200: "testConnectionOutput", 404: t.String() } },
     )
