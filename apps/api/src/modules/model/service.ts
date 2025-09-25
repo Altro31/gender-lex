@@ -160,17 +160,6 @@ export const modelService = new Elysia({ name: "model.service" })
                 apiKey: env.GROQ_API_KEY,
                 isDefault: true,
             },
-            {
-                name: "Deepseek-R1-32b",
-                connection: {
-                    identifier: "deepseek-r1-distill-qwen-32b",
-                    url: "https://api.groq.com/openai/v1",
-                },
-
-                settings: { temperature: 0.2 },
-                apiKey: env.GROQ_API_KEY,
-                isDefault: true,
-            },
         ] satisfies Prisma.ModelCreateInput[]
 
         await rawPrisma.$transaction(async tx => {
@@ -189,21 +178,41 @@ export const modelService = new Elysia({ name: "model.service" })
                 }),
             )
 
+            const defaultPresetData = {
+                name: "Default",
+                description: "Default preset",
+                isDefault: true,
+                Models: [{ role: "primary", modelId: model!.id }],
+            } as const
             const defaultPreset = await tx.preset.findFirst({
                 where: { isDefault: true },
+                include: { Models: true },
             })
-            if (!defaultPreset) {
+            if (defaultPreset) {
+                await tx.preset.update({
+                    where: { id: defaultPreset.id },
+                    data: {
+                        ...defaultPresetData,
+                        Models: {
+                            deleteMany: {},
+                            create: defaultPresetData.Models.map(m => ({
+                                role: m.role,
+                                isDefault: true,
+                                Model: { connect: { id: m.modelId } },
+                            })),
+                        },
+                    },
+                })
+            } else {
                 await tx.preset.create({
                     data: {
-                        name: "Default",
-                        description: "Default preset",
-                        isDefault: true,
+                        ...defaultPresetData,
                         Models: {
-                            create: {
-                                role: "primary",
+                            create: defaultPresetData.Models.map(m => ({
+                                role: m.role,
                                 isDefault: true,
-                                Model: { connect: { id: model!.id } },
-                            },
+                                Model: { connect: { id: m.modelId } },
+                            })),
                         },
                     },
                 })

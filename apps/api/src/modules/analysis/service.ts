@@ -55,8 +55,6 @@ export const analysisService = new Elysia({ name: "analysis.service" })
                                     : {}
                             ) as Analysis
                             result.status = "done"
-                            console.log(result)
-
                             repository
                                 .update({ where: { id }, data: result })
                                 .then(() => {})
