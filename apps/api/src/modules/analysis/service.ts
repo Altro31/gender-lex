@@ -55,16 +55,19 @@ export const analysisService = new Elysia({ name: "analysis.service" })
                                     : {}
                             ) as Analysis
                             result.status = "done"
-                            void repository.update({
-                                where: { id },
-                                data: result,
-                            })
+                            console.log(result)
+
+                            repository
+                                .update({ where: { id }, data: result })
+                                .then(() => {})
                         } catch (error) {
                             console.error(error)
-                            void repository.update({
-                                where: { id },
-                                data: { ...result, status: "error" },
-                            })
+                            repository
+                                .update({
+                                    where: { id },
+                                    data: { ...result, status: "error" },
+                                })
+                                .then(() => {})
                         }
                         return { ...analysis, ...result }
                     },

@@ -29,7 +29,7 @@ export default function UploadButton() {
 				<span className="sr-only">
 					{t("Home.form.file.placeholder")}
 				</span>
-				<PaperclipIcon className="h-4 w-4" />
+				<PaperclipIcon />
 				<input
 					name="file"
 					type="file"

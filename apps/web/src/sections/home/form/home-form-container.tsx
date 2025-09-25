@@ -13,22 +13,24 @@ export default function HomeFormContainer() {
 	return (
 		<>
 			<HomeFiles />
-			<div className="space-y-2">
+			<div className="space-y-2 rounded-lg border bg-input/30 ">
 				<RHFTextarea
 					name="text"
 					placeholder={t("Home.form.text.placeholder")}
+					className="max-h-48 min-h-0 rounded-none border-none shadow-none focus-visible:ring-0 dark:bg-transparent"
+					rows={1}
 				/>
-				<div className="flex justify-between">
-					<RHFSelectAutofetcher
-						name="preset"
-						fetcherFunc={getPresetsSelect}
-						getKey={(i) => i.id}
-						getLabel={(i) => i.name}
-					/>
+				<div className="flex justify-between p-2 rounded-lg bg-background">
 					<div className="flex gap-1">
-						<FormSendButton />
 						<UploadButton />
+						<RHFSelectAutofetcher
+							name="preset"
+							fetcherFunc={getPresetsSelect}
+							getKey={(i) => i.id}
+							getLabel={(i) => i.name}
+						/>
 					</div>
+					<FormSendButton />
 				</div>
 			</div>
 		</>

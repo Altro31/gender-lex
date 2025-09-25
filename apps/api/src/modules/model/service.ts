@@ -21,7 +21,7 @@ export const modelService = new Elysia({ name: "model.service" })
             modelService: {
                 async create(data: Prisma.ModelCreateInput) {
                     const model = await repository.create({ data })
-                    void this.testConnection(model.id)
+                    this.testConnection(model.id).then(() => {})
                 },
 
                 async testConnection(id: string) {
@@ -175,12 +175,17 @@ export const modelService = new Elysia({ name: "model.service" })
 
         await rawPrisma.$transaction(async tx => {
             const [model] = await Promise.all(
-                models.map(async model => {
-                    const exist = await tx.model.findFirst({
-                        where: { name: model.name, isDefault: true },
+                models.map(async data => {
+                    let model = await tx.model.findFirst({
+                        where: { name: data.name, isDefault: true },
                     })
-                    if (exist) return Promise.resolve(exist)
-                    return tx.model.create({ data: model })
+                    if (model)
+                        model = await tx.model.update({
+                            where: { id: model.id },
+                            data,
+                        })
+                    else model = await tx.model.create({ data })
+                    return model
                 }),
             )
 

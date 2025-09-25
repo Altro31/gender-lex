@@ -8,13 +8,16 @@ export const aiService = new Elysia({ name: "ai.service" })
     .use(env)
     .derive({ as: "global" }, () => ({
         aiService: {
-            buildLanguageModel(model: Model): LanguageModelV2 {
+            buildLanguageModel(model: Model) {
                 const provider = createOpenAICompatible({
                     baseURL: model.connection.url,
                     name: "",
                     apiKey: model.apiKey ?? undefined,
                 })
-                return provider(model.connection.identifier)
+                return {
+                    languageModel: provider(model.connection.identifier),
+                    options: model.settings,
+                }
             },
         },
     }))
