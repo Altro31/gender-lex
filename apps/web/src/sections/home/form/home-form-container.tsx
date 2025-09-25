@@ -13,14 +13,14 @@ export default function HomeFormContainer() {
 	return (
 		<>
 			<HomeFiles />
-			<div className="space-y-2 rounded-lg border bg-input/30 ">
+			<div className="bg-input/30 space-y-2 rounded-lg border">
 				<RHFTextarea
 					name="text"
 					placeholder={t("Home.form.text.placeholder")}
 					className="max-h-48 min-h-0 rounded-none border-none shadow-none focus-visible:ring-0 dark:bg-transparent"
 					rows={1}
 				/>
-				<div className="flex justify-between p-2 rounded-lg bg-background">
+				<div className="bg-background flex justify-between rounded-lg p-2">
 					<div className="flex gap-1">
 						<UploadButton />
 						<RHFSelectAutofetcher
