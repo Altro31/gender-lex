@@ -5,7 +5,6 @@ import { getSession } from "@/lib/auth/auth-server"
 import { getPrisma } from "@/lib/prisma/client"
 import { actionClient } from "@/lib/safe-action"
 import type { HomeSchema } from "@/sections/home/form/home-schema"
-import type { Analysis } from "@repo/db/models"
 import { revalidatePath } from "next/cache"
 import { permanentRedirect, unauthorized } from "next/navigation"
 import z from "zod"
@@ -59,7 +58,21 @@ export async function findAnalyses(query: {
 	page?: string
 	status?: string
 }) {
-	const { error, data } = await client.analysis.get({ query })
+	// Normalizar tipos: el backend espera ints para page/pageSize y no acepta "" como status
+	const parsedQuery: Record<string, any> = { ...query }
+	if (parsedQuery.page !== undefined) {
+		const p = parseInt(String(parsedQuery.page), 10)
+		parsedQuery.page = Number.isFinite(p) ? p : undefined
+	}
+	if (parsedQuery.pageSize !== undefined) {
+		const ps = parseInt(String(parsedQuery.pageSize), 10)
+		parsedQuery.pageSize = Number.isFinite(ps) ? ps : undefined
+	}
+	if (parsedQuery.status === "" || parsedQuery.status == null) {
+		delete parsedQuery.status
+	}
+	const { error, data } = await client.analysis.get({ query: parsedQuery })
+	if (error) throw new Error(error.value.summary)
 	return data
 }
 

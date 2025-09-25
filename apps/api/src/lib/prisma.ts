@@ -5,7 +5,7 @@ import { enhance, type PrismaClient } from "@repo/db"
 import { PrismaClient as PrismaClientClass } from "@repo/db/client"
 import Elysia from "elysia"
 
-export const rawPrisma = new PrismaClientClass()
+export const rawPrisma = new PrismaClientClass({ log: ["info"] })
 
 export default new Elysia({ name: "prisma" })
     .use(base)
@@ -16,6 +16,7 @@ export default new Elysia({ name: "prisma" })
                 rawPrisma as any,
                 { user },
                 {
+                    logPrismaQuery: true,
                     encryption: {
                         encrypt: async (_, __, plain) =>
                             encrypt(plain, env.ENCRYPTION_KEY),
