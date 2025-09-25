@@ -18,13 +18,13 @@ model Analysis extends RawAnalysis {
     status      AnalysisStatus @default(pending)
     inputSource InputSource    @default(manual)
     presetId    String
-    Preset      Preset         @relation(fields: [presetId], references: [id])
+    Preset      Preset         @relation(fields: [presetId], references: [id], onDelete: SetNull)
     userId      String?        @default(auth().id)
     User        User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
     createdAt   DateTime       @default(now())
     updatedAt   DateTime       @updatedAt
 
-    @@allow('all',  true)
+    @@allow("all",auth()==User)
 }
 
 
