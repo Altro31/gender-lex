@@ -74,9 +74,10 @@ export async function findAnalyses({
 		take: 10,
 		orderBy: [{ createdAt: "desc" }, { updatedAt: "desc" }],
 	})
+
+	console.log(res)
+	return res
 }
-console.log(res)
-return res
 
 export async function findOneAnalysis(id: string) {
 	const session = await getSession()
