@@ -50,6 +50,10 @@ export default new Elysia({
         { response: "findOneOutput" },
     )
 
+    .get("", ({ analysisService, query }) => analysisService.findMany(query), {
+        query: "findManyQueryParams",
+    })
+
     .post(
         ":id/redo",
         ({ analysisService, params }) => analysisService.redo(params.id),

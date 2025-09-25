@@ -54,31 +54,13 @@ export const deleteAnalysis = actionClient
 		revalidatePath("/analysis")
 	})
 
-export async function findAnalyses({
-	q,
-	page = "1",
-	status,
-}: {
+export async function findAnalyses(query: {
 	q?: string
 	page?: string
 	status?: string
 }) {
-	const prisma = await getPrisma()
-	console.log(
-		await prisma.analysis.findMany({
-			include: { Preset: true },
-		}),
-	)
-	return prisma.analysis.findMany({
-		where: {
-			name: { contains: q, mode: "insensitive" },
-			status: status as any,
-		},
-		include: { Preset: true },
-		skip: (Number(page) - 1) * 10,
-		take: 10,
-		orderBy: [{ createdAt: "desc" }, { updatedAt: "desc" }],
-	})
+	const { error, data } = await client.analysis.get({ query })
+	return data
 }
 
 export async function findOneAnalysis(id: string) {

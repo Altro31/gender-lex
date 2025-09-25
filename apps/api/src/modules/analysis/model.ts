@@ -1,3 +1,5 @@
+import { paginationSchema } from "@/lib/pagination"
+import { $Enums } from "@repo/db/models"
 import {
     AnalysisSchema,
     ModelSchema,
@@ -5,6 +7,7 @@ import {
     PresetSchema,
 } from "@repo/db/zod"
 import { t } from "elysia"
+import z from "zod"
 
 export const analysisModels = {
     prepareInput: t.Object({
@@ -29,4 +32,12 @@ export const analysisModels = {
         User: true,
     }),
     redoOutput: AnalysisSchema.omit({ User: true }),
+    findManyQueryParams: paginationSchema.extend({
+        q: z.string().optional(),
+        status: z.enum($Enums.ModelStatus).optional(),
+    }),
 }
+
+export type FindManyQueryParams = z.infer<
+    typeof analysisModels.findManyQueryParams
+>

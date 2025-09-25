@@ -1,5 +1,6 @@
 import { isFile } from "@/lib/file"
 import prisma from "@/lib/prisma"
+import type { FindManyQueryParams } from "@/modules/analysis/model"
 import { biasDetectionService } from "@/modules/bias-detection/service"
 import { extractorService } from "@/modules/extractor/service"
 import type { Analysis, AnalysisStatus } from "@repo/db/models"
@@ -94,6 +95,27 @@ export const analysisService = new Elysia({ name: "analysis.service" })
                         return repository.findUniqueOrThrow({
                             where: { id },
                             include: { Preset: true },
+                        })
+                    },
+
+                    async findMany({
+                        page,
+                        pageSize,
+                        q,
+                        status,
+                    }: FindManyQueryParams) {
+                        return repository.findMany({
+                            where: {
+                                name: { contains: q, mode: "insensitive" },
+                                status: status as any,
+                            },
+                            include: { Preset: true },
+                            skip: (page! - 1) * pageSize!,
+                            take: pageSize!,
+                            orderBy: [
+                                { createdAt: "desc" },
+                                { updatedAt: "desc" },
+                            ],
                         })
                     },
 
