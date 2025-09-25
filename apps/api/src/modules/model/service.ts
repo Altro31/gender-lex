@@ -30,9 +30,7 @@ export const modelService = new Elysia({ name: "model.service" })
                     if (!model) {
                         return status(404, `Model with id: ${id} not found`)
                     }
-                    console.log("Hola")
                     await this.updateModelStatus(id, "connecting")
-                    console.log("Hola")
                     const testConnectionProgram = Effect.gen(
                         this,
                         function* () {
