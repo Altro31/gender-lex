@@ -11,7 +11,7 @@ import {
 	SelectGroup,
 	SelectItem,
 	SelectLabel,
-	SelectTrigger
+	SelectTrigger,
 } from "@/components/ui/select"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import type { ComponentProps, PropsWithChildren } from "react"

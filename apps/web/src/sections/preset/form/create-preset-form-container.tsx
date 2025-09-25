@@ -32,8 +32,8 @@ export default function CreatePresetFormContainer({
 		onSuccess: () => {
 			toast.success("Ok")
 			onSuccess?.()
-			console.log("Hola");
-			
+			console.log("Hola")
+
 			queryClient.invalidateQueries({ queryKey: ["selectedPreset"] })
 		},
 		onError: ({ error }) => {
