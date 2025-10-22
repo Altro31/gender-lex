@@ -6,9 +6,10 @@
 		"node": ">=22.x"
 	},
 	"scripts": {
-		"dev": "next dev --turbopack -p 4000",
-		"build": "next build --turbopack",
+		"dev": "next dev -p 4000",
+		"build": "next build",
 		"start": "next start",
+		"type:gen": "next typegen",
 		"lint": "oxlint --fix --fix-suggestions",
 		"generate": "openapi-typescript ../api/public/openapi.yaml -o ./src/lib/api/types.d.ts && openapi-typescript ../api/public/openapi-zen.yaml -o ./src/lib/api/zen-types.d.ts"
 	},
@@ -16,6 +17,7 @@
 		"@bprogress/next": "^3.2.12",
 		"@effect/platform": "catalog:",
 		"@effect/platform-node": "catalog:",
+		"@prisma/client": "catalog:",
 		"@elysiajs/eden": "^1.4.1",
 		"@hookform/resolvers": "^5.2.1",
 		"@icons-pack/react-simple-icons": "^13.7.0",
@@ -40,7 +42,7 @@
 		"@repo/auth": "workspace:*",
 		"@repo/db": "workspace:*",
 		"@tanstack/react-query": "^5.87.1",
-		"babel-plugin-react-compiler": "^19.1.0-rc.2",
+		"babel-plugin-react-compiler": "^1.0.0",
 		"better-auth": "catalog:",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
@@ -48,15 +50,14 @@
 		"is-local-address": "^2.2.1",
 		"lucide-react": "^0.525.0",
 		"motion": "^12.23.12",
-		"next": "^15.5.2",
-		"next-auth": "^5.0.0-beta.29",
-		"next-intl": "^4.3.4",
+		"next": "16.0.0",
+		"next-intl": "^4.3.12",
 		"next-safe-action": "^8.0.8",
 		"next-themes": "^0.4.6",
 		"nuqs": "^2.5.1",
 		"radix-ui": "^1.4.3",
-		"react": "19.1.0",
-		"react-dom": "19.1.0",
+		"react": "19.2.0",
+		"react-dom": "19.2.0",
 		"react-hook-form": "^7.62.0",
 		"reconnecting-eventsource": "^1.6.4",
 		"server-only": "^0.0.1",
@@ -68,8 +69,8 @@
 	"devDependencies": {
 		"@repo/types": "workspace:*",
 		"@tailwindcss/postcss": "^4",
-		"@types/react": "^19",
-		"@types/react-dom": "^19",
+		"@types/react": "19.2.2",
+		"@types/react-dom": "19.2.2",
 		"eslint-plugin-react": "^7.37.5",
 		"openapi-fetch": "^0.14.0",
 		"openapi-typescript": "^7.8.0",
@@ -80,5 +81,9 @@
 		"typescript": "catalog:",
 		"api": "workspace:*",
 		"elysia": "catalog:"
+	},
+	"overrides": {
+		"@types/react": "19.2.2",
+		"@types/react-dom": "19.2.2"
 	}
 }

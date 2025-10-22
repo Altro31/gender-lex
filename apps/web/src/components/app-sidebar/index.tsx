@@ -12,7 +12,7 @@ import {
 	SidebarHeader,
 	SidebarRail,
 } from "@/components/ui/sidebar"
-import type { Route } from "next"
+import { Suspense } from "react"
 
 const data = {
 	navMain: [
@@ -37,9 +37,9 @@ const data = {
 			url: "/presets",
 			icon: <Settings />,
 		},
-	] as {
+	] satisfies {
 		title: string
-		url: Route
+		url: string
 		icon?: React.ReactNode
 		isActive?: boolean
 	}[],
@@ -55,10 +55,14 @@ export default async function AppSidebar({
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={data.navMain} />
-				<NavRecent />
+				<Suspense>
+					<NavRecent />
+				</Suspense>
 			</SidebarContent>
 			<SidebarFooter>
-				<NavUser />
+				<Suspense>
+					<NavUser />
+				</Suspense>
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>

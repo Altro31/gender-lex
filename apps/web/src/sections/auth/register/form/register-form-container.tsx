@@ -8,7 +8,7 @@ import { standardSchemaResolver } from "@hookform/resolvers/standard-schema"
 import { Loader2 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useAction } from "next-safe-action/hooks"
-import { useRouter } from "next/navigation"
+import { useRouter } from "@/locales/navigation"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 

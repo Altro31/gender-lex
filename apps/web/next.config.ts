@@ -3,13 +3,14 @@ import type { NextConfig } from "next"
 import createNextIntlPlugin from "next-intl/plugin"
 
 const nextConfig: NextConfig = {
-	typedRoutes: true,
+	reactCompiler: true,
+	cacheComponents: true,
 	experimental: {
-		reactCompiler: true,
 		browserDebugInfoInTerminal: false,
 		clientSegmentCache: true,
-		devtoolSegmentExplorer: true,
 		authInterrupts: true,
+		swcPlugins: [],
+		globalNotFound: true,
 	},
 	rewrites: async () => [
 		{

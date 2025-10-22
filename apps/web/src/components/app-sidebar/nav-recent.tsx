@@ -1,6 +1,7 @@
 import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react"
 
 import DropdownMenuResponsive from "@/components/app-sidebar/dropdown-menu-responsive"
+import NavLink from "@/components/app-sidebar/nav-link"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import {
 	DropdownMenu,
@@ -19,7 +20,6 @@ import {
 import DeleteAnalysisAlertDialogContent from "@/sections/analysis/components/delete-analysis-alert-dialog-content"
 import { findRecentAnalyses } from "@/services/analysis"
 import { getTranslations } from "next-intl/server"
-import Link from "next/link"
 
 export default async function NavRecent() {
 	const t = await getTranslations()
@@ -32,10 +32,10 @@ export default async function NavRecent() {
 				<SidebarMenu>
 					{data.map((item) => (
 						<SidebarMenuItem key={item.id}>
-							<SidebarMenuButton asChild>
-								<Link href={`/analysis/${item.id}`}>
+							<SidebarMenuButton>
+								<NavLink href={`/analysis/${item.id}`}>
 									{item.name}
-								</Link>
+								</NavLink>
 							</SidebarMenuButton>
 							<AlertDialog>
 								<DropdownMenu>
@@ -76,14 +76,11 @@ export default async function NavRecent() {
 						</SidebarMenuItem>
 					))}
 					<SidebarMenuItem>
-						<SidebarMenuButton
-							asChild
-							className="text-sidebar-foreground/70"
-						>
-							<Link href="/analysis">
+						<SidebarMenuButton className="text-sidebar-foreground/70">
+							<NavLink href="/analysis">
 								<MoreHorizontal className="text-sidebar-foreground/70" />
 								<span>{t("Commons.more")}</span>
-							</Link>
+							</NavLink>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
 				</SidebarMenu>

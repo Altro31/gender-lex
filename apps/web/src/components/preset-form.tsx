@@ -191,7 +191,7 @@ export default function PresetForm({
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
-					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+					<div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
 						<div className="space-y-2">
 							<Label htmlFor="name">Nombre del Preset *</Label>
 							<Input
@@ -205,6 +205,7 @@ export default function PresetForm({
 								}
 								placeholder="ej. Análisis Creativo"
 								className={errors.name ? "border-red-500" : ""}
+
 							/>
 							{errors.name && (
 								<p className="text-sm text-red-600">

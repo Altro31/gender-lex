@@ -34,7 +34,16 @@
 		"registering": "Creating account ...",
 		"view-details": "View details",
 		"deleting": "Deleting...",
-		"clonning": "Creating clone..."
+		"clonning": "Creating clone...",
+		"clone": "Double",
+		"create": "Create",
+		"export": "Export",
+		"hide": "Disguise",
+		"sending": "Sending...",
+		"share": "Share",
+		"show": "Show",
+		"submitting": "Submitting...",
+		"update": "Update"
 	},
 	"Commons": {
 		"email": "Email",
@@ -49,7 +58,26 @@
 		"recent": "Recent",
 		"are-you-shure": "Are you shure?",
 		"endpoint": "Endpoint",
-		"next": "Next"
+		"next": "Next",
+		"all": "All",
+		"api-key": "API key",
+		"clone": "Double",
+		"completed": "Filled",
+		"created-at": "Created",
+		"creation-date": "Creation Date",
+		"description": "Description",
+		"details": "See Details",
+		"identifier": "Identifier",
+		"last-use": "Last Use",
+		"no-search-result": "No results found",
+		"of": "of",
+		"optional": "Optional",
+		"previous": "Previous",
+		"retry-search-result": "Try other search terms",
+		"role": "Role",
+		"settings": "Configuration",
+		"status": "State",
+		"step": "step"
 	},
 	"Login": {
 		"back-to-home": "Back to home",
@@ -90,6 +118,85 @@
 				"1": "This action cannot be undone. \nWill be permanently eliminated the analysis",
 				"2": "and all its results."
 			}
+		},
+		"details": {
+			"alternatives": {
+				"description": "Modified version of the original text without gender bias",
+				"item": "Alternative",
+				"modifications": "Modifications Made",
+				"reason": "Reason",
+				"title": "Alternatives"
+			},
+			"analiced-text": "Analyzed Text",
+			"back-to": "Return to Analysis",
+			"context": {
+				"affected-groups": "Affected Groups",
+				"excluded-groups": "Excluded Groups",
+				"intersectionality": "Intersectionality",
+				"power-asymetry": "Power Asymmetry",
+				"representation-absence": "Absence of Representation",
+				"sistemic-biases": "Systemic Biases",
+				"stereotypes": "Stereotypes",
+				"title": "Context"
+			},
+			"examples": "Examples",
+			"explaining": "Explanation",
+			"hide-content-by-privacity": "Content hidden for privacy",
+			"impact": {
+				"affected": "Affected",
+				"attention-access": "Access to Care",
+				"no-affected": "Not Affected",
+				"stigmatization": "Stigmatization",
+				"title": "Impact"
+			},
+			"influence": "Influence",
+			"modified": "Modified",
+			"original": "Original",
+			"original-text": "Original Text",
+			"summary": {
+				"average-influence": "Average Influence",
+				"biased-metaphors": "Biased Metaphors",
+				"biased-terms": "Biased Terms",
+				"conclusion": "Conclusion",
+				"title": "Summary"
+			},
+			"terms": {
+				"biased-metaphors": {
+					"description": "Metaphorical expressions that perpetuate gender biases"
+				},
+				"biased-terms": {
+					"description": "Words or phrases that contain gender bias detected in the text",
+					"title": "Identified Biased Terms"
+				},
+				"historic-context": "Historical Context",
+				"title": "Terms"
+			},
+			"title": "Analysis Details"
+		},
+		"list": {
+			"description": "Manage gender bias detection analysis",
+			"empty-description": "The analyzes will appear here once they are run",
+			"empty-title": "No analysis available",
+			"status-tabs": {
+				"analyzing": "In Progress",
+				"done": "Completed",
+				"error": "Errors",
+				"pending": "Earrings"
+			},
+			"title": "Analysis Management"
+		},
+		"redo": {
+			"title": "Redo Analysis"
+		},
+		"status": {
+			"analyzing": "In Progress",
+			"done": "Filled",
+			"error": "Mistake",
+			"pending": "Earring"
+		},
+		"visibility": {
+			"private": "Private",
+			"public": "Public"
 		}
 	},
 	"Profile": {
@@ -141,7 +248,142 @@
 			"error": "Error",
 			"inactive": "Inactive",
 			"undefined": "undefined",
-			"connecting": "Connecting"
+			"connecting": "Connecting",
+			"message": {
+				"INACTIVE_MODEL": {
+					"description": "The requested model is not active or available. \nSelect a valid model or contact the administrator.",
+					"title": "Inactive model"
+				},
+				"INVALID_API_KEY": {
+					"description": "The provided API key is invalid or has expired. \nVerify that it is copied correctly and that it has valid permissions.",
+					"title": "Invalid API key"
+				},
+				"INVALID_CONNECTION_URL": {
+					"description": "The connection URL is invalid or cannot be resolved. \nReview the configuration and protocol.",
+					"title": "Invalid connection URL"
+				},
+				"INVALID_IDENTIFIER": {
+					"description": "The submitted identifier does not match any valid model. \nCheck that this model exists in your provider.",
+					"title": "Invalid identifier"
+				},
+				"MAX_ATTEMPTS_REACHED": {
+					"description": "The maximum number of attempts allowed has been exceeded. \nWait before trying again or check your credentials.",
+					"title": "Maximum number of attempts reached"
+				}
+			}
+		},
+		"create": {
+			"action": "Add Model",
+			"description": "Set up a new connection to a language model",
+			"empty-action": "Add First Model",
+			"title": "Create New Model"
+		},
+		"details": {
+			"description": "Complete information of the selected model",
+			"settings": {
+				"description": "Technical details of the connection to the model"
+			},
+			"title": "Model Details",
+			"usage-info": {
+				"description": "Important dates and usage statistics",
+				"title": "Usage Information"
+			}
+		},
+		"edit": {
+			"description": "Edit a language model connection",
+			"title": "Edit Model"
+		},
+		"empty-action": "Create First Model",
+		"form": {
+			"api-key": {
+				"placeholder": "Insert the API Key"
+			},
+			"connection-identifier": {
+				"placeholder": "Model identifier"
+			},
+			"connection-url": {
+				"placeholder": "Model URL"
+			},
+			"name": {
+				"label": "Model name",
+				"placeholder": "ex: GPT-4 Main"
+			},
+			"settings": {
+				"temperature": {
+					"description": "Adjust the model temperature",
+					"label": "Temperature"
+				}
+			}
+		},
+		"id": "Model ID",
+		"item": "Model",
+		"list": {
+			"description": "Manage your connections to large language models",
+			"empty-description": "Start by creating your first model",
+			"empty-title": "There are no models configured",
+			"title": "Model Management"
+		},
+		"root": "Models",
+		"test-connection": {
+			"description": "Verify that the model configuration is correct",
+			"title": "Connection Test"
+		}
+	},
+	"Preset": {
+		"clone": {
+			"description": {
+				"1": "A new preset will be created with the same name, description and model settings"
+			}
+		},
+		"create": {
+			"action": "New Preset",
+			"description": "Set up a new combination of models with specific parameters",
+			"empty-action": "Create First Preset",
+			"title": "Create New Preset"
+		},
+		"delete": {
+			"description": {
+				"1": "This action cannot be undone. \nThe preset will be permanently deleted"
+			}
+		},
+		"details": {
+			"description": "Models configured in this preset",
+			"description-details": "Complete information of the selected preset",
+			"title": "Preset Details"
+		},
+		"edit": {
+			"description": "Edit the connection of a language preset",
+			"title": "Edit preset"
+		},
+		"form": {
+			"description": {
+				"label": "Description",
+				"placeholder": "Describe the purpose and use of this preset..."
+			},
+			"models": {
+				"description": "Add and configure the models that will be part of this preset",
+				"model-select": {
+					"placeholder": "Choose a model"
+				},
+				"no-set-model": "Unconfigured model",
+				"no-set-role": "Unspecified role",
+				"role-select": "Choose the role",
+				"title": "Model Configuration"
+			},
+			"name": {
+				"label": "Preset Name",
+				"placeholder": "e.g. \nCreative Analysis"
+			}
+		},
+		"id": "Preset ID",
+		"item": "Preset",
+		"list": {
+			"description": "Manage model combinations with specific configurations",
+			"empty-description": "Start by creating your first preset",
+			"empty-title": "There are no presets configured",
+			"no-result-description": "Try other search terms",
+			"no-result-title": "No presets found",
+			"title": "Presets Management"
 		}
 	}
 }

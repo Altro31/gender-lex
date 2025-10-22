@@ -3,10 +3,8 @@
 import { getPrisma } from "@/lib/prisma/client"
 import { actionClient } from "@/lib/safe-action"
 import { PresetSchema } from "@/sections/preset/form/preset-schema"
-import type { Route } from "next"
 import { revalidatePath } from "next/cache"
 import { z } from "zod/mini"
-
 export async function findPresets({ page, q }: { page: number; q?: string }) {
 	const prisma = await getPrisma()
 
@@ -35,8 +33,8 @@ export const createPreset = actionClient
 			},
 		})
 
-		revalidatePath("/presets" as Route, "page")
-		revalidatePath("" as Route, "page")
+		revalidatePath("/presets", "page")
+		revalidatePath("", "page")
 
 		return {
 			success: true,
@@ -50,7 +48,7 @@ export const editPreset = actionClient
 		const prisma = await getPrisma()
 
 		const data = await prisma.$transaction(async (tx) => {
-			await prisma.preset.update({
+			await tx.preset.update({
 				where: { id },
 				data: {
 					Models: {
@@ -59,7 +57,7 @@ export const editPreset = actionClient
 				},
 				select: { id: true },
 			})
-			return prisma.preset.update({
+			return tx.preset.update({
 				where: { id },
 				data: {
 					...rest,
@@ -74,7 +72,7 @@ export const editPreset = actionClient
 			})
 		})
 
-		revalidatePath("/presets" as Route, "page")
+		revalidatePath("/presets", "page")
 
 		return {
 			success: true,
@@ -89,7 +87,7 @@ export const deletePreset = actionClient
 
 		await prisma.preset.delete({ where: { id } })
 
-		revalidatePath("/presets" as Route, "page")
+		revalidatePath("/presets", "page")
 
 		return {
 			success: true,
@@ -131,7 +129,7 @@ export const clonePreset = actionClient
 			},
 		})
 
-		revalidatePath("/presets" as Route, "page")
+		revalidatePath("/presets", "page")
 
 		return {
 			success: true,

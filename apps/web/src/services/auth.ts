@@ -5,8 +5,7 @@ import envs from "@/lib/env/env-server"
 import { actionClient } from "@/lib/safe-action"
 import { LoginSchema } from "@/sections/auth/login/form/login-schema"
 import { RegisterSchema } from "@/sections/auth/register/form/register-schema"
-import type { Route } from "next"
-import { redirect } from "next/navigation"
+import { redirect } from "@/locales/navigation"
 import z from "zod"
 
 export const signInEmail = actionClient
@@ -30,7 +29,7 @@ export const signInSocial = actionClient
 			},
 		})
 		if (res.redirect) {
-			redirect(res.url as Route)
+			redirect({ href: res.url ?? "/", locale: "en" })
 		}
 		return {
 			success: true,

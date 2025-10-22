@@ -5,7 +5,7 @@ import { enhance, type PrismaClient } from "@repo/db"
 import { PrismaClient as PrismaClientClass } from "@repo/db/client"
 import Elysia from "elysia"
 
-export const rawPrisma = new PrismaClientClass({ log: ["info"] })
+export const rawPrisma = new PrismaClientClass()
 
 export default new Elysia({ name: "prisma" })
     .use(base)

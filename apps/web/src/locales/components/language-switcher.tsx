@@ -10,7 +10,7 @@ import { sleep } from "@/lib/utils"
 import { setLanguage } from "@/services/registers"
 import { Loader2 } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
-import { useRouter } from "next/navigation"
+import { useRouter } from "@/locales/navigation"
 import { useState, type MouseEvent } from "react"
 import { toast } from "sonner"
 

@@ -1,7 +1,6 @@
 import FloatingChatbot from "@/components/floating-chatbot"
 import ProgressProvider from "@/components/progress-provider"
 import QueryProvider from "@/components/providers/query-provider"
-import ThemeRegister from "@/components/theme/theme-register"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
 import "@/globals.css"
@@ -31,7 +30,6 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
 											richColors
 											position="bottom-right"
 										/>
-										<ThemeRegister />
 									</SidebarProvider>
 								</EventSourceProvider>
 							</NextIntlClientProvider>

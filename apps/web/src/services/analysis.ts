@@ -4,9 +4,10 @@ import { client } from "@/lib/api/client"
 import { getSession } from "@/lib/auth/auth-server"
 import { getPrisma } from "@/lib/prisma/client"
 import { actionClient } from "@/lib/safe-action"
+import { permanentRedirect } from "@/locales/navigation"
 import type { HomeSchema } from "@/sections/home/form/home-schema"
 import { revalidatePath } from "next/cache"
-import { permanentRedirect, unauthorized } from "next/navigation"
+import { unauthorized } from "next/navigation"
 import z from "zod"
 
 export async function prepareAnalysis(input: HomeSchema) {
@@ -30,7 +31,10 @@ export async function prepareAnalysis(input: HomeSchema) {
 		console.error(error)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
-	permanentRedirect(`/analysis/${data.id}`)
+	permanentRedirect({
+		href: `/analysis/${data.id}`,
+		locale: session.session.lang,
+	})
 }
 
 export async function startAnalysis(id: string) {
@@ -101,5 +105,8 @@ export async function redoAnalysis(id: string) {
 		console.error(error)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
-	permanentRedirect(`/analysis/${data.id}`)
+	permanentRedirect({
+		href: `/analysis/${data.id}`,
+		locale: session.session.lang,
+	})
 }

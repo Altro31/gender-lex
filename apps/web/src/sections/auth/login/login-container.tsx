@@ -13,7 +13,7 @@ import { signInSocial } from "@/services/auth"
 import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons"
 import { ArrowLeft, Lock } from "lucide-react"
 import { useTranslations } from "next-intl"
-import Link from "next/link"
+import { Link } from "@/locales/navigation"
 
 export default function LoginContainer() {
 	const t = useTranslations()

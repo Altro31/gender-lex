@@ -21,11 +21,11 @@ import { getSession } from "@/lib/auth/auth-server"
 import GithubButton from "@/components/app-sidebar/buttons/GithubButton"
 import GoogleButton from "@/components/app-sidebar/buttons/GoogleButton"
 import LogoutButton from "@/components/app-sidebar/buttons/LogoutButton"
+import NavLink from "@/components/app-sidebar/nav-link"
 import ThemeSwitcher from "@/components/theme/theme-switcher"
 import LanguageSwitcher from "@/locales/components/language-switcher"
 import { useTranslations } from "next-intl"
 import { getTranslations } from "next-intl/server"
-import Link from "next/link"
 
 export default async function NavUser() {
 	const session = await getSession()
@@ -137,11 +137,11 @@ function Login() {
 				sideOffset={4}
 			>
 				<DropdownMenuGroup>
-					<DropdownMenuItem asChild>
-						<Link href="/auth/login">
+					<DropdownMenuItem>
+						<NavLink href="/auth/login" variant="dropdown">
 							<UserIcon />
 							{t("Commons.email")}
-						</Link>
+						</NavLink>
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
 					<GoogleButton redirect={envs.UI_URL} />

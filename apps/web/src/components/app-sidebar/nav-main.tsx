@@ -1,20 +1,19 @@
+import NavLink from "@/components/app-sidebar/nav-link"
 import {
 	SidebarGroup,
 	SidebarGroupLabel,
 	SidebarMenu,
 	SidebarMenuButton,
-	SidebarMenuItem,
+	SidebarMenuItem
 } from "@/components/ui/sidebar"
-import type { Route } from "next"
 import { useTranslations } from "next-intl"
-import Link from "next/link"
 
 export function NavMain({
 	items,
 }: {
 	items: {
 		title: string
-		url: Route
+		url: string
 		icon?: React.ReactNode
 		isActive?: boolean
 	}[]
@@ -26,11 +25,11 @@ export function NavMain({
 			<SidebarMenu>
 				{items.map((item) => (
 					<SidebarMenuItem key={item.title}>
-						<SidebarMenuButton tooltip={t(item.title)} asChild>
-							<Link href={item.url}>
+						<SidebarMenuButton tooltip={t(item.title)}>
+							<NavLink href={item.url}>
 								{item.icon}
 								<span>{t(item.title)}</span>
-							</Link>
+							</NavLink>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
 				))}

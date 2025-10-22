@@ -10,7 +10,7 @@ import RegisterForm from "@/sections/auth/register/form/register-form"
 import RegisterFormContainer from "@/sections/auth/register/form/register-form-container"
 import { ArrowLeft, Lock } from "lucide-react"
 import { useTranslations } from "next-intl"
-import Link from "next/link"
+import { Link } from "@/locales/navigation"
 
 export default function RegisterContainer() {
 	const t = useTranslations()

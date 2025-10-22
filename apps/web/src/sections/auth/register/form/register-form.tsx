@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useTranslations, type MarkupTagsFunction } from "next-intl"
-import Link from "next/link"
+import { Link } from "@/locales/navigation"
 
 export default function RegisterForm() {
 	const t = useTranslations()

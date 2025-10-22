@@ -4,7 +4,7 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { authClient } from "@/lib/auth/auth-client"
 import { sleep } from "@/lib/utils"
 import { Loader2, LogOut } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useRouter } from "@/locales/navigation"
 import {
 	useRef,
 	useState,

@@ -90,6 +90,7 @@ export default function ModelConfigCard({
 		<Card
 			className={`${getRoleColor(model.role)} transition-all duration-200`}
 		>
+
 			<CardHeader className="pb-3">
 				<div className="flex items-center justify-between">
 					<div className="flex-1">

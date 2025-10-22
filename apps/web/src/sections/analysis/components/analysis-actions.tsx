@@ -11,8 +11,9 @@ import { redoAnalysis } from "@/services/analysis"
 import type { AnalysesResponseItem } from "@/types/analyses"
 import { Eye, RotateCcw, Trash2 } from "lucide-react"
 import { useTranslations } from "next-intl"
-import Link from "next/link"
+import { Link } from "@/locales/navigation"
 import { type PropsWithChildren } from "react"
+import NavLink from "@/components/app-sidebar/nav-link"
 
 interface Props extends PropsWithChildren {
 	analysis: AnalysesResponseItem
@@ -29,10 +30,13 @@ export default function AnalysisActions({ analysis, children }: Props) {
 				<DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
 					<DropdownMenuItem asChild>
-						<Link href={`/analysis/${analysis.id}`}>
+						<NavLink
+							href={`/analysis/${analysis.id}`}
+							variant="dropdown"
+						>
 							<Eye className="mr-2 h-4 w-4" />
 							{t("Commons.details")}
-						</Link>
+						</NavLink>
 					</DropdownMenuItem>
 					<DropdownMenuItem onClick={handleRedoAnalysis(analysis)}>
 						<RotateCcw className="mr-2 h-4 w-4" />
