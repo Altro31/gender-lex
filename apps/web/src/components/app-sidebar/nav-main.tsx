@@ -4,7 +4,7 @@ import {
 	SidebarGroupLabel,
 	SidebarMenu,
 	SidebarMenuButton,
-	SidebarMenuItem
+	SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useTranslations } from "next-intl"
 

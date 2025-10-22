@@ -10,13 +10,7 @@ import {
 } from "@/components/ui/card"
 import AnalysisActions from "@/sections/analysis/components/analysis-actions"
 import type { AnalysesResponseItem } from "@/types/analyses"
-import {
-	CheckCircle,
-	Clock,
-	Play,
-	Settings,
-	XCircle
-} from "lucide-react"
+import { CheckCircle, Clock, Play, Settings, XCircle } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 interface Props {

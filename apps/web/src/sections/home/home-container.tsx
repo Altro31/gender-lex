@@ -1,7 +1,5 @@
 import { Card } from "@/components/ui/card"
-import {
-	UploadArea
-} from "@/sections/home/components/upload/upload-area"
+import { UploadArea } from "@/sections/home/components/upload/upload-area"
 import HomeForm from "@/sections/home/form/home-form"
 import {
 	ChartColumnIcon,

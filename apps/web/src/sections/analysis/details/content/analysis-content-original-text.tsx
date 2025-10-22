@@ -1,12 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Eye, EyeOff, Settings } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
@@ -49,9 +44,7 @@ export default function AnalysisContentOriginalText({ text }: Props) {
 			<CardContent>
 				{showSensitiveContent ? (
 					<div className="rounded-lg bg-gray-50 p-4">
-						<p className="leading-relaxed text-gray-900">
-							{text}
-						</p>
+						<p className="leading-relaxed text-gray-900">{text}</p>
 					</div>
 				) : (
 					<div className="rounded-lg bg-gray-100 p-4 text-center">
