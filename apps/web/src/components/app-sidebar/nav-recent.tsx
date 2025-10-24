@@ -1,14 +1,14 @@
-import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react"
+import { Edit, Eye, MoreHorizontal, Trash2 } from 'lucide-react'
 
-import DropdownMenuResponsive from "@/components/app-sidebar/dropdown-menu-responsive"
-import NavLink from "@/components/app-sidebar/nav-link"
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import DropdownMenuResponsive from '@/components/app-sidebar/dropdown-menu-responsive'
+import NavLink from '@/components/app-sidebar/nav-link'
+import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import {
 	DropdownMenu,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu'
 import {
 	SidebarGroup,
 	SidebarGroupLabel,
@@ -16,21 +16,22 @@ import {
 	SidebarMenuAction,
 	SidebarMenuButton,
 	SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import DeleteAnalysisAlertDialogContent from "@/sections/analysis/components/delete-analysis-alert-dialog-content"
-import { findRecentAnalyses } from "@/services/analysis"
-import { getTranslations } from "next-intl/server"
+} from '@/components/ui/sidebar'
+import DeleteAnalysisAlertDialogContent from '@/sections/analysis/components/delete-analysis-alert-dialog-content'
+import { findRecentAnalyses } from '@/services/analysis'
+import { useLingui } from '@lingui/react/macro'
 
 export default async function NavRecent() {
-	const t = await getTranslations()
+	const { t } = useLingui()
+
 	const data = await findRecentAnalyses()
 
 	return (
 		Boolean(data.length) && (
 			<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-				<SidebarGroupLabel>{t("Commons.recent")}</SidebarGroupLabel>
+				<SidebarGroupLabel>{t`Recent`}</SidebarGroupLabel>
 				<SidebarMenu>
-					{data.map((item) => (
+					{data.map(item => (
 						<SidebarMenuItem key={item.id}>
 							<SidebarMenuButton>
 								<NavLink href={`/analysis/${item.id}`}>
@@ -43,28 +44,24 @@ export default async function NavRecent() {
 										<SidebarMenuAction showOnHover>
 											<MoreHorizontal />
 											<span className="sr-only">
-												{t("Commons.more")}
+												{t`More`}
 											</span>
 										</SidebarMenuAction>
 									</DropdownMenuTrigger>
 									<DropdownMenuResponsive>
 										<DropdownMenuItem>
 											<Eye className="text-muted-foreground" />
-											<span>
-												{t("Actions.view-details")}
-											</span>
+											<span>{t`View details`}</span>
 										</DropdownMenuItem>
 										<DropdownMenuItem>
 											<Edit className="text-muted-foreground" />
-											<span>{t("Actions.edit")}</span>
+											<span>{t`Edit`}</span>
 										</DropdownMenuItem>
 										<DropdownMenuSeparator />
 										<AlertDialogTrigger asChild>
 											<DropdownMenuItem variant="destructive">
 												<Trash2 className="text-muted-foreground" />
-												<span>
-													{t("Actions.delete")}
-												</span>
+												<span>{t`Delete`}</span>
 											</DropdownMenuItem>
 										</AlertDialogTrigger>
 									</DropdownMenuResponsive>
@@ -79,7 +76,7 @@ export default async function NavRecent() {
 						<SidebarMenuButton className="text-sidebar-foreground/70">
 							<NavLink href="/analysis">
 								<MoreHorizontal className="text-sidebar-foreground/70" />
-								<span>{t("Commons.more")}</span>
+								<span>{t`More`}</span>
 							</NavLink>
 						</SidebarMenuButton>
 					</SidebarMenuItem>

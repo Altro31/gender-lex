@@ -1,8 +1,9 @@
-"use client"
+'use client'
 
-import { cn } from "@/lib/utils"
-import type { HomeSchema } from "@/sections/home/form/home-schema"
-import { useTranslations } from "next-intl"
+import { cn } from '@/lib/utils'
+import type { HomeSchema } from '@/sections/home/form/home-schema'
+import { useLingui } from '@lingui/react/macro'
+import { useTranslations } from 'next-intl'
 import React, {
 	createContext,
 	use,
@@ -11,10 +12,10 @@ import React, {
 	useState,
 	type ComponentProps,
 	type RefObject,
-} from "react"
-import { useFormContext } from "react-hook-form"
+} from 'react'
+import { useFormContext } from 'react-hook-form'
 
-interface Props extends ComponentProps<"div"> {}
+interface Props extends ComponentProps<'div'> {}
 
 interface UploadAreaContextType {
 	isDragging: boolean
@@ -29,7 +30,7 @@ const UploadAreaContext = createContext<UploadAreaContextType>({
 })
 
 export function UploadArea({ children, className, ...props }: Props) {
-	const t = useTranslations()
+	const { t } = useLingui()
 	const [isDragging, setIsDragging] = useState(false)
 	const dropAreaRef = useRef<HTMLDivElement>(null)
 
@@ -42,7 +43,7 @@ export function UploadArea({ children, className, ...props }: Props) {
 
 	function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
 		const item = e.dataTransfer?.items[0]
-		if (item?.kind !== "file") return
+		if (item?.kind !== 'file') return
 		e.preventDefault()
 	}
 
@@ -56,7 +57,7 @@ export function UploadArea({ children, className, ...props }: Props) {
 		<UploadAreaContext value={{ isDragging, setIsDragging, dropAreaRef }}>
 			<div
 				onDragEnter={handleDragEnter}
-				className={cn(className, "upload-area relative")}
+				className={cn(className, 'upload-area relative')}
 				{...props}
 			>
 				<div
@@ -68,7 +69,7 @@ export function UploadArea({ children, className, ...props }: Props) {
 				>
 					<div className="grid size-full place-content-center rounded-xl border-2 border-dashed backdrop-blur-xs">
 						<div className="aspect-video w-[50vw]">
-							{t("Upload.drop")}
+							{t`Drop file here`}
 						</div>
 					</div>
 				</div>
@@ -88,11 +89,11 @@ export function RHFUploadRegister() {
 			e.preventDefault()
 			const file = e.dataTransfer?.files.item(0)!
 			setIsDragging(false)
-			const files = getValues("files")
-			setValue("files", [...files, { file }])
+			const files = getValues('files')
+			setValue('files', [...files, { file }])
 		}
-		element?.addEventListener("drop", handleDrop)
-		return () => element?.removeEventListener("drop", handleDrop)
+		element?.addEventListener('drop', handleDrop)
+		return () => element?.removeEventListener('drop', handleDrop)
 	}, [setValue, getValues, setIsDragging, dropAreaRef])
 
 	return null

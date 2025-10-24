@@ -1,0 +1,173 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-10-22 12:31-0400\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/sections/home/home-container.tsx:28
+#~ msgid "\"Home.title.1"
+#~ msgstr "\"Home.title.1"
+
+#: src/sections/home/home-container.tsx:44
+msgid "<0>Welcome to Genderlex,</0><1/><2>your smart writing assistant.</2>"
+msgstr "<0>Welcome to Genderlex,</0><1/><2>your smart writing assistant.</2>"
+
+#: src/components/app-sidebar/nav-user.tsx:101
+msgid "Account"
+msgstr "Account"
+
+#: src/sections/home/form/home-form-container.tsx:23
+msgid "Analyze a text..."
+msgstr "Analyze a text..."
+
+#: src/sections/home/home-container.tsx:18
+msgid "Analyze text in search of biased or stigmatizing content"
+msgstr "Analyze text in search of biased or stigmatizing content"
+
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:40
+msgid "Are you shure?"
+msgstr "Are you shure?"
+
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:54
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:43
+msgid "Cancel"
+msgstr "Cancel"
+
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:45
+msgid "Create"
+msgstr "Create"
+
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:31
+msgid "Create New Preset"
+msgstr "Create New Preset"
+
+#: src/components/theme/theme-switcher.tsx:42
+msgid "Dark"
+msgstr "Dark"
+
+#: src/components/app-sidebar/nav-recent.tsx:64
+msgid "Delete"
+msgstr "Delete"
+
+#: src/sections/home/components/upload/upload-area.tsx:72
+msgid "Drop file here"
+msgstr "Drop file here"
+
+#: src/components/app-sidebar/nav-recent.tsx:58
+msgid "Edit"
+msgstr "Edit"
+
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:61
+msgid "Deleting..."
+msgstr "Deleting..."
+
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:61
+msgid "Delete"
+msgstr "Delete"
+
+#: src/components/app-sidebar/nav-user.tsx:142
+msgid "Email"
+msgstr "Email"
+
+#: src/locales/components/language-switcher.tsx:77
+msgid "English"
+msgstr "English"
+
+#: src/sections/home/home-container.tsx:33
+msgid "Files can be uploaded in PDF, Docx ..."
+msgstr "Files can be uploaded in PDF, Docx ..."
+
+#: src/components/app-sidebar/index.tsx:30
+msgid "History"
+msgstr "History"
+
+#: src/sections/home/home-container.tsx:30
+#~ msgid "Home.title.2"
+#~ msgstr "Home.title.2"
+
+#: src/locales/components/language-switcher.tsx:69
+msgid "Language"
+msgstr "Language"
+
+#: src/components/theme/theme-switcher.tsx:48
+msgid "Light"
+msgstr "Light"
+
+#: src/components/app-sidebar/nav-user.tsx:127
+msgid "Login"
+msgstr "Login"
+
+#: src/components/app-sidebar/nav-user.tsx:107
+msgid "Logout"
+msgstr "Logout"
+
+#: src/components/app-sidebar/index.tsx:31
+msgid "Models"
+msgstr "Models"
+
+#: src/components/app-sidebar/nav-recent.tsx:47
+#: src/components/app-sidebar/nav-recent.tsx:79
+msgid "More"
+msgstr "More"
+
+#: src/components/app-sidebar/index.tsx:25
+msgid "New Analysis"
+msgstr "New Analysis"
+
+#: src/sections/home/form/home-form-container.tsx:43
+msgid "New Preset"
+msgstr "New Preset"
+
+#: src/components/app-sidebar/nav-main.tsx:24
+msgid "Platform"
+msgstr "Platform"
+
+#: src/components/app-sidebar/index.tsx:32
+msgid "Presets"
+msgstr "Presets"
+
+#: src/sections/home/home-container.tsx:28
+msgid "Provides alternatives of biased terms or expressions"
+msgstr "Provides alternatives of biased terms or expressions"
+
+#: src/components/app-sidebar/nav-recent.tsx:32
+msgid "Recent"
+msgstr "Recent"
+
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:33
+msgid "Set up a new combination of models with specific parameters"
+msgstr "Set up a new combination of models with specific parameters"
+
+#: src/sections/home/home-container.tsx:23
+msgid "Show what terms or expressions influence the written content"
+msgstr "Show what terms or expressions influence the written content"
+
+#: src/locales/components/language-switcher.tsx:84
+msgid "Spanish"
+msgstr "Spanish"
+
+#: src/components/theme/theme-switcher.tsx:35
+msgid "Theme"
+msgstr "Theme"
+
+#. placeholder {0}: analysis.name
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:42
+msgid "This action cannot be undone. \\nWill be permanently eliminated the analysis<0> {0}</0> and all its results."
+msgstr "This action cannot be undone. \\nWill be permanently eliminated the analysis<0> {0}</0> and all its results."
+
+#: src/sections/home/components/upload/upload-button.tsx:30
+msgid "Upload File"
+msgstr "Upload File"
+
+#: src/components/app-sidebar/nav-recent.tsx:54
+msgid "View details"
+msgstr "View details"

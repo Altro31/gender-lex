@@ -1,0 +1,165 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-10-22 12:31-0400\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: es\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/sections/home/home-container.tsx:44
+msgid "<0>Welcome to Genderlex,</0><1/><2>your smart writing assistant.</2>"
+msgstr "<0>Bienvenido a Genderlex,</0><1/><2>su asistente de escritura inteligente.</2>"
+
+#: src/components/app-sidebar/nav-user.tsx:101
+msgid "Account"
+msgstr "Cuenta"
+
+#: src/sections/home/form/home-form-container.tsx:23
+msgid "Analyze a text..."
+msgstr "Analiza un texto..."
+
+#: src/sections/home/home-container.tsx:18
+msgid "Analyze text in search of biased or stigmatizing content"
+msgstr "Analiza texto in búsqueda de contenido sesgado o estigmatizado"
+
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:40
+msgid "Are you shure?"
+msgstr "¿Está seguro?"
+
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:54
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:43
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:45
+msgid "Create"
+msgstr "Crear"
+
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:31
+msgid "Create New Preset"
+msgstr "Crear nueva Configuración"
+
+#: src/components/theme/theme-switcher.tsx:42
+msgid "Dark"
+msgstr "Oscuro"
+
+#: src/components/app-sidebar/nav-recent.tsx:64
+msgid "Delete"
+msgstr "Eliminar"
+
+#: src/sections/home/components/upload/upload-area.tsx:72
+msgid "Drop file here"
+msgstr "Suelte el archivo aquí"
+
+#: src/components/app-sidebar/nav-recent.tsx:58
+msgid "Edit"
+msgstr "Editar"
+
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:61
+msgid "Deleting..."
+msgstr "Eliminando..."
+
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:61
+msgid "Delete"
+msgstr "Eliminar"
+
+#: src/components/app-sidebar/nav-user.tsx:142
+msgid "Email"
+msgstr "Correo Electrónico"
+
+#: src/locales/components/language-switcher.tsx:77
+msgid "English"
+msgstr "Inglés"
+
+#: src/sections/home/home-container.tsx:33
+msgid "Files can be uploaded in PDF, Docx ..."
+msgstr "Los archivos pueden cargarse en PDF, Docx, ..."
+
+#: src/components/app-sidebar/index.tsx:30
+msgid "History"
+msgstr "Historial"
+
+#: src/locales/components/language-switcher.tsx:69
+msgid "Language"
+msgstr "Idioma"
+
+#: src/components/theme/theme-switcher.tsx:48
+msgid "Light"
+msgstr "Claro"
+
+#: src/components/app-sidebar/nav-user.tsx:127
+msgid "Login"
+msgstr "Iniciar sesión"
+
+#: src/components/app-sidebar/nav-user.tsx:107
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+#: src/components/app-sidebar/index.tsx:31
+msgid "Models"
+msgstr "Modelos"
+
+#: src/components/app-sidebar/nav-recent.tsx:47
+#: src/components/app-sidebar/nav-recent.tsx:79
+msgid "More"
+msgstr "Más"
+
+#: src/components/app-sidebar/index.tsx:25
+msgid "New Analysis"
+msgstr "Nuevo análisis"
+
+#: src/sections/home/form/home-form-container.tsx:43
+msgid "New Preset"
+msgstr "Nueva configuración"
+
+#: src/components/app-sidebar/nav-main.tsx:24
+msgid "Platform"
+msgstr "Plataforma"
+
+#: src/components/app-sidebar/index.tsx:32
+msgid "Presets"
+msgstr "Configuraciones"
+
+#: src/sections/home/home-container.tsx:28
+msgid "Provides alternatives of biased terms or expressions"
+msgstr "Provee alternativas a terminos o expresiones sesgadas"
+
+#: src/components/app-sidebar/nav-recent.tsx:32
+msgid "Recent"
+msgstr "Reciente"
+
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:33
+msgid "Set up a new combination of models with specific parameters"
+msgstr "Establece una nueva combinación de modelos con parámetros específicos"
+
+#: src/sections/home/home-container.tsx:23
+msgid "Show what terms or expressions influence the written content"
+msgstr "Muestra cuáles terminos o expresiones influencian el texto escrito"
+
+#: src/locales/components/language-switcher.tsx:84
+msgid "Spanish"
+msgstr "Español"
+
+#: src/components/theme/theme-switcher.tsx:35
+msgid "Theme"
+msgstr "Tema"
+
+#. placeholder {0}: analysis.name
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:42
+msgid "This action cannot be undone. \\nWill be permanently eliminated the analysis<0> {0}</0> and all its results."
+msgstr "Esta acción no se puede deshacer. \\nEl análisis será eliminado permanentemente<0> {0}</0> y todos sus resultados."
+
+#: src/sections/home/components/upload/upload-button.tsx:30
+msgid "Upload File"
+msgstr "Cargar archivo"
+
+#: src/components/app-sidebar/nav-recent.tsx:54
+msgid "View details"
+msgstr "Ver detalles"

@@ -1,25 +1,26 @@
-"use client"
+'use client'
 
-import RHFSelectAutofetcher from "@/components/rhf/rhf-select-autofetcher"
-import RHFTextarea from "@/components/rhf/rhf-textarea"
-import { Button } from "@/components/ui/button"
-import UploadButton from "@/sections/home/components/upload/upload-button"
-import HomeFiles from "@/sections/home/form/home-files"
-import FormSendButton from "@/sections/home/form/home-form-send-button"
-import CreatePresetDialog from "@/sections/preset/components/dialogs/create-preset-dialog"
-import { getPresetsSelect } from "@/services/preset"
-import { Plus } from "lucide-react"
-import { useTranslations } from "next-intl"
+import RHFSelectAutofetcher from '@/components/rhf/rhf-select-autofetcher'
+import RHFTextarea from '@/components/rhf/rhf-textarea'
+import { Button } from '@/components/ui/button'
+import UploadButton from '@/sections/home/components/upload/upload-button'
+import HomeFiles from '@/sections/home/form/home-files'
+import FormSendButton from '@/sections/home/form/home-form-send-button'
+import CreatePresetDialog from '@/sections/preset/components/dialogs/create-preset-dialog'
+import { getPresetsSelect } from '@/services/preset'
+import { useLingui } from '@lingui/react/macro'
+import { Plus } from 'lucide-react'
 
 export default function HomeFormContainer() {
-	const t = useTranslations()
+	const { t } = useLingui()
+
 	return (
 		<>
 			<HomeFiles />
 			<div className="bg-input/30 space-y-2 rounded-lg border">
 				<RHFTextarea
 					name="text"
-					placeholder={t("Home.form.text.placeholder")}
+					placeholder={t`Analyze a text...`}
 					className="max-h-48 min-h-0 rounded-none border-none shadow-none focus-visible:ring-0 dark:bg-transparent"
 					rows={1}
 				/>
@@ -29,8 +30,8 @@ export default function HomeFormContainer() {
 						<RHFSelectAutofetcher
 							name="selectedPreset"
 							fetcherFunc={getPresetsSelect}
-							getKey={(i) => i.id}
-							getLabel={(i) => i.name}
+							getKey={i => i.id}
+							getLabel={i => i.name}
 						>
 							<CreatePresetDialog>
 								<Button
@@ -39,7 +40,7 @@ export default function HomeFormContainer() {
 									className="mt-1 w-full"
 								>
 									<Plus />
-									{t("Preset.create.action")}
+									{t`New Preset`}
 								</Button>
 							</CreatePresetDialog>
 						</RHFSelectAutofetcher>

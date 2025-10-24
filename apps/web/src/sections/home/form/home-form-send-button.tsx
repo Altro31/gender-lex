@@ -1,15 +1,12 @@
-import { Button } from "@/components/ui/button"
-import { Loader2, Upload } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useFormStatus } from "react-dom"
-import { useFormState } from "react-hook-form"
+import { Button } from '@/components/ui/button'
+import { Loader2, Upload } from 'lucide-react'
+import { useFormState } from 'react-hook-form'
 
 interface Props {
 	disabled?: boolean
 }
 
 export default function HomeFormSendButton({ disabled = false }: Props) {
-	const t = useTranslations()
 	const { isSubmitting, isValid } = useFormState()
 
 	return (

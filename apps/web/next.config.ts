@@ -1,26 +1,32 @@
 import envs from "@/lib/env/env-server" with { type: "macro" }
 import type { NextConfig } from "next"
-import createNextIntlPlugin from "next-intl/plugin"
 
 const nextConfig: NextConfig = {
 	reactCompiler: true,
 	cacheComponents: true,
 	experimental: {
-		browserDebugInfoInTerminal: false,
+		browserDebugInfoInTerminal: true,
 		clientSegmentCache: true,
 		authInterrupts: true,
-		swcPlugins: [],
+		swcPlugins: [["@lingui/swc-plugin", {}]],
 		globalNotFound: true,
 	},
 	rewrites: async () => [
-		{
-			source: "/api/:path*",
-			destination: `${envs.API_URL}/api/:path*`,
-		},
+		{ source: "/api/:path*", destination: `${envs.API_URL}/api/:path*` },
 	],
+	turbopack: {
+		resolveExtensions: [
+			".mdx",
+			".tsx",
+			".ts",
+			".jsx",
+			".js",
+			".mjs",
+			".json",
+			".po",
+		],
+		rules: { "*.po": { loaders: ["@lingui/loader"], as: "*.js" } },
+	},
 }
 
-const withNextIntl = createNextIntlPlugin({
-	requestConfig: "./src/locales/request.ts",
-})
-export default withNextIntl(nextConfig as any)
+export default nextConfig

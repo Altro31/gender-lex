@@ -1,6 +1,6 @@
 import { anonymousCheck } from "@/middlewares/anonymous-check"
 import { rejectAuthRoutes } from "@/middlewares/reject-auth-routes"
-import { routingMiddleware } from "@/middlewares/routing"
+import { routingMiddleware } from "@/middlewares/routing-middleware"
 import { type NextRequest } from "next/server"
 
 export async function proxy(req: NextRequest) {
@@ -12,5 +12,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-	matcher: "/((?!api|trpc|_next|_vercel|.*\\..*).*)",
+	matcher: "/((?!api|trpc|_next|_vercel|favicon.ico|.*\\..*).*)",
 }

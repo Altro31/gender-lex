@@ -1,19 +1,10 @@
-import { routing } from "@/locales/routing"
-import { hasLocale } from "next-intl"
-import { getRequestConfig, setRequestLocale } from "next-intl/server"
+import { getI18nInstance } from "./instance"
+import { setI18n } from "@lingui/react/server"
 
 export async function setServerLocale(params: Promise<{ locale: string }>) {
 	const { locale } = await params
-	setRequestLocale(locale)
+	const i18n = getI18nInstance(locale)
+	i18n.activate(i18n.locale)
+	setI18n(i18n)
+	return i18n
 }
-
-export default getRequestConfig(async ({ requestLocale }) => {
-	const requested = await requestLocale
-	const locale = hasLocale(routing.locales, requested)
-		? requested
-		: routing.defaultLocale
-	return {
-		locale,
-		messages: (await import(`./langs/${locale}.json`)).default,
-	}
-})

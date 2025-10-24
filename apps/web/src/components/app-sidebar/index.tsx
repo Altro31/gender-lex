@@ -1,53 +1,43 @@
-import { Bot, Clock, Plus, Settings } from "lucide-react"
-import * as React from "react"
+import { Bot, Clock, Plus, Settings } from 'lucide-react'
+import * as React from 'react'
 
-import { Logo } from "@/components/app-sidebar/logo"
-import { NavMain } from "@/components/app-sidebar/nav-main"
-import NavRecent from "@/components/app-sidebar/nav-recent"
-import NavUser from "@/components/app-sidebar/nav-user"
+import { Logo } from '@/components/app-sidebar/logo'
+import { NavMain } from '@/components/app-sidebar/nav-main'
+import NavRecent from '@/components/app-sidebar/nav-recent'
+import NavUser from '@/components/app-sidebar/nav-user'
 import {
 	Sidebar,
 	SidebarContent,
 	SidebarFooter,
 	SidebarHeader,
 	SidebarRail,
-} from "@/components/ui/sidebar"
-import { Suspense } from "react"
-
-const data = {
-	navMain: [
-		{
-			title: "sidebar.nav.new-analysis",
-			url: "/",
-			icon: <Plus />,
-			isActive: true,
-		},
-		{
-			title: "sidebar.nav.history",
-			url: "/analysis",
-			icon: <Clock />,
-		},
-		{
-			title: "sidebar.nav.models",
-			url: "/models",
-			icon: <Bot />,
-		},
-		{
-			title: "sidebar.nav.presets",
-			url: "/presets",
-			icon: <Settings />,
-		},
-	] satisfies {
-		title: string
-		url: string
-		icon?: React.ReactNode
-		isActive?: boolean
-	}[],
-}
+} from '@/components/ui/sidebar'
+import { Suspense } from 'react'
+import { useLingui } from '@lingui/react/macro'
 
 export default async function AppSidebar({
 	...props
 }: React.ComponentProps<typeof Sidebar>) {
+	const { t } = useLingui()
+	const data = {
+		navMain: [
+			{
+				title: t`New Analysis`,
+				url: '/',
+				icon: <Plus />,
+				isActive: true,
+			},
+			{ title: t`History`, url: '/analysis', icon: <Clock /> },
+			{ title: t`Models`, url: '/models', icon: <Bot /> },
+			{ title: t`Presets`, url: '/presets', icon: <Settings /> },
+		] satisfies {
+			title: string
+			url: string
+			icon?: React.ReactNode
+			isActive?: boolean
+		}[],
+	}
+
 	return (
 		<Sidebar collapsible="icon" {...props}>
 			<SidebarHeader>

@@ -1,16 +1,16 @@
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import RegisterForm from "@/sections/auth/register/form/register-form"
-import RegisterFormContainer from "@/sections/auth/register/form/register-form-container"
-import { ArrowLeft, Lock } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { Link } from "@/locales/navigation"
+} from '@/components/ui/card'
+import RegisterForm from '@/sections/auth/register/form/register-form'
+import RegisterFormContainer from '@/sections/auth/register/form/register-form-container'
+import { ArrowLeft, Lock } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import Link from 'next/link'
 
 export default function RegisterContainer() {
 	const t = useTranslations()
@@ -26,7 +26,7 @@ export default function RegisterContainer() {
 							className="gap-2 text-gray-600 hover:text-gray-900"
 						>
 							<ArrowLeft className="h-4 w-4" />
-							{t("Login.back-to-home")}
+							{t('Login.back-to-home')}
 						</Button>
 					</Link>
 				</div>
@@ -39,10 +39,10 @@ export default function RegisterContainer() {
 							</div>
 						</div>
 						<CardTitle className="text-center text-2xl font-bold text-gray-900">
-							{t("Register.title")}
+							{t('Register.title')}
 						</CardTitle>
 						<CardDescription className="text-center text-gray-600">
-							{t("Register.subtitle")}
+							{t('Register.subtitle')}
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-6">
@@ -52,12 +52,12 @@ export default function RegisterContainer() {
 						</RegisterFormContainer>
 						<div className="text-center">
 							<p className="text-sm text-gray-600">
-								{t("Register.login-q")}{" "}
+								{t('Register.login-q')}{' '}
 								<Link
 									href="/auth/login"
 									className="font-medium text-blue-600 hover:text-blue-800"
 								>
-									{t("Register.login")}
+									{t('Register.login')}
 								</Link>
 							</p>
 						</div>
@@ -66,7 +66,7 @@ export default function RegisterContainer() {
 
 				{/* Footer */}
 				<div className="mt-8 text-center text-xs text-gray-500">
-					<p>{t("Register.footer")}</p>
+					<p>{t('Register.footer')}</p>
 				</div>
 			</div>
 		</div>
