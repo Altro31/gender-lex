@@ -1,16 +1,16 @@
-'use client'
+"use client"
 
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { authClient } from '@/lib/auth/auth-client'
-import { sleep } from '@/lib/utils'
-import { Loader2, LogOut } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
+import { authClient } from "@/lib/auth/auth-client"
+import { sleep } from "@/lib/utils"
+import { Loader2, LogOut } from "lucide-react"
+import { useRouter } from "next/navigation"
 import {
 	useRef,
 	useState,
 	type MouseEvent,
 	type PropsWithChildren,
-} from 'react'
+} from "react"
 
 export default function LogoutButton({ children }: PropsWithChildren) {
 	const router = useRouter()

@@ -1,19 +1,19 @@
-import { Bot, Clock, Plus, Settings } from 'lucide-react'
-import * as React from 'react'
+import { Bot, Clock, Plus, Settings } from "lucide-react"
+import * as React from "react"
 
-import { Logo } from '@/components/app-sidebar/logo'
-import { NavMain } from '@/components/app-sidebar/nav-main'
-import NavRecent from '@/components/app-sidebar/nav-recent'
-import NavUser from '@/components/app-sidebar/nav-user'
+import { Logo } from "@/components/app-sidebar/logo"
+import { NavMain } from "@/components/app-sidebar/nav-main"
+import NavRecent from "@/components/app-sidebar/nav-recent"
+import NavUser from "@/components/app-sidebar/nav-user"
 import {
 	Sidebar,
 	SidebarContent,
 	SidebarFooter,
 	SidebarHeader,
 	SidebarRail,
-} from '@/components/ui/sidebar'
-import { Suspense } from 'react'
-import { useLingui } from '@lingui/react/macro'
+} from "@/components/ui/sidebar"
+import { Suspense } from "react"
+import { useLingui } from "@lingui/react/macro"
 
 export default async function AppSidebar({
 	...props
@@ -23,13 +23,13 @@ export default async function AppSidebar({
 		navMain: [
 			{
 				title: t`New Analysis`,
-				url: '/',
+				url: "/",
 				icon: <Plus />,
 				isActive: true,
 			},
-			{ title: t`History`, url: '/analysis', icon: <Clock /> },
-			{ title: t`Models`, url: '/models', icon: <Bot /> },
-			{ title: t`Presets`, url: '/presets', icon: <Settings /> },
+			{ title: t`History`, url: "/analysis", icon: <Clock /> },
+			{ title: t`Models`, url: "/models", icon: <Bot /> },
+			{ title: t`Presets`, url: "/presets", icon: <Settings /> },
 		] satisfies {
 			title: string
 			url: string

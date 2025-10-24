@@ -1,14 +1,14 @@
-import { Card } from '@/components/ui/card'
-import { UploadArea } from '@/sections/home/components/upload/upload-area'
-import HomeForm from '@/sections/home/form/home-form'
-import { Trans, useLingui } from '@lingui/react/macro'
+import { Card } from "@/components/ui/card"
+import { UploadArea } from "@/sections/home/components/upload/upload-area"
+import HomeForm from "@/sections/home/form/home-form"
+import { Trans, useLingui } from "@lingui/react/macro"
 import {
 	ChartColumnIcon,
 	FileTextIcon,
 	RefreshCwIcon,
 	SearchCodeIcon,
-} from 'lucide-react'
-import { Suspense } from 'react'
+} from "lucide-react"
+import { Suspense } from "react"
 
 export default async function HomeContainer() {
 	const { t } = useLingui()

@@ -1,7 +1,7 @@
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { startAnalysis } from '@/services/analysis'
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { startAnalysis } from "@/services/analysis"
 import {
 	AlertTriangle,
 	ArrowLeft,
@@ -11,13 +11,13 @@ import {
 	CheckCircle,
 	Clock,
 	User,
-} from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
-import { Suspense } from 'react'
+} from "lucide-react"
+import { useTranslations } from "next-intl"
+import { getTranslations } from "next-intl/server"
+import { Suspense } from "react"
 
 interface Props {
-	params: PageProps<'/[locale]/analysis/[id]'>['params']
+	params: PageProps<"/[locale]/analysis/[id]">["params"]
 }
 
 export default function AnalysisHeader({ params }: Props) {
@@ -28,7 +28,7 @@ export default function AnalysisHeader({ params }: Props) {
 				<Link href="/analysis">
 					<Button variant="ghost" size="sm" className="gap-2">
 						<ArrowLeft className="h-4 w-4" />
-						{t('Analysis.details.back-to')}
+						{t("Analysis.details.back-to")}
 					</Button>
 				</Link>
 			</div>
@@ -45,22 +45,22 @@ async function Container({ params }: Props) {
 	const t = await getTranslations()
 	const getStatusConfig = (status: string) => {
 		switch (status) {
-			case 'analyzing':
+			case "analyzing":
 				return {
-					label: t('Analysis.status.analyzing'),
-					color: 'bg-blue-100 text-blue-800',
+					label: t("Analysis.status.analyzing"),
+					color: "bg-blue-100 text-blue-800",
 					icon: Clock,
 				}
-			case 'done':
+			case "done":
 				return {
-					label: t('Analysis.status.done'),
-					color: 'bg-green-100 text-green-800',
+					label: t("Analysis.status.done"),
+					color: "bg-green-100 text-green-800",
 					icon: CheckCircle,
 				}
 			default:
 				return {
-					label: t('Analysis.status.pending'),
-					color: 'bg-yellow-100 text-yellow-800',
+					label: t("Analysis.status.pending"),
+					color: "bg-yellow-100 text-yellow-800",
 					icon: AlertTriangle,
 				}
 		}
@@ -72,19 +72,19 @@ async function Container({ params }: Props) {
 		<div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 			<div>
 				<h1 className="mb-2 text-3xl font-bold text-gray-900">
-					{t('Analysis.details.title')}
+					{t("Analysis.details.title")}
 				</h1>
 				<div className="flex items-center gap-4 text-sm text-gray-600">
 					<div className="flex items-center gap-2">
 						<Calendar className="h-4 w-4" />
 						{new Date(analysis.createdAt).toLocaleDateString(
-							'es-ES',
+							"es-ES",
 							{
-								year: 'numeric',
-								month: 'long',
-								day: 'numeric',
-								hour: '2-digit',
-								minute: '2-digit',
+								year: "numeric",
+								month: "long",
+								day: "numeric",
+								hour: "2-digit",
+								minute: "2-digit",
 							},
 						)}
 					</div>
@@ -102,13 +102,13 @@ async function Container({ params }: Props) {
 				</Badge>
 				<Badge
 					variant={
-						analysis.visibility === 'public'
-							? 'default'
-							: 'secondary'
+						analysis.visibility === "public"
+							? "default"
+							: "secondary"
 					}
 				>
-					{' '}
-					{t('Analysis.visibility.' + analysis.visibility)}
+					{" "}
+					{t("Analysis.visibility." + analysis.visibility)}
 				</Badge>
 				<Button
 					variant="outline"
@@ -116,7 +116,7 @@ async function Container({ params }: Props) {
 					className="gap-2 bg-transparent"
 				>
 					<Download className="h-4 w-4" />
-					{t('Actions.export')}
+					{t("Actions.export")}
 				</Button>
 				<Button
 					variant="outline"
@@ -124,7 +124,7 @@ async function Container({ params }: Props) {
 					className="gap-2 bg-transparent"
 				>
 					<Share2 className="h-4 w-4" />
-					{t('Actions.share')}
+					{t("Actions.share")}
 				</Button>
 			</div>
 		</div>

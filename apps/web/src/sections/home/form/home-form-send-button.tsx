@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button'
-import { Loader2, Upload } from 'lucide-react'
-import { useFormState } from 'react-hook-form'
+import { Button } from "@/components/ui/button"
+import { Loader2, Upload } from "lucide-react"
+import { useFormState } from "react-hook-form"
 
 interface Props {
 	disabled?: boolean

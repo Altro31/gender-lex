@@ -1,14 +1,14 @@
-import { Edit, Eye, MoreHorizontal, Trash2 } from 'lucide-react'
+import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react"
 
-import DropdownMenuResponsive from '@/components/app-sidebar/dropdown-menu-responsive'
-import NavLink from '@/components/app-sidebar/nav-link'
-import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import DropdownMenuResponsive from "@/components/app-sidebar/dropdown-menu-responsive"
+import NavLink from "@/components/app-sidebar/nav-link"
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import {
 	DropdownMenu,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from "@/components/ui/dropdown-menu"
 import {
 	SidebarGroup,
 	SidebarGroupLabel,
@@ -16,10 +16,10 @@ import {
 	SidebarMenuAction,
 	SidebarMenuButton,
 	SidebarMenuItem,
-} from '@/components/ui/sidebar'
-import DeleteAnalysisAlertDialogContent from '@/sections/analysis/components/delete-analysis-alert-dialog-content'
-import { findRecentAnalyses } from '@/services/analysis'
-import { useLingui } from '@lingui/react/macro'
+} from "@/components/ui/sidebar"
+import DeleteAnalysisAlertDialogContent from "@/sections/analysis/components/delete-analysis-alert-dialog-content"
+import { findRecentAnalyses } from "@/services/analysis"
+import { useLingui } from "@lingui/react/macro"
 
 export default async function NavRecent() {
 	const { t } = useLingui()
@@ -31,7 +31,7 @@ export default async function NavRecent() {
 			<SidebarGroup className="group-data-[collapsible=icon]:hidden">
 				<SidebarGroupLabel>{t`Recent`}</SidebarGroupLabel>
 				<SidebarMenu>
-					{data.map(item => (
+					{data.map((item) => (
 						<SidebarMenuItem key={item.id}>
 							<SidebarMenuButton>
 								<NavLink href={`/analysis/${item.id}`}>
