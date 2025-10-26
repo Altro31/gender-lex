@@ -1,17 +1,17 @@
-'use client'
+"use client"
 
-import { Button } from '@/components/ui/button'
-import { Form } from '@/components/ui/form'
-import { RegisterSchema } from '@/sections/auth/register/form/register-schema'
-import { signUp } from '@/services/auth'
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
-import { useLingui } from '@lingui/react/macro'
-import { Loader2 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { useAction } from 'next-safe-action/hooks'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form"
+import { RegisterSchema } from "@/sections/auth/register/form/register-schema"
+import { signUp } from "@/services/auth"
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema"
+import { useLingui } from "@lingui/react/macro"
+import { Loader2 } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useAction } from "next-safe-action/hooks"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 
 interface Props {
 	children: React.ReactNode
@@ -23,24 +23,24 @@ export default function RegisterFormContainer({ children }: Props) {
 	const form = useForm({
 		resolver: standardSchemaResolver(RegisterSchema),
 		defaultValues: {
-			name: '',
-			email: '',
-			password: '',
-			confirmPassword: '',
+			name: "",
+			email: "",
+			password: "",
+			confirmPassword: "",
 			acceptTerms: false,
 		},
 	})
 	const { status, execute } = useAction(signUp, {
 		onSuccess: () => {
 			toast.success(t`User registered successfully`)
-			router.replace('/')
-			console.log('navigating...')
+			router.replace("/")
+			console.log("navigating...")
 		},
 		onError: ({ error }) => {
 			toast.error(error.serverError?.message)
 		},
 	})
-	const isPending = status === 'executing'
+	const isPending = status === "executing"
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(execute)} className="space-y-4">

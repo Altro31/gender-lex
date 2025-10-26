@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils'
-import { Select } from '@lingui/react/macro'
+import { cn } from "@/lib/utils"
+import { Select } from "@lingui/react/macro"
 
 interface Props {
 	password: string
@@ -16,14 +16,14 @@ export default function PasswordStrengthIndicator({ password }: Props) {
 				<div className="h-2 flex-1 rounded-full bg-gray-200">
 					<div
 						className={cn(
-							'h-2 w-[var(--password-strength)] rounded-full transition-[width,background] duration-300',
-							type === 'weak' && 'bg-red-500',
-							type === 'medium' && 'bg-yellow-500',
-							type === 'strong' && 'bg-green-500',
+							"h-2 w-[var(--password-strength)] rounded-full transition-[width,background] duration-300",
+							type === "weak" && "bg-red-500",
+							type === "medium" && "bg-yellow-500",
+							type === "strong" && "bg-green-500",
 						)}
 						style={
 							{
-								'--password-strength': `${percentage}%`,
+								"--password-strength": `${percentage}%`,
 							} as React.CSSProperties
 						}
 					/>
@@ -43,9 +43,9 @@ export default function PasswordStrengthIndicator({ password }: Props) {
 }
 
 function getStrengthType(strength: number) {
-	if (strength <= 2) return 'weak'
-	if (strength <= 3) return 'medium'
-	return 'strong'
+	if (strength <= 2) return "weak"
+	if (strength <= 3) return "medium"
+	return "strong"
 }
 
 function getStrength(password: string) {

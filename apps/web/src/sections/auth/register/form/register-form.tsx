@@ -1,17 +1,17 @@
-'use client'
+"use client"
 
-import PasswordStrengthIndicator from '@/components/password-strength-indicator'
-import TermsAndConditions from '@/components/terms-and-conditions'
-import { Checkbox } from '@/components/ui/checkbox'
+import PasswordStrengthIndicator from "@/components/password-strength-indicator"
+import TermsAndConditions from "@/components/terms-and-conditions"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
 	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useLingui } from '@lingui/react/macro'
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { useLingui } from "@lingui/react/macro"
 
 export default function RegisterForm() {
 	const { t } = useLingui()
@@ -26,9 +26,9 @@ export default function RegisterForm() {
 						<FormControl>
 							<Input
 								placeholder={t`Your name`}
-								type={'text'}
+								type={"text"}
 								value={field.value}
-								onChange={e => {
+								onChange={(e) => {
 									const val = e.target.value
 									field.onChange(val)
 								}}
@@ -46,9 +46,9 @@ export default function RegisterForm() {
 						<FormControl>
 							<Input
 								placeholder={t`you@example.com`}
-								type={''}
+								type={""}
 								value={field.value}
-								onChange={e => {
+								onChange={(e) => {
 									const val = e.target.value
 									field.onChange(val)
 								}}

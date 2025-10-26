@@ -1,12 +1,12 @@
-import AppSidebar from '@/components/app-sidebar'
-import MobileSidebarTrigger from '@/components/app-sidebar/mobile-sidebar-trigger'
-import { SidebarInset } from '@/components/ui/sidebar'
-import '@/globals.css'
-import { setServerLocale } from '@/locales/request'
-import { t } from '@lingui/core/macro'
-import type { Metadata } from 'next'
+import AppSidebar from "@/components/app-sidebar"
+import MobileSidebarTrigger from "@/components/app-sidebar/mobile-sidebar-trigger"
+import { SidebarInset } from "@/components/ui/sidebar"
+import "@/globals.css"
+import { setServerLocale } from "@/locales/request"
+import { t } from "@lingui/core/macro"
+import type { Metadata } from "next"
 
-export async function generateMetadata({ params }: LayoutProps<'/[locale]'>) {
+export async function generateMetadata({ params }: LayoutProps<"/[locale]">) {
 	await setServerLocale(params)
 
 	return {
@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: LayoutProps<'/[locale]'>) {
 export default async function RootLayout({
 	children,
 	params,
-}: LayoutProps<'/[locale]'>) {
+}: LayoutProps<"/[locale]">) {
 	await setServerLocale(params)
 	return (
 		<>

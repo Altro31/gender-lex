@@ -1,22 +1,22 @@
-import ProgressProvider from '@/components/progress-provider'
-import { LinguiProvider } from '@/components/providers/lingui-provider'
-import QueryProvider from '@/components/providers/query-provider'
-import { SidebarProvider } from '@/components/ui/sidebar'
-import { Toaster } from '@/components/ui/sonner'
-import '@/globals.css'
-import { EventSourceProvider } from '@/lib/sse'
-import { setServerLocale } from '@/locales/request'
-import { NuqsAdapter } from 'nuqs/adapters/next'
-import config from '../../../lingui.config'
+import ProgressProvider from "@/components/progress-provider"
+import { LinguiProvider } from "@/components/providers/lingui-provider"
+import QueryProvider from "@/components/providers/query-provider"
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { Toaster } from "@/components/ui/sonner"
+import "@/globals.css"
+import { EventSourceProvider } from "@/lib/sse"
+import { setServerLocale } from "@/locales/request"
+import { NuqsAdapter } from "nuqs/adapters/next"
+import config from "../../../lingui.config"
 
 export function generateStaticParams() {
-	return config.locales.map(locale => ({ locale }))
+	return config.locales.map((locale) => ({ locale }))
 }
 
 export default async function RootLayout({
 	children,
 	params,
-}: LayoutProps<'/[locale]'>) {
+}: LayoutProps<"/[locale]">) {
 	const i18n = await setServerLocale(params)
 	return (
 		<html lang={i18n.locale}>
