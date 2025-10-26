@@ -1,17 +1,17 @@
-import { Card } from "@/components/ui/card"
-import { UploadArea } from "@/sections/home/components/upload/upload-area"
-import HomeForm from "@/sections/home/form/home-form"
-import { Trans, useLingui } from "@lingui/react/macro"
+import { Card } from '@/components/ui/card'
+import { UploadArea } from '@/sections/home/components/upload/upload-area'
+import HomeForm from '@/sections/home/form/home-form'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import {
 	ChartColumnIcon,
 	FileTextIcon,
 	RefreshCwIcon,
 	SearchCodeIcon,
-} from "lucide-react"
-import { Suspense } from "react"
+} from 'lucide-react'
+import { Suspense } from 'react'
 
 export default async function HomeContainer() {
-	const { t } = useLingui()
 	const cards = [
 		{
 			icon: SearchCodeIcon,
@@ -56,7 +56,7 @@ export default async function HomeContainer() {
 						<Card
 							key={text}
 							data-ready={ready}
-							className="data-[ready=false]:bg-muted hover:bg-muted/80 max-w-34 cursor-pointer p-2 transition-colors sm:max-w-48 sm:p-4"
+							className="data-[ready=false]:bg-muted hover:bg-muted/80 max-w-34 p-2 transition-colors sm:max-w-48 sm:p-4"
 						>
 							<div className="flex h-full justify-between gap-1 sm:flex-col sm:gap-4">
 								<span className="text-xs sm:text-sm">

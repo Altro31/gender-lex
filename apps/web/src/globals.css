@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(body:has(#theme[data-dark]) *));
 
@@ -120,4 +120,10 @@ body:has(#theme[data-dark]) {
 	form {
 		display: contents;
 	}
+}
+
+@property --password-strength {
+	syntax: '<percentage>';
+	initial-value: 0%;
+	inherits: true;
 }

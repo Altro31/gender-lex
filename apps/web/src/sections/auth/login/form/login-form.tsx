@@ -1,31 +1,31 @@
-"use client"
+'use client'
 
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from '@/components/ui/checkbox'
 import {
 	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useTranslations } from "next-intl"
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useLingui } from '@lingui/react/macro'
 
 export default function LoginForm() {
-	const t = useTranslations()
+	const { t } = useLingui()
 	return (
 		<>
 			<FormField
 				name="email"
 				render={({ field }) => (
 					<FormItem className="w-full">
-						<FormLabel>{t("Commons.email")} *</FormLabel>
+						<FormLabel>{t`Email`} *</FormLabel>
 						<FormControl>
 							<Input
-								placeholder={t("Commons.email-placeholder")}
-								type={"email"}
+								placeholder={t`you@example.com`}
+								type={'email'}
 								value={field.value}
-								onChange={(e) => {
+								onChange={e => {
 									const val = e.target.value
 									field.onChange(val)
 								}}
@@ -39,13 +39,13 @@ export default function LoginForm() {
 				name="password"
 				render={({ field }) => (
 					<FormItem className="w-full">
-						<FormLabel>{t("Commons.password")} *</FormLabel>
+						<FormLabel>{t`Password`} *</FormLabel>
 						<FormControl>
 							<Input
-								placeholder={t("Commons.password-placeholder")}
-								type={"password"}
+								placeholder={t`Your password`}
+								type={'password'}
 								value={field.value}
-								onChange={(e) => {
+								onChange={e => {
 									const val = e.target.value
 									field.onChange(val)
 								}}
@@ -67,9 +67,7 @@ export default function LoginForm() {
 								/>
 							</FormControl>
 							<div className="space-y-1 leading-none">
-								<FormLabel>
-									{t("Commons.remember-me")}
-								</FormLabel>
+								<FormLabel>{t`Remember me`}</FormLabel>
 								<FormMessage />
 							</div>
 						</FormItem>

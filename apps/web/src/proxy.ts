@@ -12,5 +12,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-	matcher: "/((?!api|trpc|_next|_vercel|favicon.ico|.*\\..*).*)",
+	matcher: ["/((?!api|_next|_vercel|favicon.ico/.well-known/workflow).*)"],
 }

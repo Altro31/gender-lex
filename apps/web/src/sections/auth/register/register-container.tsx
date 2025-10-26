@@ -1,19 +1,19 @@
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import RegisterForm from "@/sections/auth/register/form/register-form"
-import RegisterFormContainer from "@/sections/auth/register/form/register-form-container"
-import { ArrowLeft, Lock } from "lucide-react"
-import { useTranslations } from "next-intl"
-import Link from "next/link"
+} from '@/components/ui/card'
+import RegisterForm from '@/sections/auth/register/form/register-form'
+import RegisterFormContainer from '@/sections/auth/register/form/register-form-container'
+import { useLingui } from '@lingui/react/macro'
+import { ArrowLeft, Lock } from 'lucide-react'
+import Link from 'next/link'
 
 export default function RegisterContainer() {
-	const t = useTranslations()
+	const { t } = useLingui()
 	return (
 		<div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
 			<div className="w-full max-w-md">
@@ -26,7 +26,7 @@ export default function RegisterContainer() {
 							className="gap-2 text-gray-600 hover:text-gray-900"
 						>
 							<ArrowLeft className="h-4 w-4" />
-							{t("Login.back-to-home")}
+							{t`Back to home`}
 						</Button>
 					</Link>
 				</div>
@@ -39,10 +39,10 @@ export default function RegisterContainer() {
 							</div>
 						</div>
 						<CardTitle className="text-center text-2xl font-bold text-gray-900">
-							{t("Register.title")}
+							{t`Create account`}
 						</CardTitle>
 						<CardDescription className="text-center text-gray-600">
-							{t("Register.subtitle")}
+							{t`Join our platform in seconds`}
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-6">
@@ -52,22 +52,17 @@ export default function RegisterContainer() {
 						</RegisterFormContainer>
 						<div className="text-center">
 							<p className="text-sm text-gray-600">
-								{t("Register.login-q")}{" "}
+								{t`Do you already have an account?`}{' '}
 								<Link
 									href="/auth/login"
 									className="font-medium text-blue-600 hover:text-blue-800"
 								>
-									{t("Register.login")}
+									{t`Sing in here`}
 								</Link>
 							</p>
 						</div>
 					</CardContent>
 				</Card>
-
-				{/* Footer */}
-				<div className="mt-8 text-center text-xs text-gray-500">
-					<p>{t("Register.footer")}</p>
-				</div>
 			</div>
 		</div>
 	)

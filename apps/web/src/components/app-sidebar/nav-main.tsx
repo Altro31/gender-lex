@@ -1,12 +1,12 @@
-import NavLink from "@/components/app-sidebar/nav-link"
 import {
 	SidebarGroup,
 	SidebarGroupLabel,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { useLingui } from "@lingui/react/macro"
+} from '@/components/ui/sidebar'
+import { useLingui } from '@lingui/react/macro'
+import Link from 'next/link'
 
 export function NavMain({
 	items,
@@ -23,13 +23,13 @@ export function NavMain({
 		<SidebarGroup>
 			<SidebarGroupLabel>{t`Platform`}</SidebarGroupLabel>
 			<SidebarMenu>
-				{items.map((item) => (
+				{items.map(item => (
 					<SidebarMenuItem key={item.title}>
-						<SidebarMenuButton tooltip={item.title}>
-							<NavLink href={item.url}>
+						<SidebarMenuButton tooltip={item.title} asChild>
+							<Link href={item.url}>
 								{item.icon}
 								<span>{item.title}</span>
-							</NavLink>
+							</Link>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
 				))}

@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/password-strength-indicator.tsx:32
+msgid "{type, select, weak {Weak} medium {Medium} strong {Strong} other {Other}}"
+msgstr "{type, select, weak {Débil} medium {Medio} strong {Fuerte} other {Otro}}"
+
 #: src/sections/home/home-container.tsx:44
 msgid "<0>Welcome to Genderlex,</0><1/><2>your smart writing assistant.</2>"
 msgstr "<0>Bienvenido a Genderlex,</0><1/><2>su asistente de escritura inteligente.</2>"
@@ -33,14 +37,43 @@ msgstr "Analiza texto in búsqueda de contenido sesgado o estigmatizado"
 msgid "Are you shure?"
 msgstr "¿Está seguro?"
 
+#: src/sections/auth/login/login-container.tsx:29
+#: src/sections/auth/register/register-container.tsx:29
+msgid "Back to home"
+msgstr "Regresar a inicio"
+
+#: src/components/terms-and-conditions.tsx:7
+msgid "By continuing, you accept our <0>Terms of service</0> and <1>Privacy Policy</1>"
+msgstr "Al continuar, aceptas nuestros <0>Términos de Servicio</0> y <1>Política de Privacidad</1>"
+
 #: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:54
 #: src/sections/preset/components/dialogs/create-preset-dialog.tsx:43
 msgid "Cancel"
 msgstr "Cancelar"
 
+#: src/sections/auth/register/form/register-form.tsx:86
+msgid "Confirm Password"
+msgstr "Confirmar contraseña"
+
+#: src/sections/auth/register/form/register-form.tsx:90
+msgid "Confirm your password"
+msgstr "Confiram tu contraseña"
+
+#: src/sections/auth/login/login-container.tsx:71
+msgid "Continue with Github"
+msgstr "Continuar con Github"
+
+#: src/sections/auth/login/login-container.tsx:60
+msgid "Continue with Google"
+msgstr "Continuar con Google"
+
 #: src/sections/preset/components/dialogs/create-preset-dialog.tsx:45
 msgid "Create"
 msgstr "Crear"
+
+#: src/sections/auth/register/register-container.tsx:42
+msgid "Create account"
+msgstr "Crear cuenta"
 
 #: src/sections/preset/components/dialogs/create-preset-dialog.tsx:31
 msgid "Create New Preset"
@@ -51,8 +84,21 @@ msgid "Dark"
 msgstr "Oscuro"
 
 #: src/components/app-sidebar/nav-recent.tsx:64
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:61
 msgid "Delete"
 msgstr "Eliminar"
+
+#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:61
+msgid "Deleting..."
+msgstr "Eliminando..."
+
+#: src/sections/auth/register/register-container.tsx:55
+msgid "Do you already have an account?"
+msgstr "¿Ya tienes una cuenta?"
+
+#: src/sections/auth/login/login-container.tsx:92
+msgid "Don't you have an account?"
+msgstr "¿No tienes una cuenta?"
 
 #: src/sections/home/components/upload/upload-area.tsx:72
 msgid "Drop file here"
@@ -62,31 +108,41 @@ msgstr "Suelte el archivo aquí"
 msgid "Edit"
 msgstr "Editar"
 
-#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:61
-msgid "Deleting..."
-msgstr "Eliminando..."
-
-#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:61
-msgid "Delete"
-msgstr "Eliminar"
-
-#: src/components/app-sidebar/nav-user.tsx:142
+#: src/components/app-sidebar/nav-user.tsx:140
+#: src/sections/auth/login/form/login-form.tsx:22
+#: src/sections/auth/register/form/register-form.tsx:45
 msgid "Email"
 msgstr "Correo Electrónico"
 
-#: src/locales/components/language-switcher.tsx:77
+#: src/locales/components/language-switcher.tsx:55
 msgid "English"
 msgstr "Inglés"
+
+#: src/sections/auth/login/login-container.tsx:45
+msgid "Enter your account to continue"
+msgstr "Ingresa a tu cuenta para continuar"
 
 #: src/sections/home/home-container.tsx:33
 msgid "Files can be uploaded in PDF, Docx ..."
 msgstr "Los archivos pueden cargarse en PDF, Docx, ..."
 
+#: src/app/[locale]/(domain)/layout.tsx:13
+msgid "GenderLex | Your smart writing assistant"
+msgstr "GenderLex | Su asistente de escritura inteligente"
+
+#: src/app/[locale]/(domain)/layout.tsx:14
+msgid "GenderLex, your smart writing assistant"
+msgstr "GenderLex, su asistente de escritura inteligente"
+
 #: src/components/app-sidebar/index.tsx:30
 msgid "History"
 msgstr "Historial"
 
-#: src/locales/components/language-switcher.tsx:69
+#: src/sections/auth/register/register-container.tsx:45
+msgid "Join our platform in seconds"
+msgstr "Únete a nuestra plataforma en segundos"
+
+#: src/locales/components/language-switcher.tsx:47
 msgid "Language"
 msgstr "Idioma"
 
@@ -94,9 +150,15 @@ msgstr "Idioma"
 msgid "Light"
 msgstr "Claro"
 
-#: src/components/app-sidebar/nav-user.tsx:127
+#: src/app/[locale]/(security)/auth/login/page.tsx:9
+#: src/components/app-sidebar/nav-user.tsx:126
+#: src/sections/auth/login/login-container.tsx:42
 msgid "Login"
 msgstr "Iniciar sesión"
+
+#: src/app/[locale]/(security)/auth/login/page.tsx:10
+msgid "Login to your account"
+msgstr "Inicia sesión en tu cuenta"
 
 #: src/components/app-sidebar/nav-user.tsx:107
 msgid "Logout"
@@ -107,9 +169,13 @@ msgid "Models"
 msgstr "Modelos"
 
 #: src/components/app-sidebar/nav-recent.tsx:47
-#: src/components/app-sidebar/nav-recent.tsx:79
+#: src/components/app-sidebar/nav-recent.tsx:82
 msgid "More"
 msgstr "Más"
+
+#: src/sections/auth/register/form/register-form.tsx:25
+msgid "Name"
+msgstr "Nombre"
 
 #: src/components/app-sidebar/index.tsx:25
 msgid "New Analysis"
@@ -118,6 +184,15 @@ msgstr "Nuevo análisis"
 #: src/sections/home/form/home-form-container.tsx:43
 msgid "New Preset"
 msgstr "Nueva configuración"
+
+#: src/sections/auth/login/login-container.tsx:81
+msgid "Or continue with email"
+msgstr "O continua con tu correo electrónico"
+
+#: src/sections/auth/login/form/login-form.tsx:42
+#: src/sections/auth/register/form/register-form.tsx:66
+msgid "Password"
+msgstr "Contraseña"
 
 #: src/components/app-sidebar/nav-main.tsx:24
 msgid "Platform"
@@ -135,6 +210,26 @@ msgstr "Provee alternativas a terminos o expresiones sesgadas"
 msgid "Recent"
 msgstr "Reciente"
 
+#: src/sections/auth/register/form/register-form-container.tsx:60
+msgid "Register"
+msgstr "Regístrate"
+
+#: src/sections/auth/login/login-container.tsx:97
+msgid "Register here"
+msgstr "Regístrate aquí"
+
+#: src/app/[locale]/(security)/auth/register/page.tsx:11
+msgid "Register your account"
+msgstr "Registra tu cuenta"
+
+#: src/sections/auth/register/form/register-form-container.tsx:57
+msgid "Registering..."
+msgstr "Creando cuenta..."
+
+#: src/sections/auth/login/form/login-form.tsx:70
+msgid "Remember me"
+msgstr "Recordarme"
+
 #: src/sections/preset/components/dialogs/create-preset-dialog.tsx:33
 msgid "Set up a new combination of models with specific parameters"
 msgstr "Establece una nueva combinación de modelos con parámetros específicos"
@@ -143,9 +238,29 @@ msgstr "Establece una nueva combinación de modelos con parámetros específicos
 msgid "Show what terms or expressions influence the written content"
 msgstr "Muestra cuáles terminos o expresiones influencian el texto escrito"
 
-#: src/locales/components/language-switcher.tsx:84
+#: src/sections/auth/login/form/login-form-container.tsx:55
+msgid "Sign in"
+msgstr "Iniciar sesión"
+
+#: src/app/[locale]/(security)/auth/register/page.tsx:10
+msgid "Sign up"
+msgstr "Registrarse"
+
+#: src/sections/auth/register/register-container.tsx:60
+msgid "Sing in here"
+msgstr "Inicie sesión aquí"
+
+#: src/locales/components/language-switcher.tsx:62
 msgid "Spanish"
 msgstr "Español"
+
+#: src/sections/auth/login/form/login-form-container.tsx:52
+msgid "Starting session..."
+msgstr "Iniciando sesión..."
+
+#: src/sections/auth/login/form/login-form-container.tsx:31
+msgid "Successful authenticated user"
+msgstr "Usuario autenticado con éxito"
 
 #: src/components/theme/theme-switcher.tsx:35
 msgid "Theme"
@@ -160,6 +275,24 @@ msgstr "Esta acción no se puede deshacer. \\nEl análisis será eliminado perma
 msgid "Upload File"
 msgstr "Cargar archivo"
 
+#: src/sections/auth/register/form/register-form-container.tsx:35
+msgid "User registered successfully"
+msgstr "Usuario registrado con éxito"
+
 #: src/components/app-sidebar/nav-recent.tsx:54
 msgid "View details"
 msgstr "Ver detalles"
+
+#: src/sections/auth/login/form/login-form.tsx:25
+#: src/sections/auth/register/form/register-form.tsx:48
+msgid "you@example.com"
+msgstr "tu@ejemplo.com"
+
+#: src/sections/auth/register/form/register-form.tsx:28
+msgid "Your name"
+msgstr "Tu nombre"
+
+#: src/sections/auth/login/form/login-form.tsx:45
+#: src/sections/auth/register/form/register-form.tsx:70
+msgid "Your password"
+msgstr "Tu contraseña"
