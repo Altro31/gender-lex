@@ -1,17 +1,17 @@
-'use client'
+"use client"
 
-import BaseDialog from '@/components/dialog/base-dialog'
+import BaseDialog from "@/components/dialog/base-dialog"
 import {
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import ModelDetails from '@/sections/model/details/model-details'
-import type { ModelsResponseItem } from '@/types/model'
-import { t } from '@lingui/core/macro'
-import { type PropsWithChildren } from 'react'
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import ModelDetails from "@/sections/model/details/model-details"
+import type { ModelsResponseItem } from "@/types/model"
+import { t } from "@lingui/core/macro"
+import { type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {
 	model: ModelsResponseItem

@@ -1,11 +1,11 @@
-'use client'
+"use client"
 
-import { t } from '@lingui/core/macro'
-import { AlertTriangle } from 'lucide-react'
-import { useQueryState } from 'nuqs'
+import { t } from "@lingui/core/macro"
+import { AlertTriangle } from "lucide-react"
+import { useQueryState } from "nuqs"
 
 export default function AnalysesListEmptyState() {
-	const [searchTerm] = useQueryState('q')
+	const [searchTerm] = useQueryState("q")
 
 	return (
 		<div className="py-12 text-center">

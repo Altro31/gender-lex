@@ -1,20 +1,20 @@
-'use client'
+"use client"
 
-import SearchInput from '@/components/search-input'
-import { Button } from '@/components/ui/button'
-import CreateModelDialog from '@/sections/model/components/dialogs/create-model-dialog'
-import ModelListItem from '@/sections/model/list/model-list-item'
-import type { ModelsResponse } from '@/types/model'
-import { t } from '@lingui/core/macro'
-import { Plus, Settings } from 'lucide-react'
-import { useQueryState } from 'nuqs'
+import SearchInput from "@/components/search-input"
+import { Button } from "@/components/ui/button"
+import CreateModelDialog from "@/sections/model/components/dialogs/create-model-dialog"
+import ModelListItem from "@/sections/model/list/model-list-item"
+import type { ModelsResponse } from "@/types/model"
+import { t } from "@lingui/core/macro"
+import { Plus, Settings } from "lucide-react"
+import { useQueryState } from "nuqs"
 
 interface Props {
 	modelsResponse: ModelsResponse
 }
 
 export default function ModelListsContainer({ modelsResponse: models }: Props) {
-	const [searchTerm] = useQueryState('q')
+	const [searchTerm] = useQueryState("q")
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<div className="container mx-auto px-4 py-8">
@@ -66,7 +66,7 @@ export default function ModelListsContainer({ modelsResponse: models }: Props) {
 					</div>
 				) : (
 					<div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-						{models.map(model => (
+						{models.map((model) => (
 							<ModelListItem model={model} key={model.id} />
 						))}
 					</div>

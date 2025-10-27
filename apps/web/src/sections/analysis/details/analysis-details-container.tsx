@@ -1,12 +1,12 @@
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import AnalysisHeader from '@/sections/analysis/details/analysis-header'
-import AnalysisSidebarTrigger from '@/sections/analysis/details/analysis-sidebar-trigger'
-import AnalysisContent from '@/sections/analysis/details/content/analysis-content'
-import { t } from '@lingui/core/macro'
-import { Suspense } from 'react'
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import AnalysisHeader from "@/sections/analysis/details/analysis-header"
+import AnalysisSidebarTrigger from "@/sections/analysis/details/analysis-sidebar-trigger"
+import AnalysisContent from "@/sections/analysis/details/content/analysis-content"
+import { t } from "@lingui/core/macro"
+import { Suspense } from "react"
 
 interface Props {
-	params: PageProps<'/[locale]/analysis/[id]'>['params']
+	params: PageProps<"/[locale]/analysis/[id]">["params"]
 }
 export default function AnalysisDetailsContainer({ params }: Props) {
 	return (

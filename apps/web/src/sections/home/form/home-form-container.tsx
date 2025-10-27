@@ -1,16 +1,16 @@
-'use client'
+"use client"
 
-import RHFSelectAutofetcher from '@/components/rhf/rhf-select-autofetcher'
-import RHFTextarea from '@/components/rhf/rhf-textarea'
-import { Button } from '@/components/ui/button'
-import UploadButton from '@/sections/home/components/upload/upload-button'
-import HomeFiles from '@/sections/home/form/home-files'
-import FormSendButton from '@/sections/home/form/home-form-send-button'
-import CreatePresetDialog from '@/sections/preset/components/dialogs/create-preset-dialog'
-import { getPresetsSelect } from '@/services/preset'
-import { t } from '@lingui/core/macro'
+import RHFSelectAutofetcher from "@/components/rhf/rhf-select-autofetcher"
+import RHFTextarea from "@/components/rhf/rhf-textarea"
+import { Button } from "@/components/ui/button"
+import UploadButton from "@/sections/home/components/upload/upload-button"
+import HomeFiles from "@/sections/home/form/home-files"
+import FormSendButton from "@/sections/home/form/home-form-send-button"
+import CreatePresetDialog from "@/sections/preset/components/dialogs/create-preset-dialog"
+import { getPresetsSelect } from "@/services/preset"
+import { t } from "@lingui/core/macro"
 
-import { Plus } from 'lucide-react'
+import { Plus } from "lucide-react"
 
 export default function HomeFormContainer() {
 	return (
@@ -29,8 +29,8 @@ export default function HomeFormContainer() {
 						<RHFSelectAutofetcher
 							name="selectedPreset"
 							fetcherFunc={getPresetsSelect}
-							getKey={i => i.id}
-							getLabel={i => i.name}
+							getKey={(i) => i.id}
+							getLabel={(i) => i.name}
 						>
 							<CreatePresetDialog>
 								<Button

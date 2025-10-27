@@ -1,8 +1,8 @@
-'use client'
+"use client"
 
-import { cn } from '@/lib/utils'
-import type { HomeSchema } from '@/sections/home/form/home-schema'
-import { t } from '@lingui/core/macro'
+import { cn } from "@/lib/utils"
+import type { HomeSchema } from "@/sections/home/form/home-schema"
+import { t } from "@lingui/core/macro"
 
 import React, {
 	createContext,
@@ -12,10 +12,10 @@ import React, {
 	useState,
 	type ComponentProps,
 	type RefObject,
-} from 'react'
-import { useFormContext } from 'react-hook-form'
+} from "react"
+import { useFormContext } from "react-hook-form"
 
-interface Props extends ComponentProps<'div'> {}
+interface Props extends ComponentProps<"div"> {}
 
 interface UploadAreaContextType {
 	isDragging: boolean
@@ -42,7 +42,7 @@ export function UploadArea({ children, className, ...props }: Props) {
 
 	function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
 		const item = e.dataTransfer?.items[0]
-		if (item?.kind !== 'file') return
+		if (item?.kind !== "file") return
 		e.preventDefault()
 	}
 
@@ -56,7 +56,7 @@ export function UploadArea({ children, className, ...props }: Props) {
 		<UploadAreaContext value={{ isDragging, setIsDragging, dropAreaRef }}>
 			<div
 				onDragEnter={handleDragEnter}
-				className={cn(className, 'upload-area relative')}
+				className={cn(className, "upload-area relative")}
 				{...props}
 			>
 				<div
@@ -88,11 +88,11 @@ export function RHFUploadRegister() {
 			e.preventDefault()
 			const file = e.dataTransfer?.files.item(0)!
 			setIsDragging(false)
-			const files = getValues('files')
-			setValue('files', [...files, { file }])
+			const files = getValues("files")
+			setValue("files", [...files, { file }])
 		}
-		element?.addEventListener('drop', handleDrop)
-		return () => element?.removeEventListener('drop', handleDrop)
+		element?.addEventListener("drop", handleDrop)
+		return () => element?.removeEventListener("drop", handleDrop)
 	}, [setValue, getValues, setIsDragging, dropAreaRef])
 
 	return null

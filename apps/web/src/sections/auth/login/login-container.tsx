@@ -1,21 +1,21 @@
-import TermsAndConditions from '@/components/terms-and-conditions'
-import { Button } from '@/components/ui/button'
+import TermsAndConditions from "@/components/terms-and-conditions"
+import { Button } from "@/components/ui/button"
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import LoginForm from '@/sections/auth/login/form/login-form'
-import LoginFormContainer from '@/sections/auth/login/form/login-form-container'
-import { signInSocial } from '@/services/auth'
-import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons'
-import { t } from '@lingui/core/macro'
+} from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import LoginForm from "@/sections/auth/login/form/login-form"
+import LoginFormContainer from "@/sections/auth/login/form/login-form-container"
+import { signInSocial } from "@/services/auth"
+import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons"
+import { t } from "@lingui/core/macro"
 
-import { ArrowLeft, Lock } from 'lucide-react'
-import Link from 'next/link'
+import { ArrowLeft, Lock } from "lucide-react"
+import Link from "next/link"
 
 export default function LoginContainer() {
 	return (
@@ -52,8 +52,8 @@ export default function LoginContainer() {
 								variant="outline"
 								className="h-11 w-full gap-3 bg-transparent hover:bg-gray-50"
 								onClick={async () => {
-									'use server'
-									await signInSocial('google')
+									"use server"
+									await signInSocial("google")
 								}}
 							>
 								<SiGoogle className="size-5" />
@@ -63,8 +63,8 @@ export default function LoginContainer() {
 								variant="outline"
 								className="h-11 w-full gap-3 bg-transparent hover:bg-gray-50"
 								onClick={async () => {
-									'use server'
-									await signInSocial('github')
+									"use server"
+									await signInSocial("github")
 								}}
 							>
 								<SiGithub className="size-5" />
@@ -89,7 +89,7 @@ export default function LoginContainer() {
 						</LoginFormContainer>
 						<div className="text-center">
 							<p className="text-sm text-gray-600">
-								{t`Don't you have an account?`}{' '}
+								{t`Don't you have an account?`}{" "}
 								<Link
 									href="/auth/register"
 									className="font-medium text-blue-600 hover:text-blue-800"

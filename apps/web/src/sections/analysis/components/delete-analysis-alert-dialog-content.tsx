@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import {
 	AlertDialogAction,
@@ -8,14 +8,14 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { deleteAnalysis } from '@/services/analysis'
-import type { AnalysesResponseItem } from '@/types/analyses'
-import { t } from '@lingui/core/macro'
-import { Trans } from '@lingui/react/macro'
-import { Loader2 } from 'lucide-react'
-import { useAction } from 'next-safe-action/hooks'
-import type { MouseEvent } from 'react'
+} from "@/components/ui/alert-dialog"
+import { deleteAnalysis } from "@/services/analysis"
+import type { AnalysesResponseItem } from "@/types/analyses"
+import { t } from "@lingui/core/macro"
+import { Trans } from "@lingui/react/macro"
+import { Loader2 } from "lucide-react"
+import { useAction } from "next-safe-action/hooks"
+import type { MouseEvent } from "react"
 
 interface Props {
 	analysis: AnalysesResponseItem
@@ -23,7 +23,7 @@ interface Props {
 
 export default function DeleteAnalysisAlertDialogContent({ analysis }: Props) {
 	const { executeAsync, status: deleteStatus } = useAction(deleteAnalysis)
-	const isDeleting = deleteStatus === 'executing'
+	const isDeleting = deleteStatus === "executing"
 
 	const handleDeleteAnalysis = async (e: MouseEvent<HTMLButtonElement>) => {
 		if (!isDeleting) {
@@ -42,9 +42,9 @@ export default function DeleteAnalysisAlertDialogContent({ analysis }: Props) {
 						This action cannot be undone. \nWill be permanently
 						eliminated the analysis
 						<strong className="font-medium">
-							{' '}
+							{" "}
 							{analysis.name}
-						</strong>{' '}
+						</strong>{" "}
 						and all its results.
 					</Trans>
 				</AlertDialogDescription>

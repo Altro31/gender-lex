@@ -1,22 +1,22 @@
-'use client'
+"use client"
 
-import BaseDialog from '@/components/dialog/base-dialog'
-import DialogScrollArea from '@/components/dialog/dialog-scroll-area'
-import RHFSubmitButton from '@/components/rhf/rhf-submit-button'
-import { Button } from '@/components/ui/button'
+import BaseDialog from "@/components/dialog/base-dialog"
+import DialogScrollArea from "@/components/dialog/dialog-scroll-area"
+import RHFSubmitButton from "@/components/rhf/rhf-submit-button"
+import { Button } from "@/components/ui/button"
 import {
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog'
-import EditPresetFormContainer from '@/sections/preset/form/edit-preset-form-container'
-import { PresetForm } from '@/sections/preset/form/preset-form'
-import type { PresetsResponse } from '@/types/preset'
-import { t } from '@lingui/core/macro'
-import { type PropsWithChildren, useRef } from 'react'
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog"
+import EditPresetFormContainer from "@/sections/preset/form/edit-preset-form-container"
+import { PresetForm } from "@/sections/preset/form/preset-form"
+import type { PresetsResponse } from "@/types/preset"
+import { t } from "@lingui/core/macro"
+import { type PropsWithChildren, useRef } from "react"
 
 interface Props extends PropsWithChildren {
 	preset: PresetsResponse[number]

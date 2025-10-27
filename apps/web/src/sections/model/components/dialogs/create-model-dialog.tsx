@@ -1,15 +1,15 @@
-'use client'
+"use client"
 
-import BaseDialog from '@/components/dialog/base-dialog'
+import BaseDialog from "@/components/dialog/base-dialog"
 import {
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog'
-import CreateModelFormContainer from '@/sections/model/form/create-model-form-container'
-import { t } from '@lingui/core/macro'
-import { type PropsWithChildren } from 'react'
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog"
+import CreateModelFormContainer from "@/sections/model/form/create-model-form-container"
+import { t } from "@lingui/core/macro"
+import { type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {}
 

@@ -1,18 +1,18 @@
-import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import DeleteAnalysisAlertDialogContent from '@/sections/analysis/components/delete-analysis-alert-dialog-content'
-import { redoAnalysis } from '@/services/analysis'
-import type { AnalysesResponseItem } from '@/types/analyses'
-import { t } from '@lingui/core/macro'
-import { Eye, RotateCcw, Trash2 } from 'lucide-react'
-import Link from 'next/link'
-import { type PropsWithChildren } from 'react'
+} from "@/components/ui/dropdown-menu"
+import DeleteAnalysisAlertDialogContent from "@/sections/analysis/components/delete-analysis-alert-dialog-content"
+import { redoAnalysis } from "@/services/analysis"
+import type { AnalysesResponseItem } from "@/types/analyses"
+import { t } from "@lingui/core/macro"
+import { Eye, RotateCcw, Trash2 } from "lucide-react"
+import Link from "next/link"
+import { type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {
 	analysis: AnalysesResponseItem

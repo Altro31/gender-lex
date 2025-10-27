@@ -1,10 +1,10 @@
-'use client'
+"use client"
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { t } from '@lingui/core/macro'
-import { Eye, EyeOff, Settings } from 'lucide-react'
-import { useState } from 'react'
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { t } from "@lingui/core/macro"
+import { Eye, EyeOff, Settings } from "lucide-react"
+import { useState } from "react"
 
 interface Props {
 	text: string

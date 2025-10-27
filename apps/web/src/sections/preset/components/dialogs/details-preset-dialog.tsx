@@ -1,15 +1,15 @@
-import BaseDialog from '@/components/dialog/base-dialog'
+import BaseDialog from "@/components/dialog/base-dialog"
 import {
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import PresetDetails from '@/sections/preset/details/preset-details'
-import type { PresetsResponse } from '@/types/preset'
-import { t } from '@lingui/core/macro'
-import { type PropsWithChildren } from 'react'
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import PresetDetails from "@/sections/preset/details/preset-details"
+import type { PresetsResponse } from "@/types/preset"
+import { t } from "@lingui/core/macro"
+import { type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {
 	preset: PresetsResponse[number]

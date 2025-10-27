@@ -1,20 +1,16 @@
-'use client'
+"use client"
 
-import { Badge } from '@/components/ui/badge'
+import { Badge } from "@/components/ui/badge"
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
-import type { PresetsResponse } from '@/types/preset'
-import { t } from '@lingui/core/macro'
-import {
-    Calendar,
-    Tag,
-    Zap
-} from 'lucide-react'
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card"
+import type { PresetsResponse } from "@/types/preset"
+import { t } from "@lingui/core/macro"
+import { Calendar, Tag, Zap } from "lucide-react"
 
 interface Props {
 	preset: PresetsResponse[number]
@@ -23,25 +19,25 @@ interface Props {
 export default function PresetDetails({ preset }: Props) {
 	const getRoleColor = (role: string) => {
 		switch (role) {
-			case 'primary':
-				return 'bg-blue-100 text-blue-800'
-			case 'secondary':
-				return 'bg-green-100 text-green-800'
-			case 'tertiary':
-				return 'bg-purple-100 text-purple-800'
+			case "primary":
+				return "bg-blue-100 text-blue-800"
+			case "secondary":
+				return "bg-green-100 text-green-800"
+			case "tertiary":
+				return "bg-purple-100 text-purple-800"
 			default:
-				return 'bg-gray-100 text-gray-800'
+				return "bg-gray-100 text-gray-800"
 		}
 	}
 
 	const getRoleText = (role: string) => {
 		switch (role) {
-			case 'primary':
-				return 'Principal'
-			case 'secondary':
-				return 'Secundario'
-			case 'tertiary':
-				return 'Terciario'
+			case "primary":
+				return "Principal"
+			case "secondary":
+				return "Secundario"
+			case "tertiary":
+				return "Terciario"
 			default:
 				return role
 		}
@@ -85,9 +81,9 @@ export default function PresetDetails({ preset }: Props) {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-6">
-					{preset.Models.map(model => (
+					{preset.Models.map((model) => (
 						<div
-							key={model.modelId + '_' + model.presetId}
+							key={model.modelId + "_" + model.presetId}
 							className="space-y-4 rounded-lg border p-4"
 						>
 							{/* Model Header */}
@@ -128,11 +124,11 @@ export default function PresetDetails({ preset }: Props) {
 							</div>
 							<p className="text-gray-900">
 								{new Date(preset.createdAt).toLocaleDateString(
-									'es-ES',
+									"es-ES",
 									{
-										year: 'numeric',
-										month: 'long',
-										day: 'numeric',
+										year: "numeric",
+										month: "long",
+										day: "numeric",
 									},
 								)}
 							</p>
@@ -145,11 +141,11 @@ export default function PresetDetails({ preset }: Props) {
 								</div>
 								<p className="text-gray-900">
 									{new Date(preset.usedAt).toLocaleDateString(
-										'es-ES',
+										"es-ES",
 										{
-											year: 'numeric',
-											month: 'long',
-											day: 'numeric',
+											year: "numeric",
+											month: "long",
+											day: "numeric",
 										},
 									)}
 								</p>

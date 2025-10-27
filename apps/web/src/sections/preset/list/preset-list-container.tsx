@@ -1,10 +1,10 @@
-import SearchInput from '@/components/search-input'
-import { Button } from '@/components/ui/button'
-import CreatePresetDialog from '@/sections/preset/components/dialogs/create-preset-dialog'
-import PresetListItem from '@/sections/preset/list/preset-list-item'
-import type { PresetsResponse } from '@/types/preset'
-import { t } from '@lingui/core/macro'
-import { Plus, Zap } from 'lucide-react'
+import SearchInput from "@/components/search-input"
+import { Button } from "@/components/ui/button"
+import CreatePresetDialog from "@/sections/preset/components/dialogs/create-preset-dialog"
+import PresetListItem from "@/sections/preset/list/preset-list-item"
+import type { PresetsResponse } from "@/types/preset"
+import { t } from "@lingui/core/macro"
+import { Plus, Zap } from "lucide-react"
 
 interface Props {
 	presets: PresetsResponse
@@ -63,7 +63,7 @@ export default function PresetsListContainer({ presets, q }: Props) {
 					</div>
 				) : (
 					<div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-						{presets.map(preset => (
+						{presets.map((preset) => (
 							<PresetListItem key={preset.id} preset={preset} />
 						))}
 					</div>

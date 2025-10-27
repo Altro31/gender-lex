@@ -1,24 +1,24 @@
-'use client'
+"use client"
 
 import {
 	DropdownMenuItem,
 	DropdownMenuSub,
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
-} from '@/components/ui/dropdown-menu'
-import { setTheme } from '@/services/registers'
-import { t } from '@lingui/core/macro'
-import { Moon, Sun } from 'lucide-react'
-import { useState, type MouseEvent } from 'react'
+} from "@/components/ui/dropdown-menu"
+import { setTheme } from "@/services/registers"
+import { t } from "@lingui/core/macro"
+import { Moon, Sun } from "lucide-react"
+import { useState, type MouseEvent } from "react"
 
 export default function ThemeSwitcher() {
 	const [open, setOpen] = useState(false)
 	const changeTheme = (isDark: boolean) => async (e: MouseEvent) => {
-		const target = document.querySelector<HTMLDivElement>('#theme')
+		const target = document.querySelector<HTMLDivElement>("#theme")
 		if (!target) return
 		const newValue = !isDark
 		if (newValue) {
-			target.dataset.dark = newValue + ''
+			target.dataset.dark = newValue + ""
 		} else {
 			delete target.dataset.dark
 		}

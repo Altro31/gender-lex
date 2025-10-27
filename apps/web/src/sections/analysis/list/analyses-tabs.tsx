@@ -1,20 +1,20 @@
-'use client'
+"use client"
 
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { t } from '@lingui/core/macro'
-import { $Enums, type AnalysisStatus } from '@prisma/client'
-import { debounce, parseAsStringEnum, useQueryState } from 'nuqs'
-import type { PropsWithChildren } from 'react'
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { t } from "@lingui/core/macro"
+import { $Enums, type AnalysisStatus } from "@prisma/client"
+import { debounce, parseAsStringEnum, useQueryState } from "nuqs"
+import type { PropsWithChildren } from "react"
 
 export default function AnalysesTabs({ children }: PropsWithChildren) {
 	const [statusFilter, setStatusFilter] = useQueryState(
-		'status',
-		parseAsStringEnum([...Object.values($Enums.AnalysisStatus), ''])
-			.withDefault('')
+		"status",
+		parseAsStringEnum([...Object.values($Enums.AnalysisStatus), ""])
+			.withDefault("")
 			.withOptions({ shallow: false, limitUrlUpdates: debounce(500) }),
 	)
 
-	const handleTab = (value: AnalysisStatus | '') => {
+	const handleTab = (value: AnalysisStatus | "") => {
 		setStatusFilter(value || null)
 	}
 	return (

@@ -1,11 +1,11 @@
-import { setServerLocale } from '@/locales/request'
-import AnalysesContainer from '@/sections/analysis/list/analyses-container'
-import { Metadata } from 'next'
-import { t } from '@lingui/core/macro'
+import { setServerLocale } from "@/locales/request"
+import AnalysesContainer from "@/sections/analysis/list/analyses-container"
+import { Metadata } from "next"
+import { t } from "@lingui/core/macro"
 
 export async function generateMetadata({
 	params,
-}: PageProps<'/[locale]/analysis/[id]'>) {
+}: PageProps<"/[locale]/analysis/[id]">) {
 	await setServerLocale(params)
 
 	return {
@@ -14,7 +14,7 @@ export async function generateMetadata({
 	} as Metadata
 }
 
-interface Props extends PageProps<'/[locale]/analysis/[id]'> {
+interface Props extends PageProps<"/[locale]/analysis/[id]"> {
 	searchParams: Promise<{ page?: string; status?: string; q?: string }>
 }
 

@@ -1,8 +1,8 @@
-'use client'
-import RHFInput from '@/components/rhf/rhf-input'
-import RHFTextarea from '@/components/rhf/rhf-textarea'
-import RHFModelSelectContainer from '@/sections/preset/components/model-select/rhf-model-select-container'
-import { t } from '@lingui/core/macro'
+"use client"
+import RHFInput from "@/components/rhf/rhf-input"
+import RHFTextarea from "@/components/rhf/rhf-textarea"
+import RHFModelSelectContainer from "@/sections/preset/components/model-select/rhf-model-select-container"
+import { t } from "@lingui/core/macro"
 
 export function PresetForm() {
 	return (

@@ -1,21 +1,21 @@
-'use client'
+"use client"
 
-import BaseAlertDialog from '@/components/dialog/base-alert-dialog'
+import BaseAlertDialog from "@/components/dialog/base-alert-dialog"
 import {
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { clonePreset } from '@/services/preset'
-import type { PresetsResponse } from '@/types/preset'
-import { t } from '@lingui/core/macro'
-import { Trans } from '@lingui/react/macro'
-import { useAction } from 'next-safe-action/hooks'
-import { useRef, type MouseEvent, type PropsWithChildren } from 'react'
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { clonePreset } from "@/services/preset"
+import type { PresetsResponse } from "@/types/preset"
+import { t } from "@lingui/core/macro"
+import { Trans } from "@lingui/react/macro"
+import { useAction } from "next-safe-action/hooks"
+import { useRef, type MouseEvent, type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {
 	preset: PresetsResponse[number]
@@ -48,7 +48,7 @@ export default function ClonePresetAlertDialog({
 					<AlertDialogDescription>
 						<Trans>
 							A new preset will be created with the same name,
-							description and model settings as:{' '}
+							description and model settings as:{" "}
 							<strong className="font-medium">
 								{preset.name}
 							</strong>

@@ -1,9 +1,9 @@
-import SearchInput from '@/components/search-input'
-import StatsCards from '@/sections/analysis/components/stats-cards'
-import AnalysesListContainer from '@/sections/analysis/list/analyses-list-container'
-import AnalysesTabs from '@/sections/analysis/list/analyses-tabs'
-import { t } from '@lingui/core/macro'
-import { Suspense } from 'react'
+import SearchInput from "@/components/search-input"
+import StatsCards from "@/sections/analysis/components/stats-cards"
+import AnalysesListContainer from "@/sections/analysis/list/analyses-list-container"
+import AnalysesTabs from "@/sections/analysis/list/analyses-tabs"
+import { t } from "@lingui/core/macro"
+import { Suspense } from "react"
 
 interface Props {
 	searchParams: Promise<{ page?: string; status?: string; q?: string }>

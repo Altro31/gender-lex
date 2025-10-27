@@ -1,6 +1,6 @@
-'use client'
+"use client"
 
-import BaseAlertDialog from '@/components/dialog/base-alert-dialog'
+import BaseAlertDialog from "@/components/dialog/base-alert-dialog"
 import {
 	AlertDialogAction,
 	AlertDialogCancel,
@@ -9,13 +9,13 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { deletePreset } from '@/services/preset'
-import type { PresetsResponse } from '@/types/preset'
-import { t } from '@lingui/core/macro'
-import { Trans } from '@lingui/react/macro'
-import { useAction } from 'next-safe-action/hooks'
-import { type PropsWithChildren } from 'react'
+} from "@/components/ui/alert-dialog"
+import { deletePreset } from "@/services/preset"
+import type { PresetsResponse } from "@/types/preset"
+import { t } from "@lingui/core/macro"
+import { Trans } from "@lingui/react/macro"
+import { useAction } from "next-safe-action/hooks"
+import { type PropsWithChildren } from "react"
 
 interface Props extends PropsWithChildren {
 	preset: PresetsResponse[number]
@@ -44,7 +44,7 @@ export default function DeletePresetAlertDialog({
 							This action cannot be undone. <br />
 							The preset will be permanently deleted
 							<strong className="font-medium">
-								{' '}
+								{" "}
 								{preset.name}
 							</strong>
 						</Trans>
