@@ -1,26 +1,25 @@
-import { Badge } from "@/components/ui/badge"
+import { Badge } from '@/components/ui/badge'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Separator } from "@/components/ui/separator"
-import { TabsContent } from "@/components/ui/tabs"
-import AnalysisContentOriginalText from "@/sections/analysis/details/content/analysis-content-original-text"
-import { startAnalysis } from "@/services/analysis"
-import { getTranslations } from "next-intl/server"
+} from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { Separator } from '@/components/ui/separator'
+import { TabsContent } from '@/components/ui/tabs'
+import AnalysisContentOriginalText from '@/sections/analysis/details/content/analysis-content-original-text'
+import { startAnalysis } from '@/services/analysis'
+import { t } from '@lingui/core/macro'
 
 interface Props {
-	params: PageProps<"/[locale]/analysis/[id]">["params"]
+	params: PageProps<'/[locale]/analysis/[id]'>['params']
 }
 
 export default async function AnalysisContent({ params }: Props) {
 	const { id } = await params
 	const analysis = await startAnalysis(id)
-	const t = await getTranslations()
 
 	return (
 		<>
@@ -34,7 +33,7 @@ export default async function AnalysisContent({ params }: Props) {
 					<Card>
 						<CardContent>
 							<div className="text-sm text-gray-600">
-								{t("Analysis.details.summary.biased-terms")}
+								{t`Biased terms`}
 							</div>
 							<div className="text-2xl font-bold text-red-600">
 								{analysis.biasedTerms.length}
@@ -44,7 +43,7 @@ export default async function AnalysisContent({ params }: Props) {
 					<Card>
 						<CardContent>
 							<div className="text-sm text-gray-600">
-								{t("Analysis.details.summary.biased-metaphors")}
+								{t`Biased Metaphors`}
 							</div>
 							<div className="text-2xl font-bold text-orange-600">
 								{analysis.biasedMetaphors.length}
@@ -54,7 +53,7 @@ export default async function AnalysisContent({ params }: Props) {
 					<Card>
 						<CardContent>
 							<div className="text-sm text-gray-600">
-								{t("Analysis.details.alternatives.title")}
+								{t`Alternatives`}
 							</div>
 							<div className="text-2xl font-bold text-blue-600">
 								{analysis.modifiedTextAlternatives.length}
@@ -64,9 +63,7 @@ export default async function AnalysisContent({ params }: Props) {
 					<Card>
 						<CardContent>
 							<div className="text-sm text-gray-600">
-								{t(
-									"Analysis.details.summary.average-influence",
-								)}
+								{t`Average Influence`}
 							</div>
 							<div className="text-2xl font-bold text-green-600">
 								{analysis.additionalContextEvaluation
@@ -94,9 +91,7 @@ export default async function AnalysisContent({ params }: Props) {
 				{analysis.conclusion && (
 					<Card>
 						<CardHeader>
-							<CardTitle>
-								{t("Analysis.details.summary.conclusion")}
-							</CardTitle>
+							<CardTitle>{t`Conclusion`}</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<p className="leading-relaxed text-gray-700">
@@ -112,13 +107,9 @@ export default async function AnalysisContent({ params }: Props) {
 				{/* Biased Terms */}
 				<Card>
 					<CardHeader>
-						<CardTitle>
-							{t("Analysis.details.terms.biased-terms.title")}
-						</CardTitle>
+						<CardTitle>{t`Identified Biased Terms`}</CardTitle>
 						<CardDescription>
-							{t(
-								"Analysis.details.terms.biased-terms.description",
-							)}
+							{t`Words or phrases that contain gender bias detected in the text`}
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
@@ -135,7 +126,7 @@ export default async function AnalysisContent({ params }: Props) {
 									</div>
 									<div className="text-right">
 										<div className="text-sm text-gray-600">
-											{t("Analysis.details.influence")}
+											{t`Influence`}
 										</div>
 										<div className="text-lg font-bold text-red-600">
 											{Math.round(
@@ -160,13 +151,9 @@ export default async function AnalysisContent({ params }: Props) {
 				{/* Biased Metaphors */}
 				<Card>
 					<CardHeader>
-						<CardTitle>
-							{t("Analysis.details.summary.biased-metaphors")}
-						</CardTitle>
+						<CardTitle>{t`Biased Metaphors`}</CardTitle>
 						<CardDescription>
-							{t(
-								"Analysis.details.terms.biased-metaphors.description",
-							)}
+							{t`Metaphorical expressions that perpetuate gender biases`}
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
@@ -181,7 +168,7 @@ export default async function AnalysisContent({ params }: Props) {
 									</span>
 									<div className="text-right">
 										<div className="text-sm text-gray-600">
-											{t("Analysis.details.influence")}
+											{t`Influence`}
 										</div>
 										<div className="text-lg font-bold text-orange-600">
 											{Math.round(
@@ -199,7 +186,7 @@ export default async function AnalysisContent({ params }: Props) {
 								<div className="space-y-2">
 									<div>
 										<h4 className="text-sm font-medium text-gray-700">
-											{t("Analysis.details.explaining")}:
+											{t`Explanation`}:
 										</h4>
 										<p className="text-sm text-gray-700">
 											{metaphor.explanation}
@@ -207,10 +194,7 @@ export default async function AnalysisContent({ params }: Props) {
 									</div>
 									<div>
 										<h4 className="text-sm font-medium text-gray-700">
-											{t(
-												"Analysis.details.terms.historic-context",
-											)}
-											:
+											{t`Historical Context`}:
 										</h4>
 										<p className="text-sm text-gray-700">
 											{metaphor.historicalContext}
@@ -232,15 +216,15 @@ export default async function AnalysisContent({ params }: Props) {
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.stereotype.presence ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.stereotype.presence ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
-									{t("Analysis.details.context.stereotypes")}
+									{t`Stereotypes`}
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-3">
 								<div className="flex items-center justify-between">
 									<span className="text-sm text-gray-600">
-										{t("Analysis.details.influence")}
+										{t`Influence`}
 									</span>
 									<span className="font-bold">
 										{Math.round(
@@ -268,7 +252,7 @@ export default async function AnalysisContent({ params }: Props) {
 									.examples.length > 0 && (
 									<div>
 										<h4 className="mb-2 text-sm font-medium text-gray-700">
-											{t("Analysis.details.examples")}:
+											{t`Examples`}:
 										</h4>
 										<ul className="list-inside list-disc space-y-1 text-sm text-gray-600">
 											{analysis.additionalContextEvaluation.stereotype.examples.map(
@@ -287,17 +271,15 @@ export default async function AnalysisContent({ params }: Props) {
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.powerAsymmetry.presence ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.powerAsymmetry.presence ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
-									{t(
-										"Analysis.details.context.power-asymetry",
-									)}
+									{t`Power Asymmetry`}
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-3">
 								<div className="flex items-center justify-between">
 									<span className="text-sm text-gray-600">
-										{t("Analysis.details.influence")}
+										{t`Influence`}
 									</span>
 									<span className="font-bold">
 										{Math.round(
@@ -325,7 +307,7 @@ export default async function AnalysisContent({ params }: Props) {
 									.powerAsymmetry.examples.length > 0 && (
 									<div>
 										<h4 className="mb-2 text-sm font-medium text-gray-700">
-											{t("Analysis.details.examples")}:
+											{t`Examples`}:
 										</h4>
 										<ul className="list-inside list-disc space-y-1 text-sm text-gray-600">
 											{analysis.additionalContextEvaluation.powerAsymmetry.examples.map(
@@ -344,17 +326,15 @@ export default async function AnalysisContent({ params }: Props) {
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.genderRepresentationAbsence.presence ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.genderRepresentationAbsence.presence ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
-									{t(
-										"Analysis.details.context.representation-absence",
-									)}
+									{t`Absence of Representation`}
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-3">
 								<div className="flex items-center justify-between">
 									<span className="text-sm text-gray-600">
-										{t("Analysis.details.influence")}
+										{t`Influence`}
 									</span>
 									<span className="font-bold">
 										{Math.round(
@@ -384,10 +364,7 @@ export default async function AnalysisContent({ params }: Props) {
 									.length > 0 && (
 									<div>
 										<h4 className="mb-2 text-sm font-medium text-gray-700">
-											{t(
-												"Analysis.details.context.affected-groups",
-											)}
-											:
+											{t`Affected Groups`}:
 										</h4>
 										<div className="flex flex-wrap gap-2">
 											{analysis.additionalContextEvaluation.genderRepresentationAbsence.affectedGroups.map(
@@ -411,17 +388,15 @@ export default async function AnalysisContent({ params }: Props) {
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.intersectionality.presence ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.intersectionality.presence ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
-									{t(
-										"Analysis.details.context.intersectionality",
-									)}
+									{t`Intersectionality`}
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-3">
 								<div className="flex items-center justify-between">
 									<span className="text-sm text-gray-600">
-										{t("Analysis.details.influence")}
+										{t`Influence`}
 									</span>
 									<span className="font-bold">
 										{Math.round(
@@ -450,10 +425,7 @@ export default async function AnalysisContent({ params }: Props) {
 									0 && (
 									<div>
 										<h4 className="mb-2 text-sm font-medium text-gray-700">
-											{t(
-												"Analysis.details.context.excluded-groups",
-											)}
-											:
+											{t`Excluded Groups`}:
 										</h4>
 										<div className="flex flex-wrap gap-2">
 											{analysis.additionalContextEvaluation.intersectionality.excludedGroups.map(
@@ -477,17 +449,15 @@ export default async function AnalysisContent({ params }: Props) {
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.systemicBiases.presence ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.systemicBiases.presence ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
-									{t(
-										"Analysis.details.context.sistemic-biases",
-									)}
+									{t`Systemic Biases`}
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-3">
 								<div className="flex items-center justify-between">
 									<span className="text-sm text-gray-600">
-										{t("Analysis.details.influence")}
+										{t`Influence`}
 									</span>
 									<span className="font-bold">
 										{Math.round(
@@ -515,7 +485,7 @@ export default async function AnalysisContent({ params }: Props) {
 									.systemicBiases.examples.length > 0 && (
 									<div>
 										<h4 className="mb-2 text-sm font-medium text-gray-700">
-											{t("Analysis.details.examples")}:
+											{t`Examples`}:
 										</h4>
 										<ul className="list-inside list-disc space-y-1 text-sm text-gray-600">
 											{analysis.additionalContextEvaluation.systemicBiases.examples.map(
@@ -538,11 +508,10 @@ export default async function AnalysisContent({ params }: Props) {
 					<Card key={index}>
 						<CardHeader>
 							<CardTitle>
-								{t("Analysis.details.alternatives.item")}{" "}
-								{alternative.alternativeNumber}
+								{t`Alternative`} {alternative.alternativeNumber}
 							</CardTitle>
 							<CardDescription>
-								{t("Analysis.details.alternatives.description")}
+								{t`Modified version of the original text without gender bias`}
 							</CardDescription>
 						</CardHeader>
 						<CardContent className="space-y-4">
@@ -556,10 +525,7 @@ export default async function AnalysisContent({ params }: Props) {
 
 							<div>
 								<h4 className="mb-3 font-medium text-gray-900">
-									{t(
-										"Analysis.details.alternatives.modifications",
-									)}
-									:
+									{t`Modifications Made`}:
 								</h4>
 								<div className="space-y-3">
 									{alternative.modificationsExplanation.map(
@@ -571,10 +537,7 @@ export default async function AnalysisContent({ params }: Props) {
 												<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 													<div>
 														<h5 className="mb-1 text-sm font-medium text-red-700">
-															{t(
-																"Analysis.details.original",
-															)}
-															:
+															{t`Original`}:
 														</h5>
 														<p className="rounded bg-red-50 p-2 text-sm">
 															"
@@ -586,10 +549,7 @@ export default async function AnalysisContent({ params }: Props) {
 													</div>
 													<div>
 														<h5 className="mb-1 text-sm font-medium text-green-700">
-															{t(
-																"Analysis.details.modified",
-															)}
-															:
+															{t`Modified`}:
 														</h5>
 														<p className="rounded bg-green-50 p-2 text-sm">
 															"
@@ -602,10 +562,7 @@ export default async function AnalysisContent({ params }: Props) {
 												</div>
 												<div>
 													<h5 className="mb-1 text-sm font-medium text-gray-700">
-														{t(
-															"Analysis.details.alternatives.reason",
-														)}
-														:
+														{t`Reason`}:
 													</h5>
 													<p className="text-sm text-gray-600">
 														{mod.reason}
@@ -629,11 +586,9 @@ export default async function AnalysisContent({ params }: Props) {
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.impactAnalysis.accessToCare.affected ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.impactAnalysis.accessToCare.affected ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
-									{t(
-										"Analysis.details.impact.attention-access",
-									)}
+									{t`Access to Care`}
 								</CardTitle>
 							</CardHeader>
 							<CardContent>
@@ -643,18 +598,14 @@ export default async function AnalysisContent({ params }: Props) {
 											className={
 												analysis.impactAnalysis
 													.accessToCare.affected
-													? "bg-red-100 text-red-800"
-													: "bg-green-100 text-green-800"
+													? 'bg-red-100 text-red-800'
+													: 'bg-green-100 text-green-800'
 											}
 										>
 											{analysis.impactAnalysis
 												.accessToCare.affected
-												? t(
-														"Analysis.details.impact.affected",
-													)
-												: t(
-														"Analysis.details.impact.no-affected",
-													)}
+												? t`Affected`
+												: t`No Affected`}
 										</Badge>
 									</div>
 									<p className="text-sm leading-relaxed text-gray-700">
@@ -671,11 +622,9 @@ export default async function AnalysisContent({ params }: Props) {
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.impactAnalysis.stigmatization.affected ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.impactAnalysis.stigmatization.affected ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
-									{t(
-										"Analysis.details.impact.stigmatization",
-									)}
+									{t`Stigmatization`}
 								</CardTitle>
 							</CardHeader>
 							<CardContent>
@@ -685,18 +634,14 @@ export default async function AnalysisContent({ params }: Props) {
 											className={
 												analysis.impactAnalysis
 													.stigmatization.affected
-													? "bg-red-100 text-red-800"
-													: "bg-green-100 text-green-800"
+													? 'bg-red-100 text-red-800'
+													: 'bg-green-100 text-green-800'
 											}
 										>
 											{analysis.impactAnalysis
 												.stigmatization.affected
-												? t(
-														"Analysis.details.impact.affected",
-													)
-												: t(
-														"Analysis.details.impact.no-affected",
-													)}
+												? t`Affected`
+												: t`No Affected`}
 										</Badge>
 									</div>
 									<p className="text-sm leading-relaxed text-gray-700">

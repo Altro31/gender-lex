@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import Loader from "@/components/loader"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import Loader from '@/components/loader'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
@@ -10,58 +10,58 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useSse } from "@/lib/sse"
-import DeleteModelAlertDialog from "@/sections/model/components/dialogs/delete-model-alert-dialog-content"
-import DetailsModelDialog from "@/sections/model/components/dialogs/details-model-dialog"
-import EditModelDialog from "@/sections/model/components/dialogs/edit-model-dialog"
-import TestConnectionButton from "@/sections/model/components/test-connection-button"
-import { getStatusColor } from "@/sections/model/utils/status"
-import type { ModelsResponseItem } from "@/types/model"
-import { Edit, Eye, Loader2, Settings, Trash2 } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useEffect, useState } from "react"
-import { toast } from "sonner"
+} from '@/components/ui/dropdown-menu'
+import { useSse } from '@/lib/sse'
+import DeleteModelAlertDialog from '@/sections/model/components/dialogs/delete-model-alert-dialog-content'
+import DetailsModelDialog from '@/sections/model/components/dialogs/details-model-dialog'
+import EditModelDialog from '@/sections/model/components/dialogs/edit-model-dialog'
+import TestConnectionButton from '@/sections/model/components/test-connection-button'
+import {
+	getErrorMessage,
+	getStatusColor,
+	getStatusText,
+} from '@/sections/model/utils/status'
+import type { ModelsResponseItem } from '@/types/model'
+import { t } from '@lingui/core/macro'
+import { $Enums } from '@repo/db/models'
+import { Edit, Eye, Loader2, Settings, Trash2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 interface Props {
-	model: ModelsResponseItem & {
-		itemStatus?: "deleting"
-	}
+	model: ModelsResponseItem & { itemStatus?: 'deleting' }
 }
 
 export default function ModelListItem({ model: initialModel }: Props) {
 	const [model, setModel] = useState(initialModel)
 	const [status, setStatus] = useState(model.status)
-	const t = useTranslations()
 
 	useEffect(() => {
 		setModel(initialModel)
 	}, [initialModel, setModel])
 
-	useSse("model.status.change", (event) => {
+	useSse('model.status.change', event => {
 		if (event.id === model.id) {
 			setStatus(event.status)
-			if (event.status === "error") {
+			if (event.status === 'error') {
 				toast.error(
-					model.name +
-						": " +
-						t(`Model.status.message.${event.message}.title`),
+					`${model.name}: ${getErrorMessage(model.error as $Enums.ModelError).title}`,
 				)
 			}
 		}
 	})
 
-	const handleItemStatus = (status: Props["model"]["itemStatus"]) => () => {
-		setModel((model) => ({ ...model, itemStatus: status }))
+	const handleItemStatus = (status: Props['model']['itemStatus']) => () => {
+		setModel(model => ({ ...model, itemStatus: status }))
 	}
 
-	const isDeleting = model.itemStatus === "deleting"
+	const isDeleting = model.itemStatus === 'deleting'
 	const isDisabled = isDeleting
 	const isDefault = model.isDefault
 
@@ -96,7 +96,7 @@ export default function ModelListItem({ model: initialModel }: Props) {
 							<DetailsModelDialog model={model}>
 								<DropdownMenuItem disabled={isDeleting}>
 									<Eye />
-									{t("Commons.details")}
+									{t`Details`}
 								</DropdownMenuItem>
 							</DetailsModelDialog>
 
@@ -105,12 +105,12 @@ export default function ModelListItem({ model: initialModel }: Props) {
 									<EditModelDialog model={model}>
 										<DropdownMenuItem disabled={isDeleting}>
 											<Edit />
-											{t("Actions.edit")}
+											{t`Edit`}
 										</DropdownMenuItem>
 									</EditModelDialog>
 									<DeleteModelAlertDialog
 										model={model}
-										onDelete={handleItemStatus("deleting")}
+										onDelete={handleItemStatus('deleting')}
 									>
 										<DropdownMenuItem
 											variant="destructive"
@@ -121,7 +121,7 @@ export default function ModelListItem({ model: initialModel }: Props) {
 											) : (
 												<Trash2 />
 											)}
-											{t("Actions.delete")}
+											{t`Delete`}
 										</DropdownMenuItem>
 									</DeleteModelAlertDialog>
 								</>
@@ -135,19 +135,19 @@ export default function ModelListItem({ model: initialModel }: Props) {
 				<div className="space-y-2">
 					<div className="flex flex-wrap items-center gap-2">
 						<span className="text-sm text-gray-600">
-							{t("Commons.status")}:
+							{t`Status`}:
 						</span>
 						<Badge className={getStatusColor(status)}>
-							{status === "connecting" && (
+							{status === 'connecting' && (
 								<Loader2 className="animate-spin" />
 							)}
-							{t("Model.status." + status)}
+							{getStatusText(status)}
 						</Badge>
 						<TestConnectionButton
 							id={model.id}
-							onExecute={() => setStatus("connecting")}
-							onSuccess={() => setStatus("active")}
-							onError={() => setStatus("error")}
+							onExecute={() => setStatus('connecting')}
+							onSuccess={() => setStatus('active')}
+							onError={() => setStatus('error')}
 						/>
 					</div>
 				</div>
@@ -156,12 +156,12 @@ export default function ModelListItem({ model: initialModel }: Props) {
 				<div className="w-full text-xs text-gray-500">
 					<div className="flex justify-between">
 						<span>
-							{t("Commons.created-at")}:{" "}
+							{t`Created at`}:{' '}
 							{new Date(model.createdAt).toLocaleDateString()}
 						</span>
 						{model.usedAt && (
 							<span>
-								{t("Commons.last-use")}:{" "}
+								{t`Last use`}:{' '}
 								{new Date(model.usedAt).toLocaleDateString()}
 							</span>
 						)}
@@ -172,7 +172,7 @@ export default function ModelListItem({ model: initialModel }: Props) {
 				<div className="text-muted-foreground absolute top-0 z-10 size-full">
 					<div className="flex size-full items-center justify-center gap-2">
 						<Loader />
-						{isDeleting && <span>{t("Actions.deleting")}</span>}
+						{isDeleting && <span>{t`Deleting...`}</span>}
 					</div>
 				</div>
 			)}

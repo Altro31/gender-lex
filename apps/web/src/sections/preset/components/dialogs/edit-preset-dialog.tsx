@@ -5,35 +5,39 @@ import DialogScrollArea from '@/components/dialog/dialog-scroll-area'
 import RHFSubmitButton from '@/components/rhf/rhf-submit-button'
 import { Button } from '@/components/ui/button'
 import {
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
 } from '@/components/ui/dialog'
-import CreatePresetFormContainer from '@/sections/preset/form/create-preset-form-container'
+import EditPresetFormContainer from '@/sections/preset/form/edit-preset-form-container'
 import { PresetForm } from '@/sections/preset/form/preset-form'
+import type { PresetsResponse } from '@/types/preset'
 import { t } from '@lingui/core/macro'
 import { type PropsWithChildren, useRef } from 'react'
 
-interface Props extends PropsWithChildren {}
+interface Props extends PropsWithChildren {
+	preset: PresetsResponse[number]
+}
 
-export default function CreatePresetDialog({ children }: Props) {
+export default function EditPresetDialog({ children, preset }: Props) {
 	const ref = useRef<HTMLButtonElement>(null)
 	const handleSucceed = () => ref.current?.click()
-
 	return (
 		<BaseDialog trigger={children}>
 			<DialogContent className="max-w-2xl">
 				<DialogHeader>
-					<DialogTitle>{t`Create New Preset`}</DialogTitle>
+					<DialogTitle>{t`Edit preset: ${preset.name}`}</DialogTitle>
 					<DialogDescription>
-						{t`Set up a new combination of models with specific parameters`}
+						{t`Edit the information of preset: ${preset.name}`}
 					</DialogDescription>
 				</DialogHeader>
-
-				<CreatePresetFormContainer onSuccess={handleSucceed}>
+				<EditPresetFormContainer
+					preset={preset}
+					onSuccess={handleSucceed}
+				>
 					<DialogScrollArea>
 						<PresetForm />
 					</DialogScrollArea>
@@ -41,9 +45,9 @@ export default function CreatePresetDialog({ children }: Props) {
 						<DialogClose asChild ref={ref}>
 							<Button variant="secondary">{t`Cancel`}</Button>
 						</DialogClose>
-						<RHFSubmitButton>{t`Create`}</RHFSubmitButton>
+						<RHFSubmitButton>{t`Update`}</RHFSubmitButton>
 					</DialogFooter>
-				</CreatePresetFormContainer>
+				</EditPresetFormContainer>
 			</DialogContent>
 		</BaseDialog>
 	)

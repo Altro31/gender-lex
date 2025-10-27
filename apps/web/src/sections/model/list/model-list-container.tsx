@@ -1,31 +1,30 @@
-"use client"
+'use client'
 
-import SearchInput from "@/components/search-input"
-import { Button } from "@/components/ui/button"
-import CreateModelDialog from "@/sections/model/components/dialogs/create-model-dialog"
-import ModelListItem from "@/sections/model/list/model-list-item"
-import type { ModelsResponse } from "@/types/model"
-import { Plus, Settings } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useQueryState } from "nuqs"
+import SearchInput from '@/components/search-input'
+import { Button } from '@/components/ui/button'
+import CreateModelDialog from '@/sections/model/components/dialogs/create-model-dialog'
+import ModelListItem from '@/sections/model/list/model-list-item'
+import type { ModelsResponse } from '@/types/model'
+import { t } from '@lingui/core/macro'
+import { Plus, Settings } from 'lucide-react'
+import { useQueryState } from 'nuqs'
 
 interface Props {
 	modelsResponse: ModelsResponse
 }
 
 export default function ModelListsContainer({ modelsResponse: models }: Props) {
-	const t = useTranslations()
-	const [searchTerm] = useQueryState("q")
+	const [searchTerm] = useQueryState('q')
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<div className="container mx-auto px-4 py-8">
 				{/* Header */}
 				<div className="mb-8">
 					<h1 className="mb-2 text-3xl font-bold text-gray-900">
-						{t("Model.list.title")}
+						{t`Model Management`}
 					</h1>
 					<p className="text-gray-600">
-						{t("Model.list.description")}
+						{t`Manage your connections to large language models`}
 					</p>
 				</div>
 
@@ -35,7 +34,7 @@ export default function ModelListsContainer({ modelsResponse: models }: Props) {
 					<CreateModelDialog>
 						<Button className="flex items-center gap-2">
 							<Plus className="h-4 w-4" />
-							{t("Model.create.action")}
+							{t`New model`}
 						</Button>
 					</CreateModelDialog>
 				</div>
@@ -48,26 +47,26 @@ export default function ModelListsContainer({ modelsResponse: models }: Props) {
 						</div>
 						<h3 className="mb-2 text-lg font-medium text-gray-900">
 							{searchTerm
-								? t("Commons.no-search-result")
-								: t("Model.list.empty-title")}
+								? t`No results found`
+								: t`There are no models configured`}
 						</h3>
 						<p className="mb-4 text-gray-600">
 							{searchTerm
-								? t("Commons.retry-search-result")
-								: t("Model.list.empty-description")}
+								? t`Try other search terms`
+								: t`Start by creating your first model`}
 						</p>
 						{!searchTerm && (
 							<CreateModelDialog>
 								<Button>
 									<Plus className="mr-2 h-4 w-4" />
-									{t("Model.empty-action")}
+									{t`Create First Model`}
 								</Button>
 							</CreateModelDialog>
 						)}
 					</div>
 				) : (
 					<div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-						{models.map((model) => (
+						{models.map(model => (
 							<ModelListItem model={model} key={model.id} />
 						))}
 					</div>

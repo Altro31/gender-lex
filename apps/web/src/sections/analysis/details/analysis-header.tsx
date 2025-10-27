@@ -1,34 +1,33 @@
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { startAnalysis } from "@/services/analysis"
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { startAnalysis } from '@/services/analysis'
+import { t } from '@lingui/core/macro'
+import { Select } from '@lingui/react/macro'
 import {
 	AlertTriangle,
 	ArrowLeft,
 	Calendar,
-	Download,
-	Share2,
 	CheckCircle,
 	Clock,
+	Download,
+	Share2,
 	User,
-} from "lucide-react"
-import { useTranslations } from "next-intl"
-import { getTranslations } from "next-intl/server"
-import { Suspense } from "react"
+} from 'lucide-react'
+import Link from 'next/link'
+import { Suspense } from 'react'
 
 interface Props {
-	params: PageProps<"/[locale]/analysis/[id]">["params"]
+	params: PageProps<'/[locale]/analysis/[id]'>['params']
 }
 
 export default function AnalysisHeader({ params }: Props) {
-	const t = useTranslations()
 	return (
 		<div className="mb-8">
 			<div className="mb-4 flex items-center gap-4">
 				<Link href="/analysis">
 					<Button variant="ghost" size="sm" className="gap-2">
 						<ArrowLeft className="h-4 w-4" />
-						{t("Analysis.details.back-to")}
+						{t`Return to Analysis`}
 					</Button>
 				</Link>
 			</div>
@@ -42,25 +41,24 @@ export default function AnalysisHeader({ params }: Props) {
 async function Container({ params }: Props) {
 	const { id } = await params
 	const analysis = await startAnalysis(id)
-	const t = await getTranslations()
 	const getStatusConfig = (status: string) => {
 		switch (status) {
-			case "analyzing":
+			case 'analyzing':
 				return {
-					label: t("Analysis.status.analyzing"),
-					color: "bg-blue-100 text-blue-800",
+					label: t`Analizing`,
+					color: 'bg-blue-100 text-blue-800',
 					icon: Clock,
 				}
-			case "done":
+			case 'done':
 				return {
-					label: t("Analysis.status.done"),
-					color: "bg-green-100 text-green-800",
+					label: t`Done`,
+					color: 'bg-green-100 text-green-800',
 					icon: CheckCircle,
 				}
 			default:
 				return {
-					label: t("Analysis.status.pending"),
-					color: "bg-yellow-100 text-yellow-800",
+					label: t`Pending`,
+					color: 'bg-yellow-100 text-yellow-800',
 					icon: AlertTriangle,
 				}
 		}
@@ -72,19 +70,19 @@ async function Container({ params }: Props) {
 		<div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 			<div>
 				<h1 className="mb-2 text-3xl font-bold text-gray-900">
-					{t("Analysis.details.title")}
+					{t`Analysis Details`}
 				</h1>
 				<div className="flex items-center gap-4 text-sm text-gray-600">
 					<div className="flex items-center gap-2">
 						<Calendar className="h-4 w-4" />
 						{new Date(analysis.createdAt).toLocaleDateString(
-							"es-ES",
+							'es-ES',
 							{
-								year: "numeric",
-								month: "long",
-								day: "numeric",
-								hour: "2-digit",
-								minute: "2-digit",
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric',
+								hour: '2-digit',
+								minute: '2-digit',
 							},
 						)}
 					</div>
@@ -102,13 +100,18 @@ async function Container({ params }: Props) {
 				</Badge>
 				<Badge
 					variant={
-						analysis.visibility === "public"
-							? "default"
-							: "secondary"
+						analysis.visibility === 'public'
+							? 'default'
+							: 'secondary'
 					}
 				>
-					{" "}
-					{t("Analysis.visibility." + analysis.visibility)}
+					{' '}
+					<Select
+						value={analysis.visibility}
+						_public="Public"
+						_private="Private"
+						other="Other"
+					/>
 				</Badge>
 				<Button
 					variant="outline"
@@ -116,7 +119,7 @@ async function Container({ params }: Props) {
 					className="gap-2 bg-transparent"
 				>
 					<Download className="h-4 w-4" />
-					{t("Actions.export")}
+					{t`Export`}
 				</Button>
 				<Button
 					variant="outline"
@@ -124,7 +127,7 @@ async function Container({ params }: Props) {
 					className="gap-2 bg-transparent"
 				>
 					<Share2 className="h-4 w-4" />
-					{t("Actions.share")}
+					{t`Share`}
 				</Button>
 			</div>
 		</div>

@@ -1,17 +1,16 @@
-"use client"
+'use client'
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Eye, EyeOff, Settings } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useState } from "react"
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { t } from '@lingui/core/macro'
+import { Eye, EyeOff, Settings } from 'lucide-react'
+import { useState } from 'react'
 
 interface Props {
 	text: string
 }
 
 export default function AnalysisContentOriginalText({ text }: Props) {
-	const t = useTranslations()
 	const [showSensitiveContent, setShowSensitiveContent] = useState(true)
 
 	return (
@@ -20,7 +19,7 @@ export default function AnalysisContentOriginalText({ text }: Props) {
 				<div className="flex items-center justify-between">
 					<CardTitle className="flex items-center gap-2">
 						<Settings className="h-5 w-5" />
-						{t("Analysis.details.original-text")}
+						{t`Original text`}
 					</CardTitle>
 					<Button
 						variant="ghost"
@@ -35,9 +34,7 @@ export default function AnalysisContentOriginalText({ text }: Props) {
 						) : (
 							<Eye className="h-4 w-4" />
 						)}
-						{showSensitiveContent
-							? t("Actions.hide")
-							: t("Actions.show")}
+						{showSensitiveContent ? t`Hide` : t`Show`}
 					</Button>
 				</div>
 			</CardHeader>
@@ -49,7 +46,7 @@ export default function AnalysisContentOriginalText({ text }: Props) {
 				) : (
 					<div className="rounded-lg bg-gray-100 p-4 text-center">
 						<p className="text-gray-500">
-							{t("Analysis.details.hide-content-by-privacity")}
+							{t`Content hidden for privacy`}
 						</p>
 					</div>
 				)}

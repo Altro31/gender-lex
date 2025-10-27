@@ -1,12 +1,11 @@
-"use client"
+'use client'
 
-import { AlertTriangle } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useQueryState } from "nuqs"
+import { t } from '@lingui/core/macro'
+import { AlertTriangle } from 'lucide-react'
+import { useQueryState } from 'nuqs'
 
 export default function AnalysesListEmptyState() {
-	const t = useTranslations()
-	const [searchTerm] = useQueryState("q")
+	const [searchTerm] = useQueryState('q')
 
 	return (
 		<div className="py-12 text-center">
@@ -14,14 +13,12 @@ export default function AnalysesListEmptyState() {
 				<AlertTriangle className="mx-auto h-16 w-16" />
 			</div>
 			<h3 className="mb-2 text-lg font-medium text-gray-900">
-				{searchTerm
-					? t("Commons.no-search-result")
-					: t("Analysis.list.empty-title")}
+				{searchTerm ? t`No results found` : t`No analyses available`}
 			</h3>
 			<p className="mb-4 text-gray-600">
 				{searchTerm
-					? t("Commons.retry-search-result")
-					: t("Analysis.list.empty-description")}
+					? t`Try other search terms`
+					: t`The analyzes will appear here once they are run`}
 			</p>
 		</div>
 	)

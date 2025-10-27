@@ -1,23 +1,22 @@
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card"
-import ModelConfigCard from "@/sections/preset/components/model-select/model-config-card"
-import type { PresetSchema } from "@/sections/preset/form/preset-schema"
-import { Plus } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useFieldArray } from "react-hook-form"
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
+import ModelConfigCard from '@/sections/preset/components/model-select/model-config-card'
+import type { PresetSchema } from '@/sections/preset/form/preset-schema'
+import { t } from '@lingui/core/macro'
+import { Plus } from 'lucide-react'
+import { useFieldArray } from 'react-hook-form'
 
 export default function RHFModelSelectContainer() {
-	const t = useTranslations()
 	const { fields, remove, append } = useFieldArray<PresetSchema>({
-		name: "Models",
+		name: 'Models',
 	})
-	const models = fields as unknown as PresetSchema["Models"]
+	const models = fields as unknown as PresetSchema['Models']
 	return (
 		<Card>
 			<CardHeader>
@@ -25,25 +24,25 @@ export default function RHFModelSelectContainer() {
 					<div>
 						<div className="flex justify-between">
 							<CardTitle className="text-lg">
-								{t("Preset.form.models.title")}
+								{t`Model Configuration`}
 							</CardTitle>
 							<Button
 								type="button"
 								onClick={() =>
 									append({
-										role: "" as any,
-										Model: "" as any,
+										role: '' as any,
+										Model: '' as any,
 									})
 								}
 								variant="outline"
 								size="sm"
 							>
 								<Plus />
-								{t("Model.create.action")}
+								{t`New model`}
 							</Button>
 						</div>
 						<CardDescription>
-							{t("Preset.form.models.description")}
+							{t`Add and configure the models that will be part of this preset`}
 						</CardDescription>
 					</div>
 				</div>
@@ -54,12 +53,12 @@ export default function RHFModelSelectContainer() {
 						<Button
 							type="button"
 							onClick={() =>
-								append({ role: "" as any, Model: "" as any })
+								append({ role: '' as any, Model: '' as any })
 							}
 							variant="outline"
 						>
 							<Plus />
-							{t("Model.create.empty-action")}
+							{t`Create First Model`}
 						</Button>
 					</div>
 				)}

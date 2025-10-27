@@ -1,10 +1,10 @@
-import SearchInput from "@/components/search-input"
-import { Button } from "@/components/ui/button"
-import CreatePresetDialog from "@/sections/preset/components/dialogs/create-preset-dialog"
-import PresetListItem from "@/sections/preset/list/preset-list-item"
-import type { PresetsResponse } from "@/types/preset"
-import { Plus, Zap } from "lucide-react"
-import { useTranslations } from "next-intl"
+import SearchInput from '@/components/search-input'
+import { Button } from '@/components/ui/button'
+import CreatePresetDialog from '@/sections/preset/components/dialogs/create-preset-dialog'
+import PresetListItem from '@/sections/preset/list/preset-list-item'
+import type { PresetsResponse } from '@/types/preset'
+import { t } from '@lingui/core/macro'
+import { Plus, Zap } from 'lucide-react'
 
 interface Props {
 	presets: PresetsResponse
@@ -12,17 +12,16 @@ interface Props {
 }
 
 export default function PresetsListContainer({ presets, q }: Props) {
-	const t = useTranslations()
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<div className="container mx-auto px-4 py-8">
 				{/* Header */}
 				<div className="mb-8">
 					<h1 className="mb-2 text-3xl font-bold text-gray-900">
-						{t("Preset.list.title")}
+						{t`Presets Management`}
 					</h1>
 					<p className="text-gray-600">
-						{t("Preset.list.description")}
+						{t`Manage model combinations with specific configurations`}
 					</p>
 				</div>
 
@@ -32,7 +31,7 @@ export default function PresetsListContainer({ presets, q }: Props) {
 					<CreatePresetDialog>
 						<Button>
 							<Plus />
-							{t("Preset.create.action")}
+							{t`New Preset`}
 						</Button>
 					</CreatePresetDialog>
 				</div>
@@ -45,26 +44,26 @@ export default function PresetsListContainer({ presets, q }: Props) {
 						</div>
 						<h3 className="mb-2 text-lg font-medium text-gray-900">
 							{q
-								? t("Commons.no-search-result")
-								: t("Preset.list.empty-title")}
+								? t`No results found`
+								: t`There are no presets configured`}
 						</h3>
 						<p className="mb-4 text-gray-600">
 							{q
-								? t("Commons.retry-search-result")
-								: t("Preset.list.empty-description")}
+								? t`Try other search terms`
+								: t`Start by creating your first preset`}
 						</p>
 						{!q && (
 							<CreatePresetDialog>
 								<Button>
 									<Plus />
-									{t("Preset.create.empty-action")}
+									{t`Create First Preset`}
 								</Button>
 							</CreatePresetDialog>
 						)}
 					</div>
 				) : (
 					<div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-						{presets.map((preset) => (
+						{presets.map(preset => (
 							<PresetListItem key={preset.id} preset={preset} />
 						))}
 					</div>

@@ -1,43 +1,42 @@
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card"
-import AnalysisActions from "@/sections/analysis/components/analysis-actions"
-import type { AnalysesResponseItem } from "@/types/analyses"
-import { CheckCircle, Clock, Play, Settings, XCircle } from "lucide-react"
-import { useTranslations } from "next-intl"
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
+import AnalysisActions from '@/sections/analysis/components/analysis-actions'
+import type { AnalysesResponseItem } from '@/types/analyses'
+import { t } from '@lingui/core/macro'
+import { CheckCircle, Clock, Play, Settings, XCircle } from 'lucide-react'
 
 interface Props {
 	analysis: AnalysesResponseItem
 }
 
 export default function AnalysesListItem({ analysis }: Props) {
-	const t = useTranslations()
 	const statusConfig = {
 		pending: {
-			label: t("Analysis.status.pending"),
-			color: "bg-gray-100 text-gray-800",
+			label: t`Pending`,
+			color: 'bg-gray-100 text-gray-800',
 			icon: Clock,
 		},
 		analyzing: {
-			label: t("Analysis.status.analyzing"),
-			color: "bg-blue-100 text-blue-800",
+			label: t`Analizing`,
+			color: 'bg-blue-100 text-blue-800',
 			icon: Play,
 		},
 		done: {
-			label: t("Analysis.status.done"),
-			color: "bg-green-100 text-green-800",
+			label: t`Done`,
+			color: 'bg-green-100 text-green-800',
 			icon: CheckCircle,
 		},
 		error: {
-			label: t("Analysis.status.error"),
-			color: "bg-red-100 text-red-800",
+			label: t`Error`,
+			color: 'bg-red-100 text-red-800',
 			icon: XCircle,
 		},
 	}
@@ -60,7 +59,7 @@ export default function AnalysesListItem({ analysis }: Props) {
 						</div>
 						<CardDescription className="flex items-center gap-4 text-sm">
 							<span>
-								{t("Preset.item")}: {analysis.Preset.name}
+								{t`Preset`}: {analysis.Preset.name}
 							</span>
 							<span>•</span>
 							<span>
@@ -83,7 +82,7 @@ export default function AnalysesListItem({ analysis }: Props) {
 					{/* Input Preview */}
 					<div className="space-y-2">
 						<div className="text-muted-foreground text-sm font-medium">
-							{t("Analysis.details.analiced-text")}:
+							{t`Analyzed Text`}:
 						</div>
 						<div className="bg-muted rounded p-2">
 							<p className="text-muted-foreground line-clamp-3 text-sm">
@@ -100,7 +99,7 @@ export default function AnalysesListItem({ analysis }: Props) {
 
 					{analysis.updatedAt && (
 						<span>
-							{t("Commons.completed")}:{" "}
+							{t`Completed at`}:{' '}
 							{new Date(analysis.updatedAt).toLocaleString()}
 						</span>
 					)}

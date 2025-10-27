@@ -1,5 +1,5 @@
-import RHFInput from "@/components/rhf/rhf-input"
-import { Button } from "@/components/ui/button"
+import RHFInput from '@/components/rhf/rhf-input'
+import { Button } from '@/components/ui/button'
 import {
 	FormControl,
 	FormDescription,
@@ -7,18 +7,16 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Progress } from "@/components/ui/progress"
-import { Slider } from "@/components/ui/slider"
-import { useMultiStepForm } from "@/hooks/use-multistep-form"
-import type { ModelSchema } from "@/sections/model/form/model-schema"
-import { Loader2 } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useFormContext, useFormState } from "react-hook-form"
+} from '@/components/ui/form'
+import { Progress } from '@/components/ui/progress'
+import { Slider } from '@/components/ui/slider'
+import { useMultiStepForm } from '@/hooks/use-multistep-form'
+import type { ModelSchema } from '@/sections/model/form/model-schema'
+import { t } from '@lingui/core/macro'
+import { Loader2 } from 'lucide-react'
+import { useFormContext, useFormState } from 'react-hook-form'
 
 export function MultiStepViewer() {
-	const t = useTranslations()
 	const { trigger } = useFormContext<ModelSchema>()
 
 	const stepFormElements = [
@@ -26,31 +24,29 @@ export function MultiStepViewer() {
 			<div className="flex w-full flex-wrap items-center justify-between gap-2 sm:flex-nowrap">
 				<RHFInput
 					name="name"
-					label={t("Model.form.name.label")}
+					label={t`Model name`}
 					required
-					placeholder={t("Model.form.name.placeholder")}
+					placeholder={t`ex: GPT-4 Main`}
 				/>
 			</div>
 			<div className="flex w-full flex-wrap items-start justify-between gap-2 sm:flex-nowrap">
 				<RHFInput
 					name="connection.identifier"
-					label={t("Commons.identifier")}
+					label={t`Identifier`}
 					required
-					placeholder={t(
-						"Model.form.connection-identifier.placeholder",
-					)}
+					placeholder={t`Model identifier`}
 				/>
 				<RHFInput
 					name="connection.url"
 					label="URL"
 					required
-					placeholder={t("Model.form.connection-url.placeholder")}
+					placeholder={t`Model URL`}
 				/>
 			</div>
 			<RHFInput
 				name="apiKey"
-				label={`${t("Commons.api-key")} (${t("Commons.optional")})`}
-				placeholder={t("Model.form.api-key.placeholder")}
+				label={`${t`API Key`} (${t`Optional`})`}
+				placeholder={t`Insert the API Key`}
 				type="password"
 			/>
 		</div>,
@@ -60,7 +56,7 @@ export function MultiStepViewer() {
 				render={({ field }) => (
 					<FormItem className="w-full py-3">
 						<FormLabel className="flex items-center justify-between">
-							{t("Model.form.settings.temperature.label")}
+							{t`Temperature`}
 							<span>{field.value}</span>
 						</FormLabel>
 						<FormControl>
@@ -69,13 +65,13 @@ export function MultiStepViewer() {
 								max={1}
 								step={0.1}
 								value={[field.value]}
-								onValueChange={(values) => {
+								onValueChange={values => {
 									field.onChange(values[0])
 								}}
 							/>
 						</FormControl>
 						<FormDescription>
-							{t("Model.form.settings.temperature.description")}
+							{t`Adjust the model temperature`}
 						</FormDescription>
 						<FormMessage />
 					</FormItem>
@@ -96,9 +92,9 @@ export function MultiStepViewer() {
 		AnimateContainer,
 	} = useMultiStepForm({
 		steps: stepFormElements,
-		onStepValidation: async (step) => {
+		onStepValidation: async step => {
 			if (step === 1) {
-				return trigger(["apiKey", "connection", "name"], {
+				return trigger(['apiKey', 'connection', 'name'], {
 					shouldFocus: true,
 				})
 			}
@@ -112,8 +108,7 @@ export function MultiStepViewer() {
 		<div className="flex flex-col gap-4">
 			<div className="flex flex-col items-center justify-start gap-1">
 				<span>
-					{t("Commons.step")} {currentStep} {t("Commons.of")}{" "}
-					{stepFormElements.length}
+					{t`Step`} {currentStep} {t`of`} {stepFormElements.length}
 				</span>
 				<Progress value={progress} />
 			</div>
@@ -128,21 +123,21 @@ export function MultiStepViewer() {
 					type="button"
 					disabled={isFirstStep}
 				>
-					{t("Commons.previous")}
+					{t`Previous`}
 				</Button>
 				{isLastStep ? (
 					<Button size="sm" type="submit" disabled={submitting}>
 						{submitting && <Loader2 className="animate-spin" />}
-						{submitting ? t("Actions.sending") : t("Actions.send")}
+						{submitting ? t`Sending...` : t`Send`}
 					</Button>
 				) : (
 					<Button
 						size="sm"
 						type="button"
-						variant={"secondary"}
+						variant={'secondary'}
 						onClick={goToNext}
 					>
-						{t("Commons.next")}
+						{t`Next`}
 					</Button>
 				)}
 			</div>

@@ -1,16 +1,14 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import AnalysisHeader from "@/sections/analysis/details/analysis-header"
-import AnalysisSidebarTrigger from "@/sections/analysis/details/analysis-sidebar-trigger"
-import AnalysisContent from "@/sections/analysis/details/content/analysis-content"
-import { useTranslations } from "next-intl"
-import { Suspense } from "react"
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import AnalysisHeader from '@/sections/analysis/details/analysis-header'
+import AnalysisSidebarTrigger from '@/sections/analysis/details/analysis-sidebar-trigger'
+import AnalysisContent from '@/sections/analysis/details/content/analysis-content'
+import { t } from '@lingui/core/macro'
+import { Suspense } from 'react'
 
 interface Props {
-	params: PageProps<"/[locale]/analysis/[id]">["params"]
+	params: PageProps<'/[locale]/analysis/[id]'>['params']
 }
 export default function AnalysisDetailsContainer({ params }: Props) {
-	const t = useTranslations()
-
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<AnalysisSidebarTrigger />
@@ -21,21 +19,15 @@ export default function AnalysisDetailsContainer({ params }: Props) {
 				{/* Content */}
 				<Tabs defaultValue="overview" className="space-y-6">
 					<TabsList className="grid w-full grid-cols-5">
-						<TabsTrigger value="overview">
-							{t("Analysis.details.summary.title")}
-						</TabsTrigger>
+						<TabsTrigger value="overview">{t`Summary`}</TabsTrigger>
 						<TabsTrigger value="terms">
-							{t("Analysis.details.terms.title")}
+							{t`Identified Biased Terms`}
 						</TabsTrigger>
-						<TabsTrigger value="context">
-							{t("Analysis.details.context.title")}
-						</TabsTrigger>
+						<TabsTrigger value="context">{t`Context`}</TabsTrigger>
 						<TabsTrigger value="alternatives">
-							{t("Analysis.details.alternatives.title")}
+							{t`Alternatives`}
 						</TabsTrigger>
-						<TabsTrigger value="impact">
-							{t("Analysis.details.impact.title")}
-						</TabsTrigger>
+						<TabsTrigger value="impact">{t`Impact`}</TabsTrigger>
 					</TabsList>
 
 					<Suspense>

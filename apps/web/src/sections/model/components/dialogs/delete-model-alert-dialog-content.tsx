@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import BaseAlertDialog from "@/components/dialog/base-alert-dialog"
+import BaseAlertDialog from '@/components/dialog/base-alert-dialog'
 import {
 	AlertDialogAction,
 	AlertDialogCancel,
@@ -9,13 +9,13 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import { deleteModel } from "@/services/model"
-import type { ModelsResponseItem } from "@/types/model"
-import { useTranslations } from "next-intl"
-import { useAction } from "next-safe-action/hooks"
-import { type PropsWithChildren } from "react"
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import { deleteModel } from '@/services/model'
+import type { ModelsResponseItem } from '@/types/model'
+import { t } from '@lingui/core/macro'
+import { useAction } from 'next-safe-action/hooks'
+import { type PropsWithChildren } from 'react'
 
 interface Props extends PropsWithChildren {
 	model: ModelsResponseItem
@@ -27,8 +27,6 @@ export default function DeleteModelAlertDialog({
 	children,
 	onDelete,
 }: Props) {
-	const t = useTranslations()
-
 	const { execute } = useAction(deleteModel)
 
 	const handleDeleteModel = async () => {
@@ -40,19 +38,17 @@ export default function DeleteModelAlertDialog({
 		<BaseAlertDialog trigger={children}>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>
-						{t("Commons.are-you-shure")}
-					</AlertDialogTitle>
+					<AlertDialogTitle>{t`Are you sure?`}</AlertDialogTitle>
 					<AlertDialogDescription>
-						{t("Model.delete.description.1")}
+						{t`This action cannot be undone. \nThe model will be permanently eliminated`}
 						<strong className="font-medium"> {model.name}</strong> .
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>{t("Commons.cancel")}</AlertDialogCancel>
+					<AlertDialogCancel>{t`Cancel`}</AlertDialogCancel>
 					<Button variant="destructive" asChild>
 						<AlertDialogAction onClick={handleDeleteModel}>
-							{t("Actions.delete")}
+							{t`Delete`}
 						</AlertDialogAction>
 					</Button>
 				</AlertDialogFooter>

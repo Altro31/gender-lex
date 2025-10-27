@@ -1,18 +1,17 @@
-"use client"
+'use client'
 
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from '@/components/ui/checkbox'
 import {
 	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useLingui } from "@lingui/react/macro"
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { t } from '@lingui/core/macro'
 
 export default function LoginForm() {
-	const { t } = useLingui()
 	return (
 		<>
 			<FormField
@@ -23,9 +22,9 @@ export default function LoginForm() {
 						<FormControl>
 							<Input
 								placeholder={t`you@example.com`}
-								type={"email"}
+								type={'email'}
 								value={field.value}
-								onChange={(e) => {
+								onChange={e => {
 									const val = e.target.value
 									field.onChange(val)
 								}}
@@ -43,9 +42,9 @@ export default function LoginForm() {
 						<FormControl>
 							<Input
 								placeholder={t`Your password`}
-								type={"password"}
+								type={'password'}
 								value={field.value}
-								onChange={(e) => {
+								onChange={e => {
 									const val = e.target.value
 									field.onChange(val)
 								}}
