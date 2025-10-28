@@ -22,7 +22,7 @@ export const signInSocial = actionClient
 			body: { provider, callbackURL: envs.UI_URL },
 		})
 		if (res.redirect) {
-			redirect({ href: res.url ?? "/", locale: "en" })
+			redirect(res.url ?? "/")
 		}
 		return { success: true }
 	})

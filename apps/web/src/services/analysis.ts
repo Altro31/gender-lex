@@ -31,10 +31,7 @@ export async function prepareAnalysis(input: HomeSchema) {
 		console.error(error)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
-	permanentRedirect({
-		href: `/analysis/${data.id}`,
-		locale: session.session.lang,
-	})
+	permanentRedirect(`/analysis/${data.id}`)
 }
 
 export async function startAnalysis(id: string) {
@@ -105,8 +102,5 @@ export async function redoAnalysis(id: string) {
 		console.error(error)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
-	permanentRedirect({
-		href: `/analysis/${data.id}`,
-		locale: session.session.lang,
-	})
+	permanentRedirect(`/analysis/${data.id}`)
 }
