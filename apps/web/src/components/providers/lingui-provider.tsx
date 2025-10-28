@@ -1,7 +1,7 @@
-'use client'
+"use client"
 
-import { type Messages, i18n } from '@lingui/core'
-import { I18nProvider } from '@lingui/react'
+import { type Messages, i18n } from "@lingui/core"
+import { I18nProvider } from "@lingui/react"
 
 export function LinguiProvider({
 	children,
