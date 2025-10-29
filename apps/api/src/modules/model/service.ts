@@ -7,7 +7,7 @@ import {
 import { sseService } from "@/modules/sse/service"
 import { FetchHttpClient, HttpClient } from "@effect/platform"
 import { decrypt, encrypt } from "@repo/auth/encrypt"
-import type { $Enums, Prisma } from "@repo/db/models"
+import type { ModelError, ModelStatus, Prisma } from "@repo/db/models"
 import { Console, Effect, Match } from "effect"
 import Elysia, { env } from "elysia"
 
@@ -122,8 +122,8 @@ export const modelService = new Elysia({ name: "model.service" })
 
                 async updateModelStatus(
                     id: string,
-                    status: $Enums.ModelStatus,
-                    error?: $Enums.ModelError,
+                    status: ModelStatus,
+                    error?: ModelError,
                 ) {
                     const model = await repository.findUnique({ where: { id } })
                     if (!model) {

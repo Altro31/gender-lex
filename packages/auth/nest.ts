@@ -1,9 +1,9 @@
-import { PrismaClient } from '@repo/db/client'
+import { PrismaClient, adapter } from '@repo/db/client'
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { anonymous, customSession } from 'better-auth/plugins'
 
-const prisma = (<any>global).prisma || new PrismaClient()
+const prisma = (<any>global).prisma || new PrismaClient({ adapter })
 
 if (process.env.NODE_ENV !== 'production') {
 	;(<any>global).prisma = prisma

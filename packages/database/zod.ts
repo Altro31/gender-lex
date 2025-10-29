@@ -1,1 +1,1 @@
-export * from '@zenstackhq/runtime/zod/models'
+export * from './prisma/generated/zod/models'

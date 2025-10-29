@@ -1,5 +1,11 @@
-import { Prisma } from '@zenstackhq/runtime/models'
-export { PrismaClient } from '@prisma/client'
+import { Prisma } from './prisma/generated/client'
+import { PrismaPg } from '@prisma/adapter-pg'
+
+export { PrismaClient } from './prisma/generated/client/client'
+
+export const adapter = new PrismaPg({
+	connectionString: process.env.DATABASE_URL,
+})
 
 export const extension = Prisma.defineExtension({
 	query: {

@@ -1,4 +1,4 @@
-import { PrismaClient } from '@repo/db/client'
+import { PrismaClient, adapter } from '@repo/db/client'
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { nextCookies } from 'better-auth/next-js'
@@ -8,7 +8,7 @@ declare global {
 	var prisma: PrismaClient
 }
 
-const prisma = global.prisma || new PrismaClient()
+const prisma = global.prisma || new PrismaClient({ adapter })
 
 if (process.env.NODE_ENV !== 'production') {
 	global.prisma = prisma

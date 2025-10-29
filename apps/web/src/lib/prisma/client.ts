@@ -1,11 +1,11 @@
 import { getSession } from "@/lib/auth/auth-server"
 import { enhance } from "@repo/db"
-import { extension, PrismaClient } from "@repo/db/client"
+import { extension, PrismaClient, adapter } from "@repo/db/client"
 // @ts-ignore
 import { encrypt, decrypt } from "@repo/auth/encrypt"
 import envs from "@/lib/env/env-server"
 
-const prisma = (<any>global).prisma || new PrismaClient()
+const prisma = (<any>global).prisma || new PrismaClient({ adapter })
 
 if (process.env.NODE_ENV !== "production") {
 	;(<any>global).prisma = prisma

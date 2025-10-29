@@ -1,4 +1,4 @@
-import { $Enums, type Model, type Preset } from "@repo/db/models"
+import { ModelRole, type Model, type Preset } from "@repo/db/models"
 import { z } from "zod/mini"
 
 export type PresetSchema = z.infer<typeof PresetSchema>
@@ -8,11 +8,9 @@ export const PresetSchema = z.object({
 	Models: z.array(
 		z.object({
 			id: z.optional(z.string()),
-			role: z.enum($Enums.ModelRole, "Role field is required"),
+			role: z.enum(ModelRole, "Role field is required"),
 			Model: z.object(
-				{
-					id: z.string(),
-				},
+				{ id: z.string() },
 				"Model field is required",
 			) as z.ZodMiniType<Partial<Model>>,
 		}),

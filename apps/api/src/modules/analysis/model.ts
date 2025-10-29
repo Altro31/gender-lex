@@ -1,5 +1,5 @@
 import { paginationSchema } from "@/lib/pagination"
-import { $Enums } from "@repo/db/models"
+import { AnalysisStatus } from "@repo/db/models"
 import {
     AnalysisSchema,
     ModelSchema,
@@ -34,7 +34,7 @@ export const analysisModels = {
     redoOutput: AnalysisSchema.omit({ User: true }),
     findManyQueryParams: paginationSchema.extend({
         q: z.string().optional(),
-        status: z.enum($Enums.AnalysisStatus).optional(),
+        status: z.enum(AnalysisStatus).optional(),
     }),
 }
 

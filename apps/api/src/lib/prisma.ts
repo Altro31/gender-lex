@@ -2,10 +2,10 @@ import auth from "@/lib/auth"
 import base from "@/lib/base"
 import { decrypt, encrypt } from "@repo/auth/encrypt"
 import { enhance, type PrismaClient } from "@repo/db"
-import { PrismaClient as PrismaClientClass } from "@repo/db/client"
+import { PrismaClient as PrismaClientClass, adapter } from "@repo/db/client"
 import Elysia from "elysia"
 
-export const rawPrisma = new PrismaClientClass()
+export const rawPrisma = new PrismaClientClass({ adapter })
 
 export default new Elysia({ name: "prisma" })
     .use(base)

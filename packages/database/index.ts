@@ -1,1 +1,1 @@
-export * from '@zenstackhq/runtime'
+export * from './prisma/generated/enhance'

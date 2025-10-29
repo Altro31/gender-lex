@@ -1,9 +1,9 @@
 import { select } from "@lingui/core/macro"
-import { $Enums } from "@repo/db/models"
+import { ModelError, ModelStatus } from "@repo/db/models"
 import { z } from "zod/mini"
 
-export function getStatusColor(status: $Enums.ModelStatus) {
-	const validatedStatus = z.enum($Enums.ModelStatus).parse(status)
+export function getStatusColor(status: ModelStatus) {
+	const validatedStatus = z.enum(ModelStatus).parse(status)
 	return statusOptions[validatedStatus]
 }
 
@@ -12,9 +12,9 @@ const statusOptions = {
 	inactive: "bg-gray-100 text-gray-800 hover:bg-gray-200",
 	error: "bg-red-100 text-red-800 hover:bg-red-200",
 	connecting: "bg-gray-100 text-gray-800 hover:bg-gray-200",
-} as const satisfies Record<$Enums.ModelStatus, string>
+} as const satisfies Record<ModelStatus, string>
 
-export function getStatusText(status: $Enums.ModelStatus) {
+export function getStatusText(status: ModelStatus) {
 	return select(status, {
 		error: "Error",
 		active: "Active",
@@ -24,7 +24,7 @@ export function getStatusText(status: $Enums.ModelStatus) {
 	})
 }
 
-export function getErrorMessage(error: $Enums.ModelError) {
+export function getErrorMessage(error: ModelError) {
 	return {
 		title: select(error, {
 			INVALID_API_KEY: "Invalid API key",
