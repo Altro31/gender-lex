@@ -1,18 +1,19 @@
-import SearchInput from "@/components/search-input"
-import { Button } from "@/components/ui/button"
-import CreatePresetDialog from "@/sections/preset/components/dialogs/create-preset-dialog"
-import PresetListItem from "@/sections/preset/list/preset-list-item"
-import type { PresetsResponse } from "@/types/preset"
-import { t } from "@lingui/core/macro"
-import { Plus, Zap } from "lucide-react"
-import { useQueryState } from "nuqs"
+'use client'
+
+import { Button } from '@/components/ui/button'
+import CreatePresetDialog from '@/sections/preset/components/dialogs/create-preset-dialog'
+import PresetListItem from '@/sections/preset/list/preset-list-item'
+import type { PresetsResponse } from '@/types/preset'
+import { t } from '@lingui/core/macro'
+import { Plus, Zap } from 'lucide-react'
+import { useQueryState } from 'nuqs'
 
 interface Props {
 	presets: PresetsResponse
 }
 
 export default function PresetsList({ presets }: Props) {
-	const [q] = useQueryState("q")
+	const [q] = useQueryState('q')
 	return presets.length === 0 ? (
 		<div className="py-12 text-center">
 			<div className="mb-4 text-gray-400">
@@ -37,7 +38,7 @@ export default function PresetsList({ presets }: Props) {
 		</div>
 	) : (
 		<div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-			{presets.map((preset) => (
+			{presets.map(preset => (
 				<PresetListItem key={preset.id} preset={preset} />
 			))}
 		</div>

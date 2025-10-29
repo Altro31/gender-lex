@@ -3,9 +3,11 @@
 import { getPrisma } from "@/lib/prisma/client"
 import { actionClient } from "@/lib/safe-action"
 import { PresetSchema } from "@/sections/preset/form/preset-schema"
-import { revalidatePath } from "next/cache"
+import { cacheTag, revalidatePath, updateTag } from "next/cache"
 import { z } from "zod/mini"
 export async function findPresets({ page, q }: { page: number; q?: string }) {
+	"use cache: private"
+	cacheTag("presets")
 	const prisma = await getPrisma()
 
 	return prisma.preset.findMany({
@@ -33,13 +35,8 @@ export const createPreset = actionClient
 			},
 		})
 
-		revalidatePath("/presets", "page")
-		revalidatePath("", "page")
-
-		return {
-			success: true,
-			data,
-		}
+		updateTag("presets")
+		return { success: true, data }
 	})
 
 export const editPreset = actionClient
@@ -50,11 +47,7 @@ export const editPreset = actionClient
 		const data = await prisma.$transaction(async (tx) => {
 			await tx.preset.update({
 				where: { id },
-				data: {
-					Models: {
-						deleteMany: {},
-					},
-				},
+				data: { Models: { deleteMany: {} } },
 				select: { id: true },
 			})
 			return tx.preset.update({
@@ -72,12 +65,10 @@ export const editPreset = actionClient
 			})
 		})
 
-		revalidatePath("/presets", "page")
+		updateTag("presets")
+		updateTag(`preset-${id}`)
 
-		return {
-			success: true,
-			data,
-		}
+		return { success: true, data }
 	})
 
 export const deletePreset = actionClient
@@ -87,11 +78,8 @@ export const deletePreset = actionClient
 
 		await prisma.preset.delete({ where: { id } })
 
-		revalidatePath("/presets", "page")
-
-		return {
-			success: true,
-		}
+		updateTag("presets")
+		return { success: true }
 	})
 
 export const clonePreset = actionClient
@@ -129,27 +117,22 @@ export const clonePreset = actionClient
 			},
 		})
 
-		revalidatePath("/presets", "page")
-
-		return {
-			success: true,
-			data: cloned,
-		}
+		updateTag("presets")
+		return { success: true, data: cloned }
 	})
 
 export const getPresetsSelect = async ({ page }: { page: number }) => {
-	const prisma = await getPrisma()
+	"use cache: private"
+	cacheTag("presets")
 
-	return prisma.preset.findMany({
-		skip: page * 20,
-		take: 20,
-	})
+	const prisma = await getPrisma()
+	return prisma.preset.findMany({ skip: page * 20, take: 20 })
 }
 
 export const getLastUsedPreset = async () => {
-	const prisma = await getPrisma()
+	"use cache: private"
+	cacheTag("presets")
 
-	return prisma.preset.findFirst({
-		orderBy: [{ usedAt: "desc" }],
-	})
+	const prisma = await getPrisma()
+	return prisma.preset.findFirst({ orderBy: [{ usedAt: "desc" }] })
 }

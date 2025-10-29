@@ -33,8 +33,3 @@ export const signUp = actionClient
 		auth.api.signUpEmail({ body: parsedInput })
 		return { success: true }
 	})
-
-export async function getLocale() {
-	const session = await getSession()
-	return session?.session.lang ?? "en"
-}

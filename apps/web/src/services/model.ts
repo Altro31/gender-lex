@@ -4,7 +4,8 @@ import { client } from "@/lib/api/client"
 import { getPrisma } from "@/lib/prisma/client"
 import { actionClient } from "@/lib/safe-action"
 import { ModelSchema } from "@/sections/model/form/model-schema"
-import { revalidatePath } from "next/cache"
+import { cacheTag, updateTag } from "next/cache"
+import { after } from "next/server"
 import { z } from "zod/mini"
 
 export async function findModels({
@@ -14,11 +15,11 @@ export async function findModels({
 	q?: string
 	page?: string
 }) {
+	"use cache: private"
+	cacheTag("models")
 	const prisma = await getPrisma()
 	return prisma.model.findMany({
-		where: {
-			name: { contains: q, mode: "insensitive" },
-		},
+		where: { name: { contains: q, mode: "insensitive" } },
 		skip: (Number(page) - 1) * 10,
 		take: 10,
 		orderBy: [
@@ -34,12 +35,8 @@ export const createModel = actionClient
 	.action(async ({ parsedInput: body }) => {
 		const { data } = await client.model.post(body)
 
-		revalidatePath("/models", "page")
-
-		return {
-			success: true,
-			data,
-		}
+		updateTag("models")
+		return { success: true, data }
 	})
 
 export const editModel = actionClient
@@ -48,13 +45,11 @@ export const editModel = actionClient
 		const prisma = await getPrisma()
 
 		const data = await prisma.model.update({ where: { id }, data: body })
-		void testConnection(id)
-		revalidatePath("/models", "page")
+		after(() => testConnection(id))
 
-		return {
-			success: true,
-			data,
-		}
+		updateTag("models")
+		updateTag(`model-${id}`)
+		return { success: true, data }
 	})
 
 export const deleteModel = actionClient
@@ -62,10 +57,8 @@ export const deleteModel = actionClient
 	.action(async ({ parsedInput: id }) => {
 		const prisma = await getPrisma()
 		await prisma.model.delete({ where: { id } })
-		revalidatePath("/models", "page")
-		return {
-			success: true,
-		}
+		updateTag("models")
+		return { success: true }
 	})
 
 export const testConnection = actionClient
@@ -75,15 +68,15 @@ export const testConnection = actionClient
 			.model({ id })
 			["test-connection"].post()
 
-		revalidatePath("/models", "page")
 		if (error) throw new Error("Failed to connect model")
-		return {
-			success: true,
-			data,
-		}
+		updateTag("models")
+		updateTag(`model-${id}`)
+		return { success: true, data }
 	})
 
 export const getModelsSelect = async ({ page }: { page: number }) => {
+	"use cache: private"
+	cacheTag("models")
 	const prisma = await getPrisma()
 
 	return prisma.model.findMany({

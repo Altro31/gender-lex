@@ -1,14 +1,15 @@
-import SearchInput, { SearchInputFallback } from "@/components/search-input"
-import AnalysesListContainer from "@/sections/analysis/list/analyses-list-container"
-import { t } from "@lingui/core/macro"
-import { Suspense } from "react"
-import AnalysesTabsContainer from "./analyses-tabs-container"
+import SearchInput, { SearchInputFallback } from '@/components/search-input'
+import AnalysesListContainer from '@/sections/analysis/list/analyses-list-container'
+import { t } from '@lingui/core/macro'
+import { Suspense } from 'react'
+import AnalysesTabsContainer from './analyses-tabs-container'
+import { cacheTag } from 'next/cache'
 
 interface Props {
 	searchParams: Promise<{ page?: string; status?: string; q?: string }>
 }
 
-export default function AnalysesContainer({ searchParams }: Props) {
+export default async function AnalysesContainer({ searchParams }: Props) {
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<div className="container mx-auto space-y-4 px-4 py-8">
