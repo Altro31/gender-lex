@@ -1,10 +1,10 @@
-import SearchInput, { SearchInputFallback } from '@/components/search-input'
-import { t } from '@lingui/core/macro'
-import { Suspense } from 'react'
-import CreatePresetDialog from '../components/dialogs/create-preset-dialog'
-import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
-import PresetsListContainer from './preset-list-container'
+import SearchInput, { SearchInputFallback } from "@/components/search-input"
+import { t } from "@lingui/core/macro"
+import { Suspense } from "react"
+import CreatePresetDialog from "../components/dialogs/create-preset-dialog"
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import PresetsListContainer from "./preset-list-container"
 
 interface Props {
 	searchParams: Promise<{ q?: string; page?: string }>

@@ -1,19 +1,19 @@
-'use client'
+"use client"
 
-import { Button } from '@/components/ui/button'
-import CreateModelDialog from '@/sections/model/components/dialogs/create-model-dialog'
-import ModelListItem from '@/sections/model/list/model-list-item'
-import type { ModelsResponse } from '@/types/model'
-import { t } from '@lingui/core/macro'
-import { Plus, Settings } from 'lucide-react'
-import { useQueryState } from 'nuqs'
+import { Button } from "@/components/ui/button"
+import CreateModelDialog from "@/sections/model/components/dialogs/create-model-dialog"
+import ModelListItem from "@/sections/model/list/model-list-item"
+import type { ModelsResponse } from "@/types/model"
+import { t } from "@lingui/core/macro"
+import { Plus, Settings } from "lucide-react"
+import { useQueryState } from "nuqs"
 
 interface Props {
 	modelsResponse: ModelsResponse
 }
 
 export default function ModelList({ modelsResponse: models }: Props) {
-	const [searchTerm] = useQueryState('q')
+	const [searchTerm] = useQueryState("q")
 	return models.length === 0 ? (
 		<div className="py-6 text-center">
 			<div className="mb-4 text-gray-400">
@@ -40,7 +40,7 @@ export default function ModelList({ modelsResponse: models }: Props) {
 		</div>
 	) : (
 		<ul className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-			{models.map(model => (
+			{models.map((model) => (
 				<ModelListItem model={model} key={model.id} />
 			))}
 		</ul>

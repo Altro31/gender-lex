@@ -1,5 +1,5 @@
-import { findPresets } from '@/services/preset'
-import PresetsList from './presets-list'
+import { findPresets } from "@/services/preset"
+import PresetsList from "./presets-list"
 
 interface Props {
 	searchParams: Promise<{ q?: string; page?: string }>

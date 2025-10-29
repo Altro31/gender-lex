@@ -1,5 +1,5 @@
-import { getStatusCount } from '@/services/analysis'
-import AnalysesTabs from './analyses-tabs'
+import { getStatusCount } from "@/services/analysis"
+import AnalysesTabs from "./analyses-tabs"
 
 export default async function AnalysesTabsContainer() {
 	const statusCountResponse = await getStatusCount()

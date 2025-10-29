@@ -1,10 +1,10 @@
-'use client'
+"use client"
 
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { StatusCountResponse } from '@/types/analyses'
-import { t } from '@lingui/core/macro'
-import { $Enums, type AnalysisStatus } from '@prisma/client'
-import { debounce, parseAsStringEnum, useQueryState } from 'nuqs'
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { StatusCountResponse } from "@/types/analyses"
+import { t } from "@lingui/core/macro"
+import { $Enums, type AnalysisStatus } from "@prisma/client"
+import { debounce, parseAsStringEnum, useQueryState } from "nuqs"
 
 interface Props {
 	statusCount: StatusCountResponse
@@ -12,13 +12,13 @@ interface Props {
 
 export default function AnalysesTabs({ statusCount }: Props) {
 	const [statusFilter, setStatusFilter] = useQueryState(
-		'status',
-		parseAsStringEnum([...Object.values($Enums.AnalysisStatus), ''])
-			.withDefault('')
+		"status",
+		parseAsStringEnum([...Object.values($Enums.AnalysisStatus), ""])
+			.withDefault("")
 			.withOptions({ shallow: false, limitUrlUpdates: debounce(500) }),
 	)
 
-	const handleTab = (value: AnalysisStatus | '') => {
+	const handleTab = (value: AnalysisStatus | "") => {
 		setStatusFilter(value || null)
 	}
 	return (

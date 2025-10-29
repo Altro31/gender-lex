@@ -1,11 +1,11 @@
-import { findModels } from '@/services/model'
-import { t } from '@lingui/core/macro'
-import CreateModelDialog from '../components/dialogs/create-model-dialog'
-import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
-import SearchInput, { SearchInputFallback } from '@/components/search-input'
-import { Suspense } from 'react'
-import ModelListsContainer from './model-list-container'
+import { findModels } from "@/services/model"
+import { t } from "@lingui/core/macro"
+import CreateModelDialog from "../components/dialogs/create-model-dialog"
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import SearchInput, { SearchInputFallback } from "@/components/search-input"
+import { Suspense } from "react"
+import ModelListsContainer from "./model-list-container"
 
 interface Props {
 	searchParams: Promise<{ q?: string; page?: string }>
