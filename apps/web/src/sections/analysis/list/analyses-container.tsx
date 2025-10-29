@@ -1,9 +1,8 @@
-import SearchInput from "@/components/search-input"
-import StatsCards from "@/sections/analysis/components/stats-cards"
-import AnalysesListContainer from "@/sections/analysis/list/analyses-list-container"
-import AnalysesTabs from "@/sections/analysis/list/analyses-tabs"
-import { t } from "@lingui/core/macro"
-import { Suspense } from "react"
+import SearchInput, { SearchInputFallback } from '@/components/search-input'
+import AnalysesListContainer from '@/sections/analysis/list/analyses-list-container'
+import { t } from '@lingui/core/macro'
+import { Suspense } from 'react'
+import AnalysesTabsContainer from './analyses-tabs-container'
 
 interface Props {
 	searchParams: Promise<{ page?: string; status?: string; q?: string }>
@@ -22,15 +21,11 @@ export default function AnalysesContainer({ searchParams }: Props) {
 						{t`Manage gender bias detection analysis`}
 					</p>
 				</div>
-
-				<StatsCards />
-
-				<Suspense>
+				<Suspense fallback={<SearchInputFallback />}>
 					<SearchInput name="q" />
 				</Suspense>
-
 				<Suspense>
-					<AnalysesTabs />
+					<AnalysesTabsContainer />
 				</Suspense>
 				<Suspense>
 					<AnalysesListContainer searchParams={searchParams} />
