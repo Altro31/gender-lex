@@ -1,9 +1,9 @@
-import SearchInput, { SearchInputFallback } from '@/components/search-input'
-import AnalysesListContainer from '@/sections/analysis/list/analyses-list-container'
-import { t } from '@lingui/core/macro'
-import { Suspense } from 'react'
-import AnalysesTabsContainer from './analyses-tabs-container'
-import { cacheTag } from 'next/cache'
+import SearchInput, { SearchInputFallback } from "@/components/search-input"
+import AnalysesListContainer from "@/sections/analysis/list/analyses-list-container"
+import { t } from "@lingui/core/macro"
+import { Suspense } from "react"
+import AnalysesTabsContainer from "./analyses-tabs-container"
+import { cacheTag } from "next/cache"
 
 interface Props {
 	searchParams: Promise<{ page?: string; status?: string; q?: string }>
