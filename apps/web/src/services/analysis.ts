@@ -6,21 +6,12 @@ import { getPrisma } from "@/lib/prisma/client"
 import { actionClient } from "@/lib/safe-action"
 import type { HomeSchema } from "@/sections/home/form/home-schema"
 import { cacheTag, updateTag } from "next/cache"
-import { permanentRedirect, unauthorized } from "next/navigation"
+import { unauthorized } from "next/navigation"
 import z from "zod"
 
 export async function prepareAnalysis(input: HomeSchema) {
 	const session = await getSession()
 	if (!session) unauthorized()
-	// const formData = new FormData()
-	// formData.append("preset", input.preset.id)
-	// if (input.files.length) {
-	// 	for (const file of input.files) {
-	// 		formData.append("files", file.file)
-	// 	}
-	// } else {
-	// 	formData.append("text", input.text)
-	// }
 	const { data, error } = await client.analysis.prepare.post({
 		...input,
 		files: input.files.map(({ file }) => file),
@@ -28,10 +19,10 @@ export async function prepareAnalysis(input: HomeSchema) {
 	})
 	if (error) {
 		console.error(error)
-		throw new Error("An error occurred when trying access analysis with id")
+		return { error }
 	}
 	updateTag("analyses")
-	permanentRedirect(`/analysis/${data.id}`)
+	return { data, error: null }
 }
 
 export async function startAnalysis(id: string) {
@@ -113,9 +104,9 @@ export async function redoAnalysis(id: string) {
 	const { data, error } = await client.analysis({ id }).redo.post()
 	if (error) {
 		console.error(error)
-		throw new Error("An error occurred when trying access analysis with id")
+		return { error }
 	}
 	updateTag("analyses")
 	updateTag(`analysys-${id}`)
-	permanentRedirect(`/analysis/${data.id}`)
+	return { data, error: null }
 }
