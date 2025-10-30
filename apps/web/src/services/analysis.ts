@@ -30,7 +30,6 @@ export async function prepareAnalysis(input: HomeSchema) {
 		console.error(error)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
-	updateTag("analyses")
 	permanentRedirect(`/analysis/${data.id}`)
 }
 
