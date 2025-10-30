@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { type Messages, i18n } from "@lingui/core"
-import { I18nProvider } from "@lingui/react"
+import { type Messages, i18n } from '@lingui/core'
+import { I18nProvider } from '@lingui/react'
 
 export function LinguiProvider({
 	children,
@@ -12,8 +12,11 @@ export function LinguiProvider({
 	initialLocale: string
 	initialMessages: Messages
 }) {
-	i18n.load(initialLocale, initialMessages)
-	i18n.activate(initialLocale)
+	console.log('Locale: ', i18n.locale)
+	if (!i18n.locale) {
+		i18n.load(initialLocale, initialMessages)
+		i18n.activate(initialLocale)
+	}
 
 	return <I18nProvider i18n={i18n}>{children}</I18nProvider>
 }
