@@ -1,15 +1,15 @@
-import { Card } from "@/components/ui/card"
-import { UploadArea } from "@/sections/home/components/upload/upload-area"
-import HomeForm from "@/sections/home/form/home-form"
-import { t } from "@lingui/core/macro"
-import { Trans } from "@lingui/react/macro"
+import { Card } from '@/components/ui/card'
+import { UploadArea } from '@/sections/home/components/upload/upload-area'
+import HomeForm from '@/sections/home/form/home-form'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import {
 	ChartColumnIcon,
 	FileTextIcon,
 	RefreshCwIcon,
 	SearchCodeIcon,
-} from "lucide-react"
-import { Suspense } from "react"
+} from 'lucide-react'
+import { Suspense } from 'react'
 
 export default async function HomeContainer() {
 	const cards = [
@@ -65,7 +65,7 @@ export default async function HomeContainer() {
 								<div className="flex flex-col items-end justify-between gap-1 sm:flex-row">
 									<Icon className="h-5 w-5 text-gray-500" />
 									{!ready && (
-										<span className="bg-dev bg rounded-full p-1 px-2 text-sm text-white">
+										<span className="bg-dev rounded-full p-1 px-2 text-sm text-white">
 											dev
 										</span>
 									)}

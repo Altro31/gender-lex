@@ -30,6 +30,7 @@ export async function prepareAnalysis(input: HomeSchema) {
 		console.error(error)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
+	updateTag("analyses")
 	permanentRedirect(`/analysis/${data.id}`)
 }
 
@@ -41,8 +42,6 @@ export async function startAnalysis(id: string) {
 		console.error(error.value)
 		throw new Error("An error occurred when trying access analysis with id")
 	}
-	updateTag("analyses")
-	updateTag(`analysys-${id}`)
 	return data
 }
 
@@ -63,6 +62,9 @@ export async function findAnalyses(query: {
 	"use cache: private"
 	cacheTag("analyses")
 
+	const session = await getSession()
+	if (!session) unauthorized()
+
 	const { error, data } = await client.analysis.get({
 		query: {
 			q: query.q || "",
@@ -70,6 +72,7 @@ export async function findAnalyses(query: {
 			status: query.status || undefined,
 		},
 	})
+	console.log(error, data)
 	if (error) throw new Error(JSON.stringify(error))
 	return data
 }

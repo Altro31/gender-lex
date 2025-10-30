@@ -30,7 +30,8 @@ export default new Elysia({
                 const data = await promise
                 if (
                     data.sessionId === session?.id ||
-                    data.userId === user?.id
+                    data.userId === user?.id ||
+                    data.event === "ping"
                 ) {
                     yield sse(data)
                 }
