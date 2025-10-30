@@ -15,7 +15,10 @@ const app = new Elysia()
     .use(
         openapi({
             references: fromTypes(),
-            mapJsonSchema: { zod: z.toJSONSchema },
+            mapJsonSchema: {
+                zod: (arg: any) =>
+                    z.toJSONSchema(arg, { unrepresentable: "any" }),
+            },
         }),
     )
     .use(cors())
