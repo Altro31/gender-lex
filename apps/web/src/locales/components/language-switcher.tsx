@@ -8,12 +8,20 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { setLanguage } from '@/services/registers'
 import { t } from '@lingui/core/macro'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { toast } from 'sonner'
 
 export default function LanguageSwitcher() {
 	const router = useRouter()
 	const { locale } = useParams()
+	const pathname = usePathname()
+
+	useEffect(() => {
+		const targetLocale = locale === 'es' ? 'en' : 'es'
+		const newPathname = pathname.split('/').with(1, targetLocale).join('/')
+		router.prefetch(newPathname)
+	}, [pathname, router])
 
 	const changeLanguage = (value: string) => async () => {
 		const { serverError } = await setLanguage(value)
@@ -22,11 +30,8 @@ export default function LanguageSwitcher() {
 			toast.error('Error')
 			return
 		}
-		const url = new URL(window.location.href)
-		const segments = url.pathname.split('/')
-		segments[1] = value
-		url.pathname = segments.join('/')
-		router.replace(url.toString())
+		const newPathname = pathname.split('/').with(1, value).join('/')
+		router.replace(newPathname)
 	}
 
 	return (
