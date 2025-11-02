@@ -444,7 +444,7 @@ msgstr "Historial"
 #: src/sections/analysis/details/analysis-details-container.tsx:24
 #: src/sections/analysis/details/content/analysis-content.tsx:110
 msgid "Identified Biased Terms"
-msgstr "Terminos sesgados identificados"
+msgstr "Terminos"
 
 #: src/sections/model/form/model-form.tsx:35
 msgid "Identifier"
