@@ -13,13 +13,13 @@ import AnalysisContentOriginalText from "@/sections/analysis/details/content/ana
 import { startAnalysis } from "@/services/analysis"
 import { t } from "@lingui/core/macro"
 
-interface Props {
-	params: PageProps<"/[locale]/analysis/[id]">["params"]
-}
-
-export default async function AnalysisContent({ params }: Props) {
+export default async function AnalysisContent({
+	params,
+	searchParams,
+}: PageProps<"/[locale]/analysis/[id]">) {
 	const { id } = await params
-	const analysis = await startAnalysis(id)
+	const { run } = await searchParams
+	const analysis = await startAnalysis(id, !!run)
 
 	return (
 		<>

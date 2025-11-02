@@ -14,9 +14,9 @@ export async function generateMetadata({
 	} as Metadata
 }
 
-export default async function AnalysisDetailsPage({
-	params,
-}: PageProps<"/[locale]/analysis/[id]">) {
-	await setServerLocale(params)
-	return <AnalysisDetailsContainer params={params} />
+export default async function AnalysisDetailsPage(
+	props: PageProps<"/[locale]/analysis/[id]">,
+) {
+	await setServerLocale(props.params)
+	return <AnalysisDetailsContainer {...props} />
 }

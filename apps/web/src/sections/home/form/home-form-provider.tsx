@@ -25,10 +25,10 @@ export default function HomeFormProvider({ children, lastUsedPreset }: Props) {
 	const onSubmit = async (input: HomeSchema) => {
 		const { data, error } = await prepareAnalysis(input)
 		if (error) {
-			toast.error(error.value.message)
+			toast.error(error)
 			return
 		}
-		router.push(`/analysis/${data.id}`)
+		router.push(`/analysis/${data.id}?run=true`)
 	}
 
 	return (

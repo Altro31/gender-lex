@@ -5,16 +5,15 @@ import AnalysisContent from "@/sections/analysis/details/content/analysis-conten
 import { t } from "@lingui/core/macro"
 import { Suspense } from "react"
 
-interface Props {
-	params: PageProps<"/[locale]/analysis/[id]">["params"]
-}
-export default function AnalysisDetailsContainer({ params }: Props) {
+export default function AnalysisDetailsContainer(
+	props: PageProps<"/[locale]/analysis/[id]">,
+) {
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<AnalysisSidebarTrigger />
 			<div className="container mx-auto px-4 py-8">
 				{/* Header */}
-				<AnalysisHeader params={params} />
+				<AnalysisHeader {...props} />
 
 				{/* Content */}
 				<Tabs defaultValue="overview" className="space-y-6">
@@ -31,7 +30,7 @@ export default function AnalysisDetailsContainer({ params }: Props) {
 					</TabsList>
 
 					<Suspense>
-						<AnalysisContent params={params} />
+						<AnalysisContent {...props} />
 					</Suspense>
 				</Tabs>
 			</div>

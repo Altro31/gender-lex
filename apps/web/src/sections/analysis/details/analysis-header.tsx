@@ -15,12 +15,11 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { Suspense } from "react"
+import UrlFixer from "../../../components/url-fixer"
 
-interface Props {
-	params: PageProps<"/[locale]/analysis/[id]">["params"]
-}
-
-export default function AnalysisHeader({ params }: Props) {
+export default function AnalysisHeader(
+	props: PageProps<"/[locale]/analysis/[id]">,
+) {
 	return (
 		<div className="mb-8">
 			<div className="mb-4 flex items-center gap-4">
@@ -32,15 +31,19 @@ export default function AnalysisHeader({ params }: Props) {
 				</Link>
 			</div>
 			<Suspense>
-				<Container params={params} />
+				<Container {...props} />
 			</Suspense>
 		</div>
 	)
 }
 
-async function Container({ params }: Props) {
-	const { id } = await params
-	const analysis = await startAnalysis(id)
+async function Container({
+	params,
+	searchParams,
+}: PageProps<"/[locale]/analysis/[id]">) {
+	const { id, locale } = await params
+	const { run } = await searchParams
+	const analysis = await startAnalysis(id, !!run)
 	const getStatusConfig = (status: string) => {
 		switch (status) {
 			case "analyzing":
@@ -68,6 +71,7 @@ async function Container({ params }: Props) {
 	const StatusIcon = statusConfig.icon
 	return (
 		<div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+			<UrlFixer url={`/${locale}/analysis/${analysis.id}`} />
 			<div>
 				<h1 className="mb-2 text-3xl font-bold text-gray-900">
 					{t`Analysis Details`}
