@@ -1,16 +1,16 @@
-'use client'
+"use client"
 
 import {
 	DropdownMenuItem,
 	DropdownMenuSub,
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
-} from '@/components/ui/dropdown-menu'
-import { setLanguage } from '@/services/registers'
-import { t } from '@lingui/core/macro'
-import { useParams, usePathname, useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { toast } from 'sonner'
+} from "@/components/ui/dropdown-menu"
+import { setLanguage } from "@/services/registers"
+import { t } from "@lingui/core/macro"
+import { useParams, usePathname, useRouter } from "next/navigation"
+import { useEffect } from "react"
+import { toast } from "sonner"
 
 export default function LanguageSwitcher() {
 	const router = useRouter()
@@ -18,8 +18,8 @@ export default function LanguageSwitcher() {
 	const pathname = usePathname()
 
 	useEffect(() => {
-		const targetLocale = locale === 'es' ? 'en' : 'es'
-		const newPathname = pathname.split('/').with(1, targetLocale).join('/')
+		const targetLocale = locale === "es" ? "en" : "es"
+		const newPathname = pathname.split("/").with(1, targetLocale).join("/")
 		router.prefetch(newPathname)
 	}, [pathname, router])
 
@@ -27,10 +27,10 @@ export default function LanguageSwitcher() {
 		const { serverError } = await setLanguage(value)
 		if (serverError) {
 			console.log(serverError)
-			toast.error('Error')
+			toast.error("Error")
 			return
 		}
-		const newPathname = pathname.split('/').with(1, value).join('/')
+		const newPathname = pathname.split("/").with(1, value).join("/")
 		router.replace(newPathname)
 	}
 
@@ -43,15 +43,15 @@ export default function LanguageSwitcher() {
 				</DropdownMenuSubTrigger>
 				<DropdownMenuSubContent>
 					<DropdownMenuItem
-						onClick={changeLanguage('en')}
-						data-active={locale === 'en' || undefined}
+						onClick={changeLanguage("en")}
+						data-active={locale === "en" || undefined}
 						className="data-active:pointer-events-none data-active:opacity-50"
 					>
 						{t`English`}
 					</DropdownMenuItem>
 					<DropdownMenuItem
-						onClick={changeLanguage('es')}
-						data-active={locale === 'es' || undefined}
+						onClick={changeLanguage("es")}
+						data-active={locale === "es" || undefined}
 						className="data-active:pointer-events-none data-active:opacity-50"
 					>
 						{t`Spanish`}
