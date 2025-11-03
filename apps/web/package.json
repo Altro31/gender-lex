@@ -7,11 +7,12 @@
 	},
 	"scripts": {
 		"dev": "next dev -p 4000",
-		"build": "next build",
+		"build": "workflow build && next build",
 		"start": "next start",
 		"type:gen": "next typegen",
+		"studio": "workflow web",
 		"lint": "oxlint --fix --fix-suggestions",
-		"generate": "openapi-typescript ../api/public/openapi.yaml -o ./src/lib/api/types.d.ts && openapi-typescript ../api/public/openapi-zen.yaml -o ./src/lib/api/zen-types.d.ts",
+		"generate": "workflow build",
 		"locales:gen": "lingui extract"
 	},
 	"dependencies": {
@@ -69,7 +70,7 @@
 		"server-only": "^0.0.1",
 		"sonner": "^2.0.6",
 		"tailwind-merge": "^3.3.1",
-		"workflow": "^4.0.1-beta.3",
+		"workflow": "catalog:",
 		"zod": "catalog:",
 		"zustand": "^5.0.6"
 	},

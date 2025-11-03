@@ -2,9 +2,11 @@
     "name": "api",
     "version": "1.0.50",
     "scripts": {
-        "dev": "bun run --watch src/server.ts",
+        "dev": "bun x workflow build && bun run --watch src/server.ts",
+        "studio": "workflow web",
+        "generate": "workflow build",
         "start": "bun ./dist/index.js",
-        "build": "bun build --minify-whitespace --minify-syntax --target=node --outfile ./dist/index.js src/server.ts"
+        "build": "bun x workflow build && bun build --minify-whitespace --minify-syntax --target=node --outfile ./dist/index.js src/server.ts"
     },
     "dependencies": {
         "@adobe/pdfservices-node-sdk": "^4.1.0",
@@ -22,6 +24,7 @@
         "effect": "^3.17.9",
         "elysia": "catalog:",
         "umlsjs": "^1.2.1",
+        "workflow": "catalog:",
         "zod": "catalog:"
     },
     "devDependencies": {
