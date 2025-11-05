@@ -1,24 +1,21 @@
-import { setServerLocale } from "@/locales/request"
-import PresetsContainer from "@/sections/preset/list/presets-container"
-import { t } from "@lingui/core/macro"
-import { Metadata } from "next"
+import { setServerLocale } from '@/locales/request'
+import PresetsContainer from '@/sections/preset/list/presets-container'
+import { t } from '@lingui/core/macro'
+import { Metadata } from 'next'
 
-export async function generateMetadata({
-	params,
-}: PageProps<"/[locale]/analysis/[id]">) {
-	await setServerLocale(params)
+export async function generateMetadata() {
+	await setServerLocale()
 
 	return {
-		title: t`Presets Management` + " | GenderLex",
+		title: t`Presets Management` + ' | GenderLex',
 		description: t`Manage model combinations with specific configurations`,
 	} as Metadata
 }
 
 export default async function PresetsPage({
 	searchParams,
-	params,
-}: PageProps<"/[locale]/presets">) {
-	await setServerLocale(params)
+}: PageProps<'/[locale]/presets'>) {
+	await setServerLocale()
 
 	return <PresetsContainer searchParams={searchParams} />
 }

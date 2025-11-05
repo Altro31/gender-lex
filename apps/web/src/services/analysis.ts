@@ -66,7 +66,7 @@ export async function findAnalyses(query: {
 	page?: string
 	status?: string
 }) {
-	"use cache: private"
+	"use cache"
 	cacheTag("analyses")
 
 	const session = await getSession()

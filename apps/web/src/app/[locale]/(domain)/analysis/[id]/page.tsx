@@ -1,12 +1,11 @@
-import { setServerLocale } from "@/locales/request"
-import AnalysisDetailsContainer from "@/sections/analysis/details/analysis-details-container"
-import { t } from "@lingui/core/macro"
-import { Metadata } from "next"
+import { setServerLocale } from '@/locales/request'
+import AnalysisDetailsContainer from '@/sections/analysis/details/analysis-details-container'
+import { t } from '@lingui/core/macro'
+import { Metadata } from 'next'
+import { locale } from 'next/root-params'
 
-export async function generateMetadata({
-	params,
-}: PageProps<"/[locale]/analysis/[id]">) {
-	await setServerLocale(params)
+export async function generateMetadata() {
+	await setServerLocale()
 
 	return {
 		title: t`Analysis detail | GenderLex`,
@@ -15,8 +14,9 @@ export async function generateMetadata({
 }
 
 export default async function AnalysisDetailsPage(
-	props: PageProps<"/[locale]/analysis/[id]">,
+	props: PageProps<'/[locale]/analysis/[id]'>,
 ) {
-	await setServerLocale(props.params)
+	locale
+	await setServerLocale()
 	return <AnalysisDetailsContainer {...props} />
 }

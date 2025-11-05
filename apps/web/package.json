@@ -7,7 +7,7 @@
 	},
 	"scripts": {
 		"dev": "next dev -p 4000",
-		"build": "workflow build && next build",
+		"build": "next build",
 		"start": "next start",
 		"type:gen": "next typegen",
 		"studio": "workflow web",
@@ -89,7 +89,8 @@
 		"prettier-plugin-tailwindcss": "^0.6.14",
 		"tailwindcss": "^4",
 		"tw-animate-css": "^1.3.5",
-		"typescript": "catalog:"
+		"typescript": "catalog:",
+		"typescript-plugin-directives": "^0.0.3"
 	},
 	"overrides": {
 		"@types/react": "19.2.2",

@@ -15,14 +15,13 @@
 		"incremental": true,
 		"noUncheckedIndexedAccess": true,
 		"plugins": [
-			{
-				"name": "next"
-			},
-			{
-				"name": "workflow"
-			}
+			{ "name": "next" },
+			{ "name": "workflow" },
+			{ "name": "typescript-plugin-directives" }
 		],
 		"paths": {
+			// "@/workflow/core/*": ["../api/.well-known/workflow/v1/*"],
+			// "@/workflows/*": ["../api/workflows/*"],
 			"@/*": ["./src/*", "../api/src/*"]
 		}
 	},
@@ -33,5 +32,5 @@
 		".next/types/**/*.ts",
 		".next/dev/types/**/*.ts"
 	],
-	"exclude": ["node_modules", "./t/**/*.tsx"]
+	"exclude": ["node_modules", "./t/**/*.tsx", "../api/**"]
 }

@@ -1,5 +1,6 @@
 import envs from "@/lib/env/env-server" with { type: "macro" }
 import type { NextConfig } from "next"
+import path from "path"
 import { withWorkflow } from "workflow/next"
 
 const nextConfig: NextConfig = {
@@ -10,8 +11,9 @@ const nextConfig: NextConfig = {
 		clientSegmentCache: true,
 		authInterrupts: true,
 		swcPlugins: [["@lingui/swc-plugin", {}]],
-		globalNotFound: true,
+		rootParams: true,
 	},
+	redirects: async () => [],
 	rewrites: async () => [
 		{ source: "/api/:path*", destination: `${envs.API_URL}/api/:path*` },
 	],
@@ -27,6 +29,7 @@ const nextConfig: NextConfig = {
 			".po",
 		],
 		rules: { "*.po": { loaders: ["@lingui/loader"], as: "*.js" } },
+		root: path.join(import.meta.dirname, "..", ".."),
 	},
 }
 

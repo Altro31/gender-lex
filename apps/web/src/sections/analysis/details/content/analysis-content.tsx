@@ -1,22 +1,22 @@
-import { Badge } from "@/components/ui/badge"
+import { Badge } from '@/components/ui/badge'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Separator } from "@/components/ui/separator"
-import { TabsContent } from "@/components/ui/tabs"
-import AnalysisContentOriginalText from "@/sections/analysis/details/content/analysis-content-original-text"
-import { startAnalysis } from "@/services/analysis"
-import { t } from "@lingui/core/macro"
+} from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { Separator } from '@/components/ui/separator'
+import { TabsContent } from '@/components/ui/tabs'
+import AnalysisContentOriginalText from '@/sections/analysis/details/content/analysis-content-original-text'
+import { startAnalysis } from '@/services/analysis'
+import { t } from '@lingui/core/macro'
 
 export default async function AnalysisContent({
 	params,
 	searchParams,
-}: PageProps<"/[locale]/analysis/[id]">) {
+}: PageProps<'/[locale]/analysis/[id]'>) {
 	const { id } = await params
 	const { run } = await searchParams
 	const analysis = await startAnalysis(id, !!run)
@@ -216,7 +216,7 @@ export default async function AnalysisContent({
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.stereotype.presence ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.stereotype.presence ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
 									{t`Stereotypes`}
 								</CardTitle>
@@ -271,7 +271,7 @@ export default async function AnalysisContent({
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.powerAsymmetry.presence ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.powerAsymmetry.presence ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
 									{t`Power Asymmetry`}
 								</CardTitle>
@@ -326,7 +326,7 @@ export default async function AnalysisContent({
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.genderRepresentationAbsence.presence ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.genderRepresentationAbsence.presence ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
 									{t`Absence of Representation`}
 								</CardTitle>
@@ -388,7 +388,7 @@ export default async function AnalysisContent({
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.intersectionality.presence ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.intersectionality.presence ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
 									{t`Intersectionality`}
 								</CardTitle>
@@ -449,7 +449,7 @@ export default async function AnalysisContent({
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.systemicBiases.presence ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.additionalContextEvaluation.systemicBiases.presence ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
 									{t`Systemic Biases`}
 								</CardTitle>
@@ -586,7 +586,7 @@ export default async function AnalysisContent({
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.impactAnalysis.accessToCare.affected ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.impactAnalysis.accessToCare.affected ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
 									{t`Access to Care`}
 								</CardTitle>
@@ -598,8 +598,8 @@ export default async function AnalysisContent({
 											className={
 												analysis.impactAnalysis
 													.accessToCare.affected
-													? "bg-red-100 text-red-800"
-													: "bg-green-100 text-green-800"
+													? 'bg-red-100 text-red-800'
+													: 'bg-green-100 text-green-800'
 											}
 										>
 											{analysis.impactAnalysis
@@ -622,7 +622,7 @@ export default async function AnalysisContent({
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div
-										className={`h-3 w-3 rounded-full ${analysis.impactAnalysis.stigmatization.affected ? "bg-red-500" : "bg-green-500"}`}
+										className={`h-3 w-3 rounded-full ${analysis.impactAnalysis.stigmatization.affected ? 'bg-red-500' : 'bg-green-500'}`}
 									/>
 									{t`Stigmatization`}
 								</CardTitle>
@@ -634,8 +634,8 @@ export default async function AnalysisContent({
 											className={
 												analysis.impactAnalysis
 													.stigmatization.affected
-													? "bg-red-100 text-red-800"
-													: "bg-green-100 text-green-800"
+													? 'bg-red-100 text-red-800'
+													: 'bg-green-100 text-green-800'
 											}
 										>
 											{analysis.impactAnalysis

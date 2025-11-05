@@ -1,10 +1,10 @@
-import { setServerLocale } from "@/locales/request"
-import HomeContainer from "@/sections/home/home-container"
-import { Metadata } from "next"
-import { t } from "@lingui/core/macro"
+import { setServerLocale } from '@/locales/request'
+import HomeContainer from '@/sections/home/home-container'
+import { t } from '@lingui/core/macro'
+import { Metadata } from 'next'
 
-export async function generateMetadata({ params }: PageProps<"/[locale]">) {
-	await setServerLocale(params)
+export async function generateMetadata() {
+	await setServerLocale()
 
 	return {
 		title: t`GenderLex | Your smart writing assistant`,
@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]">) {
 	} as Metadata
 }
 
-export default async function Home({ params }: PageProps<"/[locale]">) {
-	await setServerLocale(params)
+export default async function Home() {
+	await setServerLocale()
 	return <HomeContainer />
 }
