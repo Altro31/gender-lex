@@ -53,6 +53,8 @@
 		"workflow": "^4.0.1-beta.6"
 	},
 	"lint-staged": {
-		"!(package-lock).{ts,json}": "prettier . -w"
+		"!(package-lock).{ts,json}": [
+			"prettier --write"
+		]
 	}
 }
