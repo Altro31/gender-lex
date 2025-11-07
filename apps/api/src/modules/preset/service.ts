@@ -1,6 +1,15 @@
-import prisma from "@/lib/prisma"
-import Elysia from "elysia"
+import { EnhancedPrismaService } from "@/shared/prisma.service"
+import { Effect } from "effect"
 
-export const presetService = new Elysia({ name: "preset.service" })
-    .use(prisma)
-    .derive({ as: "global" }, () => ({ presetService: {} }))
+export class PresetService extends Effect.Service<PresetService>()(
+    "PresetService",
+    {
+        effect: Effect.gen(function* () {
+            const repository = yield* EnhancedPrismaService
+            return { repository }
+        }),
+        dependencies: [EnhancedPrismaService.Default],
+    },
+) {
+    static provide = Effect.provide(this.Default)
+}

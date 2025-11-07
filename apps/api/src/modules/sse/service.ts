@@ -1,43 +1,54 @@
-import auth from "@/lib/auth"
-import { MessageMapper } from "@repo/types/sse"
-import Elysia from "elysia"
-import { EventEmitter } from "events"
+import { AuthService } from "@/shared/auth.service"
+import { ContextService } from "@/shared/context.service"
+import type { MessageMapper } from "@repo/types/sse"
+import { Effect, Layer, ManagedRuntime, PubSub, Schedule, Stream } from "effect"
 
 type MessageEvent<Type extends keyof MessageMapper> = {
-    type: Type
-    data: MessageMapper[Type] & { sessionId: string; userId: string }
-    sessionId: string
-    userId: string
+    event: Type | "ping"
+    data?: MessageMapper[Type] & { sessionId: string; userId: string }
+    sessionId?: string
+    userId?: string
 }
 
-const eventBus = new EventEmitter()
-
-export const sseService = new Elysia({ name: "sse.service" })
-    .use(auth)
-    .derive({ as: "global" }, ({ session, user }) => ({
-        sseService: {
-            subscribe<Type extends keyof MessageMapper>(
-                func: (event: MessageEvent<Type>) => void,
-            ) {
-                eventBus.on("sse", func)
-            },
-
-            unsubscribe<Type extends keyof MessageMapper>(
-                func: (event: MessageEvent<Type>) => void,
-            ) {
-                eventBus.off("sse", func)
+export class SseService extends Effect.Service<SseService>()("SseService", {
+    effect: Effect.gen(function* () {
+        const { session, user } = yield* AuthService
+        const pubsub = SseService.pubsub
+        Effect.runFork(
+            PubSub.publish(pubsub, { event: "ping" }).pipe(
+                Effect.repeat(Schedule.fixed("15 seconds")),
+            ),
+        )
+        const services = {
+            get stream$() {
+                return Stream.fromPubSub(pubsub)
             },
 
             broadcast<Type extends keyof MessageMapper>(
                 event: Type,
                 data: MessageMapper[Type],
             ) {
-                eventBus.emit("sse", {
+                return PubSub.publish(pubsub, {
                     event,
                     data,
                     sessionId: session!.id,
                     userId: user!.id,
                 })
             },
-        },
-    }))
+        }
+
+        return services
+    }),
+    dependencies: [AuthService.Default],
+}) {
+    static pubsub = Effect.runSync(PubSub.unbounded<MessageEvent<any>>())
+    static provide = Effect.provide(SseService.Default)
+}
+
+export function SseRuntime(ctx: any) {
+    return ManagedRuntime.make(
+        Layer.mergeAll(SseService.Default, AuthService.Default).pipe(
+            Layer.provide(ContextService.Default(ctx)),
+        ),
+    )
+}

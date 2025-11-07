@@ -1,7 +1,7 @@
-import { rawPrisma } from "@/lib/prisma"
-import { decrypt, encrypt } from "@repo/auth/encrypt"
-import { enhance } from "@repo/db"
+import { ContextService } from "@/shared/context.service"
+import { EnhancedPrismaService } from "@/shared/prisma.service"
 import { createElysiaHandler } from "@zenstackhq/server/elysia"
+import { Effect } from "effect"
 import Elysia from "elysia"
 
 export default new Elysia({
@@ -11,20 +11,15 @@ export default new Elysia({
     detail: { hide: true },
 }).use(
     createElysiaHandler({
-        getPrisma: async (context: any) => {
-            return enhance(
-                rawPrisma,
-                { user: context.user },
-                {
-                    encryption: {
-                        encrypt: async (_, __, plain) =>
-                            encrypt(plain, context.env.ENCRYPTION_KEY),
-                        decrypt: async (_, __, plain) =>
-                            decrypt(plain, context.env.ENCRYPTION_KEY),
-                    },
-                },
-            )
-        },
+        getPrisma: ctx =>
+            Effect.runPromise(
+                Effect.gen(function* () {
+                    return yield* EnhancedPrismaService
+                }).pipe(
+                    EnhancedPrismaService.provide,
+                    ContextService.provide(ctx),
+                ),
+            ),
         basePath: "/api/crud",
     }),
 )

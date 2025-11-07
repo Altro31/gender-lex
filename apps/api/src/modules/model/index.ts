@@ -1,5 +1,6 @@
 import { modelModels } from "@/modules/model/model"
-import { modelService } from "@/modules/model/service"
+import { ModelRuntime, ModelService } from "@/modules/model/service"
+import { Effect } from "effect"
 import Elysia, { t } from "elysia"
 
 export default new Elysia({
@@ -7,19 +8,28 @@ export default new Elysia({
     tags: ["Model"],
     prefix: "model",
 })
-    .use(modelService)
     .model(modelModels)
     .post(
         "",
-        async ({ modelService, body }) => {
-            await modelService.create(body)
-            return { ok: true }
+        ctx => {
+            const program = Effect.gen(function* () {
+                const modelService = yield* ModelService
+                yield* modelService.create(ctx.body)
+                return { ok: true } as const
+            })
+            return ModelRuntime(ctx).runPromise(program)
         },
         { body: "createModelInput", response: "createModelOutput" },
     )
     .post(
         ":id/test-connection",
-        async ({ modelService, params }) =>
-            modelService.testConnection(params.id),
+        ctx => {
+            const program = Effect.gen(function* () {
+                const modelService = yield* ModelService
+                const res = yield* modelService.testConnection(ctx.params.id)
+                return Boolean(res)
+            })
+            return ModelRuntime(ctx).runPromise(program)
+        },
         { response: { 200: "testConnectionOutput", 404: t.String() } },
     )

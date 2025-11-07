@@ -1,227 +1,154 @@
-import prisma, { rawPrisma } from "@/lib/prisma"
 import {
     InactiveModelError,
     InvalidModelApiKeyError,
     InvalidModelIdentifierError,
 } from "@/modules/model/exceptions/tagged-errors"
-import { sseService } from "@/modules/sse/service"
+import { SseService } from "@/modules/sse/service"
+import { ContextService } from "@/shared/context.service"
+import { EnhancedPrismaService } from "@/shared/prisma.service"
 import { FetchHttpClient, HttpClient } from "@effect/platform"
-import { decrypt, encrypt } from "@repo/auth/encrypt"
 import type { ModelError, ModelStatus, Prisma } from "@repo/db/models"
-import { Console, Effect, Match } from "effect"
-import Elysia, { env } from "elysia"
+import { Console, Effect, Layer, ManagedRuntime, Match } from "effect"
 
 type ModelListResponse = { data: { id: string; active: boolean }[] }
 
-export const modelService = new Elysia({ name: "model.service" })
-    .use(prisma)
-    .use(sseService)
-    .derive({ as: "global" }, ({ prisma, status, sseService }) => {
-        const repository = prisma!.model
-        return {
-            modelService: {
-                async create(data: Prisma.ModelCreateInput) {
-                    const model = await repository.create({ data })
-                    this.testConnection(model.id).then(() => {})
+export class ModelService extends Effect.Service<ModelService>()(
+    "ModelService",
+    {
+        effect: Effect.gen(function* () {
+            const sseService = yield* SseService
+            const client = yield* HttpClient.HttpClient
+            const prisma = yield* EnhancedPrismaService
+            const repository = prisma.model
+
+            const services = {
+                repository,
+                create(data: Prisma.ModelCreateInput) {
+                    return Effect.gen(services, function* () {
+                        const model = yield* repository.create({ data })
+                        yield* this.testConnection(model.id)
+                    })
                 },
+                testConnection: (id: string) =>
+                    Effect.gen(services, function* () {
+                        const model = yield* repository.findUnique({
+                            where: { id },
+                        })
+                        if (!model) {
+                            // status(404, `Model with id: ${id} not found`)
+                            return
+                        }
+                        yield* this.updateModelStatus(id, "connecting")
+                        const url = model.connection.url + "/models"
 
-                async testConnection(id: string) {
-                    const model = await repository.findUnique({ where: { id } })
-                    if (!model) {
-                        return status(404, `Model with id: ${id} not found`)
-                    }
-                    await this.updateModelStatus(id, "connecting")
-                    const testConnectionProgram = Effect.gen(
-                        this,
-                        function* () {
-                            const client = yield* HttpClient.HttpClient
-                            const url = model.connection.url + "/models"
-
-                            const res = yield* client
-                                .get(url, {
-                                    headers: {
-                                        Authorization: `Bearer ${model.apiKey}`,
-                                    },
-                                })
-                                .pipe(
-                                    Effect.andThen(res => {
-                                        const reqMatcher =
-                                            Match.type<number>().pipe(
-                                                Match.when(401, () =>
-                                                    Effect.fail(
-                                                        new InvalidModelApiKeyError(),
-                                                    ),
-                                                ),
-                                                Match.orElse(
-                                                    () =>
-                                                        res.json as Effect.Effect<
-                                                            ModelListResponse,
-                                                            never,
-                                                            never
-                                                        >,
-                                                ),
-                                            )
-                                        return reqMatcher(res.status)
-                                    }),
-                                )
-
-                            const modelItem = res.data.find(
-                                m => m.id === model.connection.identifier,
-                            )
-
-                            if (!modelItem) {
-                                return yield* Effect.fail(
-                                    new InvalidModelIdentifierError(),
-                                )
-                            }
-
-                            if (!modelItem.active) {
-                                return yield* Effect.fail(
-                                    new InactiveModelError(),
-                                )
-                            }
-
-                            yield* Effect.promise(() =>
-                                this.updateModelStatus(id, "active"),
-                            )
-                            return true
-                        },
-                    )
-                        .pipe(
-                            Effect.catchTags({
-                                RequestError: e => {
-                                    console.log(e)
-                                    return Effect.promise(() =>
-                                        this.updateModelStatus(
-                                            id,
-                                            "error",
-                                            "INVALID_CONNECTION_URL",
-                                        ),
-                                    )
+                        const res = yield* client
+                            .get(url, {
+                                headers: {
+                                    Authorization: `Bearer ${model.apiKey}`,
                                 },
-                                ResponseError: e =>
-                                    Console.log("ResponseError", e),
-                            }),
-                            Effect.catchAll(e => {
-                                return Effect.promise(() =>
-                                    this.updateModelStatus(
-                                        id,
-                                        "error",
-                                        e.modelError,
-                                    ),
-                                )
-                            }),
+                            })
+                            .pipe(
+                                Effect.andThen(res => {
+                                    const reqMatcher =
+                                        Match.type<number>().pipe(
+                                            Match.when(401, () =>
+                                                Effect.fail(
+                                                    new InvalidModelApiKeyError(),
+                                                ),
+                                            ),
+                                            Match.orElse(
+                                                () =>
+                                                    res.json as Effect.Effect<
+                                                        ModelListResponse,
+                                                        never,
+                                                        never
+                                                    >,
+                                            ),
+                                        )
+                                    return reqMatcher(res.status)
+                                }),
+                            )
+
+                        const modelItem = res.data.find(
+                            m => m.id === model.connection.identifier,
                         )
-                        .pipe(Effect.provide(FetchHttpClient.layer))
 
-                    const res = await Effect.runPromise(
-                        testConnectionProgram as any,
-                    )
-                    return Boolean(res)
-                },
+                        if (!modelItem) {
+                            return yield* Effect.fail(
+                                new InvalidModelIdentifierError(),
+                            )
+                        }
 
-                async updateModelStatus(
+                        if (!modelItem.active) {
+                            return yield* Effect.fail(new InactiveModelError())
+                        }
+
+                        yield* this.updateModelStatus(id, "active")
+                        return true
+                    }).pipe(
+                        Effect.catchTags({
+                            RequestError: e => {
+                                console.log(e)
+                                return services.updateModelStatus(
+                                    id,
+                                    "error",
+                                    "INVALID_CONNECTION_URL",
+                                )
+                            },
+                            ResponseError: e => Console.log("ResponseError", e),
+                            PrismaError: e => Console.log("PrismaError", e),
+                        }),
+                        Effect.catchAll((e: any) => {
+                            return services.updateModelStatus(
+                                id,
+                                "error",
+                                e.modelError,
+                            )
+                        }),
+                    ),
+                updateModelStatus: (
                     id: string,
                     status: ModelStatus,
                     error?: ModelError,
-                ) {
-                    const model = await repository.findUnique({ where: { id } })
-                    if (!model) {
-                        throw new Error(`Model with id: ${id} not found`)
-                    }
-                    await repository.update({
-                        where: { id },
-                        data: { ...model, status, error: error || null },
-                    })
-                    sseService!.broadcast("model.status.change", {
-                        id,
-                        status,
-                        message: error!,
-                    } as any)
-                },
-            },
-        }
-    })
-    .onStart(async app => {
-        const models = [
-            {
-                name: "Qwen3-32b",
-                connection: {
-                    identifier: "qwen/qwen3-32b",
-                    url: "https://api.groq.com/openai/v1",
-                },
-
-                settings: { temperature: 0.2 },
-                apiKey: encrypt(env.GROQ_API_KEY!, env.ENCRYPTION_KEY!),
-                isDefault: true,
-            },
-            {
-                name: "GPT-OSS-120b",
-                connection: {
-                    identifier: "openai/gpt-oss-120b",
-                    url: "https://api.groq.com/openai/v1",
-                },
-
-                settings: { temperature: 0.2 },
-                apiKey: encrypt(env.GROQ_API_KEY!, env.ENCRYPTION_KEY!),
-                isDefault: true,
-            },
-        ] satisfies Prisma.ModelCreateInput[]
-
-        await rawPrisma.$transaction(async tx => {
-            const [model] = await Promise.all(
-                models.map(async data => {
-                    let model = await tx.model.findFirst({
-                        where: { name: data.name, isDefault: true },
-                    })
-                    if (model)
-                        model = await tx.model.update({
-                            where: { id: model.id },
-                            data,
+                ) =>
+                    Effect.gen(function* () {
+                        const model = yield* repository.findUnique({
+                            where: { id },
                         })
-                    else model = await tx.model.create({ data })
-                    return model
-                }),
-            )
+                        if (!model) {
+                            throw new Error(`Model with id: ${id} not found`)
+                        }
+                        yield* repository.update({
+                            where: { id },
+                            data: { ...model, status, error: error || null },
+                        })
 
-            const defaultPresetData = {
-                name: "Default",
-                description: "Default preset",
-                isDefault: true,
-                Models: [{ role: "primary", modelId: model!.id }],
-            } as const
-            const defaultPreset = await tx.preset.findFirst({
-                where: { isDefault: true },
-                include: { Models: true },
-            })
-            if (defaultPreset) {
-                await tx.preset.update({
-                    where: { id: defaultPreset.id },
-                    data: {
-                        ...defaultPresetData,
-                        Models: {
-                            deleteMany: {},
-                            create: defaultPresetData.Models.map(m => ({
-                                role: m.role,
-                                isDefault: true,
-                                Model: { connect: { id: m.modelId } },
-                            })),
-                        },
-                    },
-                })
-            } else {
-                await tx.preset.create({
-                    data: {
-                        ...defaultPresetData,
-                        Models: {
-                            create: defaultPresetData.Models.map(m => ({
-                                role: m.role,
-                                isDefault: true,
-                                Model: { connect: { id: m.modelId } },
-                            })),
-                        },
-                    },
-                })
+                        yield* sseService
+                            .broadcast("model.status.change", {
+                                id,
+                                status,
+                                message: error!,
+                            } as any)
+                            .pipe(Effect.fork)
+                    }),
             }
-        })
-    })
+
+            return services
+        }),
+        dependencies: [
+            EnhancedPrismaService.Default,
+            FetchHttpClient.layer,
+            SseService.Default,
+        ],
+    },
+) {
+    static provide = Effect.provide(this.Default)
+}
+
+export function ModelRuntime(ctx: any) {
+    return ManagedRuntime.make(
+        Layer.mergeAll(ModelService.Default).pipe(
+            Layer.provide(ContextService.Default(ctx)),
+        ),
+    )
+}

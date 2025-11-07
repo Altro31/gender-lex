@@ -2,14 +2,12 @@ import { isFile } from "@/lib/file"
 import prisma from "@/lib/prisma"
 import type { FindManyQueryParams } from "@/modules/analysis/model"
 import { biasDetectionService } from "@/modules/bias-detection/service"
-import { extractorService } from "@/modules/extractor/service"
 import type { Analysis, AnalysisStatus } from "@repo/db/models"
 import Elysia from "elysia"
 
 export const analysisService = new Elysia({ name: "analysis.service" })
     .use(prisma)
     .use(biasDetectionService)
-    .use(extractorService)
     .derive(
         { as: "global" },
         ({ status, prisma, biasDetectionService, extractorService }) => {

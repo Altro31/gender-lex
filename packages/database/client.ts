@@ -1,6 +1,7 @@
 import { Prisma } from './prisma/generated/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 
+export { Prisma } from './prisma/generated/client'
 export { PrismaClient } from './prisma/generated/client/client'
 
 export const adapter = new PrismaPg({

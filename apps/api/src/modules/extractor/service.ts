@@ -11,90 +11,111 @@ import {
 } from "@adobe/pdfservices-node-sdk"
 import { Readable, Writable } from "stream"
 import AdmZip from "adm-zip"
+import { Effect, Stream } from "effect"
+import { EnvsService } from "@/shared/envs.service"
+import { HttpClient } from "@effect/platform"
 
-export const extractorService = new Elysia({ name: "extractor.service" })
-    .use(env)
-    .derive({ as: "global" }, ({ env }) => {
-        const credentials = new ServicePrincipalCredentials({
-            clientId: env.PDF_SERVICES_CLIENT_ID,
-            clientSecret: env.PDF_SERVICES_CLIENT_SECRET,
-        })
+export class ExtractorService extends Effect.Service<ExtractorService>()(
+    "ExtractorService",
+    {
+        effect: Effect.gen(function* () {
+            const env = yield* EnvsService
+            const client = yield* HttpClient.HttpClient
+            const credentials = new ServicePrincipalCredentials({
+                clientId: env.PDF_SERVICES_CLIENT_ID,
+                clientSecret: env.PDF_SERVICES_CLIENT_SECRET,
+            })
+            const extractor = new PDFServices({ credentials })
+            return {
+                extractPDFText: (file: File) =>
+                    Effect.gen(function* () {
+                        const fileBuffer = yield* Effect.promise(
+                            file.arrayBuffer,
+                        )
+                        const bytes = new Uint8Array(fileBuffer)
+                        const newFile = new File([bytes], "file")
 
-        const extractor = new PDFServices({ credentials })
+                        const fileResponse = yield* client.get(
+                            URL.createObjectURL(newFile),
+                        )
+                        const responseStream = fileResponse.stream.pipe(
+                            Stream.toReadableStream,
+                        )
 
-        return {
-            extractorService: {
-                async extractPDFText(file: File) {
-                    const bytes = new Uint8Array(await file.arrayBuffer())
-                    const newFile = new File([bytes], "file")
+                        const readStream = Readable.fromWeb(responseStream)
 
-                    const fileResponse = await fetch(
-                        URL.createObjectURL(newFile),
-                    )
+                        const inputAsset = yield* Effect.promise(() =>
+                            extractor.upload({
+                                readStream: readStream,
+                                mimeType: MimeType.PDF,
+                            }),
+                        )
 
-                    const readStream = Readable.fromWeb(
-                        fileResponse.body as any,
-                    )
+                        const params = new ExtractPDFParams({
+                            elementsToExtract: [ExtractElementType.TEXT],
+                        })
 
-                    const inputAsset = await extractor.upload({
-                        readStream: readStream,
-                        mimeType: MimeType.PDF,
-                    })
+                        const job = new ExtractPDFJob({ inputAsset, params })
 
-                    const params = new ExtractPDFParams({
-                        elementsToExtract: [ExtractElementType.TEXT],
-                    })
+                        const pollingURL = yield* Effect.promise(() =>
+                            extractor.submit({ job }),
+                        )
 
-                    const job = new ExtractPDFJob({ inputAsset, params })
+                        const pdfServicesResponse = yield* Effect.promise(() =>
+                            extractor.getJobResult({
+                                pollingURL,
+                                resultType: ExtractPDFResult,
+                            }),
+                        )
 
-                    const pollingURL = await extractor.submit({ job })
-                    const pdfServicesResponse = await extractor.getJobResult({
-                        pollingURL,
-                        resultType: ExtractPDFResult,
-                    })
+                        const resultAsset = pdfServicesResponse.result?.resource
 
-                    const resultAsset = pdfServicesResponse.result?.resource
+                        if (!resultAsset) return ""
 
-                    if (!resultAsset) return ""
+                        const streamAsset = yield* Effect.promise(() =>
+                            extractor.getContent({ asset: resultAsset }),
+                        )
 
-                    const streamAsset = await extractor.getContent({
-                        asset: resultAsset,
-                    })
+                        let buffer = Buffer.alloc(0)
 
-                    let buffer = Buffer.alloc(0)
+                        const writableStream = new Writable({
+                            write(chunk, _, callback) {
+                                buffer = Buffer.concat([buffer, chunk])
+                                callback()
+                            },
+                        })
 
-                    const writableStream = new Writable({
-                        write(chunk, _, callback) {
-                            buffer = Buffer.concat([buffer, chunk])
-                            callback()
-                        },
-                    })
-
-                    return new Promise<string>(resolve => {
-                        streamAsset.readStream
-                            .pipe(writableStream)
-                            .on("finish", () => {
-                                const zip = new AdmZip(buffer)
-                                console.log("Zip creado en memoria")
-                                const jsondata = zip.readAsText(
-                                    "structuredData.json",
-                                )
-                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                                const data = JSON.parse(jsondata)
-                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-                                const text = data.elements.reduce(
-                                    (acc: string, curr: any) =>
-                                        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                                        curr.Text
-                                            ? acc + "\n" + curr.Text
-                                            : acc,
-                                    "",
-                                )
-                                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                                resolve(text)
-                            })
-                    })
-                },
-            },
-        }
-    })
+                        return Effect.promise(
+                            () =>
+                                new Promise<string>(resolve => {
+                                    streamAsset.readStream
+                                        .pipe(writableStream)
+                                        .on("finish", () => {
+                                            const zip = new AdmZip(buffer)
+                                            console.log("Zip creado en memoria")
+                                            const jsondata = zip.readAsText(
+                                                "structuredData.json",
+                                            )
+                                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                                            const data = JSON.parse(jsondata)
+                                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+                                            const text = data.elements.reduce(
+                                                (acc: string, curr: any) =>
+                                                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                                                    curr.Text
+                                                        ? acc + "\n" + curr.Text
+                                                        : acc,
+                                                "",
+                                            )
+                                            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                                            resolve(text)
+                                        })
+                                }),
+                        )
+                    }),
+            }
+        }),
+    },
+) {
+    static provide = Effect.provide(this.Default)
+}

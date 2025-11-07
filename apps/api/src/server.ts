@@ -1,19 +1,17 @@
-import flow from "@/workflow/core/flow.js"
-import step from "@/workflow/core/step.js"
-import * as webhook from "@/workflow/core/webhook.js"
 import base from "@/lib/base"
 import analysis from "@/modules/analysis"
 import model from "@/modules/model"
-import preset from "@/modules/preset"
 import sse from "@/modules/sse"
-import user from "@/modules/user"
 import zen from "@/modules/zen"
+import flow from "@/workflow/core/flow.js"
+import step from "@/workflow/core/step.js"
+import * as webhook from "@/workflow/core/webhook.js"
+import { handleUserSignup } from "@/workflows/user-signup"
 import cors from "@elysiajs/cors"
 import openapi, { fromTypes } from "@elysiajs/openapi"
 import { Elysia, env } from "elysia"
-import z from "zod"
 import { start } from "workflow/api"
-import { handleUserSignup } from "@/workflows/user-signup"
+import z from "zod"
 
 export type App = typeof app
 const app = new Elysia()
@@ -29,10 +27,8 @@ const app = new Elysia()
     .use(cors())
     .use(base)
     .use(sse)
-    .use(user)
     .use(analysis)
     .use(model)
-    .use(preset)
     .use(zen)
     .get("/", () => {
         return { ok: true }
