@@ -68,7 +68,9 @@ export function createEffectPrisma(prisma: EnhancedPrismaClient) {
                 return { enumerable: true, configurable: true }
             },
             ownKeys() {
-                return Object.values(Prisma.ModelName)
+                return Object.values(Prisma.ModelName).map(key =>
+                    key.toLowerCase(),
+                )
             },
             get(_target, model) {
                 return new Proxy(

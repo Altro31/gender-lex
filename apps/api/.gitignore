@@ -1,2 +1,6 @@
 .well-known
 .workflow-data
+dist
+.nitro
+.swc
+.output

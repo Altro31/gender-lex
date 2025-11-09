@@ -11,7 +11,7 @@ generator client {
   previewFeatures = ["fullTextSearchPostgres"]
   engineType      = "client"
   output = "./generated/client"
-  moduleFormat           = "cjs"
+  // moduleFormat           = "cjs"
 }
 
 datasource db {

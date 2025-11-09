@@ -1,3 +1,4 @@
+import { effectPlugin } from "@/lib/effect"
 import { modelModels } from "@/modules/model/model"
 import { ModelRuntime, ModelService } from "@/modules/model/service"
 import { Effect } from "effect"
@@ -8,6 +9,7 @@ export default new Elysia({
     tags: ["Model"],
     prefix: "model",
 })
+    .use(effectPlugin)
     .model(modelModels)
     .post(
         "",
@@ -23,13 +25,13 @@ export default new Elysia({
     )
     .post(
         ":id/test-connection",
-        ctx => {
+        ({ runtime, params }) => {
             const program = Effect.gen(function* () {
                 const modelService = yield* ModelService
-                const res = yield* modelService.testConnection(ctx.params.id)
+                const res = yield* modelService.testConnection(params.id)
                 return Boolean(res)
-            })
-            return ModelRuntime(ctx).runPromise(program)
+            }).pipe(ModelService.provide)
+            return runtime.runPromise(program)
         },
         { response: { 200: "testConnectionOutput", 404: t.String() } },
     )

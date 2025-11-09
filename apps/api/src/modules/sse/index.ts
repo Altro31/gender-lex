@@ -1,24 +1,22 @@
-import auth from "@/lib/auth"
+import { effectPlugin } from "@/lib/effect"
 import { sseModels } from "@/modules/sse/model"
-import { SseRuntime, SseService } from "@/modules/sse/service"
+import { SseService } from "@/modules/sse/service"
 import { AuthService } from "@/shared/auth.service"
-import { ContextService } from "@/shared/context.service"
 import { Effect, Stream } from "effect"
 import Elysia, { sse } from "elysia"
-import { ModelRuntime } from "../model/service"
 
 export default new Elysia({
     name: "sse.controller",
     prefix: "sse",
     tags: ["Sse"],
 })
-    .use(auth)
+    .use(effectPlugin)
     .model(sseModels)
     .get(
         "",
-        async function* (ctx) {
+        async function* ({ runtime }) {
             yield sse("Connected!!!")
-            const stream = await SseRuntime(ctx).runPromise(
+            const stream = await runtime.runPromise(
                 Effect.gen(function* () {
                     const authService = yield* AuthService
                     const sseService = yield* SseService
@@ -32,7 +30,7 @@ export default new Elysia({
                         ),
                     )
                     return Stream.toAsyncIterable(stream)
-                }),
+                }).pipe(SseService.provide, AuthService.provide),
             )
             for await (const a of stream) {
                 yield sse(a)

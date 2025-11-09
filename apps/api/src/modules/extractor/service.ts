@@ -13,7 +13,7 @@ import { Readable, Writable } from "stream"
 import AdmZip from "adm-zip"
 import { Effect, Stream } from "effect"
 import { EnvsService } from "@/shared/envs.service"
-import { HttpClient } from "@effect/platform"
+import { FetchHttpClient, HttpClient } from "@effect/platform"
 
 export class ExtractorService extends Effect.Service<ExtractorService>()(
     "ExtractorService",
@@ -85,7 +85,7 @@ export class ExtractorService extends Effect.Service<ExtractorService>()(
                             },
                         })
 
-                        return Effect.promise(
+                        return yield* Effect.promise(
                             () =>
                                 new Promise<string>(resolve => {
                                     streamAsset.readStream
@@ -115,6 +115,7 @@ export class ExtractorService extends Effect.Service<ExtractorService>()(
                     }),
             }
         }),
+        dependencies: [EnvsService.Default, FetchHttpClient.layer],
     },
 ) {
     static provide = Effect.provide(this.Default)

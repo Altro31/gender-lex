@@ -1,13 +1,35 @@
-import cluster from "cluster"
-import { env } from "elysia"
-import os from "os"
-import process from "process"
-export type { App } from "./server"
-if (cluster.isPrimary) {
-    for (let i = 0; i < os.availableParallelism(); i++) {
-        cluster.fork()
-    }
-} else {
-    await import("./server")
-    console.log(`Worker ${process.pid} started`)
-}
+import analysis from "@/modules/analysis"
+import model from "@/modules/model"
+import sse from "@/modules/sse"
+import zen from "@/modules/zen"
+import cors from "@elysiajs/cors"
+import openapi, { fromTypes } from "@elysiajs/openapi"
+import { auth } from "@repo/auth/nest"
+import { Elysia } from "elysia"
+import z from "zod"
+
+export type App = typeof app
+const app = new Elysia()
+    .mount(auth.handler)
+    .use(
+        openapi({
+            references: fromTypes(),
+            mapJsonSchema: {
+                zod: (arg: any) =>
+                    z.toJSONSchema(arg, { unrepresentable: "any" }),
+            },
+        }),
+    )
+    .use(cors())
+    .use(sse)
+    .use(model)
+    .use(analysis)
+    .use(zen)
+    .get("/", () => {
+        return { ok: true }
+    })
+
+// console.log(`	🚀Server running at ${app.server?.url}`)
+// console.log(`	📖Docs running at ${app.server?.url}openapi`)
+
+export default app

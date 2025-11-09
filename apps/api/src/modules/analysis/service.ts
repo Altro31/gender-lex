@@ -1,37 +1,46 @@
 import { isFile } from "@/lib/file"
-import prisma from "@/lib/prisma"
 import type { FindManyQueryParams } from "@/modules/analysis/model"
-import { biasDetectionService } from "@/modules/bias-detection/service"
+import { BiasDetectionService } from "@/modules/bias-detection/service"
+import { EnhancedPrismaService } from "@/shared/prisma.service"
 import type { Analysis, AnalysisStatus } from "@repo/db/models"
-import Elysia from "elysia"
+import { Console, Effect, pipe } from "effect"
+import { AnalysisNotFoundError } from "./error"
+import { ExtractorService } from "../extractor/service"
 
-export const analysisService = new Elysia({ name: "analysis.service" })
-    .use(prisma)
-    .use(biasDetectionService)
-    .derive(
-        { as: "global" },
-        ({ status, prisma, biasDetectionService, extractorService }) => {
-            const repository = prisma!.analysis
-            return {
-                analysisService: {
-                    async statusCount() {
+export class AnalysisService extends Effect.Service<AnalysisService>()(
+    "AnalysisService",
+    {
+        effect: Effect.gen(function* () {
+            const extractorService = yield* ExtractorService
+            const biasDetectionService = yield* BiasDetectionService
+            const prisma = yield* EnhancedPrismaService
+            const repository = prisma.analysis
+
+            const service = {
+                statusCount: () =>
+                    Effect.gen(service, function* () {
                         const [all, pending, analyzing, done, error] =
-                            await Promise.all([
-                                repository.count(),
-                                this.countByStatus("pending"),
-                                this.countByStatus("analyzing"),
-                                this.countByStatus("done"),
-                                this.countByStatus("error"),
-                            ])
+                            yield* Effect.all(
+                                [
+                                    repository.count(),
+                                    this.countByStatus("pending"),
+                                    this.countByStatus("analyzing"),
+                                    this.countByStatus("done"),
+                                    this.countByStatus("error"),
+                                ],
+                                { concurrency: "unbounded" },
+                            )
                         return { all, pending, analyzing, done, error }
-                    },
+                    }),
 
-                    countByStatus(status: AnalysisStatus) {
-                        return repository.count({ where: { status } })
-                    },
+                countByStatus: (status: AnalysisStatus) =>
+                    Effect.gen(function* () {
+                        return yield* repository.count({ where: { status } })
+                    }),
 
-                    async start(id: string) {
-                        const analysis = await repository.findUnique({
+                start: (id: string) =>
+                    Effect.gen(function* () {
+                        const analysis = yield* repository.findUnique({
                             where: { id },
                             include: {
                                 Preset: {
@@ -42,38 +51,46 @@ export const analysisService = new Elysia({ name: "analysis.service" })
                             },
                         })
                         if (!analysis) {
-                            return status(404, "Analysis not found")
+                            return yield* new AnalysisNotFoundError()
                         }
-                        let result = {} as Analysis
-                        try {
-                            result = (
-                                analysis.status === "pending"
-                                    ? await biasDetectionService!.analice(
-                                          analysis,
-                                      )
-                                    : {}
-                            ) as Analysis
-                            result.status = "done"
-                            repository
-                                .update({ where: { id }, data: result })
-                                .then(() => {})
-                        } catch (error) {
-                            console.error(error)
-                            repository
-                                .update({
-                                    where: { id },
-                                    data: { ...result, status: "error" },
-                                })
-                                .then(() => {})
-                        }
-                        return { ...analysis, ...result }
-                    },
 
-                    async prepare(input: string | File, preset: string) {
+                        const result = yield* pipe(
+                            analysis.status === "pending"
+                                ? biasDetectionService.analice(analysis as any)
+                                : Effect.succeed({} as Analysis),
+                            Effect.andThen(
+                                res => ({ ...res, status: "done" }) as Analysis,
+                            ),
+                            Effect.tap(res =>
+                                repository
+                                    .update({ where: { id }, data: res })
+                                    .pipe(Effect.fork),
+                            ),
+                            Effect.catchAll(e =>
+                                pipe(
+                                    Console.log(e),
+                                    Effect.as({}),
+                                    Effect.tap(() =>
+                                        repository
+                                            .update({
+                                                where: { id },
+                                                data: { status: "error" },
+                                            })
+                                            .pipe(Effect.fork),
+                                    ),
+                                ),
+                            ),
+                        )
+                        return { ...analysis, ...result }
+                    }),
+
+                prepare: (input: string | File, preset: string) =>
+                    Effect.gen(function* () {
                         const text = isFile(input)
-                            ? await extractorService!.extractPDFText(input)
+                            ? yield* extractorService.extractPDFText(input)
                             : input
-                        const analysis = await repository.create({
+
+                        const analysis = yield* repository.create({
                             data: {
                                 originalText: text,
                                 modifiedTextAlternatives: [],
@@ -83,47 +100,47 @@ export const analysisService = new Elysia({ name: "analysis.service" })
                             },
                         })
                         return { id: analysis.id }
-                    },
+                    }),
 
-                    async delete(id: string) {
-                        return repository.delete({ where: { id } })
-                    },
+                delete: (id: string) => repository.delete({ where: { id } }),
 
-                    async findOne(id: string) {
-                        return repository.findUniqueOrThrow({
-                            where: { id },
-                            include: { Preset: true },
-                        })
-                    },
+                findOne: (id: string) =>
+                    repository.findUniqueOrThrow({
+                        where: { id },
+                        include: { Preset: true },
+                    }),
 
-                    async findMany({
-                        page,
-                        pageSize,
-                        q,
-                        status,
-                    }: FindManyQueryParams) {
-                        return repository.findMany({
-                            where: {
-                                name: { contains: q, mode: "insensitive" },
-                                status: status as any,
-                            },
-                            include: { Preset: true },
-                            skip: (page! - 1) * pageSize!,
-                            take: pageSize!,
-                            orderBy: [
-                                { createdAt: "desc" },
-                                { updatedAt: "desc" },
-                            ],
-                        })
-                    },
+                findMany: ({
+                    page,
+                    pageSize,
+                    q,
+                    status,
+                }: FindManyQueryParams) =>
+                    repository.findMany({
+                        where: {
+                            name: { contains: q, mode: "insensitive" },
+                            status: status as any,
+                        },
+                        include: { Preset: true },
+                        skip: (page! - 1) * pageSize!,
+                        take: pageSize!,
+                        orderBy: [{ createdAt: "desc" }, { updatedAt: "desc" }],
+                    }),
 
-                    async redo(id: string) {
-                        return repository.update({
-                            where: { id },
-                            data: { status: "pending" },
-                        })
-                    },
-                },
+                redo: (id: string) =>
+                    repository.update({
+                        where: { id },
+                        data: { status: "pending" },
+                    }),
             }
-        },
-    )
+            return service
+        }),
+        dependencies: [
+            ExtractorService.Default,
+            BiasDetectionService.Default,
+            EnhancedPrismaService.Default,
+        ],
+    },
+) {
+    static provide = Effect.provide(this.Default)
+}

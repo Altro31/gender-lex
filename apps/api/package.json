@@ -2,11 +2,11 @@
     "name": "api",
     "version": "1.0.50",
     "scripts": {
-        "dev": "bun x workflow build && bun run --watch src/server.ts",
+        "dev": "nitro dev",
         "studio": "workflow web",
         "generate": "workflow build",
         "start": "bun ./dist/index.js",
-        "build": "bun x workflow build && bun build --minify-whitespace --minify-syntax --target=node --outfile ./dist/index.js src/server.ts"
+        "build": "nitro build"
     },
     "dependencies": {
         "@adobe/pdfservices-node-sdk": "^4.1.0",
@@ -28,10 +28,9 @@
         "zod": "catalog:"
     },
     "devDependencies": {
-        "bun-types": "latest",
         "@repo/types": "workspace:*",
-        "@types/adm-zip": "^0.5.6"
-    },
-    "module": "src/index.js",
-    "types": "src/index.ts"
+        "@types/adm-zip": "^0.5.6",
+        "bun-types": "latest",
+        "nitro": "^3.0.1-alpha.0"
+    }
 }

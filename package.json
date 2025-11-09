@@ -50,7 +50,7 @@
 		"@effect/platform": "^0.90.6",
 		"@effect/platform-node": "^0.96.1",
 		"elysia": "latest",
-		"workflow": "^4.0.1-beta.6"
+		"workflow": "^4.0.1-beta.12"
 	},
 	"lint-staged": {
 		"!(package-lock).{ts,json}": [

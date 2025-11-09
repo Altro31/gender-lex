@@ -12,14 +12,7 @@ import { AuthService } from "./auth.service"
 Effect.acquireUseRelease
 class RawPrismaService extends Effect.Service<RawPrismaService>()(
     "RawPrismaService",
-    {
-        scoped: Effect.acquireRelease(
-            Effect.succeed(
-                new PrismaClientClass({ adapter }).$extends(extension),
-            ),
-            prisma => Effect.promise(() => prisma.$disconnect()),
-        ),
-    },
+    { succeed: new PrismaClientClass({ adapter }).$extends(extension) },
 ) {}
 
 // new PrismaClientClass({ adapter }).$extends(extension) }
@@ -28,7 +21,6 @@ export class PrismaService extends Effect.Service<PrismaService>()(
     {
         effect: Effect.gen(function* () {
             const prisma = yield* RawPrismaService
-            prisma.analysis.count({ where: { biasedMetaphors: {} } })
             return createEffectPrisma(prisma as unknown as PrismaClient)
         }),
         dependencies: [RawPrismaService.Default],
@@ -43,6 +35,7 @@ export class EnhancedPrismaService extends Effect.Service<EnhancedPrismaService>
         effect: Effect.gen(function* () {
             const prisma = yield* RawPrismaService
             const { user } = yield* AuthService
+
             const enhanced = enhance(
                 prisma as any,
                 { user },

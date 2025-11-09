@@ -1,6 +1,7 @@
 {
 	"name": "@repo/db",
 	"version": "0.0.0",
+	"type": "module",
 	"scripts": {
 		"generate": "zenstack generate --output prisma/generated",
 		"migrate": "prisma migrate dev --skip-generate",
