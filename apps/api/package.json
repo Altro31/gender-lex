@@ -4,8 +4,7 @@
     "scripts": {
         "dev": "nitro dev",
         "studio": "workflow web",
-        "generate": "workflow build",
-        "start": "bun ./dist/index.js",
+        "start": "node .output/server/index.mjs",
         "build": "nitro build"
     },
     "dependencies": {
