@@ -2,7 +2,8 @@ import { defineNitroConfig } from "nitro/config"
 import path from "path"
 
 export default defineNitroConfig({
-    serverEntry: "src/index.ts",
+    srcDir: "src",
+    serverEntry: "index.ts",
     modules: ["workflow/nitro"],
     alias: { "@": path.join(process.cwd(), "src") },
     rollupConfig: {
@@ -13,4 +14,5 @@ export default defineNitroConfig({
             console.warn(warning.message)
         },
     },
+    sourceMap: false,
 })
