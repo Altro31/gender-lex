@@ -27,9 +27,8 @@ const app = new Elysia()
     .use(model)
     .use(analysis)
     .use(zen)
-    .get("/", async () => {
-        const run = await start(handleUserSignup, ["albe020531@outlook.com"])
-        return { ok: true, id: run.runId }
+    .get("/", () => {
+        return { ok: true }
     })
 
 // console.log(`	🚀Server running at ${app.server?.url}`)
