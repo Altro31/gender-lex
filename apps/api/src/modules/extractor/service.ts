@@ -1,5 +1,4 @@
-import env from "@/lib/env"
-import Elysia from "elysia"
+import { EnvsService } from "@/shared/envs.service"
 import {
     ExtractElementType,
     ExtractPDFJob,
@@ -9,11 +8,10 @@ import {
     PDFServices,
     ServicePrincipalCredentials,
 } from "@adobe/pdfservices-node-sdk"
-import { Readable, Writable } from "stream"
+import { FetchHttpClient, HttpClient } from "@effect/platform"
 import AdmZip from "adm-zip"
 import { Effect, Stream } from "effect"
-import { EnvsService } from "@/shared/envs.service"
-import { FetchHttpClient, HttpClient } from "@effect/platform"
+import { Readable, Writable } from "stream"
 
 export class ExtractorService extends Effect.Service<ExtractorService>()(
     "ExtractorService",
@@ -42,7 +40,9 @@ export class ExtractorService extends Effect.Service<ExtractorService>()(
                             Stream.toReadableStream,
                         )
 
-                        const readStream = Readable.fromWeb(responseStream)
+                        const readStream = Readable.fromWeb(
+                            responseStream as any,
+                        )
 
                         const inputAsset = yield* Effect.promise(() =>
                             extractor.upload({

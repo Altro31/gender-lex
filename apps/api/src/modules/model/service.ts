@@ -74,13 +74,11 @@ export class ModelService extends Effect.Service<ModelService>()(
                         )
 
                         if (!modelItem) {
-                            return yield* Effect.fail(
-                                new InvalidModelIdentifierError(),
-                            )
+                            return yield* new InvalidModelIdentifierError()
                         }
 
                         if (!modelItem.active) {
-                            return yield* Effect.fail(new InactiveModelError())
+                            return yield* new InactiveModelError()
                         }
 
                         yield* this.updateModelStatus(id, "active")

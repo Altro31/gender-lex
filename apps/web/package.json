@@ -75,6 +75,7 @@
 		"zustand": "^5.0.6"
 	},
 	"devDependencies": {
+		"@effect/language-service": "^0.57.1",
 		"@repo/types": "workspace:*",
 		"@tailwindcss/postcss": "^4",
 		"@types/negotiator": "^0.6.4",

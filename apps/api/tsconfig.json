@@ -2,6 +2,9 @@
     "extends": "nitro/tsconfig",
     "compilerOptions": {
         "paths": { "@/*": ["./src/*"] },
-        "plugins": [{ "name": "workflow" }]
+        "plugins": [
+            { "name": "workflow" },
+            { "name": "@effect/language-service" }
+        ]
     }
 }
