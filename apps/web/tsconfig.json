@@ -23,7 +23,7 @@
 		"paths": {
 			// "@/workflow/core/*": ["../api/.well-known/workflow/v1/*"],
 			// "@/workflows/*": ["../api/workflows/*"],
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*", "../api/src/*"]
 		}
 	},
 	"include": [
