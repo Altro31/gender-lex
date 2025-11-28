@@ -1,10 +1,10 @@
-import { setServerLocale } from "@/locales/request"
-import RegisterContainer from "@/sections/auth/register/register-container"
-import { t } from "@lingui/core/macro"
-import { Metadata } from "next"
+import { setServerLocale } from '@/locales/request'
+import RegisterContainer from '@/sections/auth/register/register-container'
+import { t } from '@lingui/core/macro'
+import { Metadata } from 'next'
 
-export async function generateMetadata({ params }: LayoutProps<"/[locale]">) {
-	await setServerLocale(params)
+export async function generateMetadata() {
+	await setServerLocale()
 
 	return {
 		title: `${t`Sign up`} | GenderLex`,
@@ -12,9 +12,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">) {
 	} as Metadata
 }
 
-export default async function RegisterPage({
-	params,
-}: PageProps<"/[locale]/auth/register">) {
-	await setServerLocale(params)
+export default async function RegisterPage() {
+	await setServerLocale()
 	return <RegisterContainer />
 }
