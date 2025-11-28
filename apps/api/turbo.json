@@ -49,6 +49,27 @@
                 "UMLS_API_KEY",
                 "UMLS_API_URL"
             ]
+        },
+        "start": {
+            "cache": false,
+            "persistent": true,
+            "env": [
+                "AUTH_GOOGLE_ID",
+                "BETTER_AUTH_SECRET",
+                "BETTER_AUTH_URL",
+                "UI_URL",
+                "AUTH_GITHUB_ID",
+                "AUTH_GITHUB_SECRET",
+                "GEMINI_API_KEY",
+                "GROQ_API_KEY",
+                "PDF_SERVICES_CLIENT_ID",
+                "PDF_SERVICES_CLIENT_SECRET",
+                "PORT",
+                "AUTH_GOOGLE_SECRET",
+                "ENCRYPTION_KEY",
+                "UMLS_API_KEY",
+                "UMLS_API_URL"
+            ]
         }
     }
 }

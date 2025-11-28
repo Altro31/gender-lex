@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "build": "nitro build",
-        "dev": "nitro dev"
+        "dev": "nitro dev",
+        "start": "node .output/server/index.mjs"
     },
     "devDependencies": {
         "@repo/types": "workspace:*",
