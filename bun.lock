@@ -111,7 +111,6 @@
         "@types/negotiator": "^0.6.4",
         "@types/react": "19.2.2",
         "@types/react-dom": "19.2.2",
-        "api": "workspace:*",
         "elysia": "catalog:",
         "eslint-plugin-react": "^7.37.5",
         "openapi-fetch": "^0.14.0",
@@ -154,6 +153,7 @@
       "version": "0.0.0",
       "peerDependencies": {
         "@repo/db": "workspace:*",
+        "api": "workspace:*",
       },
     },
   },
