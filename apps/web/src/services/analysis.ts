@@ -79,7 +79,6 @@ export async function findAnalyses(query: {
 			status: query.status || undefined,
 		},
 	})
-	console.log(error, data)
 	if (error) throw new Error(JSON.stringify(error))
 	return data
 }

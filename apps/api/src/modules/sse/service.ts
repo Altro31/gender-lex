@@ -10,11 +10,13 @@ type MessageEvent<Type extends keyof MessageMapper> = {
     userId?: string
 }
 
+const pubsub = Effect.runSync(PubSub.unbounded<MessageEvent<any>>())
+
 export class SseService extends Effect.Service<SseService>()("SseService", {
     effect: Effect.gen(function* () {
         const { session, user } = yield* AuthService
-        const pubsub = yield* PubSub.unbounded<MessageEvent<any>>()
         yield* PubSub.publish(pubsub, { event: "ping" }).pipe(
+            Effect.tap(() => Effect.log("Hola")),
             Effect.repeat(Schedule.fixed("15 seconds")),
             Effect.fork,
         )
