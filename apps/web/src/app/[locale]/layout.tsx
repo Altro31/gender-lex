@@ -8,6 +8,7 @@ import { EventSourceProvider } from '@/lib/sse'
 import { setServerLocale } from '@/locales/request'
 import { NuqsAdapter } from 'nuqs/adapters/next'
 import config from '../../../lingui.config'
+import Script from 'next/script'
 
 export function generateStaticParams() {
 	return config.locales.map(locale => ({ locale }))

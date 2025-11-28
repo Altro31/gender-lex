@@ -23,7 +23,7 @@
 		"paths": {
 			// "@/workflow/core/*": ["../api/.well-known/workflow/v1/*"],
 			// "@/workflows/*": ["../api/workflows/*"],
-			"@/*": ["./src/*", "../api/src/*"]
+			"@/*": ["./src/*"]
 		}
 	},
 	"include": [
@@ -33,5 +33,5 @@
 		".next/types/**/*.ts",
 		".next/dev/types/**/*.ts"
 	],
-	"exclude": ["node_modules", "./t/**/*.tsx", "../api/**"]
+	"exclude": ["node_modules", "../api/**"]
 }

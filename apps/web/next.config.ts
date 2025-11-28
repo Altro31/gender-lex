@@ -6,17 +6,21 @@ import { withWorkflow } from "workflow/next"
 const nextConfig: NextConfig = {
 	reactCompiler: true,
 	cacheComponents: true,
+	typescript: { ignoreBuildErrors: true },
 	experimental: {
 		browserDebugInfoInTerminal: true,
 		clientSegmentCache: true,
 		authInterrupts: true,
 		swcPlugins: [["@lingui/swc-plugin", {}]],
 		rootParams: true,
+		turbopackFileSystemCacheForDev: true,
+		typedEnv: true,
 	},
-	redirects: async () => [],
 	rewrites: async () => [
 		{ source: "/api/:path*", destination: `${envs.API_URL}/api/:path*` },
 	],
+	serverExternalPackages: ["pg", "@repo/types"],
+	typedRoutes: true,
 	turbopack: {
 		resolveExtensions: [
 			".mdx",

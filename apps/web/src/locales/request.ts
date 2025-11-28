@@ -5,7 +5,6 @@ import { locale as getLocale } from "next/root-params"
 export async function setServerLocale() {
 	let locale: string = await getLocale()
 	if (locale.match(/favicon.ico/)) locale = "en"
-	console.log(locale)
 	const { messages } = await import(`./langs/${locale}.po`)
 	i18n.load(locale, messages)
 	i18n.activate(locale)
