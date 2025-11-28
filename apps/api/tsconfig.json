@@ -1,18 +1,6 @@
 {
+    "extends": "nitro/tsconfig",
     "compilerOptions": {
-        "target": "ESNext",
-        "module": "ESNext",
-        "moduleResolution": "Bundler",
-        "strict": true,
-        "noEmit": true,
-        "skipLibCheck": true,
-        "resolveJsonModule": true,
-        "allowSyntheticDefaultImports": true,
-        "forceConsistentCasingInFileNames": true,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "useUnknownInCatchVariables": true,
-        "noUnusedLocals": true,
         "paths": { "@/*": ["./src/*"] },
         "plugins": [{ "name": "workflow" }]
     }

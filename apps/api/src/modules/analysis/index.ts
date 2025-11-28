@@ -1,8 +1,9 @@
 import { analysisModels } from "@/modules/analysis/model"
 import { Effect } from "effect"
-import Elysia, { t } from "elysia"
+import Elysia from "elysia"
 import { AnalysisService } from "./service"
 import { effectPlugin } from "@/lib/effect"
+import z from "zod"
 
 export default new Elysia({
     name: "analysis.controller",
@@ -48,7 +49,7 @@ export default new Elysia({
             }).pipe(AnalysisService.provide)
             return runtime.runPromise(program)
         },
-        { response: { 200: "startOutput", 404: t.String() } },
+        { response: { 200: "startOutput", 404: z.string() } },
     )
 
     .get(

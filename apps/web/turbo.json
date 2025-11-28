@@ -1,17 +1,6 @@
 {
 	"$schema": "https://turborepo.com/schema.json",
 	"extends": ["//"],
-	"globalEnv": [
-		"API_URL",
-		"AUTH_GOOGLE_ID",
-		"AUTH_GOOGLE_SECRET",
-		"AUTH_GITHUB_ID",
-		"AUTH_GITHUB_SECRET",
-		"BETTER_AUTH_SECRET",
-		"BETTER_AUTH_URL",
-		"UI_URL",
-		"ENCRYPTION_KEY"
-	],
 	"tasks": {
 		"dev": {
 			"cache": false,

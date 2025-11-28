@@ -1,35 +1,35 @@
 {
     "name": "api",
-    "version": "1.0.50",
+    "type": "module",
     "scripts": {
-        "dev": "nitro dev",
-        "studio": "workflow web",
-        "start": "node .output/server/index.mjs",
-        "build": "nitro build"
+        "build": "nitro build",
+        "dev": "nitro dev"
+    },
+    "devDependencies": {
+        "@repo/types": "workspace:*",
+        "@types/adm-zip": "^0.5.6",
+        "bun-types": "latest",
+        "elysia": "latest",
+        "nitro": "latest",
+        "rolldown": "latest"
     },
     "dependencies": {
         "@adobe/pdfservices-node-sdk": "^4.1.0",
         "@ai-sdk/openai-compatible": "^1.0.11",
         "@effect/platform": "catalog:",
         "@effect/platform-node": "catalog:",
-        "@elysiajs/cors": "^1.4.0",
-        "@elysiajs/openapi": "^1.4.10",
-        "@repo/auth": "workspace:*",
         "@repo/db": "workspace:*",
+        "@elysiajs/cors": "latest",
+        "@elysiajs/openapi": "latest",
+        "workflow": "latest",
+        "zod": "catalog:",
+        "@repo/auth": "workspace:*",
         "@zenstackhq/server": "catalog:",
         "adm-zip": "^0.5.16",
         "ai": "^5.0.22",
         "better-auth": "catalog:",
         "effect": "^3.17.9",
         "elysia": "catalog:",
-        "umlsjs": "^1.2.1",
-        "workflow": "catalog:",
-        "zod": "catalog:"
-    },
-    "devDependencies": {
-        "@repo/types": "workspace:*",
-        "@types/adm-zip": "^0.5.6",
-        "bun-types": "latest",
-        "nitro": "^3.0.1-alpha.0"
+        "umlsjs": "^1.2.1"
     }
 }
