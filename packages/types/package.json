@@ -2,7 +2,6 @@
 	"name": "@repo/types",
 	"version": "0.0.0",
 	"peerDependencies": {
-		"@repo/db": "workspace:*",
-		"api": "workspace:*"
+		"@repo/db": "workspace:*"
 	}
 }

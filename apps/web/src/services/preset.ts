@@ -1,21 +1,21 @@
-"use server"
+'use server'
 
-import { getPrisma } from "@/lib/prisma/client"
-import { actionClient } from "@/lib/safe-action"
-import { PresetSchema } from "@/sections/preset/form/preset-schema"
-import { cacheTag, revalidatePath, updateTag } from "next/cache"
-import { z } from "zod/mini"
+import { getPrisma } from '@/lib/prisma/client'
+import { actionClient } from '@/lib/safe-action'
+import { PresetSchema } from '@/sections/preset/form/preset-schema'
+import { cacheTag, updateTag } from 'next/cache'
+import { z } from 'zod/mini'
 export async function findPresets({ page, q }: { page: number; q?: string }) {
-	"use cache: private"
-	cacheTag("presets")
+	'use cache: private'
+	cacheTag('presets')
 	const prisma = await getPrisma()
 
 	return prisma.preset.findMany({
-		where: { name: { contains: q, mode: "insensitive" } },
+		where: { name: { contains: q, mode: 'insensitive' } },
 		skip: (page - 1) * 10,
 		take: 10,
 		include: { Models: { include: { Model: true } } },
-		orderBy: [{ createdAt: "desc" }, { updatedAt: "desc" }],
+		orderBy: [{ createdAt: 'desc' }, { updatedAt: 'desc' }],
 	})
 }
 
@@ -27,7 +27,7 @@ export const createPreset = actionClient
 			data: {
 				...rest,
 				Models: {
-					create: Models.map((model) => ({
+					create: Models.map(model => ({
 						role: model.role,
 						Model: { connect: { id: model.Model.id } },
 					})),
@@ -35,7 +35,7 @@ export const createPreset = actionClient
 			},
 		})
 
-		updateTag("presets")
+		updateTag('presets')
 		return { success: true, data }
 	})
 
@@ -44,7 +44,7 @@ export const editPreset = actionClient
 	.action(async ({ parsedInput: [id, { Models, ...rest }] }) => {
 		const prisma = await getPrisma()
 
-		const data = await prisma.$transaction(async (tx) => {
+		const data = await prisma.$transaction(async tx => {
 			await tx.preset.update({
 				where: { id },
 				data: { Models: { deleteMany: {} } },
@@ -55,7 +55,7 @@ export const editPreset = actionClient
 				data: {
 					...rest,
 					Models: {
-						create: Models.map((model) => ({
+						create: Models.map(model => ({
 							role: model.role,
 							Model: { connect: { id: model.Model.id } },
 						})),
@@ -65,7 +65,7 @@ export const editPreset = actionClient
 			})
 		})
 
-		updateTag("presets")
+		updateTag('presets')
 		updateTag(`preset-${id}`)
 
 		return { success: true, data }
@@ -78,7 +78,7 @@ export const deletePreset = actionClient
 
 		await prisma.preset.delete({ where: { id } })
 
-		updateTag("presets")
+		updateTag('presets')
 		return { success: true }
 	})
 
@@ -106,10 +106,10 @@ export const clonePreset = actionClient
 
 		const cloned = await prisma.preset.create({
 			data: {
-				name: rest.name + " (Copy)",
+				name: rest.name + ' (Copy)',
 				description: rest.description,
 				Models: {
-					create: Models.map((pm) => ({
+					create: Models.map(pm => ({
 						role: pm.role,
 						Model: { connect: { id: pm.modelId } },
 					})),
@@ -117,22 +117,22 @@ export const clonePreset = actionClient
 			},
 		})
 
-		updateTag("presets")
+		updateTag('presets')
 		return { success: true, data: cloned }
 	})
 
 export const getPresetsSelect = async ({ page }: { page: number }) => {
-	"use cache: private"
-	cacheTag("presets")
+	'use cache: private'
+	cacheTag('presets')
 
 	const prisma = await getPrisma()
 	return prisma.preset.findMany({ skip: page * 20, take: 20 })
 }
 
 export const getLastUsedPreset = async () => {
-	"use cache: private"
-	cacheTag("presets")
+	'use cache: private'
+	cacheTag('presets')
 
 	const prisma = await getPrisma()
-	return prisma.preset.findFirst({ orderBy: [{ usedAt: "desc" }] })
+	return prisma.preset.findFirst({ orderBy: [{ usedAt: 'desc' }] })
 }

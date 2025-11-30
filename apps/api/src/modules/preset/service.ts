@@ -1,15 +1,13 @@
-import { EnhancedPrismaService } from "@/shared/prisma.service"
-import { Effect } from "effect"
+import { Effect } from 'effect'
 
 export class PresetService extends Effect.Service<PresetService>()(
-    "PresetService",
-    {
-        effect: Effect.gen(function* () {
-            const repository = yield* EnhancedPrismaService
-            return { repository }
-        }),
-        dependencies: [EnhancedPrismaService.Default],
-    },
+	'PresetService',
+	{
+		effect: Effect.gen(function* () {
+			return {}
+		}),
+		dependencies: [],
+	},
 ) {
-    static provide = Effect.provide(this.Default)
+	static provide = Effect.provide(this.Default)
 }

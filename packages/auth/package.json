@@ -6,7 +6,7 @@
 		"@repo/db": "workspace:*"
 	},
 	"exports": {
-		"./nest": "./nest.ts",
+		"./api": "./api.ts",
 		"./next": "./next.ts",
 		"./encrypt": "./encrypt.ts"
 	}

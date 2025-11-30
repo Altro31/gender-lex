@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
 	typescript: { ignoreBuildErrors: true },
 	experimental: {
 		browserDebugInfoInTerminal: true,
-		clientSegmentCache: true,
 		authInterrupts: true,
 		swcPlugins: [["@lingui/swc-plugin", {}]],
 		rootParams: true,
