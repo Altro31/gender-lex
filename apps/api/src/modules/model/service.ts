@@ -5,10 +5,9 @@ import {
 } from '@/modules/model/exceptions/tagged-errors'
 import { SseService } from '@/modules/sse/service'
 import { HttpService } from '@/shared/http.service'
-import { EnhancedPrismaService } from '@/shared/prisma.service'
 import type { ModelError, ModelStatus, Prisma } from '@repo/db/models'
 import { Console, Effect, Match } from 'effect'
-import { ModelRepository } from './repository'
+import { EnhancedPrismaService } from '@/shared/prisma.service'
 
 type ModelListResponse = { data: { id: string; active: boolean }[] }
 
@@ -18,18 +17,18 @@ export class ModelService extends Effect.Service<ModelService>()(
 		effect: Effect.gen(function* () {
 			const sseService = yield* SseService
 			const client = yield* HttpService
-			const repository = yield* ModelRepository
+			const prisma = yield* EnhancedPrismaService
 
 			const services = {
 				create(data: Prisma.ModelCreateInput) {
 					return Effect.gen(services, function* () {
-						const model = yield* repository.create({ data })
+						const model = yield* prisma.model.create({ data })
 						yield* this.testConnection(model.id)
 					})
 				},
 				testConnection: (id: string) =>
 					Effect.gen(services, function* () {
-						const model = yield* repository.findUnique({
+						const model = yield* prisma.model.findUnique({
 							where: { id },
 						})
 						if (!model) {
@@ -108,13 +107,13 @@ export class ModelService extends Effect.Service<ModelService>()(
 					error?: ModelError,
 				) =>
 					Effect.gen(function* () {
-						const model = yield* repository.findUnique({
+						const model = yield* prisma.model.findUnique({
 							where: { id },
 						})
 						if (!model) {
 							throw new Error(`Model with id: ${id} not found`)
 						}
-						yield* repository.update({
+						yield* prisma.model.update({
 							where: { id },
 							data: { ...model, status, error: error || null },
 						})
@@ -132,10 +131,9 @@ export class ModelService extends Effect.Service<ModelService>()(
 			return services
 		}),
 		dependencies: [
-			EnhancedPrismaService.Default,
 			HttpService.Default,
 			SseService.Default,
-			ModelRepository.Default,
+			EnhancedPrismaService.Default,
 		],
 	},
 ) {

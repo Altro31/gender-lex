@@ -1,0 +1,4 @@
+{
+	"ignorePatterns": ["node_modules"],
+	"rules": { "react/jsx-no-literals": "error", "eslint/require-yield": "off" }
+}

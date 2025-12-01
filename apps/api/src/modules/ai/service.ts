@@ -1,24 +1,24 @@
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible"
-import type { Model } from "@repo/db/models"
-import { Effect } from "effect"
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
+import type { Model } from '@repo/db/models'
+import { Effect } from 'effect'
 
-export class AiService extends Effect.Service<AiService>()("AiService", {
-    effect: Effect.gen(function* () {
-        return {
-            buildLanguageModel: (model: Model) =>
-                Effect.gen(function* () {
-                    const provider = createOpenAICompatible({
-                        baseURL: model.connection.url,
-                        name: "",
-                        apiKey: model.apiKey ?? undefined,
-                    })
-                    return {
-                        languageModel: provider(model.connection.identifier),
-                        options: model.settings,
-                    }
-                }),
-        }
-    }),
+export class AiService extends Effect.Service<AiService>()('AiService', {
+	effect: Effect.gen(function* () {
+		return {
+			buildLanguageModel: (model: Model) =>
+				Effect.gen(function* () {
+					const provider = createOpenAICompatible({
+						baseURL: model.connection.url,
+						name: '',
+						apiKey: model.apiKey ?? undefined,
+					})
+					return {
+						languageModel: provider(model.connection.identifier),
+						options: model.settings,
+					}
+				}),
+		}
+	}),
 }) {
-    static provide = Effect.provide(this.Default)
+	static provide = Effect.provide(this.Default)
 }

@@ -1,5 +1,8 @@
 {
 	"plugins": ["nextjs", "react"],
 	"ignorePatterns": ["node_modules", "src/components/ui", ".next"],
-	"rules": { "react/jsx-no-literals": "error" }
+	"rules": {
+		"react/jsx-no-literals": "error",
+		"eslint/require-yield": "error"
+	}
 }

@@ -1,7 +1,7 @@
-import envs from "@/lib/env/env-server" with { type: "macro" }
-import type { NextConfig } from "next"
-import path from "path"
-import { withWorkflow } from "workflow/next"
+import envs from '@/lib/env/env-server' with { type: 'macro' }
+import type { NextConfig } from 'next'
+import path from 'path'
+import { withWorkflow } from 'workflow/next'
 
 const nextConfig: NextConfig = {
 	reactCompiler: true,
@@ -10,29 +10,28 @@ const nextConfig: NextConfig = {
 	experimental: {
 		browserDebugInfoInTerminal: true,
 		authInterrupts: true,
-		swcPlugins: [["@lingui/swc-plugin", {}]],
+		swcPlugins: [['@lingui/swc-plugin', {}]],
 		rootParams: true,
 		turbopackFileSystemCacheForDev: true,
 		typedEnv: true,
 	},
 	rewrites: async () => [
-		{ source: "/api/:path*", destination: `${envs.API_URL}/api/:path*` },
+		{ source: '/api/:path*', destination: `${envs.API_URL}/api/:path*` },
 	],
-	serverExternalPackages: ["pg", "@repo/types"],
-	typedRoutes: true,
+	serverExternalPackages: ['pg', '@repo/types'],
 	turbopack: {
 		resolveExtensions: [
-			".mdx",
-			".tsx",
-			".ts",
-			".jsx",
-			".js",
-			".mjs",
-			".json",
-			".po",
+			'.mdx',
+			'.tsx',
+			'.ts',
+			'.jsx',
+			'.js',
+			'.mjs',
+			'.json',
+			'.po',
 		],
-		rules: { "*.po": { loaders: ["@lingui/loader"], as: "*.js" } },
-		root: path.join(import.meta.dirname, "..", ".."),
+		rules: { '*.po': { loaders: ['@lingui/loader'], as: '*.js' } },
+		root: path.join(import.meta.dirname, '..', '..'),
 	},
 }
 

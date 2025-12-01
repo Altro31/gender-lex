@@ -6,7 +6,6 @@ import type { Analysis, AnalysisStatus } from '@repo/db/models'
 import { Console, Effect, pipe } from 'effect'
 import { AnalysisNotFoundError } from './error'
 import { ExtractorService } from '../extractor/service'
-import { AnalysisRepository } from './repository'
 
 export class AnalysisService extends Effect.Service<AnalysisService>()(
 	'AnalysisService',
@@ -14,7 +13,8 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
 		effect: Effect.gen(function* () {
 			const extractorService = yield* ExtractorService
 			const biasDetectionService = yield* BiasDetectionService
-			const repository = yield* AnalysisRepository
+			const prisma = yield* EnhancedPrismaService
+			const repository = prisma.analysis
 
 			const service = {
 				statusCount: () =>
@@ -137,7 +137,6 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
 			ExtractorService.Default,
 			BiasDetectionService.Default,
 			EnhancedPrismaService.Default,
-			AnalysisRepository.Default,
 		],
 	},
 ) {
