@@ -151,7 +151,7 @@ function Login() {
 			>
 				<DropdownMenuGroup>
 					<DropdownMenuItem asChild>
-						<Link href="/api/sse">
+						<Link href="/auth/login">
 							<UserIcon />
 							{t`Email`}
 						</Link>
