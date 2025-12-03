@@ -1,4 +1,4 @@
-import { effectPlugin } from '@/lib/effect'
+import { effectPlugin } from '@/plugins/effect.plugin'
 import { modelModels } from '@/modules/model/model'
 import { ModelService } from '@/modules/model/service'
 import { Effect } from 'effect'
@@ -13,25 +13,25 @@ export default new Elysia({
 	.model(modelModels)
 	.post(
 		'',
-		({ body, runtime }) => {
+		({ body, runEffect }) => {
 			const program = Effect.gen(function* () {
 				const modelService = yield* ModelService
 				yield* modelService.create(body)
 				return { ok: true } as const
 			}).pipe(ModelService.provide)
-			return runtime.runPromise(program)
+			return runEffect(program)
 		},
 		{ body: 'createModelInput', response: 'createModelOutput' },
 	)
 	.post(
 		':id/test-connection',
-		({ runtime, params }) => {
+		({ runEffect, params }) => {
 			const program = Effect.gen(function* () {
 				const modelService = yield* ModelService
 				const res = yield* modelService.testConnection(params.id)
 				return Boolean(res)
 			}).pipe(ModelService.provide)
-			return runtime.runPromise(program)
+			return runEffect(program)
 		},
 		{ response: { 200: 'testConnectionOutput', 404: t.String() } },
 	)

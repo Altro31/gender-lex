@@ -2,21 +2,21 @@ import { Data, Effect } from 'effect'
 import { Prisma, PrismaClient as RawPrismaClient } from '@repo/db/client'
 import type { PrismaClient as EnhancedPrismaClient } from '@repo/db'
 
-// import type {
-//     PrismaClientKnownRequestError,
-//     PrismaClientUnknownRequestError,
-//     PrismaClientRustPanicError,
-//     PrismaClientInitializationError,
-//     PrismaClientValidationError,
-// } from "@prisma/client/runtime/library"
+import type {
+	PrismaClientKnownRequestError,
+	PrismaClientUnknownRequestError,
+	PrismaClientRustPanicError,
+	PrismaClientInitializationError,
+	PrismaClientValidationError,
+} from '@prisma/client/runtime/library'
 
 export class PrismaError extends Data.TaggedError('PrismaError')<{
-	details: any
-	// | PrismaClientKnownRequestError
-	// | PrismaClientUnknownRequestError
-	// | PrismaClientRustPanicError
-	// | PrismaClientInitializationError
-	// | PrismaClientValidationError
+	details:
+		| PrismaClientKnownRequestError
+		| PrismaClientUnknownRequestError
+		| PrismaClientRustPanicError
+		| PrismaClientInitializationError
+		| PrismaClientValidationError
 }> {}
 
 type FilterNotContaining<
@@ -76,6 +76,30 @@ export function createEffectPrisma(prisma: EnhancedPrismaClient) {
 				return new Proxy(
 					{},
 					{
+						getOwnPropertyDescriptor() {
+							return { enumerable: true, configurable: true }
+						},
+						ownKeys(): (keyof EnhancedPrismaClient['model'])[] {
+							return [
+								'aggregate',
+								'count',
+								'create',
+								'createMany',
+								'createManyAndReturn',
+								'delete',
+								'deleteMany',
+								'findFirst',
+								'findFirstOrThrow',
+								'findMany',
+								'findUnique',
+								'findUniqueOrThrow',
+								'groupBy',
+								'update',
+								'updateMany',
+								'updateManyAndReturn',
+								'upsert',
+							]
+						},
 						get(_target, method) {
 							return (...args: any[]) =>
 								Effect.tryPromise(() =>

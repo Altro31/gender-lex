@@ -7,6 +7,9 @@ import openapi, { fromTypes } from '@elysiajs/openapi'
 import { auth } from '@repo/auth/api'
 import { Elysia } from 'elysia'
 import z from 'zod'
+import { authPlugin } from './plugins/auth.plugin'
+import { effectPlugin } from './plugins/effect.plugin'
+import { Effect } from 'effect'
 
 export type App = typeof app
 const app = new Elysia()
@@ -21,6 +24,8 @@ const app = new Elysia()
 			},
 		}),
 	)
+	.use(authPlugin)
+	.use(effectPlugin)
 	.use(sse)
 	.use(model)
 	.use(analysis)
@@ -28,8 +33,5 @@ const app = new Elysia()
 	.get('/', () => {
 		return { ok: true }
 	})
-
-// console.log(`	🚀Server running at ${app.server?.url}`)
-// console.log(`	📖Docs running at ${app.server?.url}openapi`)
 
 export default app.compile()

@@ -1,5 +1,5 @@
 import { ContextService } from '@/shared/context.service'
-import { EnhancedPrismaService } from '@/shared/prisma.service'
+import { EnhancedPrismaService } from '@/shared/prisma/enhanced-prisma.service'
 import { createElysiaHandler } from '@zenstackhq/server/elysia'
 import { Effect } from 'effect'
 import Elysia from 'elysia'

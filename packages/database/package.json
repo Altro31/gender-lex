@@ -9,7 +9,6 @@
 		"migrate:prod": "prisma migrate deploy"
 	},
 	"dependencies": {
-		"effect": "^3.17.9",
 		"@prisma/adapter-pg": "^6.18.0",
 		"@zenstackhq/runtime": "catalog:"
 	},

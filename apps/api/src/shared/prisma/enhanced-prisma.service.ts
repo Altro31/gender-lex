@@ -3,42 +3,19 @@ import { Effect } from 'effect'
 import { createEffectPrisma } from '@/lib/prisma-effect'
 import { decrypt, encrypt } from '@repo/auth/encrypt'
 import { enhance, type PrismaClient } from '@repo/db'
-import {
-	PrismaClient as PrismaClientClass,
-	adapter,
-	extension,
-} from '@repo/db/client'
-import { AuthService } from './auth.service'
-
-class RawPrismaService extends Effect.Service<RawPrismaService>()(
-	'RawPrismaService',
-	{ succeed: new PrismaClientClass({ adapter }).$extends(extension) },
-) {}
-
-// new PrismaClientClass({ adapter }).$extends(extension) }
-export class PrismaService extends Effect.Service<PrismaService>()(
-	'PrismaService',
-	{
-		effect: Effect.gen(function* () {
-			const prisma = yield* RawPrismaService
-			return createEffectPrisma(prisma as unknown as PrismaClient)
-		}),
-		dependencies: [RawPrismaService.Default],
-	},
-) {
-	static provide = Effect.provide(this.Default)
-}
+import { AuthService } from '../auth/auth.service'
+import { RawPrismaService } from './raw-prisma.service'
 
 export class EnhancedPrismaService extends Effect.Service<EnhancedPrismaService>()(
 	'EnhancedPrismaService',
 	{
 		effect: Effect.gen(function* () {
 			const prisma = yield* RawPrismaService
-			const { user } = yield* AuthService
+			const { session } = yield* AuthService
 
 			const enhanced = enhance(
 				prisma as any,
-				{ user },
+				{ user: session?.user },
 				{
 					logPrismaQuery: true,
 					encryption: {

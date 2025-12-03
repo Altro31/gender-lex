@@ -7,7 +7,7 @@ import { SseService } from '@/modules/sse/service'
 import { HttpService } from '@/shared/http.service'
 import type { ModelError, ModelStatus, Prisma } from '@repo/db/models'
 import { Console, Effect, Match } from 'effect'
-import { EnhancedPrismaService } from '@/shared/prisma.service'
+import { ModelRepository } from './repository'
 
 type ModelListResponse = { data: { id: string; active: boolean }[] }
 
@@ -17,18 +17,18 @@ export class ModelService extends Effect.Service<ModelService>()(
 		effect: Effect.gen(function* () {
 			const sseService = yield* SseService
 			const client = yield* HttpService
-			const prisma = yield* EnhancedPrismaService
+			const repository = yield* ModelRepository
 
 			const services = {
 				create(data: Prisma.ModelCreateInput) {
 					return Effect.gen(services, function* () {
-						const model = yield* prisma.model.create({ data })
+						const model = yield* repository.create({ data })
 						yield* this.testConnection(model.id)
 					})
 				},
 				testConnection: (id: string) =>
 					Effect.gen(services, function* () {
-						const model = yield* prisma.model.findUnique({
+						const model = yield* repository.findUnique({
 							where: { id },
 						})
 						if (!model) {
@@ -107,13 +107,13 @@ export class ModelService extends Effect.Service<ModelService>()(
 					error?: ModelError,
 				) =>
 					Effect.gen(function* () {
-						const model = yield* prisma.model.findUnique({
+						const model = yield* repository.findUnique({
 							where: { id },
 						})
 						if (!model) {
 							throw new Error(`Model with id: ${id} not found`)
 						}
-						yield* prisma.model.update({
+						yield* repository.update({
 							where: { id },
 							data: { ...model, status, error: error || null },
 						})
@@ -133,7 +133,7 @@ export class ModelService extends Effect.Service<ModelService>()(
 		dependencies: [
 			HttpService.Default,
 			SseService.Default,
-			EnhancedPrismaService.Default,
+			ModelRepository.Default,
 		],
 	},
 ) {

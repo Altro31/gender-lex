@@ -1,54 +1,45 @@
-import { AuthService } from "@/shared/auth.service"
-import { ContextService } from "@/shared/context.service"
-import type { MessageMapper } from "@repo/types/sse"
-import { Effect, Layer, ManagedRuntime, PubSub, Schedule, Stream } from "effect"
+import { AuthService } from '@/shared/auth/auth.service'
+import type { MessageMapper } from '@repo/types/sse'
+import { Effect, PubSub, Schedule, Stream } from 'effect'
 
 type MessageEvent<Type extends keyof MessageMapper> = {
-    event: Type | "ping"
-    data?: MessageMapper[Type] & { sessionId: string; userId: string }
-    sessionId?: string
-    userId?: string
+	event: Type | 'ping'
+	data?: MessageMapper[Type] & { sessionId: string; userId: string }
+	sessionId?: string
+	userId?: string
 }
 
 const pubsub = Effect.runSync(PubSub.unbounded<MessageEvent<any>>())
 
-export class SseService extends Effect.Service<SseService>()("SseService", {
-    effect: Effect.gen(function* () {
-        const { session, user } = yield* AuthService
-        yield* PubSub.publish(pubsub, { event: "ping" }).pipe(
-            Effect.tap(() => Effect.log("Hola")),
-            Effect.repeat(Schedule.fixed("15 seconds")),
-            Effect.fork,
-        )
-        const services = {
-            get stream$() {
-                return Stream.fromPubSub(pubsub)
-            },
+export class SseService extends Effect.Service<SseService>()('SseService', {
+	effect: Effect.gen(function* () {
+		const { session } = yield* AuthService
 
-            broadcast<Type extends keyof MessageMapper>(
-                event: Type,
-                data: MessageMapper[Type],
-            ) {
-                return PubSub.publish(pubsub, {
-                    event,
-                    data,
-                    sessionId: session!.id,
-                    userId: user!.id,
-                })
-            },
-        }
+		yield* PubSub.publish(pubsub, { event: 'ping' }).pipe(
+			Effect.repeat(Schedule.fixed('15 seconds')),
+			Effect.forkDaemon,
+		)
+		const services = {
+			get stream$() {
+				return Stream.fromPubSub(pubsub)
+			},
 
-        return services
-    }),
-    dependencies: [AuthService.Default],
+			broadcast<Type extends keyof MessageMapper>(
+				event: Type,
+				data: MessageMapper[Type],
+			) {
+				return PubSub.publish(pubsub, {
+					event,
+					data,
+					sessionId: session!.id,
+					userId: session!.user!.id,
+				})
+			},
+		}
+
+		return services
+	}),
+	dependencies: [AuthService.Default],
 }) {
-    static provide = Effect.provide(SseService.Default)
-}
-
-export function SseRuntime(ctx: any) {
-    return ManagedRuntime.make(
-        Layer.mergeAll(SseService.Default, AuthService.Default).pipe(
-            Layer.provide(ContextService.Default(ctx)),
-        ),
-    )
+	static provide = Effect.provide(this.Default)
 }

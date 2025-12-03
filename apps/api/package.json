@@ -1,40 +1,41 @@
 {
-    "name": "api",
-    "type": "module",
-    "scripts": {
-        "build": "nitro build",
-        "dev": "nitro dev",
-        "start": "node .output/server/index.mjs"
-    },
-    "devDependencies": {
-        "@effect/language-service": "^0.57.1",
-        "@repo/types": "workspace:*",
-        "@types/adm-zip": "^0.5.6",
-        "bun-types": "latest",
-        "elysia": "latest",
-        "nitro": "latest",
-        "rolldown": "latest"
-    },
-    "dependencies": {
-        "@adobe/pdfservices-node-sdk": "^4.1.0",
-        "@ai-sdk/openai-compatible": "^1.0.11",
-        "@effect/platform": "catalog:",
-        "@effect/platform-node": "catalog:",
-        "@repo/db": "workspace:*",
-        "@elysiajs/cors": "latest",
-        "@elysiajs/openapi": "latest",
-        "workflow": "latest",
-        "zod": "catalog:",
-        "@repo/auth": "workspace:*",
-        "@zenstackhq/server": "catalog:",
-        "adm-zip": "^0.5.16",
-        "ai": "^5.0.22",
-        "better-auth": "catalog:",
-        "effect": "^3.17.9",
-        "elysia": "catalog:",
-        "umlsjs": "^1.2.1"
-    },
-    "exports": {
-        ".": "./src/index.ts"
-    }
+	"name": "api",
+	"type": "module",
+	"scripts": {
+		"build": "nitro build",
+		"dev": "nitro dev",
+		"start": "node .output/server/index.mjs"
+	},
+	"devDependencies": {
+		"@prisma/client": "catalog:",
+		"@effect/language-service": "^0.57.1",
+		"@repo/types": "workspace:*",
+		"@types/adm-zip": "^0.5.6",
+		"bun-types": "latest",
+		"elysia": "latest",
+		"nitro": "latest",
+		"rolldown": "latest"
+	},
+	"dependencies": {
+		"@adobe/pdfservices-node-sdk": "^4.1.0",
+		"@ai-sdk/openai-compatible": "^1.0.11",
+		"@effect/platform": "catalog:",
+		"@effect/platform-node": "catalog:",
+		"@repo/db": "workspace:*",
+		"@elysiajs/cors": "latest",
+		"@elysiajs/openapi": "latest",
+		"workflow": "latest",
+		"zod": "catalog:",
+		"@repo/auth": "workspace:*",
+		"@zenstackhq/server": "catalog:",
+		"adm-zip": "^0.5.16",
+		"ai": "^5.0.22",
+		"better-auth": "catalog:",
+		"effect": "^3.17.9",
+		"elysia": "catalog:",
+		"umlsjs": "^1.2.1"
+	},
+	"exports": {
+		".": "./src/index.ts"
+	}
 }
