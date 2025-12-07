@@ -1,29 +1,11 @@
-import type { RawAnalysis } from '@/lib/types/raw-analysis'
+import type { RawAnalysis } from '@repo/db/models'
 import { AiService } from '@/modules/ai/service'
 import { genderLexSystemPrompt } from '@/modules/bias-detection/prompts/system.prompt'
 import { AuthService } from '@/shared/auth/auth.service'
 import type { Analysis, Model } from '@repo/db/models'
-import {
-	AnalysisSchema,
-	BiasedMetaphorSchema,
-	BiasedTermSchema,
-	ModifiedAlternativeSchema,
-} from '@repo/db/zod'
+import type { AnalysisSchema } from '@repo/db/schema/analysis'
 import { generateText, Output, stepCountIs } from 'ai'
 import { Effect } from 'effect'
-
-// @ts-nocheck
-const schema = AnalysisSchema?.pick({
-	name: true,
-	originalText: true,
-	impactAnalysis: true,
-	conclusion: true,
-	additionalContextEvaluation: true,
-}).extend({
-	modifiedTextAlternatives: ModifiedAlternativeSchema.array().default([]),
-	biasedTerms: BiasedTermSchema.array().default([]),
-	biasedMetaphors: BiasedMetaphorSchema.array().default([]),
-}) as any
 
 type AnaliceInput = Analysis & { Preset: { Models: { Model: Model }[] } }
 
@@ -47,7 +29,7 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
 									system: genderLexSystemPrompt,
 									stopWhen: stepCountIs(3),
 									experimental_output: Output.object({
-										schema,
+										AnalysisSchema,
 									}),
 									temperature: model.options.temperature,
 								}),

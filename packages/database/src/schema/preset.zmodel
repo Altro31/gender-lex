@@ -1,8 +1,10 @@
 import "model"
 import "user"
 import "analysis"
+import "shared/timestamps"
 
-model Preset {
+
+model Preset with Timestamps{
 
     id          String        @id @default(cuid())
     name        String
@@ -17,8 +19,6 @@ model Preset {
 
     isDefault   Boolean       @default(false)
 
-    createdAt   DateTime      @default(now())
-    updatedAt   DateTime      @updatedAt
     usedAt      DateTime?
 
     // Owners can do anything
@@ -52,8 +52,6 @@ model PresetModel {
     // Owners can do anything
     // @@allow("all",auth()==Preset.User)
     @@allow("all",true)
-
-
 }
 
 enum ModelRole {

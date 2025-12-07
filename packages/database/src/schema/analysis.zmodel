@@ -1,7 +1,8 @@
 import "user"
 import "preset"
+import "shared/timestamps"
 
-abstract model RawAnalysis {
+type RawAnalysis {
     originalText                String
     modifiedTextAlternatives    ModifiedAlternative[]        @json
     biasedTerms                 BiasedTerm[]                 @json
@@ -11,7 +12,7 @@ abstract model RawAnalysis {
     conclusion                  String?
 }
 
-model Analysis extends RawAnalysis {
+model Analysis with RawAnalysis,Timestamps {
     id          String         @id @default(cuid())
     name        String?
     visibility  Visibility     @default(private)
@@ -21,8 +22,7 @@ model Analysis extends RawAnalysis {
     Preset      Preset         @relation(fields: [presetId], references: [id], onDelete: SetNull)
     userId      String?        @default(auth().id)
     User        User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
-    createdAt   DateTime       @default(now())
-    updatedAt   DateTime       @updatedAt
+
 
     @@allow("all",auth()==User)
 }
@@ -52,18 +52,18 @@ enum BiasedTermCategory {
     reproductiveExclusion
 }
 
-type BiasedTerm {
+type BiasedItem {
     content             String
     influencePercentage Float  @gte(0) @lte(1)
     explanation         String
-    category            String
 }
 
-type BiasedMetaphor {
-    content             String
-    influencePercentage Float  @gte(0) @lte(1)
-    explanation         String
-    historicalContext   String
+type BiasedTerm with BiasedItem {
+    category String
+}
+
+type BiasedMetaphor with BiasedItem {
+    historicalContext String
 }
 
 type AdditionalContextEvaluation {
@@ -74,25 +74,22 @@ type AdditionalContextEvaluation {
     systemicBiases              AdditionalContextEvaluationItem
 }
 
-type AdditionalContextEvaluationItem {
+type AdditionalContextEvaluationItemBase {
     presence            Boolean
-    influencePercentage Float    @gte(0) @lte(1)
-    examples            String[]
+    influencePercentage Float   @gte(0) @lte(1)
     explanation         String
 }
 
-type AdditionalContextGenderRepresentationAbsence {
-    presence            Boolean
-    influencePercentage Float    @gte(0) @lte(1)
-    explanation         String
-    affectedGroups      String[]
+type AdditionalContextEvaluationItem with AdditionalContextEvaluationItemBase {
+    examples String[]
 }
 
-type AdditionalContextIntersectionality {
-    presence            Boolean
-    influencePercentage Float    @gte(0) @lte(1)
-    explanation         String
-    excludedGroups      String[]
+type AdditionalContextGenderRepresentationAbsence with AdditionalContextEvaluationItemBase {
+    affectedGroups String[]
+}
+
+type AdditionalContextIntersectionality with AdditionalContextEvaluationItemBase {
+    excludedGroups String[]
 }
 
 type ImpactAnalysis {

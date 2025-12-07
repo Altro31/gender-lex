@@ -1,13 +1,11 @@
-import { ModelCreateSchema } from "@repo/db/zod"
-import { t } from "elysia"
+import { Model } from '@repo/db/schema/model.ts'
+import { Schema } from 'effect'
+import { t } from 'elysia'
 
 export const modelModels = {
-    createModelInput: ModelCreateSchema.pick({
-        apiKey: true,
-        connection: true,
-        name: true,
-        settings: true,
-    }),
-    createModelOutput: t.Object({ ok: t.Literal(true) }),
-    testConnectionOutput: t.Boolean(),
+	createModelInput: Model.pipe(
+		Schema.pick('apiKey', 'connection', 'name', 'settings'),
+	),
+	createModelOutput: t.Object({ ok: t.Literal(true) }),
+	testConnectionOutput: t.Boolean(),
 }

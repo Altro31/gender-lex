@@ -1,12 +1,14 @@
 import "user"
 import "preset"
+import "shared/timestamps"
 
-model Model {
+
+model Model with Timestamps {
     id           String        @id @default(cuid())
     connection   Connection    @json
     settings     Settings      @json
     name         String
-    apiKey       String?       @encrypted
+    apiKey       String?       // @encrypted
 
     status       ModelStatus   @default(inactive)
     error        ModelError?
@@ -14,8 +16,6 @@ model Model {
     User         User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId       String?       @default(auth().id)
 
-    createdAt    DateTime      @default(now())
-    updatedAt    DateTime      @updatedAt
     usedAt       DateTime?
 
     isDefault    Boolean       @default(false)

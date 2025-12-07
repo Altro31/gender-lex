@@ -1,22 +1,11 @@
+import { ORMError } from '@zenstackhq/orm'
 import { Data, Effect } from 'effect'
-import { Prisma, PrismaClient as RawPrismaClient } from '@repo/db/client'
-import type { PrismaClient as EnhancedPrismaClient } from '@repo/db'
+import { schema } from './generated/schema'
+import { ClientType } from './client'
+import { UnionToTuple } from 'type-fest'
 
-import type {
-	PrismaClientKnownRequestError,
-	PrismaClientUnknownRequestError,
-	PrismaClientRustPanicError,
-	PrismaClientInitializationError,
-	PrismaClientValidationError,
-} from '@prisma/client/runtime/library'
-
-export class PrismaError extends Data.TaggedError('PrismaError')<{
-	details:
-		| PrismaClientKnownRequestError
-		| PrismaClientUnknownRequestError
-		| PrismaClientRustPanicError
-		| PrismaClientInitializationError
-		| PrismaClientValidationError
+export class ClientError extends Data.TaggedError('ClientError')<{
+	details: ORMError
 }> {}
 
 type FilterNotContaining<
@@ -39,14 +28,14 @@ type ExcludeKeysContaining<
 > = { [key in FilterNotContaining<keyof Obj, Key>]: Obj[key] }
 
 export type Client = ExcludeKeysContaining<
-	ExcludeNonStringKeys<RawPrismaClient>,
+	ExcludeNonStringKeys<ClientType>,
 	'$' | '_'
 > & {}
 
 type LazyPromiseToLazyEffect<Fn extends (...a: any[]) => any> = Fn extends (
 	...a: infer Args
 ) => Promise<infer Result>
-	? (...a: Args) => Effect.Effect<Result, PrismaError, never>
+	? (...a: Args) => Effect.Effect<Result, ClientError, never>
 	: never
 
 type EffectifyObject<
@@ -54,13 +43,11 @@ type EffectifyObject<
 	F extends (...a: any[]) => any = any,
 > = { [op in keyof Obj]: LazyPromiseToLazyEffect<Obj[op]> }
 
-type EffectPrisma = {
-	[model in keyof EnhancedPrismaClient]: EffectifyObject<
-		EnhancedPrismaClient[model]
-	>
+type EffectClient = {
+	[model in keyof ClientType]: EffectifyObject<NonNullable<ClientType[model]>>
 }
 
-export function createEffectPrisma(prisma: EnhancedPrismaClient) {
+export function createEffectClient(prisma: ClientType) {
 	return new Proxy(
 		{},
 		{
@@ -68,9 +55,7 @@ export function createEffectPrisma(prisma: EnhancedPrismaClient) {
 				return { enumerable: true, configurable: true }
 			},
 			ownKeys() {
-				return Object.values(Prisma.ModelName).map(key =>
-					key.toLowerCase(),
-				)
+				return Object.keys(schema.models).map(key => key.toLowerCase())
 			},
 			get(_target, model) {
 				return new Proxy(
@@ -79,25 +64,25 @@ export function createEffectPrisma(prisma: EnhancedPrismaClient) {
 						getOwnPropertyDescriptor() {
 							return { enumerable: true, configurable: true }
 						},
-						ownKeys(): (keyof EnhancedPrismaClient['model'])[] {
+						ownKeys(): UnionToTuple<keyof ClientType['model']> {
 							return [
-								'aggregate',
-								'count',
 								'create',
+								'delete',
 								'createMany',
 								'createManyAndReturn',
-								'delete',
-								'deleteMany',
-								'findFirst',
-								'findFirstOrThrow',
+								'upsert',
 								'findMany',
 								'findUnique',
 								'findUniqueOrThrow',
-								'groupBy',
+								'findFirst',
+								'findFirstOrThrow',
 								'update',
 								'updateMany',
 								'updateManyAndReturn',
-								'upsert',
+								'deleteMany',
+								'count',
+								'aggregate',
+								'groupBy',
 							]
 						},
 						get(_target, method) {
@@ -110,5 +95,5 @@ export function createEffectPrisma(prisma: EnhancedPrismaClient) {
 				)
 			},
 		},
-	) as EffectPrisma
+	) as EffectClient
 }

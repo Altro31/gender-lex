@@ -1,14 +1,14 @@
-import { EnhancedPrismaService } from '@/shared/prisma/enhanced-prisma.service'
+import { AuthDBService } from '@/shared/db/auth-db.service'
 import { Effect } from 'effect'
 
 export class AnalysisRepository extends Effect.Service<AnalysisRepository>()(
 	'AnalysisRepository',
 	{
 		effect: Effect.gen(function* () {
-			const prisma = yield* EnhancedPrismaService
+			const prisma = yield* AuthDBService
 			return prisma.analysis
 		}),
-		dependencies: [EnhancedPrismaService.Default],
+		dependencies: [AuthDBService.Default],
 	},
 ) {
 	static provide = Effect.provide(this.Default)
