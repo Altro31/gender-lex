@@ -1,17 +1,11 @@
-import { PrismaClient, adapter } from '@repo/db/client'
+import { zenstackAdapter } from '@zenstackhq/better-auth'
 import { betterAuth } from 'better-auth'
-import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { anonymous, customSession } from 'better-auth/plugins'
-
-const prisma = (<any>global).prisma || new PrismaClient({ adapter })
-
-if (process.env.NODE_ENV !== 'production') {
-	;(<any>global).prisma = prisma
-}
+import { client } from '@repo/db/client'
 
 export const auth = betterAuth({
 	trustedOrigins: [process.env.UI_URL ?? ''],
-	database: prismaAdapter(prisma, { provider: 'postgresql' }),
+	database: zenstackAdapter(client, { provider: 'postgresql' }),
 	session: {
 		additionalFields: { lang: { type: 'string', defaultValue: 'es' } },
 	},
@@ -30,7 +24,7 @@ export const auth = betterAuth({
 	},
 	plugins: [
 		customSession(async ({ session: { id } }) => {
-			const session = await prisma.session.findUnique({
+			const session = await client.session.findUnique({
 				where: { id },
 				include: { user: true },
 			})
@@ -39,16 +33,16 @@ export const auth = betterAuth({
 		}),
 		anonymous({
 			async onLinkAccount({ anonymousUser, newUser }) {
-				await prisma.$transaction([
-					prisma.analysis.updateMany({
+				await client.$transaction([
+					client.analysis.updateMany({
 						where: { userId: anonymousUser.user.id },
 						data: { userId: newUser.user.id },
 					}),
-					prisma.model.updateMany({
+					client.model.updateMany({
 						where: { userId: anonymousUser.user.id },
 						data: { userId: newUser.user.id },
 					}),
-					prisma.preset.updateMany({
+					client.preset.updateMany({
 						where: { userId: anonymousUser.user.id },
 						data: { userId: newUser.user.id },
 					}),

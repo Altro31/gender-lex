@@ -1,0 +1,4 @@
+type Timestamps {
+    createdAt DateTime @default(now()) // @deny('update', true)
+    updatedAt DateTime @updatedAt // @deny('update', true)
+}

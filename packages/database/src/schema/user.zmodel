@@ -1,6 +1,8 @@
 import "analysis"
 import "model"
 import "preset"
+import "shared/timestamps"
+
 
 enum Role {
   superadmin
@@ -13,16 +15,16 @@ enum AuthProvider {
   google
 }
 
-model User {
+model User with Timestamps {
   @@auth
-  
+
   // Id cannot change
-  id            String     @id @default(cuid()) @deny("update", true)
+  id            String     @id @default(cuid()) // @deny("update", true)
 
   name          String
 
   // Emails cannot change
-  email         String     @email @unique @deny("update", true)
+  email         String     @email @unique // @deny("update", true)
 
   emailVerified Boolean
 
@@ -31,15 +33,11 @@ model User {
   isAnonymous   Boolean?   @default(false)
 
   // Only users can update it's last time login
-  loggedAt      DateTime?  @allow('update', auth() == this)
+  loggedAt      DateTime? // @allow('update', auth() == this)
 
   // 1.Only admins can update a user role
   // 2.Only a superadmin can update the role of other admin
-  role          Role       @default(authenticated) /**1*/ @allow("update", auth().role == admin || auth().role == superadmin) /**2*/ @deny("update", auth().role != superadmin && (role == admin || role == superadmin))
-
-  // Timestamps cannot change
-  createdAt     DateTime   @default(now()) @deny('update', true)
-  updatedAt     DateTime   @updatedAt @deny('update', true)
+  role          Role       @default(authenticated) // /**1*/ @allow("update", auth().role == admin || auth().role == superadmin) /**2*/ @deny("update", auth().role != superadmin && (role == admin || role == superadmin))
 
   Analyses      Analysis[]
   Models        Model[]
@@ -53,7 +51,7 @@ model User {
 
   /** Logged and admin users can update user data */
   @@allow("update,read",auth() == this || auth().role == admin || auth().role == superadmin)
- 
+
   /** Everyone can register if they are not logged in */
   @@allow('create', auth().id == "null")
 
