@@ -1,19 +1,19 @@
-"use client"
+'use client'
 
-import type React from "react"
+import type React from 'react'
 
-import { useState } from "react"
-import { Eye, EyeOff, Lock, Check } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useState } from 'react'
+import { Eye, EyeOff, Lock, Check } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog'
 
 interface ChangePasswordDialogProps {
 	open: boolean
@@ -29,9 +29,9 @@ export default function ChangePasswordDialog({
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 	const [formData, setFormData] = useState({
-		currentPassword: "",
-		newPassword: "",
-		confirmPassword: "",
+		currentPassword: '',
+		newPassword: '',
+		confirmPassword: '',
 	})
 	const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -39,30 +39,30 @@ export default function ChangePasswordDialog({
 		const newErrors: Record<string, string> = {}
 
 		if (!formData.currentPassword) {
-			newErrors.currentPassword = "La contraseña actual es requerida"
+			newErrors.currentPassword = 'La contraseña actual es requerida'
 		}
 
 		if (!formData.newPassword) {
-			newErrors.newPassword = "La nueva contraseña es requerida"
+			newErrors.newPassword = 'La nueva contraseña es requerida'
 		} else if (formData.newPassword.length < 8) {
 			newErrors.newPassword =
-				"La contraseña debe tener al menos 8 caracteres"
+				'La contraseña debe tener al menos 8 caracteres'
 		} else if (
 			!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.newPassword)
 		) {
 			newErrors.newPassword =
-				"La contraseña debe contener al menos una mayúscula, una minúscula y un número"
+				'La contraseña debe contener al menos una mayúscula, una minúscula y un número'
 		}
 
 		if (!formData.confirmPassword) {
-			newErrors.confirmPassword = "Confirma tu nueva contraseña"
+			newErrors.confirmPassword = 'Confirma tu nueva contraseña'
 		} else if (formData.newPassword !== formData.confirmPassword) {
-			newErrors.confirmPassword = "Las contraseñas no coinciden"
+			newErrors.confirmPassword = 'Las contraseñas no coinciden'
 		}
 
 		if (formData.currentPassword === formData.newPassword) {
 			newErrors.newPassword =
-				"La nueva contraseña debe ser diferente a la actual"
+				'La nueva contraseña debe ser diferente a la actual'
 		}
 
 		setErrors(newErrors)
@@ -80,14 +80,14 @@ export default function ChangePasswordDialog({
 
 		// Simulate API call
 		setTimeout(() => {
-			console.log("Password change request:", {
+			console.log('Password change request:', {
 				currentPassword: formData.currentPassword,
 			})
 			setIsLoading(false)
 			setFormData({
-				currentPassword: "",
-				newPassword: "",
-				confirmPassword: "",
+				currentPassword: '',
+				newPassword: '',
+				confirmPassword: '',
 			})
 			setErrors({})
 			onOpenChange(false)
@@ -97,9 +97,9 @@ export default function ChangePasswordDialog({
 
 	const handleCancel = () => {
 		setFormData({
-			currentPassword: "",
-			newPassword: "",
-			confirmPassword: "",
+			currentPassword: '',
+			newPassword: '',
+			confirmPassword: '',
 		})
 		setErrors({})
 		onOpenChange(false)
@@ -118,20 +118,20 @@ export default function ChangePasswordDialog({
 	const passwordStrength = getPasswordStrength(formData.newPassword)
 
 	const getStrengthColor = (strength: number) => {
-		if (strength <= 2) return "bg-red-500"
-		if (strength <= 3) return "bg-yellow-500"
-		return "bg-green-500"
+		if (strength <= 2) return 'bg-red-500'
+		if (strength <= 3) return 'bg-yellow-500'
+		return 'bg-green-500'
 	}
 
 	const getStrengthText = (strength: number) => {
-		if (strength <= 2) return "Débil"
-		if (strength <= 3) return "Media"
-		return "Fuerte"
+		if (strength <= 2) return 'Débil'
+		if (strength <= 3) return 'Media'
+		return 'Fuerte'
 	}
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-md">
+			<DialogContent className="sm:max-w-md ">
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-2">
 						<Lock className="h-5 w-5" />
@@ -152,16 +152,16 @@ export default function ChangePasswordDialog({
 							<Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
 							<Input
 								id="currentPassword"
-								type={showCurrentPassword ? "text" : "password"}
+								type={showCurrentPassword ? 'text' : 'password'}
 								placeholder="Tu contraseña actual"
 								value={formData.currentPassword}
-								onChange={(e) =>
+								onChange={e =>
 									setFormData({
 										...formData,
 										currentPassword: e.target.value,
 									})
 								}
-								className={`pr-10 pl-10 ${errors.currentPassword ? "border-red-500" : ""}`}
+								className={`pr-10 pl-10 ${errors.currentPassword ? 'border-red-500' : ''}`}
 							/>
 							<Button
 								type="button"
@@ -192,16 +192,16 @@ export default function ChangePasswordDialog({
 							<Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
 							<Input
 								id="newPassword"
-								type={showNewPassword ? "text" : "password"}
+								type={showNewPassword ? 'text' : 'password'}
 								placeholder="Tu nueva contraseña"
 								value={formData.newPassword}
-								onChange={(e) =>
+								onChange={e =>
 									setFormData({
 										...formData,
 										newPassword: e.target.value,
 									})
 								}
-								className={`pr-10 pl-10 ${errors.newPassword ? "border-red-500" : ""}`}
+								className={`pr-10 pl-10 ${errors.newPassword ? 'border-red-500' : ''}`}
 							/>
 							<Button
 								type="button"
@@ -254,16 +254,16 @@ export default function ChangePasswordDialog({
 							<Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
 							<Input
 								id="confirmPassword"
-								type={showConfirmPassword ? "text" : "password"}
+								type={showConfirmPassword ? 'text' : 'password'}
 								placeholder="Confirma tu nueva contraseña"
 								value={formData.confirmPassword}
-								onChange={(e) =>
+								onChange={e =>
 									setFormData({
 										...formData,
 										confirmPassword: e.target.value,
 									})
 								}
-								className={`pr-10 pl-10 ${errors.confirmPassword ? "border-red-500" : ""}`}
+								className={`pr-10 pl-10 ${errors.confirmPassword ? 'border-red-500' : ''}`}
 							/>
 							<Button
 								type="button"
@@ -310,7 +310,7 @@ export default function ChangePasswordDialog({
 									Cambiando...
 								</div>
 							) : (
-								"Cambiar Contraseña"
+								'Cambiar Contraseña'
 							)}
 						</Button>
 						<Button

@@ -15,7 +15,8 @@
 		"elysia": "latest",
 		"nitro": "latest",
 		"rolldown": "latest",
-		"oxlint": "^1.6.0"
+		"oxlint": "^1.6.0",
+		"typescript-plugin-directives": "^0.0.3"
 	},
 	"dependencies": {
 		"@adobe/pdfservices-node-sdk": "^4.1.0",

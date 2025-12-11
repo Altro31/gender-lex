@@ -5,7 +5,7 @@ import { nextCookies } from 'better-auth/next-js'
 import { anonymous, customSession } from 'better-auth/plugins'
 
 export const auth = betterAuth({
-	database: zenstackAdapter(client, { provider: 'postgresql' }),
+	database: zenstackAdapter(client as any, { provider: 'postgresql' }),
 	session: {
 		additionalFields: { lang: { type: 'string', defaultValue: 'es' } },
 	},
