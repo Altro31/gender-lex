@@ -1,6 +1,6 @@
-import { HttpError } from '@/lib/types/http-error'
+import { HttpTaggedError } from '@/lib/types/http-error'
 
-export class UnauthorizedError extends HttpError('UnauthorizedError') {
+export class UnauthorizedError extends HttpTaggedError('UnauthorizedError') {
 	override status = 401
 	override statusText = 'Unauthorized'
 }

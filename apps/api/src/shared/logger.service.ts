@@ -1,4 +1,4 @@
-import { Console, Context, Effect, Layer, Logger } from 'effect'
+import { Console, Context, Effect, Layer, } from 'effect'
 
 export class LoggerService extends Context.Tag('LoggerService')<
 	LoggerService,

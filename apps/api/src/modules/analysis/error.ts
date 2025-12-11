@@ -1,7 +1,8 @@
-import { Data } from "effect"
+import { HttpTaggedError } from '@/lib/types/http-error'
 
-export class AnalysisNotFoundError extends Data.TaggedError(
-    "AnalysisNotFoundError",
+export class AnalysisNotFoundError extends HttpTaggedError(
+	'AnalysisNotFoundError',
 ) {
-    override readonly message = ""
+	override status = 404
+	override statusText = 'Analysis not found'
 }

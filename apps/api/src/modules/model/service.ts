@@ -5,7 +5,9 @@ import {
 } from '@/modules/model/exceptions/tagged-errors'
 import { SseService } from '@/modules/sse/service'
 import { HttpService } from '@/shared/http.service'
-import type { ModelError, ModelStatus, Prisma } from '@repo/db/models'
+import type { ModelError, ModelStatus } from '@repo/db/models'
+import type { ModelCreateInput } from '@repo/db/input'
+
 import { Console, Effect, Match } from 'effect'
 import { ModelRepository } from './repository'
 
@@ -20,7 +22,7 @@ export class ModelService extends Effect.Service<ModelService>()(
 			const repository = yield* ModelRepository
 
 			const services = {
-				create(data: Prisma.ModelCreateInput) {
+				create(data: ModelCreateInput) {
 					return Effect.gen(services, function* () {
 						const model = yield* repository.create({ data })
 						yield* this.testConnection(model.id)

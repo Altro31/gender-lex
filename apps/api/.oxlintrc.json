@@ -1,0 +1,4 @@
+{
+	"ignorePatterns": ["node_modules", ".workflow-data", ".output"],
+	"rules": { "eslint/require-yield": "off" }
+}

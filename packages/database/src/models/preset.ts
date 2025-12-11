@@ -1,5 +1,5 @@
 import { Schema } from 'effect'
-import { Preset as ZenPreset } from '../generated/models'
+import { type Preset as ZenPreset } from '../generated/models'
 import { UserId } from './user'
 
 export type PresetId = typeof PresetId.Type
