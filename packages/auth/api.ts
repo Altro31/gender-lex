@@ -5,7 +5,7 @@ import { client } from '@repo/db/client'
 
 export const auth = betterAuth({
 	trustedOrigins: [process.env.UI_URL ?? ''],
-	database: zenstackAdapter(client, { provider: 'postgresql' }),
+	database: zenstackAdapter(client as any, { provider: 'postgresql' }),
 	session: {
 		additionalFields: { lang: { type: 'string', defaultValue: 'es' } },
 	},

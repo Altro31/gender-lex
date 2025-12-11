@@ -5,11 +5,7 @@
 		"generate": {
 			"cache": true,
 			"inputs": ["./prisma/schema/**/*.zmodel", "./schema.zmodel"],
-			"outputs": [
-				"$TURBO_ROOT$/node_modules/.prisma/client/**",
-				"./prisma/schema.prisma",
-				"./prisma/generated/**"
-			],
+			"outputs": ["./src/generated/**"],
 			"env": ["DATABASE_URL"]
 		},
 		"migrate": {

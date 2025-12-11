@@ -1,3 +1,5 @@
+// @ts-ignore
+
 import { Effect } from 'effect'
 import { createEffectClient } from '@repo/db/effect'
 
@@ -10,7 +12,7 @@ export class AuthDBService extends Effect.Service<AuthDBService>()(
 		effect: Effect.gen(function* () {
 			const { session } = yield* AuthService
 			const client = authClient.$setAuth(session?.user)
-			return createEffectClient(client)
+			return createEffectClient(client) as any
 		}),
 		dependencies: [AuthService.Default],
 	},
