@@ -1,5 +1,8 @@
 import { Schema } from 'effect'
-import { ModelRole, PresetModel as ZenPresetModel } from '../generated/models'
+import {
+	ModelRole,
+	type PresetModel as ZenPresetModel,
+} from '../generated/models'
 import { PresetId } from './preset'
 import { ModelId } from './model'
 

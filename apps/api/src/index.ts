@@ -9,7 +9,7 @@ import { Elysia } from 'elysia'
 import z from 'zod'
 import { authPlugin } from './plugins/auth.plugin'
 import { effectPlugin } from './plugins/effect.plugin'
-import { Effect } from 'effect'
+import { JSONSchema } from 'effect'
 
 export type App = typeof app
 const app = new Elysia()
@@ -19,6 +19,7 @@ const app = new Elysia()
 		openapi({
 			references: fromTypes(),
 			mapJsonSchema: {
+				effect: JSONSchema.make,
 				zod: (arg: any) =>
 					z.toJSONSchema(arg, { unrepresentable: 'any' }),
 			},

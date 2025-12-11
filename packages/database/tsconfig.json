@@ -4,17 +4,19 @@
 		"moduleResolution": "bundler",
 		// Core checks
 		"strict": true,
-		"declaration": true,
-		"composite": true, // monorepos only
-		"declarationMap": true,
+		// "declaration": true,
+		// "composite": true, // monorepos only
+		// "declarationMap": true,
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,
+		"noEmit": true,
+		"allowImportingTsExtensions": true,
 		// Additional safety
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 		"useUnknownInCatchVariables": true,
 		"noUnusedLocals": true,
-		"isolatedModules": true
+		// "isolatedModules": true
 	}
 }

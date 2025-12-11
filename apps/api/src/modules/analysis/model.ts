@@ -14,23 +14,15 @@ export const analysisModels = {
 		selectedPreset: z.string(),
 	}),
 	prepareOutput: z.object({ id: z.string() }),
-	startOutput: Analysis.pipe(
-		Schema.extend(
-			Schema.Struct({
-				Preset: Preset.pipe(
-					Schema.extend(
-						Schema.Struct({
-							Models: PresetModel.pipe(
-								Schema.extend(Schema.Struct({ Model })),
-								Schema.Array,
-							),
-						}),
-					),
-				),
-			}),
-		),
-		Schema.omit('userId'),
-	),
+	startOutput: Schema.Struct({
+		...Analysis.fields,
+		Preset: Schema.Struct({
+			...Preset.fields,
+			Models: Schema.Struct({ ...PresetModel.fields, Model }).pipe(
+				Schema.Array,
+			),
+		}),
+	}).pipe(Schema.omit('userId')),
 	statusCountOutput: z.object({
 		all: z.int(),
 		pending: z.int(),
@@ -38,8 +30,7 @@ export const analysisModels = {
 		done: z.int(),
 		error: z.int(),
 	}),
-	findOneOutput: Analysis.pipe(
-		Schema.extend(Schema.Struct({ Preset })),
+	findOneOutput: Schema.Struct({ ...Analysis.fields, Preset }).pipe(
 		Schema.omit('userId'),
 	),
 	redoOutput: Analysis.pipe(Schema.omit('userId')),
@@ -47,7 +38,7 @@ export const analysisModels = {
 		q: z.string().optional(),
 		status: z.enum(AnalysisStatus).optional(),
 	}),
-}
+} as const
 
 export type FindManyQueryParams = z.infer<
 	typeof analysisModels.findManyQueryParams

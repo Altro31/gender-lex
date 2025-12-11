@@ -42,6 +42,7 @@
         "bun-types": "latest",
         "elysia": "latest",
         "nitro": "latest",
+        "oxlint": "^1.6.0",
         "rolldown": "latest",
       },
     },
@@ -140,6 +141,7 @@
       "dependencies": {
         "@zenstackhq/orm": "^3.0.0-beta.27",
         "@zenstackhq/plugin-policy": "^3.0.0-beta.27",
+        "@zenstackhq/server": "catalog:",
         "effect": "catalog:",
         "pg": "^8.16.3",
       },

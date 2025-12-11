@@ -3,7 +3,7 @@ import {
 	AnalysisStatus,
 	InputSource,
 	Visibility,
-	Analysis as ZenAnalysis,
+	type Analysis as ZenAnalysis,
 } from '../generated/models'
 import { PresetId } from './preset'
 import { UserId } from './user'

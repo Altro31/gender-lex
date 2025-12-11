@@ -1,5 +1,5 @@
 import { Schema } from 'effect'
-import { Role, User as ZenUser } from '../generated/models'
+import { Role, type User as ZenUser } from '../generated/models'
 
 export type UserId = typeof UserId.Type
 export const UserId = Schema.String.pipe(Schema.brand('UserId'))

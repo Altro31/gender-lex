@@ -1,5 +1,9 @@
 import { Schema } from 'effect'
-import { ModelError, ModelStatus, Model as ZenModel } from '../generated/models'
+import {
+	ModelError,
+	ModelStatus,
+	type Model as ZenModel,
+} from '../generated/models'
 import { UserId } from './user'
 
 export type ModelId = typeof ModelId.Type
