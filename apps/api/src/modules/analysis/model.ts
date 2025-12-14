@@ -1,10 +1,5 @@
 import { paginationSchema } from '@/lib/pagination'
 import { AnalysisStatus } from '@repo/db/models'
-import { Analysis } from '@repo/db/schema/analysis.ts'
-import { Model } from '@repo/db/schema/model.ts'
-import { PresetModel } from '@repo/db/schema/preset-model.ts'
-import { Preset } from '@repo/db/schema/preset.ts'
-import { Schema } from 'effect'
 import z from 'zod'
 
 export const analysisModels = {
@@ -14,15 +9,15 @@ export const analysisModels = {
 		selectedPreset: z.string(),
 	}),
 	prepareOutput: z.object({ id: z.string() }),
-	startOutput: Schema.Struct({
-		...Analysis.fields,
-		Preset: Schema.Struct({
-			...Preset.fields,
-			Models: Schema.Struct({ ...PresetModel.fields, Model }).pipe(
-				Schema.Array,
-			),
-		}),
-	}).pipe(Schema.omit('userId')),
+	// startOutput: Schema.Struct({
+	// 	...Analysis.fields,
+	// 	Preset: Schema.Struct({
+	// 		...Preset.fields,
+	// 		Models: Schema.Struct({ ...PresetModel.fields, Model }).pipe(
+	// 			Schema.Array,
+	// 		),
+	// 	}),
+	// }).pipe(Schema.omit('userId')),
 	statusCountOutput: z.object({
 		all: z.int(),
 		pending: z.int(),
@@ -30,15 +25,15 @@ export const analysisModels = {
 		done: z.int(),
 		error: z.int(),
 	}),
-	findOneOutput: Schema.Struct({ ...Analysis.fields, Preset }).pipe(
-		Schema.omit('userId'),
-	),
-	redoOutput: Analysis.pipe(Schema.omit('userId')),
+	// findOneOutput: Schema.Struct({ ...Analysis.fields, Preset }).pipe(
+	// 	Schema.omit('userId'),
+	// ),
+	// redoOutput: Analysis.pipe(Schema.omit('userId')),
 	findManyQueryParams: paginationSchema.extend({
 		q: z.string().optional(),
 		status: z.enum(AnalysisStatus).optional(),
 	}),
-} as const
+}
 
 export type FindManyQueryParams = z.infer<
 	typeof analysisModels.findManyQueryParams

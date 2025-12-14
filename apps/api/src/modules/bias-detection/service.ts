@@ -3,6 +3,7 @@ import { AiService } from '@/modules/ai/service'
 import { genderLexSystemPrompt } from '@/modules/bias-detection/prompts/system.prompt'
 import { AuthService } from '@/shared/auth/auth.service'
 import type { Analysis, Model } from '@repo/db/models'
+import { Analysis as AnalysisSchema } from '@repo/db/schema/analysis.ts'
 
 import { generateText, Output, stepCountIs } from 'ai'
 import { Effect } from 'effect'
@@ -29,7 +30,7 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
 									system: genderLexSystemPrompt,
 									stopWhen: stepCountIs(3),
 									experimental_output: Output.object({
-										AnalysisSchema,
+										schema: AnalysisSchema as any,
 									}),
 									temperature: model.options.temperature,
 								}),

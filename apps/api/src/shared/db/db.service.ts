@@ -1,5 +1,3 @@
-// @ts-ignore
-
 import { Effect } from 'effect'
 
 import { client } from '@repo/db/client'

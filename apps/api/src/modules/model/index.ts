@@ -16,12 +16,12 @@ export default new Elysia({
 		({ body, runEffect }) => {
 			const program = Effect.gen(function* () {
 				const modelService = yield* ModelService
-				yield* modelService.create(body)
+				yield* modelService.create(body as any)
 				return { ok: true } as const
 			}).pipe(ModelService.provide)
 			return runEffect(program)
 		},
-		{ body: 'createModelInput', response: 'createModelOutput' },
+		{ response: 'createModelOutput' },
 	)
 	.post(
 		':id/test-connection',

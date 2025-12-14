@@ -49,7 +49,12 @@ export default new Elysia({
 			}).pipe(AnalysisService.provide)
 			return runEffect(program)
 		},
-		{ response: { 200: 'startOutput', 404: z.string() } },
+		{
+			response: {
+				// 200: 'startOutput',
+				404: z.string(),
+			},
+		},
 	)
 
 	.get(
@@ -78,12 +83,12 @@ export default new Elysia({
 		({ runEffect, params }) => {
 			const program = Effect.gen(function* () {
 				const analysisService = yield* AnalysisService
-				return (yield* analysisService.findOne(params.id)) as any
+				return (yield* analysisService.findOne(params.id!)) as any
 			}).pipe(AnalysisService.provide)
 
 			return runEffect(program)
 		},
-		{ response: 'findOneOutput' },
+		// { response: 'findOneOutput' },
 	)
 
 	.get(
@@ -104,10 +109,10 @@ export default new Elysia({
 		({ runEffect, params }) => {
 			const program = Effect.gen(function* () {
 				const analysisService = yield* AnalysisService
-				return yield* analysisService.redo(params.id)
+				return yield* analysisService.redo(params.id!)
 			}).pipe(AnalysisService.provide)
 
 			return runEffect(program)
 		},
-		{ response: 'redoOutput' },
+		// { response: 'redoOutput' },
 	)

@@ -1,7 +1,7 @@
 import { Data } from 'effect'
 
-export const HttpTaggedError = <Name extends string>(name: Name) =>
-	class extends Data.TaggedError(name) {
+export const HttpTaggedError = <Name extends string>(name: Name) => {
+	class BaseHttpTaggedError extends Data.TaggedError(name) {
 		status: number = 400
 		statusText: string = 'Bad request'
 		override message: string = ''
@@ -18,3 +18,6 @@ export const HttpTaggedError = <Name extends string>(name: Name) =>
 			)
 		}
 	}
+
+	return BaseHttpTaggedError
+}

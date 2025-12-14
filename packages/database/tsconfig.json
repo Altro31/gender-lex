@@ -4,8 +4,9 @@
 		"moduleResolution": "bundler",
 		// Core checks
 		"strict": true,
+		"noEmit": true,
 		// "declaration": true,
-		// "composite": true, // monorepos only
+		"composite": true, // monorepos only
 		// "declarationMap": true,
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,
@@ -16,7 +17,7 @@
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 		"useUnknownInCatchVariables": true,
-		"noUnusedLocals": true,
+		"noUnusedLocals": true
 		// "isolatedModules": true
 	}
 }

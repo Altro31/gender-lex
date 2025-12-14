@@ -1,7 +1,7 @@
 import { isFile } from '@/lib/file'
 import type { FindManyQueryParams } from '@/modules/analysis/model'
 import { BiasDetectionService } from '@/modules/bias-detection/service'
-import type { Analysis, AnalysisStatus } from '@repo/db/models'
+import type { AnalysisStatus } from '@repo/db/models'
 import { Console, Effect, pipe } from 'effect'
 import { ExtractorService } from '../extractor/service'
 import { AnalysisNotFoundError } from './error'
@@ -51,35 +51,33 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
 							return yield* new AnalysisNotFoundError()
 						}
 
-						const result = yield* pipe(
-							analysis.status === 'pending'
-								? biasDetectionService.analice(analysis as any)
-								: Effect.succeed({} as Analysis),
-							Effect.andThen(
-								res => ({ ...res, status: 'done' }) as Analysis,
-							),
-							Effect.tap(res =>
-								repository
-									.update({ where: { id }, data: res })
-									.pipe(Effect.fork),
-							),
-							Effect.catchAll(e =>
-								pipe(
-									Console.log(e),
-									Effect.as({}),
-									Effect.tap(() =>
-										repository
-											.update({
-												where: { id },
-												data: { status: 'error' },
-											})
-											.pipe(Effect.fork),
-									),
+						if (analysis.status === 'pending') {
+							const raw = yield* biasDetectionService.analice(
+								analysis as any,
+							)
+							Object.assign(analysis, raw)
+						}
+						analysis.status = 'done'
+						yield* repository
+							.update({ where: { id }, data: analysis })
+							.pipe(Effect.forkDaemon)
+
+						return analysis
+					}).pipe(
+						Effect.catchAll(e =>
+							pipe(
+								Console.log(e),
+								Effect.tap(() =>
+									repository
+										.update({
+											where: { id },
+											data: { status: 'error' },
+										})
+										.pipe(Effect.forkDaemon),
 								),
 							),
-						)
-						return { ...analysis, ...result }
-					}),
+						),
+					),
 
 				prepare: (input: string | File, preset: string) =>
 					Effect.gen(function* () {

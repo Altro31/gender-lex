@@ -3,7 +3,10 @@ import { PostgresDialect } from '@zenstackhq/orm/dialects/postgres'
 import { Pool } from 'pg'
 import { PolicyPlugin } from '@zenstackhq/plugin-policy'
 import { schema } from './generated/schema.ts'
-import { RestApiHandler } from '@zenstackhq/server/api'
+import {
+	RestApiHandler,
+	type RestApiHandlerOptions,
+} from '@zenstackhq/server/api'
 
 export type ClientType = typeof client
 export const client = new ZenStackClient(schema, {
@@ -14,8 +17,10 @@ export const client = new ZenStackClient(schema, {
 
 export const authClient = client.$use(new PolicyPlugin())
 
+type Options = Omit<RestApiHandlerOptions, 'schema'>
+
 export class ApiHandler extends RestApiHandler {
-	constructor() {
-		super({ schema })
+	constructor(options: Options) {
+		super({ schema, ...options })
 	}
 }

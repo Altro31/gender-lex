@@ -6,7 +6,7 @@ import {
 import { SseService } from '@/modules/sse/service'
 import { HttpService } from '@/shared/http.service'
 import type { ModelError, ModelStatus } from '@repo/db/models'
-import type { ModelCreateInput } from '@repo/db/input'
+import type { ModelCreateArgs } from '@repo/db/input'
 
 import { Console, Effect, Match } from 'effect'
 import { ModelRepository } from './repository'
@@ -22,7 +22,7 @@ export class ModelService extends Effect.Service<ModelService>()(
 			const repository = yield* ModelRepository
 
 			const services = {
-				create(data: ModelCreateInput) {
+				create(data: ModelCreateArgs['data']) {
 					return Effect.gen(services, function* () {
 						const model = yield* repository.create({ data })
 						yield* this.testConnection(model.id)
@@ -93,7 +93,7 @@ export class ModelService extends Effect.Service<ModelService>()(
 								)
 							},
 							ResponseError: e => Console.log('ResponseError', e),
-							PrismaError: e => Console.log('PrismaError', e),
+							ClientError: e => Console.log('ClientError', e),
 						}),
 						Effect.catchAll((e: any) => {
 							return services.updateModelStatus(

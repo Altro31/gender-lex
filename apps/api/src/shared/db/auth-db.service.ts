@@ -1,8 +1,7 @@
-// @ts-ignore
+/// <reference types="kysely" />
 
 import { Effect } from 'effect'
 import { createEffectClient } from '@repo/db/effect'
-
 import { authClient } from '@repo/db/client'
 import { AuthService } from '../auth/auth.service'
 
