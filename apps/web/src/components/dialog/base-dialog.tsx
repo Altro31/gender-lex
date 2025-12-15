@@ -1,18 +1,19 @@
-"use client"
+'use client'
 
-import { Dialog, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import { DialogTriggerState, UseRenderRenderProp } from '@base-ui/react'
 import {
 	useState,
 	type MouseEvent,
 	type PropsWithChildren,
 	type ReactNode,
-} from "react"
+} from 'react'
 
 interface Props extends PropsWithChildren {
-	trigger: ReactNode
+	renderTrigger: UseRenderRenderProp<DialogTriggerState>
 }
 
-export default function BaseDialog({ children, trigger }: Props) {
+export default function BaseDialog({ children, renderTrigger }: Props) {
 	const [open, setOpen] = useState(false)
 
 	const handleOpen = (e: MouseEvent<HTMLButtonElement>) => {
@@ -21,9 +22,7 @@ export default function BaseDialog({ children, trigger }: Props) {
 	}
 	return (
 		<Dialog modal open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild onClickCapture={handleOpen}>
-				{trigger}
-			</DialogTrigger>
+			<DialogTrigger render={renderTrigger} onClickCapture={handleOpen} />
 			{children}
 		</Dialog>
 	)

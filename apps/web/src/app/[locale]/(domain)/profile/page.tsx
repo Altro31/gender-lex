@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import type React from "react"
+import type React from 'react'
 
-import { useState } from "react"
+import { useState } from 'react'
 import {
 	MailIcon,
 	EditIcon,
@@ -17,22 +17,22 @@ import {
 	FileTextIcon,
 	SettingsIcon,
 	ZapIcon,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+} from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+} from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
 	Dialog,
 	DialogContent,
@@ -40,7 +40,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog'
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -51,65 +51,65 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import ChangePasswordDialog from "@/components/change-password-dialog"
+} from '@/components/ui/alert-dialog'
+import ChangePasswordDialog from '@/components/change-password-dialog'
 
 // Mock user data
 const mockUser = {
-	id: "clx123456789",
-	name: "María González",
-	email: "maria.gonzalez@ejemplo.com",
+	id: 'clx123456789',
+	name: 'María González',
+	email: 'maria.gonzalez@ejemplo.com',
 	emailVerified: true,
-	image: "/placeholder.svg?height=120&width=120",
-	provider: "local",
-	loggedAt: "2024-01-30T15:30:00Z",
-	role: "authenticated",
-	createdAt: "2024-01-15T10:00:00Z",
-	updatedAt: "2024-01-30T15:30:00Z",
+	image: '/placeholder.svg?height=120&width=120',
+	provider: 'local',
+	loggedAt: '2024-01-30T15:30:00Z',
+	role: 'authenticated',
+	createdAt: '2024-01-15T10:00:00Z',
+	updatedAt: '2024-01-30T15:30:00Z',
 	biography:
-		"Especialista en análisis de datos y detección de sesgos. Apasionada por la inteligencia artificial ética y el procesamiento de lenguaje natural.",
+		'Especialista en análisis de datos y detección de sesgos. Apasionada por la inteligencia artificial ética y el procesamiento de lenguaje natural.',
 }
 
 // Mock recent activities
 const mockActivities = [
 	{
-		id: "1",
-		type: "analysis",
-		title: "Análisis de Artículo Científico",
+		id: '1',
+		type: 'analysis',
+		title: 'Análisis de Artículo Científico',
 		description:
-			"Completado análisis de sesgo de género en documento académico",
-		timestamp: "2024-01-30T14:20:00Z",
-		status: "completed",
+			'Completado análisis de sesgo de género en documento académico',
+		timestamp: '2024-01-30T14:20:00Z',
+		status: 'completed',
 	},
 	{
-		id: "2",
-		type: "preset",
-		title: "Nuevo Preset Creado",
+		id: '2',
+		type: 'preset',
+		title: 'Nuevo Preset Creado',
 		description: "Preset 'Análisis Académico' configurado con 2 modelos",
-		timestamp: "2024-01-30T10:15:00Z",
+		timestamp: '2024-01-30T10:15:00Z',
 	},
 	{
-		id: "3",
-		type: "model",
-		title: "Modelo GPT-4 Actualizado",
-		description: "Configuración de parámetros modificada",
-		timestamp: "2024-01-29T16:45:00Z",
+		id: '3',
+		type: 'model',
+		title: 'Modelo GPT-4 Actualizado',
+		description: 'Configuración de parámetros modificada',
+		timestamp: '2024-01-29T16:45:00Z',
 	},
 	{
-		id: "4",
-		type: "analysis",
-		title: "Análisis de Política Interna",
-		description: "Análisis completado con 3 sesgos detectados",
-		timestamp: "2024-01-29T12:30:00Z",
-		status: "completed",
+		id: '4',
+		type: 'analysis',
+		title: 'Análisis de Política Interna',
+		description: 'Análisis completado con 3 sesgos detectados',
+		timestamp: '2024-01-29T12:30:00Z',
+		status: 'completed',
 	},
 	{
-		id: "5",
-		type: "analysis",
-		title: "Análisis de Documento Legal",
-		description: "Error en procesamiento - formato no compatible",
-		timestamp: "2024-01-28T09:15:00Z",
-		status: "failed",
+		id: '5',
+		type: 'analysis',
+		title: 'Análisis de Documento Legal',
+		description: 'Error en procesamiento - formato no compatible',
+		timestamp: '2024-01-28T09:15:00Z',
+		status: 'failed',
 	},
 ]
 
@@ -119,7 +119,7 @@ export default function ProfilePage() {
 	const [isLoading, setIsLoading] = useState(false)
 	const [editForm, setEditForm] = useState({
 		name: user.name,
-		biography: user.biography || "",
+		biography: user.biography || '',
 	})
 	const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false)
 	const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false)
@@ -141,10 +141,7 @@ export default function ProfilePage() {
 	}
 
 	const handleCancelEdit = () => {
-		setEditForm({
-			name: user.name,
-			biography: user.biography || "",
-		})
+		setEditForm({ name: user.name, biography: user.biography || '' })
 		setIsEditing(false)
 	}
 
@@ -153,7 +150,7 @@ export default function ProfilePage() {
 		if (file) {
 			// In a real app, you would upload to a service like Cloudinary or AWS S3
 			const reader = new FileReader()
-			reader.onload = (e) => {
+			reader.onload = e => {
 				setUser({
 					...user,
 					image: e.target?.result as string,
@@ -165,51 +162,51 @@ export default function ProfilePage() {
 	}
 
 	const handleLogout = () => {
-		console.log("Logging out...")
+		console.log('Logging out...')
 		// Handle logout logic here
 		setIsLogoutDialogOpen(false)
 	}
 
 	const getRoleColor = (role: string) => {
 		switch (role) {
-			case "superadmin":
-				return "bg-purple-100 text-purple-800"
-			case "admin":
-				return "bg-blue-100 text-blue-800"
+			case 'superadmin':
+				return 'bg-purple-100 text-purple-800'
+			case 'admin':
+				return 'bg-blue-100 text-blue-800'
 			default:
-				return "bg-green-100 text-green-800"
+				return 'bg-green-100 text-green-800'
 		}
 	}
 
 	const getRoleLabel = (role: string) => {
 		switch (role) {
-			case "superadmin":
-				return "Super Administrador"
-			case "admin":
-				return "Administrador"
+			case 'superadmin':
+				return 'Super Administrador'
+			case 'admin':
+				return 'Administrador'
 			default:
-				return "Usuario"
+				return 'Usuario'
 		}
 	}
 
 	const getProviderLabel = (provider: string) => {
 		switch (provider) {
-			case "google":
-				return "Google"
-			case "github":
-				return "GitHub"
+			case 'google':
+				return 'Google'
+			case 'github':
+				return 'GitHub'
 			default:
-				return "Email"
+				return 'Email'
 		}
 	}
 
 	const getActivityIcon = (type: string) => {
 		switch (type) {
-			case "analysis":
+			case 'analysis':
 				return <FileTextIcon className="h-4 w-4" />
-			case "model":
+			case 'model':
 				return <SettingsIcon className="h-4 w-4" />
-			case "preset":
+			case 'preset':
 				return <ZapIcon className="h-4 w-4" />
 			default:
 				return <ActivityIcon className="h-4 w-4" />
@@ -217,44 +214,44 @@ export default function ProfilePage() {
 	}
 
 	const getActivityColor = (type: string, status?: string) => {
-		if (status === "failed") return "text-red-600"
-		if (status === "running") return "text-blue-600"
+		if (status === 'failed') return 'text-red-600'
+		if (status === 'running') return 'text-blue-600'
 
 		switch (type) {
-			case "analysis":
-				return "text-green-600"
-			case "model":
-				return "text-purple-600"
-			case "preset":
-				return "text-orange-600"
+			case 'analysis':
+				return 'text-green-600'
+			case 'model':
+				return 'text-purple-600'
+			case 'preset':
+				return 'text-orange-600'
 			default:
-				return "text-gray-600"
+				return 'text-gray-600'
 		}
 	}
 
 	const formatDate = (dateString: string) => {
-		return new Date(dateString).toLocaleDateString("es-ES", {
-			year: "numeric",
-			month: "long",
-			day: "numeric",
+		return new Date(dateString).toLocaleDateString('es-ES', {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
 		})
 	}
 
 	const formatDateTime = (dateString: string) => {
-		return new Date(dateString).toLocaleDateString("es-ES", {
-			year: "numeric",
-			month: "short",
-			day: "numeric",
-			hour: "2-digit",
-			minute: "2-digit",
+		return new Date(dateString).toLocaleDateString('es-ES', {
+			year: 'numeric',
+			month: 'short',
+			day: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit',
 		})
 	}
 
 	const getInitials = (name: string) => {
 		return name
-			.split(" ")
-			.map((n) => n[0])
-			.join("")
+			.split(' ')
+			.map(n => n[0])
+			.join('')
 			.toUpperCase()
 			.slice(0, 2)
 	}
@@ -282,7 +279,7 @@ export default function ProfilePage() {
 									<Avatar className="mx-auto h-24 w-24">
 										<AvatarImage
 											src={
-												user.image || "/placeholder.svg"
+												user.image || '/placeholder.svg'
 											}
 											alt={user.name}
 										/>
@@ -291,13 +288,11 @@ export default function ProfilePage() {
 										</AvatarFallback>
 									</Avatar>
 									<Dialog>
-										<DialogTrigger asChild>
-											<Button
-												size="sm"
-												className="absolute -right-2 -bottom-2 h-8 w-8 rounded-full bg-blue-600 p-0 hover:bg-blue-700"
-											>
-												<CameraIcon className="h-4 w-4" />
-											</Button>
+										<DialogTrigger
+											render={<Button size="sm" />}
+											className="absolute -right-2 -bottom-2 h-8 w-8 rounded-full bg-blue-600 p-0 hover:bg-blue-700"
+										>
+											<CameraIcon className="h-4 w-4" />
 										</DialogTrigger>
 										<DialogContent className="sm:max-w-md">
 											<DialogHeader>
@@ -315,7 +310,7 @@ export default function ProfilePage() {
 														<AvatarImage
 															src={
 																user.image ||
-																"/placeholder.svg"
+																'/placeholder.svg'
 															}
 															alt={user.name}
 														/>
@@ -429,14 +424,14 @@ export default function ProfilePage() {
 										open={isLogoutDialogOpen}
 										onOpenChange={setIsLogoutDialogOpen}
 									>
-										<AlertDialogTrigger asChild>
-											<Button
-												variant="outline"
-												className="w-full justify-start gap-2 bg-transparent text-red-600 hover:bg-red-50 hover:text-red-700"
-											>
-												<LogOutIcon className="h-4 w-4" />
-												Cerrar Sesión
-											</Button>
+										<AlertDialogTrigger
+											render={
+												<Button variant="outline" />
+											}
+											className="w-full justify-start gap-2 bg-transparent text-red-600 hover:bg-red-50 hover:text-red-700"
+										>
+											<LogOutIcon className="h-4 w-4" />
+											Cerrar Sesión
 										</AlertDialogTrigger>
 										<AlertDialogContent>
 											<AlertDialogHeader>
@@ -520,7 +515,7 @@ export default function ProfilePage() {
 													<Input
 														id="name"
 														value={editForm.name}
-														onChange={(e) =>
+														onChange={e =>
 															setEditForm({
 																...editForm,
 																name: e.target
@@ -556,7 +551,7 @@ export default function ProfilePage() {
 														value={
 															editForm.biography
 														}
-														onChange={(e) =>
+														onChange={e =>
 															setEditForm({
 																...editForm,
 																biography:
@@ -687,7 +682,7 @@ export default function ProfilePage() {
 
 									<CardContent>
 										<div className="space-y-4">
-											{mockActivities.map((activity) => (
+											{mockActivities.map(activity => (
 												<div
 													key={activity.id}
 													className="flex items-start gap-4 border-b border-gray-100 pb-4 last:border-0"
@@ -722,23 +717,23 @@ export default function ProfilePage() {
 																variant="outline"
 																className={`mt-2 ${
 																	activity.status ===
-																	"completed"
-																		? "border-green-200 bg-green-50 text-green-700"
+																	'completed'
+																		? 'border-green-200 bg-green-50 text-green-700'
 																		: activity.status ===
-																			  "failed"
-																			? "border-red-200 bg-red-50 text-red-700"
-																			: "border-blue-200 bg-blue-50 text-blue-700"
+																			  'failed'
+																			? 'border-red-200 bg-red-50 text-red-700'
+																			: 'border-blue-200 bg-blue-50 text-blue-700'
 																}`}
 															>
 																{activity.status ===
-																	"completed" &&
-																	"Completado"}
+																	'completed' &&
+																	'Completado'}
 																{activity.status ===
-																	"failed" &&
-																	"Error"}
+																	'failed' &&
+																	'Error'}
 																{activity.status ===
-																	"running" &&
-																	"En Progreso"}
+																	'running' &&
+																	'En Progreso'}
 															</Badge>
 														)}
 													</div>

@@ -4,9 +4,9 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { t } from "@lingui/core/macro"
-import Link from "next/link"
+} from '@/components/ui/sidebar'
+import { t } from '@lingui/core/macro'
+import Link from 'next/link'
 
 export function NavMain({
 	items,
@@ -22,13 +22,14 @@ export function NavMain({
 		<SidebarGroup>
 			<SidebarGroupLabel>{t`Platform`}</SidebarGroupLabel>
 			<SidebarMenu>
-				{items.map((item) => (
+				{items.map(item => (
 					<SidebarMenuItem key={item.title}>
-						<SidebarMenuButton tooltip={item.title} asChild>
-							<Link href={item.url}>
-								{item.icon}
-								<span>{item.title}</span>
-							</Link>
+						<SidebarMenuButton
+							tooltip={item.title}
+							render={<Link href={item.url} />}
+						>
+							{item.icon}
+							<span>{item.title}</span>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
 				))}

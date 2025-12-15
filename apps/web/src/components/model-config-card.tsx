@@ -1,36 +1,36 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import { Slider } from "@/components/ui/slider"
-import { Trash2, ChevronDown, ChevronUp } from "lucide-react"
+} from '@/components/ui/card'
+import { Slider } from '@/components/ui/slider'
+import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from '@/components/ui/collapsible'
 
 interface ModelConfig {
 	modelId: string
 	modelName: string
-	role: "primary" | "secondary" | "tertiary"
+	role: 'primary' | 'secondary' | 'tertiary'
 	parameters: {
 		temperature: number
 		maxTokens: number
@@ -65,7 +65,7 @@ export default function ModelConfigCard({
 	}
 
 	const updateParameters = (
-		paramUpdates: Partial<ModelConfig["parameters"]>,
+		paramUpdates: Partial<ModelConfig['parameters']>,
 	) => {
 		onUpdate({
 			...model,
@@ -75,14 +75,14 @@ export default function ModelConfigCard({
 
 	const getRoleColor = (role: string) => {
 		switch (role) {
-			case "primary":
-				return "border-blue-200 bg-blue-50"
-			case "secondary":
-				return "border-green-200 bg-green-50"
-			case "tertiary":
-				return "border-purple-200 bg-purple-50"
+			case 'primary':
+				return 'border-blue-200 bg-blue-50'
+			case 'secondary':
+				return 'border-green-200 bg-green-50'
+			case 'tertiary':
+				return 'border-purple-200 bg-purple-50'
 			default:
-				return "border-gray-200 bg-gray-50"
+				return 'border-gray-200 bg-gray-50'
 		}
 	}
 
@@ -94,9 +94,9 @@ export default function ModelConfigCard({
 				<div className="flex items-center justify-between">
 					<div className="flex-1">
 						<CardTitle className="text-base">
-							{model.modelName || "Modelo sin configurar"} -{" "}
+							{model.modelName || 'Modelo sin configurar'} -{' '}
 							{
-								roleOptions.find((r) => r.value === model.role)
+								roleOptions.find(r => r.value === model.role)
 									?.label
 							}
 						</CardTitle>
@@ -112,18 +112,15 @@ export default function ModelConfigCard({
 							open={isExpanded}
 							onOpenChange={setIsExpanded}
 						>
-							<CollapsibleTrigger asChild>
-								<Button
-									variant="ghost"
-									size="sm"
-									className="h-8 w-8 p-0"
-								>
-									{isExpanded ? (
-										<ChevronUp className="h-4 w-4" />
-									) : (
-										<ChevronDown className="h-4 w-4" />
-									)}
-								</Button>
+							<CollapsibleTrigger
+								className="h-8 w-8 p-0"
+								render={<Button variant="ghost" size="sm" />}
+							>
+								{isExpanded ? (
+									<ChevronUp className="h-4 w-4" />
+								) : (
+									<ChevronDown className="h-4 w-4" />
+								)}
 							</CollapsibleTrigger>
 						</Collapsible>
 						{canRemove && (
@@ -147,21 +144,23 @@ export default function ModelConfigCard({
 						<Label>Modelo *</Label>
 						<Select
 							value={model.modelId}
-							onValueChange={(value) => {
+							onValueChange={value => {
 								const selectedModel = availableModels.find(
-									(m) => m.id === value,
+									m => m.id === value,
 								)
 								updateModel({
-									modelId: value,
-									modelName: selectedModel?.name || "",
+									modelId: value!,
+									modelName: selectedModel?.name || '',
 								})
 							}}
 						>
-							<SelectTrigger>
-								<SelectValue placeholder="Selecciona un modelo" />
+							<SelectTrigger
+							// placeholder="Selecciona un modelo"
+							>
+								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								{availableModels.map((availableModel) => (
+								{availableModels.map(availableModel => (
 									<SelectItem
 										key={availableModel.id}
 										value={availableModel.id}
@@ -186,7 +185,7 @@ export default function ModelConfigCard({
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								{roleOptions.map((role) => (
+								{roleOptions.map(role => (
 									<SelectItem
 										key={role.value}
 										value={role.value}
@@ -217,9 +216,11 @@ export default function ModelConfigCard({
 									</div>
 									<Slider
 										value={[model.parameters.temperature]}
-										onValueChange={([value]) =>
+										onValueChange={value =>
 											updateParameters({
-												temperature: value,
+												temperature: (
+													value as readonly number[]
+												)[0],
 											})
 										}
 										max={2}
@@ -239,7 +240,7 @@ export default function ModelConfigCard({
 									<Input
 										type="number"
 										value={model.parameters.maxTokens}
-										onChange={(e) =>
+										onChange={e =>
 											updateParameters({
 												maxTokens:
 													Number.parseInt(
@@ -265,8 +266,12 @@ export default function ModelConfigCard({
 									</div>
 									<Slider
 										value={[model.parameters.topP]}
-										onValueChange={([value]) =>
-											updateParameters({ topP: value })
+										onValueChange={value =>
+											updateParameters({
+												topP: (
+													value as readonly number[]
+												)[0],
+											})
 										}
 										max={1}
 										min={0}
@@ -292,9 +297,11 @@ export default function ModelConfigCard({
 										value={[
 											model.parameters.frequencyPenalty,
 										]}
-										onValueChange={([value]) =>
+										onValueChange={value =>
 											updateParameters({
-												frequencyPenalty: value,
+												frequencyPenalty: (
+													value as readonly number[]
+												)[0],
 											})
 										}
 										max={2}
@@ -319,9 +326,11 @@ export default function ModelConfigCard({
 										value={[
 											model.parameters.presencePenalty,
 										]}
-										onValueChange={([value]) =>
+										onValueChange={value =>
 											updateParameters({
-												presencePenalty: value,
+												presencePenalty: (
+													value as readonly number[]
+												)[0],
 											})
 										}
 										max={2}
@@ -339,8 +348,8 @@ export default function ModelConfigCard({
 							<div className="mt-4 space-y-2">
 								<Label>Prompt del Sistema</Label>
 								<Textarea
-									value={model.parameters.systemPrompt || ""}
-									onChange={(e) =>
+									value={model.parameters.systemPrompt || ''}
+									onChange={e =>
 										updateParameters({
 											systemPrompt: e.target.value,
 										})

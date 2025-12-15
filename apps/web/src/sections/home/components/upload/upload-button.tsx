@@ -19,23 +19,21 @@ export default function UploadButton() {
 
 	return (
 		<Button
-			asChild
+			render={<label />}
 			className="cursor-pointer"
 			size="icon"
 			variant="outline"
 			type="button"
 		>
-			<label>
-				<span className="sr-only">{t`Upload File`}</span>
-				<PaperclipIcon />
-				<input
-					name="file"
-					type="file"
-					className="hidden"
-					accept=".pdf"
-					onChange={handleUpload}
-				/>
-			</label>
+			<span className="sr-only">{t`Upload File`}</span>
+			<PaperclipIcon />
+			<input
+				name="file"
+				type="file"
+				className="hidden"
+				accept=".pdf"
+				onChange={handleUpload}
+			/>
 		</Button>
 	)
 }

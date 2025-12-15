@@ -1,29 +1,32 @@
-"use client"
+'use client'
 
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { UseRenderRenderProp, DialogTriggerState } from '@base-ui/react'
 import {
 	useState,
 	type MouseEvent,
 	type PropsWithChildren,
 	type ReactNode,
-} from "react"
+} from 'react'
 
 interface Props extends PropsWithChildren {
-	trigger: ReactNode
+	renderTrigger: UseRenderRenderProp<DialogTriggerState>
 }
 
-export default function BaseAlertDialog({ children, trigger }: Props) {
+export default function BaseAlertDialog({ children, renderTrigger }: Props) {
 	const [open, setOpen] = useState(false)
 
 	const handleOpen = (e: MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation()
 		setOpen(true)
 	}
+
 	return (
 		<AlertDialog open={open} onOpenChange={setOpen}>
-			<AlertDialogTrigger asChild onClickCapture={handleOpen}>
-				{trigger}
-			</AlertDialogTrigger>
+			<AlertDialogTrigger
+				render={renderTrigger}
+				onClickCapture={handleOpen}
+			/>
 			{children}
 		</AlertDialog>
 	)

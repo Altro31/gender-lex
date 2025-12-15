@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import BaseAlertDialog from "@/components/dialog/base-alert-dialog"
+import BaseAlertDialog from '@/components/dialog/base-alert-dialog'
 import {
 	AlertDialogAction,
 	AlertDialogCancel,
@@ -9,13 +9,13 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import { deleteModel } from "@/services/model"
-import type { ModelsResponseItem } from "@/types/model"
-import { t } from "@lingui/core/macro"
-import { useAction } from "next-safe-action/hooks"
-import { type PropsWithChildren } from "react"
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import { deleteModel } from '@/services/model'
+import type { ModelsResponseItem } from '@/types/model'
+import { t } from '@lingui/core/macro'
+import { useAction } from 'next-safe-action/hooks'
+import { type PropsWithChildren } from 'react'
 
 interface Props extends PropsWithChildren {
 	model: ModelsResponseItem
@@ -35,7 +35,7 @@ export default function DeleteModelAlertDialog({
 	}
 
 	return (
-		<BaseAlertDialog trigger={children}>
+		<BaseAlertDialog renderTrigger={children}>
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>{t`Are you sure?`}</AlertDialogTitle>
@@ -46,10 +46,12 @@ export default function DeleteModelAlertDialog({
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>{t`Cancel`}</AlertDialogCancel>
-					<Button variant="destructive" asChild>
-						<AlertDialogAction onClick={handleDeleteModel}>
-							{t`Delete`}
-						</AlertDialogAction>
+					<Button
+						variant="destructive"
+						onClick={handleDeleteModel}
+						render={<AlertDialogAction />}
+					>
+						{t`Delete`}
 					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>
