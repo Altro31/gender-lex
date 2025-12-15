@@ -13,7 +13,6 @@ const nextConfig: NextConfig = {
 		swcPlugins: [['@lingui/swc-plugin', {}]],
 		rootParams: true,
 		turbopackFileSystemCacheForDev: true,
-		typedEnv: true,
 	},
 	rewrites: async () => [
 		{ source: '/api/:path*', destination: `${envs.API_URL}/api/:path*` },

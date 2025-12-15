@@ -4,7 +4,6 @@
 		"paths": { "@/*": ["./src/*"] },
 		"plugins": [
 			{ "name": "workflow" },
-			{ "name": "typescript-plugin-directives" },
 			{ "name": "@effect/language-service" }
 		]
 	},
