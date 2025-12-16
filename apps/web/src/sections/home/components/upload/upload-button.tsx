@@ -20,10 +20,10 @@ export default function UploadButton() {
 	return (
 		<Button
 			render={<label />}
+			nativeButton={false}
 			className="cursor-pointer"
 			size="icon"
 			variant="outline"
-			type="button"
 		>
 			<span className="sr-only">{t`Upload File`}</span>
 			<PaperclipIcon />

@@ -31,16 +31,18 @@ export default function HomeFormContainer() {
 							getKey={i => i.id}
 							getLabel={i => i.name}
 						>
-							<CreatePresetDialog>
-								<Button
-									size="sm"
-									variant="outline"
-									className="mt-1 w-full"
-								>
-									<Plus />
-									{t`New Preset`}
-								</Button>
-							</CreatePresetDialog>
+							<CreatePresetDialog
+								renderTrigger={
+									<Button
+										size="sm"
+										variant="outline"
+										className="mt-1 w-full"
+									>
+										<Plus />
+										{t`New Preset`}
+									</Button>
+								}
+							/>
 						</RHFSelectAutofetcher>
 					</div>
 					<FormSendButton />

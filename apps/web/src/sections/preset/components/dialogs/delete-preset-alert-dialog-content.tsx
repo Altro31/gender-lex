@@ -1,41 +1,52 @@
-"use client"
+'use client'
 
-import BaseAlertDialog from "@/components/dialog/base-alert-dialog"
 import {
+	AlertDialog,
 	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
+	AlertDialogOverlay,
 	AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { deletePreset } from "@/services/preset"
-import type { PresetsResponse } from "@/types/preset"
-import { t } from "@lingui/core/macro"
-import { Trans } from "@lingui/react/macro"
-import { useAction } from "next-safe-action/hooks"
-import { type PropsWithChildren } from "react"
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { deletePreset } from '@/services/preset'
+import type { PresetsResponse } from '@/types/preset'
+import { DialogTriggerState, UseRenderRenderProp } from '@base-ui/react'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
+import { useAction } from 'next-safe-action/hooks'
+import { AlertDialog as AlertDialogPrimitive } from '@base-ui/react'
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
+import { Loader, Trash2 } from 'lucide-react'
+import { tryCatch } from '@/lib/utils'
+import { toast } from 'sonner'
 
-interface Props extends PropsWithChildren {
+interface Props {
 	preset: PresetsResponse[number]
 	onDelete?: () => void
 }
 
-export default function DeletePresetAlertDialog({
-	preset,
-	children,
-	onDelete,
-}: Props) {
-	const { execute } = useAction(deletePreset)
+const deletePresetAlertDialog = AlertDialogPrimitive.createHandle()
 
-	const handleDeletePreset = () => {
+export function DeletePresetAlertDialog({ preset, onDelete }: Props) {
+	const { executeAsync } = useAction(deletePreset)
+
+	const handleDeletePreset = async () => {
 		onDelete?.()
-		execute(preset.id)
+		const promise = executeAsync(preset.id)
+		toast.promise(promise, {
+			success: res => 'Éxito',
+			error: (error: Error) => 'Error',
+		})
+		deletePresetAlertDialog.close()
 	}
 
 	return (
-		<BaseAlertDialog trigger={children}>
+		<AlertDialog handle={deletePresetAlertDialog}>
+			<AlertDialogOverlay />
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>{t`Are you sure?`}</AlertDialogTitle>
@@ -44,7 +55,7 @@ export default function DeletePresetAlertDialog({
 							This action cannot be undone. <br />
 							The preset will be permanently deleted
 							<strong className="font-medium">
-								{" "}
+								{' '}
 								{preset.name}
 							</strong>
 						</Trans>
@@ -60,6 +71,12 @@ export default function DeletePresetAlertDialog({
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
-		</BaseAlertDialog>
+		</AlertDialog>
 	)
+}
+
+export function DeletePresetAlertDialogTrigger(
+	props: Omit<React.ComponentProps<typeof AlertDialogTrigger>, 'handle'>,
+) {
+	return <AlertDialogTrigger handle={deletePresetAlertDialog} {...props} />
 }

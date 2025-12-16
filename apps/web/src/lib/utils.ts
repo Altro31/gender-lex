@@ -8,3 +8,12 @@ export function cn(...inputs: ClassValue[]) {
 export function sleep(time: number) {
 	return new Promise(res => setTimeout(res, time))
 }
+
+export async function tryCatch<T>(promise: Promise<T>) {
+	try {
+		const res = await promise
+		return [null, res] as const
+	} catch (e) {
+		return [e as Error, null] as const
+	}
+}
