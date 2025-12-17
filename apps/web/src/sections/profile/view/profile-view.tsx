@@ -173,11 +173,15 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 	const handleLogout = async () => {
 		try {
 			await authClient.signOut()
-			window.location.href = "/auth/login"
+			setIsLogoutDialogOpen(false)
+			// Wait a bit for the sign out to complete
+			setTimeout(() => {
+				window.location.href = "/"
+			}, 500)
 		} catch (error) {
 			toast.error("Error al cerrar sesión")
+			setIsLogoutDialogOpen(false)
 		}
-		setIsLogoutDialogOpen(false)
 	}
 
 	const getRoleColor = (role: string) => {
