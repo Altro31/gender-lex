@@ -4,7 +4,7 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form"
+} from '@/components/ui/form'
 import {
 	Select,
 	SelectContent,
@@ -12,21 +12,22 @@ import {
 	SelectItem,
 	SelectLabel,
 	SelectTrigger,
-} from "@/components/ui/select"
-import { useInfiniteQuery } from "@tanstack/react-query"
-import type { ComponentProps, PropsWithChildren } from "react"
+	SelectValue,
+} from '@/components/ui/select'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import type { ComponentProps, PropsWithChildren } from 'react'
 
 interface Props<T> extends PropsWithChildren {
 	name: string
 	label?: string
 	required?: boolean
 	placeholder?: string
-	size?: ComponentProps<typeof SelectTrigger>["size"]
+	size?: ComponentProps<typeof SelectTrigger>['size']
 	initialData?: T[]
 	fetcherFunc: (params: { page: number }) => Promise<T[]>
-	getKey?: (item: T) => string
-	getValue?: (item: T) => any
-	getLabel?: (item: T) => string
+	getKey: (item: T) => string
+	renderItem: (item: T) => React.ReactNode
+	renderValue: (item: T) => React.ReactNode
 	getDisabled?: (item: T) => boolean
 	getGroup?: (item: T) => string
 }
@@ -41,8 +42,8 @@ export default function RHFSelectAutofetcher<T>({
 	children,
 	fetcherFunc,
 	getKey,
-	getLabel,
-	getValue,
+	renderItem,
+	renderValue,
 	getDisabled,
 	getGroup,
 }: Props<T>) {
@@ -57,44 +58,33 @@ export default function RHFSelectAutofetcher<T>({
 
 	const grouped = Object.groupBy(
 		data.pages.flat(),
-		(item) => getGroup?.(item) ?? "",
+		item => getGroup?.(item) ?? '',
 	)
 
 	return (
 		<FormField
 			name={name}
 			render={({ field }) => {
-				const selectedKey = field.value
-					? getKey?.(field.value)
-					: field.value
-				const selectedLabel = field.value
-					? getLabel?.(field.value)
-					: field.value
 				return (
 					<FormItem>
 						{label && (
 							<FormLabel>
-								{label} {required && "*"}
+								{label} {required && '*'}
 							</FormLabel>
 						)}
 						<Select
-							defaultValue={selectedKey}
-							onValueChange={(value) => {
-								const selectedItem = Object.values(grouped)
-									.filter(Boolean)
-									.flat()
-									.find((o) => {
-										const oKey = getKey?.(o!) ?? o
-										return oKey === value
-									})
-								field.onChange(
-									getValue?.(selectedItem!) ?? selectedItem,
-								)
-							}}
+							value={field.value}
+							onValueChange={field.onChange}
 						>
 							<FormControl>
 								<SelectTrigger size={size}>
-									{selectedLabel || placeholder}
+									<SelectValue>
+										{(value: T) => {
+											return value
+												? renderValue(value)
+												: placeholder
+										}}
+									</SelectValue>
 								</SelectTrigger>
 							</FormControl>
 							<SelectContent>
@@ -107,25 +97,22 @@ export default function RHFSelectAutofetcher<T>({
 														{key}
 													</SelectLabel>
 												)}
-												{value.map((item) => {
-													const itemKey =
-														getKey?.(item) ?? item
+												{value.map(item => {
+													const itemKey = getKey(item)
 
-													const itemLabel =
-														getLabel?.(item) ?? item
 													const itemDisabled =
 														getDisabled?.(item) ??
 														false
 
 													return (
 														<SelectItem
-															key={itemKey + ""}
-															value={itemKey + ""}
+															key={itemKey + ''}
+															value={item}
 															disabled={
 																itemDisabled
 															}
 														>
-															{itemLabel + ""}
+															{renderItem(item)}
 														</SelectItem>
 													)
 												})}

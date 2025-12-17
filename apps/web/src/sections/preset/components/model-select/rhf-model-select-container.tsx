@@ -1,22 +1,22 @@
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import ModelConfigCard from "@/sections/preset/components/model-select/model-config-card"
-import type { PresetSchema } from "@/sections/preset/form/preset-schema"
-import { t } from "@lingui/core/macro"
-import { Plus } from "lucide-react"
-import { useFieldArray } from "react-hook-form"
+} from '@/components/ui/card'
+import ModelConfigCard from '@/sections/preset/components/model-select/model-config-card'
+import type { PresetSchema } from '@/sections/preset/form/preset-schema'
+import { t } from '@lingui/core/macro'
+import { Plus } from 'lucide-react'
+import { useFieldArray } from 'react-hook-form'
 
 export default function RHFModelSelectContainer() {
-	const { fields, remove, append } = useFieldArray<PresetSchema>({
-		name: "Models",
+	const { fields, remove, prepend } = useFieldArray<PresetSchema>({
+		name: 'Models',
 	})
-	const models = fields as unknown as PresetSchema["Models"]
+	const models = fields as unknown as PresetSchema['Models']
 	return (
 		<Card>
 			<CardHeader>
@@ -29,9 +29,9 @@ export default function RHFModelSelectContainer() {
 							<Button
 								type="button"
 								onClick={() =>
-									append({
-										role: "" as any,
-										Model: "" as any,
+									prepend({
+										role: '' as any,
+										Model: '' as any,
 									})
 								}
 								variant="outline"
@@ -53,7 +53,7 @@ export default function RHFModelSelectContainer() {
 						<Button
 							type="button"
 							onClick={() =>
-								append({ role: "" as any, Model: "" as any })
+								prepend({ role: '' as any, Model: '' as any })
 							}
 							variant="outline"
 						>

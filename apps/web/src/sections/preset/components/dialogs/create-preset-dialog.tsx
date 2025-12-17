@@ -13,26 +13,18 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
-import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
 import CreatePresetFormContainer from '@/sections/preset/form/create-preset-form-container'
 import { PresetForm } from '@/sections/preset/form/preset-form'
-import { DialogTriggerState, UseRenderRenderProp } from '@base-ui/react'
+import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
 import { t } from '@lingui/core/macro'
-import { useRef } from 'react'
-
-interface Props {
-	renderTrigger: UseRenderRenderProp<DialogTriggerState>
-}
 
 const createPresetDialog = DialogPrimitive.createHandle()
 
-export default function CreatePresetDialog({ renderTrigger }: Props) {
-	const ref = useRef<HTMLButtonElement>(null)
-	const handleSucceed = () => ref.current?.click()
+export function CreatePresetDialog() {
+	const handleSucceed = () => createPresetDialog.close()
 
 	return (
-		<Dialog>
-			<DialogTrigger render={renderTrigger} />
+		<Dialog handle={createPresetDialog}>
 			<DialogContent className="max-w-2xl">
 				<DialogHeader>
 					<DialogTitle>{t`Create New Preset`}</DialogTitle>
@@ -55,4 +47,10 @@ export default function CreatePresetDialog({ renderTrigger }: Props) {
 			</DialogContent>
 		</Dialog>
 	)
+}
+
+export function CreatePresetDialogTrigger(
+	props: Omit<React.ComponentProps<typeof DialogTrigger>, 'handle'>,
+) {
+	return <DialogTrigger handle={createPresetDialog} {...props} />
 }

@@ -1,10 +1,13 @@
-import SearchInput, { SearchInputFallback } from "@/components/search-input"
-import { t } from "@lingui/core/macro"
-import { Suspense } from "react"
-import CreatePresetDialog from "../components/dialogs/create-preset-dialog"
-import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
-import PresetsListContainer from "./preset-list-container"
+import SearchInput, { SearchInputFallback } from '@/components/search-input'
+import { t } from '@lingui/core/macro'
+import { Suspense } from 'react'
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
+import PresetsListContainer from './preset-list-container'
+import {
+	CreatePresetDialog,
+	CreatePresetDialogTrigger,
+} from '../components/dialogs/create-preset-dialog'
 
 interface Props {
 	searchParams: Promise<{ q?: string; page?: string }>
@@ -31,12 +34,10 @@ export default function PresetsContainer({ searchParams }: Props) {
 					>
 						<SearchInput name="q" className="flex-1" />
 					</Suspense>
-					<CreatePresetDialog>
-						<Button>
-							<Plus />
-							{t`New Preset`}
-						</Button>
-					</CreatePresetDialog>
+					<CreatePresetDialogTrigger render={<Button />}>
+						<Plus />
+						{t`New Preset`}
+					</CreatePresetDialogTrigger>
 				</div>
 
 				{/* Presets Grid */}
@@ -44,6 +45,7 @@ export default function PresetsContainer({ searchParams }: Props) {
 					<PresetsListContainer searchParams={searchParams} />
 				</Suspense>
 			</div>
+			<CreatePresetDialog />
 		</div>
 	)
 }

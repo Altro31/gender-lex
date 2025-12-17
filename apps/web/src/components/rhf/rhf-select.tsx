@@ -4,7 +4,7 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form"
+} from '@/components/ui/form'
 import {
 	Select,
 	SelectContent,
@@ -13,19 +13,19 @@ import {
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select"
-import type { ComponentProps } from "react"
+} from '@/components/ui/select'
+import type { ComponentProps } from 'react'
 
 interface Props<T> {
 	name: string
 	label?: string
 	required?: boolean
-	placeholder?: string
-	size?: ComponentProps<typeof SelectTrigger>["size"]
+	placeholder?: React.ReactNode
+	size?: ComponentProps<typeof SelectTrigger>['size']
 	options: T[]
-	getKey?: (item: T) => string
-	getValue?: (item: T) => any
-	getLabel?: (item: T) => string
+	getKey: (item: T) => string
+	renderItem?: (item: T) => React.ReactNode
+	renderValue?: (item: T) => React.ReactNode
 	getDisabled?: (item: T) => boolean
 	getGroup?: (item: T) => string
 }
@@ -38,12 +38,12 @@ export default function RHFSelect<T>({
 	size,
 	options,
 	getKey,
-	getLabel,
-	getValue,
+	renderValue = item => item as React.ReactNode,
+	renderItem = item => item as React.ReactNode,
 	getDisabled,
 	getGroup,
 }: Props<T>) {
-	const grouped = Object.groupBy(options, (item) => getGroup?.(item) ?? "")
+	const grouped = Object.groupBy(options, item => getGroup?.(item) ?? '')
 
 	return (
 		<FormField
@@ -53,27 +53,22 @@ export default function RHFSelect<T>({
 					<FormItem>
 						{label && (
 							<FormLabel>
-								{label} {required && "*"}
+								{label} {required && '*'}
 							</FormLabel>
 						)}
 						<Select
-							defaultValue={field.value}
-							onValueChange={(value) => {
-								const selectedItem = Object.values(grouped)
-									.filter(Boolean)
-									.flat()
-									.find((o) => {
-										const oKey = getKey?.(o!) ?? o
-										return oKey === value
-									})
-								field.onChange(
-									getValue?.(selectedItem!) ?? selectedItem,
-								)
-							}}
+							value={field.value}
+							onValueChange={field.onChange}
 						>
 							<FormControl>
 								<SelectTrigger size={size}>
-									<SelectValue placeholder={placeholder} />
+									<SelectValue>
+										{(value: T) => {
+											return value
+												? renderValue(value)
+												: placeholder
+										}}
+									</SelectValue>
 								</SelectTrigger>
 							</FormControl>
 							<SelectContent>
@@ -86,25 +81,24 @@ export default function RHFSelect<T>({
 														{key}
 													</SelectLabel>
 												)}
-												{value.map((item) => {
-													const itemKey =
-														getKey?.(item) ?? item
+												{value.map(item => {
+													const itemKey = getKey(item)
 
 													const itemLabel =
-														getLabel?.(item) ?? item
+														renderItem(item)
 													const itemDisabled =
 														getDisabled?.(item) ??
 														false
 
 													return (
 														<SelectItem
-															key={itemKey + ""}
-															value={itemKey + ""}
+															key={itemKey + ''}
+															value={item}
 															disabled={
 																itemDisabled
 															}
 														>
-															{itemLabel + ""}
+															{renderItem(item)}
 														</SelectItem>
 													)
 												})}

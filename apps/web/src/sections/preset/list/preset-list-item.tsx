@@ -1,7 +1,6 @@
 'use client'
 
 import Loader from '@/components/loader'
-import { AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -16,19 +15,20 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import {
-	DeletePresetAlertDialog,
-	DeletePresetAlertDialogTrigger,
-} from '@/sections/preset/components/dialogs/delete-preset-alert-dialog-content'
+import { DeletePresetAlertDialogTrigger } from '@/sections/preset/components/dialogs/delete-preset-alert-dialog-content'
 import type { PresetsResponse } from '@/types/preset'
 import { i18n } from '@lingui/core'
 import { t } from '@lingui/core/macro'
 import { Select } from '@lingui/react/macro'
 import type { ModelRole } from '@repo/db/models'
-import { Settings, Trash2 } from 'lucide-react'
+import { Copy, Edit, Eye, Settings, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { ClonePresetAlertDialogTrigger } from '../components/dialogs/clone-preset-alert-dialog-content'
+import { DetailsPresetDialogTrigger } from '../components/dialogs/details-preset-dialog'
+import { EditPresetDialogTrigger } from '../components/dialogs/edit-preset-dialog'
 
 interface Props {
 	preset: PresetsResponse[number]
@@ -83,46 +83,76 @@ export default function PresetListItem({ preset: initialPreset }: Props) {
 								<Settings />
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="end">
-								{/*<DetailsPresetDialog preset={preset}>
-									<DropdownMenuItem disabled={isDeleting}>
-										<Eye />
-										{t`Details`}
-									</DropdownMenuItem>
-								</DetailsPresetDialog>*/}
-								{/*<EditPresetDialog preset={preset}>
-									<DropdownMenuItem disabled={isDeleting}>
-										<Edit />
-										{t`Edit`}
-									</DropdownMenuItem>
-								</EditPresetDialog>
-								<ClonePresetAlertDialog
-									preset={preset}
-									onClone={handleItemStatus('clonning')}
-								>
-									<DropdownMenuItem
-										disabled={isClonning || isDeleting}
-									>
-										{isClonning ? <Loader /> : <Copy />}
-										{t`Clone`}
-									</DropdownMenuItem>
-								</ClonePresetAlertDialog>*/}
-								<DeletePresetAlertDialogTrigger
+								<DetailsPresetDialogTrigger
+									payload={{ preset }}
 									nativeButton={false}
 									render={
 										<DropdownMenuItem
-											variant="destructive"
 											disabled={isDeleting}
 										/>
 									}
 								>
-									{isDeleting ? <Loader /> : <Trash2 />}
-									{t`Delete`}
-								</DeletePresetAlertDialogTrigger>
+									<Eye />
+									{t`Details`}
+								</DetailsPresetDialogTrigger>
+								{!preset.isDefault && (
+									<EditPresetDialogTrigger
+										payload={{ preset }}
+										nativeButton={false}
+										render={
+											<DropdownMenuItem
+												disabled={isDeleting}
+											/>
+										}
+									>
+										<Edit />
+										{t`Edit`}
+									</EditPresetDialogTrigger>
+								)}
+								<ClonePresetAlertDialogTrigger
+									payload={{
+										preset,
+										onClone: handleItemStatus('clonning'),
+									}}
+									nativeButton={false}
+									render={
+										<DropdownMenuItem
+											disabled={isClonning || isDeleting}
+										/>
+									}
+								>
+									{isClonning ? <Loader /> : <Copy />}
+									{t`Clone`}
+								</ClonePresetAlertDialogTrigger>
+								{!preset.isDefault && (
+									<>
+										<DropdownMenuSeparator />
+										<DeletePresetAlertDialogTrigger
+											payload={{
+												preset,
+												onDelete:
+													handleItemStatus(
+														'deleting',
+													),
+											}}
+											nativeButton={false}
+											render={
+												<DropdownMenuItem
+													variant="destructive"
+													disabled={isDeleting}
+												/>
+											}
+										>
+											{isDeleting ? (
+												<Loader />
+											) : (
+												<Trash2 />
+											)}
+											{t`Delete`}
+										</DeletePresetAlertDialogTrigger>
+									</>
+								)}
 							</DropdownMenuContent>
-							<DeletePresetAlertDialog
-								preset={preset}
-								onDelete={handleItemStatus('deleting')}
-							/>
 						</DropdownMenu>
 					</div>
 					{preset.description && (

@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import BaseAlertDialog from "@/components/dialog/base-alert-dialog"
 import {
+	AlertDialog,
 	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
@@ -9,61 +9,83 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { clonePreset } from "@/services/preset"
-import type { PresetsResponse } from "@/types/preset"
-import { t } from "@lingui/core/macro"
-import { Trans } from "@lingui/react/macro"
-import { useAction } from "next-safe-action/hooks"
-import { useRef, type MouseEvent, type PropsWithChildren } from "react"
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { clonePreset } from '@/services/preset'
+import type { PresetsResponse } from '@/types/preset'
+import { AlertDialog as AlertDialogPrimitive } from '@base-ui/react'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
+import { useAction } from 'next-safe-action/hooks'
+import { type MouseEvent } from 'react'
+import { toast } from 'sonner'
 
-interface Props extends PropsWithChildren {
+interface ClonePresetPayload {
 	preset: PresetsResponse[number]
 	onClone?: () => void
 }
 
-export default function ClonePresetAlertDialog({
-	preset,
-	children,
-	onClone,
-}: Props) {
-	const closeRef = useRef<HTMLButtonElement>(null)
+const clonePresetAlertDialog =
+	AlertDialogPrimitive.createHandle<ClonePresetPayload>()
 
-	const { execute } = useAction(clonePreset, {
+export function ClonePresetAlertDialog() {
+	const { executeAsync } = useAction(clonePreset, {
 		onError(args) {
 			console.log(args)
 		},
 	})
 
-	const handleClonePreset = async (e: MouseEvent<HTMLButtonElement>) => {
-		onClone?.()
-		execute(preset.id)
-	}
+	const handleClonePreset =
+		(payload: ClonePresetPayload) =>
+		async (e: MouseEvent<HTMLButtonElement>) => {
+			payload.onClone?.()
+			const promise = executeAsync(payload.preset.id)
+			toast.promise(promise, {
+				success: res => 'Éxito',
+				error: (error: Error) => 'Error',
+			})
+			clonePresetAlertDialog.close()
+		}
 
 	return (
-		<BaseAlertDialog trigger={children}>
-			<AlertDialogContent>
-				<AlertDialogHeader>
-					<AlertDialogTitle>{t`Are you sure?`}</AlertDialogTitle>
-					<AlertDialogDescription>
-						<Trans>
-							A new preset will be created with the same name,
-							description and model settings as:{" "}
-							<strong className="font-medium">
-								{preset.name}
-							</strong>
-						</Trans>
-					</AlertDialogDescription>
-				</AlertDialogHeader>
-				<AlertDialogFooter>
-					<AlertDialogCancel ref={closeRef}>
-						{t`Cancel`}
-					</AlertDialogCancel>
-					<AlertDialogAction onClick={handleClonePreset}>
-						{t`Clone`}
-					</AlertDialogAction>
-				</AlertDialogFooter>
-			</AlertDialogContent>
-		</BaseAlertDialog>
+		<AlertDialog handle={clonePresetAlertDialog}>
+			{({ payload }) => {
+				if (!payload) return null
+				const { preset } = payload
+				return (
+					<AlertDialogContent>
+						<AlertDialogHeader>
+							<AlertDialogTitle>{t`Are you sure?`}</AlertDialogTitle>
+							<AlertDialogDescription>
+								<Trans>
+									A new preset will be created with the same
+									name, description and model settings as:{' '}
+									<strong className="font-medium">
+										{preset.name}
+									</strong>
+								</Trans>
+							</AlertDialogDescription>
+						</AlertDialogHeader>
+						<AlertDialogFooter>
+							<AlertDialogCancel>{t`Cancel`}</AlertDialogCancel>
+							<AlertDialogAction
+								onClick={handleClonePreset(payload)}
+							>
+								{t`Clone`}
+							</AlertDialogAction>
+						</AlertDialogFooter>
+					</AlertDialogContent>
+				)
+			}}
+		</AlertDialog>
 	)
+}
+
+export function ClonePresetAlertDialogTrigger(
+	props: Omit<
+		React.ComponentProps<typeof AlertDialogTrigger>,
+		'handle' | 'payload'
+	> & { payload: ClonePresetPayload },
+) {
+	return <AlertDialogTrigger handle={clonePresetAlertDialog} {...props} />
 }

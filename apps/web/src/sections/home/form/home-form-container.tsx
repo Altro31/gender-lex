@@ -6,7 +6,10 @@ import { Button } from '@/components/ui/button'
 import UploadButton from '@/sections/home/components/upload/upload-button'
 import HomeFiles from '@/sections/home/form/home-files'
 import FormSendButton from '@/sections/home/form/home-form-send-button'
-import CreatePresetDialog from '@/sections/preset/components/dialogs/create-preset-dialog'
+import {
+	CreatePresetDialog,
+	CreatePresetDialogTrigger,
+} from '@/sections/preset/components/dialogs/create-preset-dialog'
 import { getPresetsSelect } from '@/services/preset'
 import { t } from '@lingui/core/macro'
 import { Plus } from 'lucide-react'
@@ -31,19 +34,17 @@ export default function HomeFormContainer() {
 							getKey={i => i.id}
 							getLabel={i => i.name}
 						>
-							<CreatePresetDialog
-								renderTrigger={
-									<Button
-										size="sm"
-										variant="outline"
-										className="mt-1 w-full"
-									>
+							<CreatePresetDialogTrigger
+								className="mt-1 w-full"
+								render={
+									<Button size="sm" variant="outline">
 										<Plus />
 										{t`New Preset`}
 									</Button>
 								}
 							/>
 						</RHFSelectAutofetcher>
+						<CreatePresetDialog />
 					</div>
 					<FormSendButton />
 				</div>

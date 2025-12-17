@@ -1,34 +1,52 @@
-import BaseDialog from "@/components/dialog/base-dialog"
 import {
+	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/ui/dialog"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import PresetDetails from "@/sections/preset/details/preset-details"
-import type { PresetsResponse } from "@/types/preset"
-import { t } from "@lingui/core/macro"
-import { type PropsWithChildren } from "react"
+	DialogTrigger,
+} from '@/components/ui/dialog'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import PresetDetails from '@/sections/preset/details/preset-details'
+import type { PresetsResponse } from '@/types/preset'
+import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
+import { t } from '@lingui/core/macro'
 
-interface Props extends PropsWithChildren {
+const detailsPresetDialog = DialogPrimitive.createHandle<DetailsPresetPayload>()
+
+interface DetailsPresetPayload {
 	preset: PresetsResponse[number]
 }
 
-export default function DetailsPresetDialog({ children, preset }: Props) {
+export function DetailsPresetDialog() {
 	return (
-		<BaseDialog trigger={children}>
-			<DialogContent className="max-w-none">
-				<DialogHeader>
-					<DialogTitle>{t`Preset Details`}</DialogTitle>
-					<DialogDescription>
-						{t`Complete information of the selected preset`}
-					</DialogDescription>
-				</DialogHeader>
-				<ScrollArea className="max-h-[80vh] py-4 pr-4">
-					<PresetDetails preset={preset} />
-				</ScrollArea>
-			</DialogContent>
-		</BaseDialog>
+		<Dialog handle={detailsPresetDialog}>
+			{({ payload }) => {
+				if (!payload) return null
+				const { preset } = payload
+				return (
+					<DialogContent className="max-w-none">
+						<DialogHeader>
+							<DialogTitle>{t`Preset Details`}</DialogTitle>
+							<DialogDescription>
+								{t`Complete information of the selected preset`}
+							</DialogDescription>
+						</DialogHeader>
+						<ScrollArea className="max-h-[80vh] py-4 pr-4">
+							<PresetDetails preset={preset} />
+						</ScrollArea>
+					</DialogContent>
+				)
+			}}
+		</Dialog>
 	)
+}
+
+export function DetailsPresetDialogTrigger(
+	props: Omit<
+		React.ComponentProps<typeof DialogTrigger>,
+		'handle' | 'payload'
+	> & { payload: DetailsPresetPayload },
+) {
+	return <DialogTrigger handle={detailsPresetDialog} {...props} />
 }
