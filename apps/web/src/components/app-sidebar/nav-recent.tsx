@@ -1,13 +1,5 @@
-import { Edit, Eye, MoreHorizontal, Trash2 } from 'lucide-react'
+import { MoreHorizontal } from 'lucide-react'
 
-import DropdownMenuResponsive from '@/components/app-sidebar/dropdown-menu-responsive'
-import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
-import {
-	DropdownMenu,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import {
 	SidebarGroup,
 	SidebarGroupLabel,
@@ -16,76 +8,55 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import DeleteAnalysisAlertDialogContent from '@/sections/analysis/components/delete-analysis-alert-dialog-content'
+import { DeleteAnalysisAlertDialog } from '@/sections/analysis/components/dialogs/delete-analysis-alert-dialog'
 import { findRecentAnalyses } from '@/services/analysis'
 
-import Link from 'next/link'
+import { AnalysisActions } from '@/sections/analysis/components/analysis-actions'
 import { t } from '@lingui/core/macro'
+import Link from 'next/link'
 
 export default async function NavRecent() {
 	const data = await findRecentAnalyses()
 
 	return (
 		Boolean(data.length) && (
-			<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-				<SidebarGroupLabel>{t`Recent`}</SidebarGroupLabel>
-				<SidebarMenu>
-					{data.map(item => (
-						<SidebarMenuItem key={item.id}>
-							<SidebarMenuButton
-								render={<Link href={`/analysis/${item.id}`} />}
-							>
-								{item.name}
-							</SidebarMenuButton>
-							<AlertDialog>
-								<DropdownMenu>
-									<DropdownMenuTrigger
-										render={
-											<SidebarMenuAction showOnHover />
-										}
-									>
-										<MoreHorizontal />
-										<span className="sr-only">
-											{t`More`}
-										</span>
-									</DropdownMenuTrigger>
-									<DropdownMenuResponsive>
-										<DropdownMenuItem>
-											<Eye className="text-muted-foreground" />
-											<span>{t`View details`}</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<Edit className="text-muted-foreground" />
-											<span>{t`Edit`}</span>
-										</DropdownMenuItem>
-										<DropdownMenuSeparator />
-										<AlertDialogTrigger
-											render={
-												<DropdownMenuItem variant="destructive" />
-											}
-										>
-											<Trash2 className="text-muted-foreground" />
-											<span>{t`Delete`}</span>
-										</AlertDialogTrigger>
-									</DropdownMenuResponsive>
-								</DropdownMenu>
-								<DeleteAnalysisAlertDialogContent
-									analysis={item as any}
+			<>
+				<SidebarGroup className="group-data-[collapsible=icon]:hidden">
+					<SidebarGroupLabel>{t`Recent`}</SidebarGroupLabel>
+					<SidebarMenu>
+						{data.map(item => (
+							<SidebarMenuItem key={item.id}>
+								<SidebarMenuButton
+									render={
+										<Link href={`/analysis/${item.id}`} />
+									}
+								>
+									{item.name}
+								</SidebarMenuButton>
+								<AnalysisActions
+									analysis={item}
+									renderTrigger={
+										<SidebarMenuAction showOnHover>
+											<MoreHorizontal />
+											<span className="sr-only">{t`More`}</span>
+										</SidebarMenuAction>
+									}
 								/>
-							</AlertDialog>
+							</SidebarMenuItem>
+						))}
+						<SidebarMenuItem>
+							<SidebarMenuButton
+								render={<Link href="/analysis" />}
+								className="text-sidebar-foreground/70"
+							>
+								<MoreHorizontal className="text-sidebar-foreground/70" />
+								<span>{t`More`}</span>
+							</SidebarMenuButton>
 						</SidebarMenuItem>
-					))}
-					<SidebarMenuItem>
-						<SidebarMenuButton
-							render={<Link href="/analysis" />}
-							className="text-sidebar-foreground/70"
-						>
-							<MoreHorizontal className="text-sidebar-foreground/70" />
-							<span>{t`More`}</span>
-						</SidebarMenuButton>
-					</SidebarMenuItem>
-				</SidebarMenu>
-			</SidebarGroup>
+					</SidebarMenu>
+				</SidebarGroup>
+				<DeleteAnalysisAlertDialog />
+			</>
 		)
 	)
 }

@@ -3,7 +3,7 @@ import { AiService } from '@/modules/ai/service'
 import { genderLexSystemPrompt } from '@/modules/bias-detection/prompts/system.prompt'
 import { AuthService } from '@/shared/auth/auth.service'
 import type { Analysis, Model } from '@repo/db/models'
-import { Analysis as AnalysisSchema } from '@repo/db/schema/analysis.ts'
+import { Analysis as AnalysisSchema } from '@repo/db/schema/analysis.js'
 
 import { generateText, Output, stepCountIs } from 'ai'
 import { Effect } from 'effect'

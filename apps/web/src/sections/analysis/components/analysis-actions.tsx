@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { AlertDialog } from '@/components/ui/alert-dialog'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -8,23 +8,26 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import DeleteAnalysisAlertDialogContent from '@/sections/analysis/components/delete-analysis-alert-dialog-content'
 import { redoAnalysis } from '@/services/analysis'
 import type { AnalysesResponseItem } from '@/types/analyses'
-import { UseRenderRenderProp } from '@base-ui/react'
 import { useRouter } from '@bprogress/next/app'
 import { t } from '@lingui/core/macro'
 import { Eye, RotateCcw, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { type PropsWithChildren } from 'react'
 import { toast } from 'sonner'
+import {
+	DeleteAnalysisAlertDialog,
+	DeleteAnalysisAlertDialogTrigger,
+} from './dialogs/delete-analysis-alert-dialog'
+import { UseRenderElementProps, UseRenderRenderProp } from '@base-ui/react'
 
-interface Props extends PropsWithChildren {
+interface Props {
 	analysis: AnalysesResponseItem
 	renderTrigger: UseRenderRenderProp
 }
 
-export default function AnalysisActions({ analysis, renderTrigger }: Props) {
+export function AnalysisActions({ analysis, renderTrigger }: Props) {
 	const router = useRouter()
 	const handleRedoAnalysis = (analysis: AnalysesResponseItem) => async () => {
 		const { error, data } = await redoAnalysis(analysis.id)
@@ -36,10 +39,10 @@ export default function AnalysisActions({ analysis, renderTrigger }: Props) {
 	}
 
 	return (
-		<AlertDialog>
+		<>
 			<DropdownMenu>
 				<DropdownMenuTrigger render={renderTrigger} />
-				<DropdownMenuContent align="end">
+				<DropdownMenuContent align="start">
 					<DropdownMenuItem
 						render={<Link href={`/analysis/${analysis.id}`} />}
 					>
@@ -52,15 +55,15 @@ export default function AnalysisActions({ analysis, renderTrigger }: Props) {
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
 
-					<AlertDialogTrigger
+					<DeleteAnalysisAlertDialogTrigger
+						payload={{ analysis }}
 						render={<DropdownMenuItem variant="destructive" />}
 					>
-						<Trash2 className="mr-2 h-4 w-4" />
+						<Trash2 className="" />
 						{t`Delete`}
-					</AlertDialogTrigger>
+					</DeleteAnalysisAlertDialogTrigger>
 				</DropdownMenuContent>
 			</DropdownMenu>
-			<DeleteAnalysisAlertDialogContent analysis={analysis} />
-		</AlertDialog>
+		</>
 	)
 }

@@ -7,6 +7,7 @@ import { SseService } from '@/modules/sse/service'
 import { HttpService } from '@/shared/http.service'
 import type { ModelError, ModelStatus } from '@repo/db/models'
 import type { ModelCreateArgs } from '@repo/db/input'
+import { effectify } from '@repo/db/effect'
 
 import { Console, Effect, Match } from 'effect'
 import { ModelRepository } from './repository'
@@ -24,15 +25,17 @@ export class ModelService extends Effect.Service<ModelService>()(
 			const services = {
 				create(data: ModelCreateArgs['data']) {
 					return Effect.gen(services, function* () {
-						const model = yield* repository.create({ data })
+						const model = yield* effectify(
+							repository.create({ data }),
+						)
 						yield* this.testConnection(model.id)
 					})
 				},
 				testConnection: (id: string) =>
 					Effect.gen(services, function* () {
-						const model = yield* repository.findUnique({
-							where: { id },
-						})
+						const model = yield* effectify(
+							repository.findUnique({ where: { id } }),
+						)
 						if (!model) {
 							// status(404, `Model with id: ${id} not found`)
 							return
@@ -109,16 +112,22 @@ export class ModelService extends Effect.Service<ModelService>()(
 					error?: ModelError,
 				) =>
 					Effect.gen(function* () {
-						const model = yield* repository.findUnique({
-							where: { id },
-						})
+						const model = yield* effectify(
+							repository.findUnique({ where: { id } }),
+						)
 						if (!model) {
 							throw new Error(`Model with id: ${id} not found`)
 						}
-						yield* repository.update({
-							where: { id },
-							data: { ...model, status, error: error || null },
-						})
+						yield* effectify(
+							repository.update({
+								where: { id },
+								data: {
+									...model,
+									status,
+									error: error || null,
+								},
+							}),
+						)
 
 						yield* sseService
 							.broadcast('model.status.change', {

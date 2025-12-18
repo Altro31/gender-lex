@@ -3,6 +3,7 @@ import type { Session, User } from '@repo/db/models'
 import { Effect } from 'effect'
 import { DBService } from '../db/db.service'
 import { ContextService } from '../context.service'
+import { effectify } from '@repo/db/effect'
 
 const emptyReturn = { session: undefined, isAuthenticated: false } as {
 	session?: Session & { user: User }
@@ -19,10 +20,12 @@ export class AuthService extends Effect.Service<AuthService>()('AuthService', {
 			}),
 		)
 		if (!res) return emptyReturn
-		const session = yield* client.session.findUniqueOrThrow({
-			where: { id: res.session.id },
-			include: { user: true },
-		})
+		const session = yield* effectify(
+			client.session.findUniqueOrThrow({
+				where: { id: res.session.id },
+				include: { user: true },
+			}),
+		)
 		return { session, isAuthenticated: Boolean(session) } as {
 			session?: Session & { user: User }
 			isAuthenticated: boolean

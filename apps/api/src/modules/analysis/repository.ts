@@ -5,9 +5,8 @@ export class AnalysisRepository extends Effect.Service<AnalysisRepository>()(
 	'AnalysisRepository',
 	{
 		effect: Effect.gen(function* () {
-			const prisma = yield* AuthDBService
-
-			return prisma.analysis
+			const db = yield* AuthDBService
+			return db.analysis
 		}),
 		dependencies: [AuthDBService.Default],
 	},

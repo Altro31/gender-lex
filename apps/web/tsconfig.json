@@ -1,4 +1,5 @@
 {
+	"references": [{ "path": "../../packages/types" }],
 	"compilerOptions": {
 		"target": "ES2017",
 		"lib": ["dom", "dom.iterable", "esnext"],
@@ -32,5 +33,5 @@
 		".next/types/**/*.ts",
 		".next/dev/types/**/*.ts"
 	],
-	"exclude": ["node_modules", "../api/**"]
+	"exclude": ["node_modules"]
 }

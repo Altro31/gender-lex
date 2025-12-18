@@ -1,5 +1,5 @@
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
@@ -7,11 +7,11 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import AnalysisActions from "@/sections/analysis/components/analysis-actions"
-import type { AnalysesResponseItem } from "@/types/analyses"
-import { t } from "@lingui/core/macro"
-import { CheckCircle, Clock, Play, Settings, XCircle } from "lucide-react"
+} from '@/components/ui/card'
+import { AnalysisActions } from '@/sections/analysis/components/analysis-actions'
+import type { AnalysesResponseItem } from '@/types/analyses'
+import { t } from '@lingui/core/macro'
+import { CheckCircle, Clock, Play, Settings, XCircle } from 'lucide-react'
 
 interface Props {
 	analysis: AnalysesResponseItem
@@ -21,22 +21,22 @@ export default function AnalysesListItem({ analysis }: Props) {
 	const statusConfig = {
 		pending: {
 			label: t`Pending`,
-			color: "bg-gray-100 text-gray-800",
+			color: 'bg-gray-100 text-gray-800',
 			icon: Clock,
 		},
 		analyzing: {
 			label: t`Analizing`,
-			color: "bg-blue-100 text-blue-800",
+			color: 'bg-blue-100 text-blue-800',
 			icon: Play,
 		},
 		done: {
 			label: t`Done`,
-			color: "bg-green-100 text-green-800",
+			color: 'bg-green-100 text-green-800',
 			icon: CheckCircle,
 		},
 		error: {
 			label: t`Error`,
-			color: "bg-red-100 text-red-800",
+			color: 'bg-red-100 text-red-800',
 			icon: XCircle,
 		},
 	}
@@ -70,11 +70,14 @@ export default function AnalysesListItem({ analysis }: Props) {
 						</CardDescription>
 					</div>
 
-					<AnalysisActions analysis={analysis}>
-						<Button variant="ghost" size="icon">
-							<Settings />
-						</Button>
-					</AnalysisActions>
+					<AnalysisActions
+						analysis={analysis}
+						renderTrigger={
+							<Button variant="ghost" size="icon">
+								<Settings />
+							</Button>
+						}
+					/>
 				</div>
 			</CardHeader>
 			<CardContent className="pb-3">
@@ -99,7 +102,7 @@ export default function AnalysesListItem({ analysis }: Props) {
 
 					{analysis.updatedAt && (
 						<span>
-							{t`Completed at`}:{" "}
+							{t`Completed at`}:{' '}
 							{new Date(analysis.updatedAt).toLocaleString()}
 						</span>
 					)}

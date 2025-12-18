@@ -32,7 +32,8 @@ export default function HomeFormContainer() {
 							name="selectedPreset"
 							fetcherFunc={getPresetsSelect}
 							getKey={i => i.id}
-							getLabel={i => i.name}
+							renderValue={i => i.name}
+							renderItem={i => i.name}
 						>
 							<CreatePresetDialogTrigger
 								className="mt-1 w-full"

@@ -5,8 +5,8 @@ export class PresetRepository extends Effect.Service<PresetRepository>()(
 	'PresetRepository',
 	{
 		effect: Effect.gen(function* () {
-			const prisma = yield* AuthDBService
-			return prisma.preset
+			const db = yield* AuthDBService
+			return db.preset
 		}),
 		dependencies: [AuthDBService.Default],
 	},

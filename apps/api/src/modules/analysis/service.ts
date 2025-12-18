@@ -6,6 +6,7 @@ import { Console, Effect, pipe } from 'effect'
 import { ExtractorService } from '../extractor/service'
 import { AnalysisNotFoundError } from './error'
 import { AnalysisRepository } from './repository'
+import { effectify } from '@repo/db/effect'
 
 export class AnalysisService extends Effect.Service<AnalysisService>()(
 	'AnalysisService',
@@ -21,7 +22,7 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
 						const [all, pending, analyzing, done, error] =
 							yield* Effect.all(
 								[
-									repository.count(),
+									effectify(repository.count()),
 									this.countByStatus('pending'),
 									this.countByStatus('analyzing'),
 									this.countByStatus('done'),
@@ -33,20 +34,24 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
 					}),
 
 				countByStatus: (status: AnalysisStatus) =>
-					repository.count({ where: { status } }),
+					effectify(repository.count({ where: { status } })),
 
 				start: (id: string) =>
 					Effect.gen(function* () {
-						const analysis = yield* repository.findUnique({
-							where: { id },
-							include: {
-								Preset: {
-									include: {
-										Models: { include: { Model: true } },
+						const analysis = yield* effectify(
+							repository.findUnique({
+								where: { id },
+								include: {
+									Preset: {
+										include: {
+											Models: {
+												include: { Model: true },
+											},
+										},
 									},
 								},
-							},
-						})
+							}),
+						)
 						if (!analysis) {
 							return yield* new AnalysisNotFoundError()
 						}
@@ -58,9 +63,12 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
 							Object.assign(analysis, raw)
 						}
 						analysis.status = 'done'
-						yield* repository
-							.update({ where: { id }, data: analysis })
-							.pipe(Effect.forkDaemon)
+						yield* effectify(
+							repository.update({
+								where: { id },
+								data: analysis as any,
+							}),
+						).pipe(Effect.forkDaemon)
 
 						return analysis
 					}).pipe(
@@ -68,12 +76,12 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
 							pipe(
 								Console.log(e),
 								Effect.tap(() =>
-									repository
-										.update({
+									effectify(
+										repository.update({
 											where: { id },
 											data: { status: 'error' },
-										})
-										.pipe(Effect.forkDaemon),
+										}),
+									).pipe(Effect.forkDaemon),
 								),
 							),
 						),
@@ -85,25 +93,30 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
 							? yield* extractorService.extractPDFText(input)
 							: input
 
-						const analysis = yield* repository.create({
-							data: {
-								originalText: text,
-								modifiedTextAlternatives: [],
-								biasedTerms: [],
-								biasedMetaphors: [],
-								Preset: { connect: { id: preset } },
-							},
-						})
+						const analysis = yield* effectify(
+							repository.create({
+								data: {
+									originalText: text,
+									modifiedTextAlternatives: [],
+									biasedTerms: [],
+									biasedMetaphors: [],
+									Preset: { connect: { id: preset } },
+								},
+							}),
+						)
 						return { id: analysis.id }
 					}),
 
-				delete: (id: string) => repository.delete({ where: { id } }),
+				delete: (id: string) =>
+					effectify(repository.delete({ where: { id } })),
 
 				findOne: (id: string) =>
-					repository.findUniqueOrThrow({
-						where: { id },
-						include: { Preset: true },
-					}),
+					effectify(
+						repository.findUniqueOrThrow({
+							where: { id },
+							include: { Preset: true },
+						}),
+					),
 
 				findMany: ({
 					page,
@@ -111,22 +124,29 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
 					q,
 					status,
 				}: FindManyQueryParams) =>
-					repository.findMany({
-						where: {
-							name: { contains: q, mode: 'insensitive' },
-							status: status as any,
-						},
-						include: { Preset: true },
-						skip: (page! - 1) * pageSize!,
-						take: pageSize!,
-						orderBy: [{ createdAt: 'desc' }, { updatedAt: 'desc' }],
-					}),
+					effectify(
+						repository.findMany({
+							where: {
+								name: { contains: q, mode: 'insensitive' },
+								status: status as any,
+							},
+							include: { Preset: true },
+							skip: (page! - 1) * pageSize!,
+							take: pageSize!,
+							orderBy: [
+								{ createdAt: 'desc' },
+								{ updatedAt: 'desc' },
+							],
+						}),
+					),
 
 				redo: (id: string) =>
-					repository.update({
-						where: { id },
-						data: { status: 'pending' },
-					}),
+					effectify(
+						repository.update({
+							where: { id },
+							data: { status: 'pending' },
+						}),
+					),
 			}
 			return service
 		}),

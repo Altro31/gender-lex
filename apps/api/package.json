@@ -15,8 +15,7 @@
 		"elysia": "latest",
 		"nitro": "latest",
 		"rolldown": "latest",
-		"oxlint": "^1.6.0",
-		"typescript-plugin-directives": "^0.0.3"
+		"oxlint": "^1.6.0"
 	},
 	"dependencies": {
 		"@adobe/pdfservices-node-sdk": "^4.1.0",
@@ -36,6 +35,9 @@
 		"umlsjs": "^1.2.1",
 		"workflow": "latest",
 		"zod": "catalog:"
+	},
+	"peerDependencies": {
+		"kysely": "0.28.8"
 	},
 	"exports": {
 		".": "./src/index.ts"

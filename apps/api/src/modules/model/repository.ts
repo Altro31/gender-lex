@@ -5,8 +5,8 @@ export class ModelRepository extends Effect.Service<ModelRepository>()(
 	'ModelRepository',
 	{
 		effect: Effect.gen(function* () {
-			const prisma = yield* AuthDBService
-			return prisma.model
+			const db = yield* AuthDBService
+			return db.model
 		}),
 		dependencies: [AuthDBService.Default],
 	},

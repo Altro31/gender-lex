@@ -1,18 +1,18 @@
-"use server"
+'use server'
 
-import { client } from "@/lib/api/client"
-import { getSession } from "@/lib/auth/auth-server"
-import { getPrisma } from "@/lib/prisma/client"
-import { actionClient } from "@/lib/safe-action"
-import type { HomeSchema } from "@/sections/home/form/home-schema"
-import { cacheTag, updateTag } from "next/cache"
-import { unauthorized } from "next/navigation"
-import z from "zod"
-import { getRun, start } from "workflow/api"
-import { startAnalysisWorkflow } from "@/workflows/start-analysis/workflow"
-import { serializeFile } from "@/lib/files"
-import { serializedCookies } from "@/lib/cookies"
-import type { Analysis } from "@repo/db/models"
+import { client } from '@/lib/api/client'
+import { getSession } from '@/lib/auth/auth-server'
+import { getPrisma } from '@/lib/prisma/client'
+import { actionClient } from '@/lib/safe-action'
+import type { HomeSchema } from '@/sections/home/form/home-schema'
+import { cacheTag, updateTag } from 'next/cache'
+import { unauthorized } from 'next/navigation'
+import z from 'zod'
+import { getRun, start } from 'workflow/api'
+import { startAnalysisWorkflow } from '@/workflows/start-analysis/workflow'
+import { serializeFile } from '@/lib/files'
+import { serializedCookies } from '@/lib/cookies'
+import type { Analysis } from '@repo/db/models'
 
 export async function prepareAnalysis(input: HomeSchema) {
 	const session = await getSession()
@@ -27,7 +27,7 @@ export async function prepareAnalysis(input: HomeSchema) {
 	}
 	const cookies = await serializedCookies()
 	const run = await start(startAnalysisWorkflow, [wfInput, cookies])
-	updateTag("analyses")
+	updateTag('analyses')
 	return { data: { id: run.runId }, error: null }
 }
 
@@ -43,13 +43,13 @@ export async function startAnalysis(id: string, isRun: boolean) {
 		if (res.error) {
 			console.error(res.error.value)
 			throw new Error(
-				"An error occurred when trying access analysis with id",
+				'An error occurred when trying access analysis with id',
 			)
 		}
 		data = res.data
 	}
 
-	return data as Analysis
+	return data
 }
 
 export const deleteAnalysis = actionClient
@@ -58,7 +58,7 @@ export const deleteAnalysis = actionClient
 		const session = await getSession()
 		if (!session) unauthorized()
 		await client.analysis({ id }).delete()
-		updateTag("analyses")
+		updateTag('analyses')
 	})
 
 export async function findAnalyses(query: {
@@ -66,17 +66,17 @@ export async function findAnalyses(query: {
 	page?: string
 	status?: string
 }) {
-	"use cache: private"
-	cacheTag("analyses")
+	'use cache: private'
+	cacheTag('analyses')
 
 	const session = await getSession()
 	if (!session) unauthorized()
 
 	const { error, data } = await client.analysis.get({
 		query: {
-			q: query.q || "",
+			q: query.q || '',
 			page: query.page ? Number(query.page) : 1,
-			status: query.status || undefined,
+			status: (query.status as any) || undefined,
 		},
 	})
 	if (error) throw new Error(JSON.stringify(error))
@@ -84,31 +84,31 @@ export async function findAnalyses(query: {
 }
 
 export async function findOneAnalysis(id: string) {
-	"use cache: remote"
+	'use cache: remote'
 	cacheTag(`analysis-${id}`)
 	const session = await getSession()
 	if (!session) unauthorized()
 	const { data, error } = await client.analysis({ id }).get()
-	if (error) throw new Error(error.value.summary)
+	if (error) throw new Error(error.value as string)
 	return data
 }
 
 export async function findRecentAnalyses() {
-	"use cache: private"
+	'use cache: private'
 	cacheTag(`analyses`)
 	const prisma = await getPrisma()
 	return prisma.analysis.findMany({
-		orderBy: [{ createdAt: "desc" }],
+		orderBy: [{ createdAt: 'desc' }],
 		take: 5,
 	})
 }
 
 export async function getStatusCount() {
-	"use cache: private"
+	'use cache: private'
 	cacheTag(`analyses`)
 	const session = await getSession()
 	if (!session) unauthorized()
-	const { error, data } = await client.analysis["status-count"].get()
+	const { error, data } = await client.analysis['status-count'].get()
 	if (error) throw new Error(error.value.summary)
 	return data
 }
@@ -121,7 +121,7 @@ export async function redoAnalysis(id: string) {
 		console.error(error)
 		return { error }
 	}
-	updateTag("analyses")
+	updateTag('analyses')
 	updateTag(`analysys-${id}`)
 	return { data, error: null }
 }

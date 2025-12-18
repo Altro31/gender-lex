@@ -1,7 +1,7 @@
-import type { ORMError } from '@zenstackhq/orm'
+import type { ORMError, ZenStackPromise } from '@zenstackhq/orm'
 import { Data, Effect } from 'effect'
-import { schema } from './generated/schema'
-import type { ClientType } from './client'
+import { schema, SchemaType } from './generated/schema'
+import type { client, ClientType } from './client'
 import type { UnionToTuple } from 'type-fest'
 
 export class ClientError extends Data.TaggedError('ClientError')<{
@@ -96,4 +96,11 @@ export function createEffectClient(prisma: ClientType) {
 			},
 		},
 	) as EffectClient
+}
+
+export function effectify<T>(func: T) {
+	type Eff = T extends ZenStackPromise<SchemaType, infer R> ? R : never
+	return Effect.tryPromise(
+		() => func as Promise<any>,
+	) as unknown as Effect.Effect<Eff, ClientError, never>
 }

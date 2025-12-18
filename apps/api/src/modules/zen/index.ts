@@ -1,5 +1,6 @@
 import { AuthService } from '@/shared/auth/auth.service'
 import { ContextService } from '@/shared/context.service'
+import { AuthDBService } from '@/shared/db/auth-db.service'
 import { ApiHandler, client } from '@repo/db/client'
 import { createElysiaHandler } from '@zenstackhq/server/elysia'
 import { Effect } from 'effect'
@@ -15,14 +16,8 @@ export default new Elysia({
 		apiHandler: new ApiHandler({ endpoint: 'api/crud' }),
 		getClient: ctx =>
 			Effect.runPromise(
-				AuthService.pipe(
-					Effect.andThen(authService =>
-						Effect.succeed(authService.session?.user),
-					),
-					Effect.andThen(user =>
-						Effect.succeed(client.$setAuth(user) as any),
-					),
-					AuthService.provide,
+				AuthDBService.pipe(
+					AuthDBService.provide,
 					ContextService.provide(ctx),
 				),
 			),

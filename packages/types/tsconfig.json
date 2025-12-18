@@ -1,0 +1,22 @@
+{
+	"references": [{ "path": "../../apps/api" }],
+	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		// Core checks
+		"strict": true,
+		"noEmit": false,
+		// "declaration": true,
+		"composite": true, // monorepos only
+		// "declarationMap": true,
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true,
+		// Additional safety
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"useUnknownInCatchVariables": true,
+		"noUnusedLocals": true
+		// "isolatedModules": true
+	}
+}
