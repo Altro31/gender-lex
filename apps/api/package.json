@@ -37,7 +37,8 @@
 		"zod": "catalog:"
 	},
 	"peerDependencies": {
-		"kysely": "0.28.8"
+		"kysely": "0.28.8",
+		"@ai-sdk/provider": "2.0.0"
 	},
 	"exports": {
 		".": "./src/index.ts"

@@ -1,7 +1,6 @@
-import { AuthService } from '@/shared/auth/auth.service'
 import { ContextService } from '@/shared/context.service'
 import { AuthDBService } from '@/shared/db/auth-db.service'
-import { ApiHandler, client } from '@repo/db/client'
+import { ApiHandler } from '@repo/db/client'
 import { createElysiaHandler } from '@zenstackhq/server/elysia'
 import { Effect } from 'effect'
 import Elysia from 'elysia'
@@ -20,7 +19,7 @@ export default new Elysia({
 					AuthDBService.provide,
 					ContextService.provide(ctx),
 				),
-			),
+			) as any,
 		basePath: '/api/crud',
 	}),
 )

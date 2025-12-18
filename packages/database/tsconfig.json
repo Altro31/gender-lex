@@ -10,7 +10,6 @@
 		// "declarationMap": true,
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,
-		"noEmit": true,
 		"allowImportingTsExtensions": true,
 		// Additional safety
 		"forceConsistentCasingInFileNames": true,

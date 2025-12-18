@@ -46,6 +46,7 @@
         "rolldown": "latest",
       },
       "peerDependencies": {
+        "@ai-sdk/provider": "2.0.0",
         "kysely": "0.28.8",
       },
     },

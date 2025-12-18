@@ -1,8 +1,8 @@
 import type { ORMError, ZenStackPromise } from '@zenstackhq/orm'
 import { Data, Effect } from 'effect'
-import { schema, SchemaType } from './generated/schema'
-import type { client, ClientType } from './client'
 import type { UnionToTuple } from 'type-fest'
+import type { ClientType } from './client'
+import { schema, type SchemaType } from './generated/schema'
 
 export class ClientError extends Data.TaggedError('ClientError')<{
 	details: ORMError

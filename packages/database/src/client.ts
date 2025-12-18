@@ -18,7 +18,6 @@ export const client = new ZenStackClient(schema, {
 export const authClient = client.$use(new PolicyPlugin())
 
 type Options = Omit<RestApiHandlerOptions, 'schema'>
-
 export class ApiHandler extends RestApiHandler {
 	constructor(options: Options) {
 		super({ schema, ...options })
