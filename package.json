@@ -14,7 +14,7 @@
 		"prod:api": "turbo api#start",
 		"prod:web": "turbo web#start",
 		"migrate": "turbo migrate",
-		"migrate:prod": "turbo migrate:prod",
+		"migrate:prod": "turbo migrate:prod && workflow-postgres-setup",
 		"test": "turbo run test",
 		"test:e2e": "turbo run test:e2e",
 		"lint": "turbo run lint",
@@ -49,6 +49,7 @@
 		"@effect/platform-node": "^0.96.1",
 		"elysia": "latest",
 		"workflow": "latest",
+		"@workflow/world-postgres": "latest",
 		"effect": "^3.17.9"
 	},
 	"lint-staged": {

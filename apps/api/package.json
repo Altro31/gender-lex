@@ -34,6 +34,7 @@
 		"elysia": "catalog:",
 		"umlsjs": "^1.2.1",
 		"workflow": "latest",
+		"@workflow/world-postgres": "catalog:",
 		"zod": "catalog:"
 	},
 	"peerDependencies": {

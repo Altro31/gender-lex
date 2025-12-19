@@ -5,7 +5,6 @@
 		"noEmit": false,
 		"composite": true,
 		"allowImportingTsExtensions": false,
-		"declaration": false,
 		"plugins": [
 			{ "name": "workflow" },
 			{ "name": "@effect/language-service" }

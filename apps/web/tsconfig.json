@@ -20,11 +20,7 @@
 			{ "name": "workflow" },
 			{ "name": "@effect/language-service" }
 		],
-		"paths": {
-			// "@/workflow/core/*": ["../api/.well-known/workflow/v1/*"],
-			// "@/workflows/*": ["../api/workflows/*"],
-			"@/*": ["./src/*"]
-		}
+		"paths": { "@/*": ["./src/*"] }
 	},
 	"include": [
 		"next-env.d.ts",
