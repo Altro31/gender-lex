@@ -16,6 +16,7 @@
 		"locales:gen": "lingui extract"
 	},
 	"dependencies": {
+		"ai": "^5.0.22",
 		"@base-ui/react": "^1.0.0",
 		"@bprogress/next": "^3.2.12",
 		"@effect/platform": "catalog:",

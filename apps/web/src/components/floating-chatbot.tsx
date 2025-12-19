@@ -3,8 +3,7 @@
 import type React from 'react'
 
 import { useState, useRef, useEffect } from 'react'
-import { sendMessage, getMessages } from '@/services/chatbot'
-import { useAction } from 'next-safe-action/hooks'
+import { useChat } from 'ai/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -18,62 +17,23 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
 
-interface Message {
-	id: string
-	content: string
-	sender: 'user' | 'bot'
-	timestamp: Date
-}
-
-interface ChatMessageResponse {
-	id: string
-	content: string
-	sender: string
-	createdAt: Date | string
-}
-
 export default function FloatingChatbot() {
 	const [isOpen, setIsOpen] = useState(false)
-	const [messages, setMessages] = useState<Message[]>([
-		{
-			id: '1',
-			content:
-				'¡Hola! Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?',
-			sender: 'bot',
-			timestamp: new Date(),
-		},
-	])
-	const [inputValue, setInputValue] = useState('')
-	const [isTyping, setIsTyping] = useState(false)
-	const [isLoadingHistory, setIsLoadingHistory] = useState(false)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 
-	const { execute, isExecuting } = useAction(sendMessage, {
-		onSuccess: ({ data }) => {
-			if (data?.data) {
-				setMessages(prev => [
-					...prev,
-					{
-						id: data.data!.userMessage.id,
-						content: data.data!.userMessage.content,
-						sender: 'user' as const,
-						timestamp: new Date(data.data!.userMessage.createdAt),
-					},
-					{
-						id: data.data!.botMessage.id,
-						content: data.data!.botMessage.content,
-						sender: 'bot' as const,
-						timestamp: new Date(data.data!.botMessage.createdAt),
-					},
-				])
-			}
-			setIsTyping(false)
-		},
-		onError: () => {
-			setIsTyping(false)
-		},
-	})
+	const { messages, input, handleInputChange, handleSubmit, isLoading } =
+		useChat({
+			api: '/api/chat',
+			initialMessages: [
+				{
+					id: 'welcome',
+					role: 'assistant',
+					content:
+						'¡Hola! Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?',
+				},
+			],
+		})
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -87,47 +47,12 @@ export default function FloatingChatbot() {
 		if (isOpen && inputRef.current) {
 			inputRef.current.focus()
 		}
-		// Load message history when chat opens
-		if (isOpen && !isLoadingHistory && messages.length === 1) {
-			setIsLoadingHistory(true)
-			getMessages()
-				.then(history => {
-					if (history && history.length > 0) {
-						const formattedMessages = history.map(
-							(msg: ChatMessageResponse) => ({
-								id: msg.id,
-								content: msg.content,
-								sender: msg.sender as 'user' | 'bot',
-								timestamp: new Date(msg.createdAt),
-							}),
-						)
-						setMessages([...formattedMessages])
-					}
-				})
-				.catch(() => {
-					// Keep initial message on error
-				})
-				.finally(() => {
-					setIsLoadingHistory(false)
-				})
-		}
-	}, [isOpen, isLoadingHistory, messages.length])
-
-	const handleSendMessage = async () => {
-		if (!inputValue.trim() || isExecuting) return
-
-		const content = inputValue
-		setInputValue('')
-		setIsTyping(true)
-
-		// Execute the action to send message to backend
-		execute({ content })
-	}
+	}, [isOpen])
 
 	const handleKeyPress = (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter' && !e.shiftKey) {
 			e.preventDefault()
-			handleSendMessage()
+			handleSubmit(e as any)
 		}
 	}
 
@@ -183,9 +108,9 @@ export default function FloatingChatbot() {
 									{messages.map(message => (
 										<div
 											key={message.id}
-											className={`flex gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+											className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
 										>
-											{message.sender === 'bot' && (
+											{message.role === 'assistant' && (
 												<Avatar className="mt-1 h-8 w-8">
 													<AvatarFallback className="bg-blue-100 text-blue-600">
 														<Bot className="h-4 w-4" />
@@ -195,24 +120,28 @@ export default function FloatingChatbot() {
 
 											<div
 												className={`max-w-[70%] rounded-lg px-3 py-2 ${
-													message.sender === 'user'
+													message.role === 'user'
 														? 'bg-blue-600 text-white'
 														: 'bg-gray-100 text-gray-900'
 												}`}
 											>
-												<p className="text-sm">
+												<p className="text-sm whitespace-pre-wrap">
 													{message.content}
 												</p>
-												<p
-													className={`mt-1 text-xs ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'}`}
-												>
-													{formatTime(
-														message.timestamp,
-													)}
-												</p>
+												{message.createdAt && (
+													<p
+														className={`mt-1 text-xs ${message.role === 'user' ? 'text-blue-100' : 'text-gray-500'}`}
+													>
+														{formatTime(
+															new Date(
+																message.createdAt,
+															),
+														)}
+													</p>
+												)}
 											</div>
 
-											{message.sender === 'user' && (
+											{message.role === 'user' && (
 												<Avatar className="mt-1 h-8 w-8">
 													<AvatarFallback className="bg-gray-100 text-gray-600">
 														<User className="h-4 w-4" />
@@ -223,7 +152,7 @@ export default function FloatingChatbot() {
 									))}
 
 									{/* Typing Indicator */}
-									{isTyping && (
+									{isLoading && (
 										<div className="flex justify-start gap-3">
 											<Avatar className="mt-1 h-8 w-8">
 												<AvatarFallback className="bg-blue-100 text-blue-600">
@@ -258,27 +187,28 @@ export default function FloatingChatbot() {
 						</CardContent>
 
 						<CardFooter className="border-t p-4">
-							<div className="flex w-full gap-2">
+							<form
+								onSubmit={handleSubmit}
+								className="flex w-full gap-2"
+							>
 								<Input
 									ref={inputRef}
-									value={inputValue}
-									onChange={e =>
-										setInputValue(e.target.value)
-									}
+									value={input}
+									onChange={handleInputChange}
 									onKeyUp={handleKeyPress}
 									placeholder="Escribe tu mensaje..."
-									disabled={isTyping}
+									disabled={isLoading}
 									className="flex-1"
 								/>
 								<Button
-									onClick={handleSendMessage}
-									disabled={!inputValue.trim() || isTyping}
+									type="submit"
+									disabled={!input.trim() || isLoading}
 									size="sm"
 									className="px-3"
 								>
 									<Send className="h-4 w-4" />
 								</Button>
-							</div>
+							</form>
 						</CardFooter>
 					</Card>
 				</div>
