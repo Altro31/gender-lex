@@ -10,6 +10,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next'
 import config from '../../../lingui.config'
 import Script from 'next/script'
 import ThemeRegister from '@/components/theme/theme-register'
+import FloatingChatbot from '@/components/floating-chatbot'
 
 export function generateStaticParams() {
 	return config.locales.map(locale => ({ locale }))
@@ -33,7 +34,7 @@ export default async function RootLayout({
 								<EventSourceProvider>
 									<SidebarProvider>
 										{children}
-										{/*<FloatingChatbot />*/}
+										<FloatingChatbot />
 										<Toaster
 											richColors
 											position="bottom-right"

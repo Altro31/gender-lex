@@ -39,9 +39,10 @@ model User with Timestamps {
   // 2.Only a superadmin can update the role of other admin
   role          Role       @default(authenticated) // /**1*/ @allow("update", auth().role == admin || auth().role == superadmin) /**2*/ @deny("update", auth().role != superadmin && (role == admin || role == superadmin))
 
-  Analyses      Analysis[]
-  Models        Model[]
-  Presets       Preset[]
+  Analyses         Analysis[]
+  Models           Model[]
+  Presets          Preset[]
+  ChatConversations ChatConversation[]
 
   sessions      Session[]
   accounts      Account[]

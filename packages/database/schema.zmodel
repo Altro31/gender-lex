@@ -1,4 +1,5 @@
 import "./src/schema/user"
+import "./src/schema/chatbot"
 
 datasource db {
     provider = 'postgresql'

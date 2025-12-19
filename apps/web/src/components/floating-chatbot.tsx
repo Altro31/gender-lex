@@ -2,7 +2,9 @@
 
 import type React from "react"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useOptimistic } from "react"
+import { sendMessage, getMessages } from "@/services/chatbot"
+import { useAction } from "next-safe-action/hooks"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -23,61 +25,48 @@ interface Message {
 	timestamp: Date
 }
 
-const initialMessages: Message[] = [
-	{
-		id: "1",
-		content: "¡Hola! Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?",
-		sender: "bot",
-		timestamp: new Date(),
-	},
-]
-
-const botResponses = [
-	{
-		keywords: ["hola", "hello", "hi", "buenos días", "buenas tardes"],
-		response: "¡Hola! ¿Cómo estás? ¿En qué puedo ayudarte?",
-	},
-	{
-		keywords: ["modelo", "modelos", "llm"],
-		response:
-			"Puedo ayudarte con la gestión de modelos LLM. Puedes crear, editar y configurar diferentes modelos desde la sección de Modelos.",
-	},
-	{
-		keywords: ["preset", "presets", "configuración"],
-		response:
-			"Los presets te permiten combinar múltiples modelos con configuraciones específicas. Visita la sección de Presets para crear nuevas combinaciones.",
-	},
-	{
-		keywords: ["análisis", "sesgo", "sesgos", "género"],
-		response:
-			"Puedo ayudarte con los análisis de sesgos de género. En la sección de Análisis puedes ver todos los análisis realizados y sus resultados.",
-	},
-	{
-		keywords: ["ayuda", "help", "soporte"],
-		response:
-			"Estoy aquí para ayudarte. Puedes preguntarme sobre modelos, presets, análisis o cualquier funcionalidad de la plataforma.",
-	},
-	{
-		keywords: ["gracias", "thanks", "thank you"],
-		response: "¡De nada! Si necesitas algo más, no dudes en preguntarme.",
-	},
-	{
-		keywords: ["adiós", "bye", "hasta luego", "chao"],
-		response:
-			"¡Hasta luego! Que tengas un buen día. Estaré aquí cuando me necesites.",
-	},
-]
-
-const defaultResponse =
-	"Entiendo tu consulta. Para obtener ayuda más específica, puedes navegar por las diferentes secciones de la aplicación o contactar con nuestro equipo de soporte."
-
 export default function FloatingChatbot() {
 	const [isOpen, setIsOpen] = useState(false)
-	const [messages, setMessages] = useState<Message[]>(initialMessages)
+	const [messages, setMessages] = useState<Message[]>([
+		{
+			id: "1",
+			content:
+				"¡Hola! Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?",
+			sender: "bot",
+			timestamp: new Date(),
+		},
+	])
 	const [inputValue, setInputValue] = useState("")
 	const [isTyping, setIsTyping] = useState(false)
+	const [isLoadingHistory, setIsLoadingHistory] = useState(false)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
+
+	const { execute, isExecuting } = useAction(sendMessage, {
+		onSuccess: ({ data }) => {
+			if (data?.data) {
+				setMessages((prev) => [
+					...prev,
+					{
+						id: data.data.userMessage.id,
+						content: data.data.userMessage.content,
+						sender: "user" as const,
+						timestamp: new Date(data.data.userMessage.createdAt),
+					},
+					{
+						id: data.data.botMessage.id,
+						content: data.data.botMessage.content,
+						sender: "bot" as const,
+						timestamp: new Date(data.data.botMessage.createdAt),
+					},
+				])
+			}
+			setIsTyping(false)
+		},
+		onError: () => {
+			setIsTyping(false)
+		},
+	})
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -91,53 +80,39 @@ export default function FloatingChatbot() {
 		if (isOpen && inputRef.current) {
 			inputRef.current.focus()
 		}
-	}, [isOpen])
-
-	const getBotResponse = (userMessage: string): string => {
-		const lowerMessage = userMessage.toLowerCase()
-
-		for (const response of botResponses) {
-			if (
-				response.keywords.some((keyword) =>
-					lowerMessage.includes(keyword),
-				)
-			) {
-				return response.response
-			}
+		// Load message history when chat opens
+		if (isOpen && !isLoadingHistory && messages.length === 1) {
+			setIsLoadingHistory(true)
+			getMessages()
+				.then((history) => {
+					if (history && history.length > 0) {
+						const formattedMessages = history.map((msg: any) => ({
+							id: msg.id,
+							content: msg.content,
+							sender: msg.sender as "user" | "bot",
+							timestamp: new Date(msg.createdAt),
+						}))
+						setMessages([...formattedMessages])
+					}
+				})
+				.catch(() => {
+					// Keep initial message on error
+				})
+				.finally(() => {
+					setIsLoadingHistory(false)
+				})
 		}
-
-		return defaultResponse
-	}
+	}, [isOpen, isLoadingHistory, messages.length])
 
 	const handleSendMessage = async () => {
-		if (!inputValue.trim()) return
+		if (!inputValue.trim() || isExecuting) return
 
-		const userMessage: Message = {
-			id: Date.now().toString(),
-			content: inputValue,
-			sender: "user",
-			timestamp: new Date(),
-		}
-
-		setMessages((prev) => [...prev, userMessage])
+		const content = inputValue
 		setInputValue("")
 		setIsTyping(true)
 
-		// Simulate bot thinking time
-		setTimeout(
-			() => {
-				const botResponse: Message = {
-					id: (Date.now() + 1).toString(),
-					content: getBotResponse(userMessage.content),
-					sender: "bot",
-					timestamp: new Date(),
-				}
-
-				setMessages((prev) => [...prev, botResponse])
-				setIsTyping(false)
-			},
-			1000 + Math.random() * 1000,
-		) // Random delay between 1-2 seconds
+		// Execute the action to send message to backend
+		execute({ content })
 	}
 
 	const handleKeyPress = (e: React.KeyboardEvent) => {

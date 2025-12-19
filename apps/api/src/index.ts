@@ -1,4 +1,5 @@
 import analysis from '@/modules/analysis'
+import chatbot from '@/modules/chatbot'
 import model from '@/modules/model'
 import sse from '@/modules/sse'
 import zen from '@/modules/zen'
@@ -30,6 +31,7 @@ const app = new Elysia()
 	.use(sse)
 	.use(model)
 	.use(analysis)
+	.use(chatbot)
 	.use(zen)
 	.get('/', () => {
 		return { ok: true }
