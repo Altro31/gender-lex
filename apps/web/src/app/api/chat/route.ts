@@ -1,6 +1,6 @@
 import { client } from "@/lib/api/client"
 import { getSession } from "@/lib/auth/auth-server"
-import { StreamingTextResponse, StreamData } from "ai"
+import { StreamingTextResponse } from "ai"
 
 export const runtime = "edge"
 
@@ -36,17 +36,22 @@ export async function POST(req: Request) {
 				// Simulate streaming by sending chunks
 				const words = text.split(" ")
 				let index = 0
+				let intervalId: NodeJS.Timeout | null = null
 
-				const interval = setInterval(() => {
+				intervalId = setInterval(() => {
 					if (index < words.length) {
-						const chunk = words[index] + " "
+						const isLast = index === words.length - 1
+						const chunk = words[index] + (isLast ? "" : " ")
 						controller.enqueue(encoder.encode(chunk))
 						index++
 					} else {
-						clearInterval(interval)
+						if (intervalId) clearInterval(intervalId)
 						controller.close()
 					}
 				}, 50) // 50ms delay between words for smooth streaming effect
+			},
+			cancel() {
+				// Cleanup if stream is cancelled
 			},
 		})
 
