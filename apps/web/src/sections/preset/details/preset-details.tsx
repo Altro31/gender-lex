@@ -1,16 +1,16 @@
-"use client"
+'use client'
 
-import { Badge } from "@/components/ui/badge"
+import { Badge } from '@/components/ui/badge'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import type { PresetsResponse } from "@/types/preset"
-import { t } from "@lingui/core/macro"
-import { Calendar, Tag, Zap } from "lucide-react"
+} from '@/components/ui/card'
+import type { PresetsResponse } from '@/types/preset'
+import { t } from '@lingui/core/macro'
+import { Calendar, Tag, Zap } from 'lucide-react'
 
 interface Props {
 	preset: PresetsResponse[number]
@@ -19,25 +19,23 @@ interface Props {
 export default function PresetDetails({ preset }: Props) {
 	const getRoleColor = (role: string) => {
 		switch (role) {
-			case "primary":
-				return "bg-blue-100 text-blue-800"
-			case "secondary":
-				return "bg-green-100 text-green-800"
-			case "tertiary":
-				return "bg-purple-100 text-purple-800"
+			case 'primary':
+				return 'border-blue-200 bg-blue-50 dark:bg-blue-950'
+			case 'secondary':
+				return 'border-green-200 bg-green-50 dark:bg-green-950'
 			default:
-				return "bg-gray-100 text-gray-800"
+				return 'border-muted-foreground bg-muted'
 		}
 	}
 
 	const getRoleText = (role: string) => {
 		switch (role) {
-			case "primary":
-				return "Principal"
-			case "secondary":
-				return "Secundario"
-			case "tertiary":
-				return "Terciario"
+			case 'primary':
+				return 'Principal'
+			case 'secondary':
+				return 'Secundario'
+			case 'tertiary':
+				return 'Terciario'
 			default:
 				return role
 		}
@@ -48,9 +46,7 @@ export default function PresetDetails({ preset }: Props) {
 			{/* Header */}
 			<div className="flex items-start justify-between">
 				<div>
-					<h3 className="text-2xl font-semibold text-gray-900">
-						{preset.name}
-					</h3>
+					<h3 className="text-2xl font-semibold">{preset.name}</h3>
 				</div>
 			</div>
 
@@ -58,13 +54,15 @@ export default function PresetDetails({ preset }: Props) {
 			{preset.description && (
 				<Card>
 					<CardHeader>
-						<CardTitle className="flex items-center gap-2 text-lg">
-							<Tag className="h-5 w-5" />
+						<CardTitle className="flex items-center gap-2">
+							<Tag className="size-5" />
 							{t`Description`}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<p className="text-gray-700">{preset.description}</p>
+						<p className="text-muted-foreground">
+							{preset.description}
+						</p>
 					</CardContent>
 				</Card>
 			)}
@@ -72,8 +70,8 @@ export default function PresetDetails({ preset }: Props) {
 			{/* Models Configuration */}
 			<Card>
 				<CardHeader>
-					<CardTitle className="flex items-center gap-2 text-lg">
-						<Zap className="h-5 w-5" />
+					<CardTitle className="flex items-center gap-2">
+						<Zap className="size-5" />
 						{t`Model Configuration`}
 					</CardTitle>
 					<CardDescription>
@@ -81,18 +79,18 @@ export default function PresetDetails({ preset }: Props) {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-6">
-					{preset.Models.map((model) => (
+					{preset.Models.map(model => (
 						<div
-							key={model.modelId + "_" + model.presetId}
+							key={model.modelId + '_' + model.presetId}
 							className="space-y-4 rounded-lg border p-4"
 						>
 							{/* Model Header */}
 							<div className="flex items-center justify-between">
 								<div>
-									<h4 className="text-lg font-semibold">
+									<h4 className="font-semibold">
 										{model.Model.name}
 									</h4>
-									<p className="text-sm text-gray-600">
+									<p className="text-sm text-muted-foreground">
 										ID: {model.modelId}
 									</p>
 								</div>
@@ -108,8 +106,8 @@ export default function PresetDetails({ preset }: Props) {
 			{/* Usage Information */}
 			<Card>
 				<CardHeader>
-					<CardTitle className="flex items-center gap-2 text-lg">
-						<Calendar className="h-5 w-5" />
+					<CardTitle className="flex items-center gap-2">
+						<Calendar className="size-5" />
 						{t`Usage Information`}
 					</CardTitle>
 					<CardDescription>
@@ -119,16 +117,16 @@ export default function PresetDetails({ preset }: Props) {
 				<CardContent className="space-y-4">
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 						<div className="space-y-2">
-							<div className="text-sm font-medium text-gray-700">
+							<div className="text-sm font-medium text-muted-foreground">
 								{t`Creation date`}
 							</div>
-							<p className="text-gray-900">
+							<p>
 								{new Date(preset.createdAt).toLocaleDateString(
-									"es-ES",
+									'es-ES',
 									{
-										year: "numeric",
-										month: "long",
-										day: "numeric",
+										year: 'numeric',
+										month: 'long',
+										day: 'numeric',
 									},
 								)}
 							</p>
@@ -136,16 +134,16 @@ export default function PresetDetails({ preset }: Props) {
 
 						{preset.usedAt && (
 							<div className="space-y-2">
-								<div className="text-sm font-medium text-gray-700">
+								<div className="text-sm font-medium text-muted-foreground">
 									{t`Last use`}
 								</div>
-								<p className="text-gray-900">
+								<p>
 									{new Date(preset.usedAt).toLocaleDateString(
-										"es-ES",
+										'es-ES',
 										{
-											year: "numeric",
-											month: "long",
-											day: "numeric",
+											year: 'numeric',
+											month: 'long',
+											day: 'numeric',
 										},
 									)}
 								</p>
@@ -154,12 +152,10 @@ export default function PresetDetails({ preset }: Props) {
 					</div>
 
 					<div className="space-y-2">
-						<div className="text-sm font-medium text-gray-700">
+						<div className="text-sm font-medium text-muted-foreground">
 							{t`Preset ID`}
 						</div>
-						<p className="font-mono text-sm text-gray-900">
-							{preset.id}
-						</p>
+						<p className="font-mono text-sm">{preset.id}</p>
 					</div>
 				</CardContent>
 			</Card>

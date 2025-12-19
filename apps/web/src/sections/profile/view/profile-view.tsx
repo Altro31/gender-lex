@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import type React from "react"
+import type React from 'react'
 
-import { useState, useTransition } from "react"
+import { useState, useTransition } from 'react'
 import {
 	MailIcon,
 	EditIcon,
@@ -17,21 +17,21 @@ import {
 	FileTextIcon,
 	SettingsIcon,
 	ZapIcon,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+} from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
 	Dialog,
 	DialogContent,
@@ -39,7 +39,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog'
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -50,11 +50,12 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import ChangePasswordDialog from "@/components/change-password-dialog"
-import { updateUserProfile } from "@/services/profile"
-import { toast } from "sonner"
-import { authClient } from "@/lib/auth/auth-client"
+} from '@/components/ui/alert-dialog'
+import ChangePasswordDialog from '@/components/change-password-dialog'
+import { updateUserProfile } from '@/services/profile'
+import { toast } from 'sonner'
+import { authClient } from '@/lib/auth/auth-client'
+import Loader from '@/components/loader'
 
 type User = {
 	id: string
@@ -71,43 +72,43 @@ type User = {
 // Mock recent activities - this would be fetched from the database in a real app
 const mockActivities = [
 	{
-		id: "1",
-		type: "analysis",
-		title: "Análisis de Artículo Científico",
+		id: '1',
+		type: 'analysis',
+		title: 'Análisis de Artículo Científico',
 		description:
-			"Completado análisis de sesgo de género en documento académico",
-		timestamp: "2024-01-30T14:20:00Z",
-		status: "completed",
+			'Completado análisis de sesgo de género en documento académico',
+		timestamp: '2024-01-30T14:20:00Z',
+		status: 'completed',
 	},
 	{
-		id: "2",
-		type: "preset",
-		title: "Nuevo Preset Creado",
+		id: '2',
+		type: 'preset',
+		title: 'Nuevo Preset Creado',
 		description: "Preset 'Análisis Académico' configurado con 2 modelos",
-		timestamp: "2024-01-30T10:15:00Z",
+		timestamp: '2024-01-30T10:15:00Z',
 	},
 	{
-		id: "3",
-		type: "model",
-		title: "Modelo GPT-4 Actualizado",
-		description: "Configuración de parámetros modificada",
-		timestamp: "2024-01-29T16:45:00Z",
+		id: '3',
+		type: 'model',
+		title: 'Modelo GPT-4 Actualizado',
+		description: 'Configuración de parámetros modificada',
+		timestamp: '2024-01-29T16:45:00Z',
 	},
 	{
-		id: "4",
-		type: "analysis",
-		title: "Análisis de Política Interna",
-		description: "Análisis completado con 3 sesgos detectados",
-		timestamp: "2024-01-29T12:30:00Z",
-		status: "completed",
+		id: '4',
+		type: 'analysis',
+		title: 'Análisis de Política Interna',
+		description: 'Análisis completado con 3 sesgos detectados',
+		timestamp: '2024-01-29T12:30:00Z',
+		status: 'completed',
 	},
 	{
-		id: "5",
-		type: "analysis",
-		title: "Análisis de Documento Legal",
-		description: "Error en procesamiento - formato no compatible",
-		timestamp: "2024-01-28T09:15:00Z",
-		status: "failed",
+		id: '5',
+		type: 'analysis',
+		title: 'Análisis de Documento Legal',
+		description: 'Error en procesamiento - formato no compatible',
+		timestamp: '2024-01-28T09:15:00Z',
+		status: 'failed',
 	},
 ]
 
@@ -115,9 +116,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 	const [user, setUser] = useState(initialUser)
 	const [isEditing, setIsEditing] = useState(false)
 	const [isPending, startTransition] = useTransition()
-	const [editForm, setEditForm] = useState({
-		name: user.name,
-	})
+	const [editForm, setEditForm] = useState({ name: user.name })
 	const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false)
 	const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false)
 
@@ -133,23 +132,21 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 						updatedAt: new Date(),
 					})
 					setIsEditing(false)
-					toast.success("Perfil actualizado correctamente")
+					toast.success('Perfil actualizado correctamente')
 				} else {
 					toast.error(
-						result?.serverError ||
-							"Error al actualizar el perfil",
+						result?.serverError?.message ||
+							'Error al actualizar el perfil',
 					)
 				}
 			} catch (error) {
-				toast.error("Error al actualizar el perfil")
+				toast.error('Error al actualizar el perfil')
 			}
 		})
 	}
 
 	const handleCancelEdit = () => {
-		setEditForm({
-			name: user.name,
-		})
+		setEditForm({ name: user.name })
 		setIsEditing(false)
 	}
 
@@ -158,13 +155,13 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 		if (file) {
 			// In a real app, you would upload to a service like Cloudinary or AWS S3
 			const reader = new FileReader()
-			reader.onload = (e) => {
+			reader.onload = e => {
 				setUser({
 					...user,
 					image: e.target?.result as string,
 					updatedAt: new Date(),
 				})
-				toast.success("Imagen actualizada correctamente")
+				toast.success('Imagen actualizada correctamente')
 			}
 			reader.readAsDataURL(file)
 		}
@@ -176,43 +173,43 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 			setIsLogoutDialogOpen(false)
 			// Wait a bit for the sign out to complete
 			setTimeout(() => {
-				window.location.href = "/"
+				window.location.href = '/'
 			}, 500)
 		} catch (error) {
-			toast.error("Error al cerrar sesión")
+			toast.error('Error al cerrar sesión')
 			setIsLogoutDialogOpen(false)
 		}
 	}
 
 	const getRoleColor = (role: string) => {
 		switch (role) {
-			case "superadmin":
-				return "bg-purple-100 text-purple-800"
-			case "admin":
-				return "bg-blue-100 text-blue-800"
+			case 'superadmin':
+				return 'bg-purple-100 text-purple-800'
+			case 'admin':
+				return 'bg-blue-100 text-blue-800'
 			default:
-				return "bg-green-100 text-green-800"
+				return 'bg-green-100 text-green-800'
 		}
 	}
 
 	const getRoleLabel = (role: string) => {
 		switch (role) {
-			case "superadmin":
-				return "Super Administrador"
-			case "admin":
-				return "Administrador"
+			case 'superadmin':
+				return 'Super Administrador'
+			case 'admin':
+				return 'Administrador'
 			default:
-				return "Usuario"
+				return 'Usuario'
 		}
 	}
 
 	const getActivityIcon = (type: string) => {
 		switch (type) {
-			case "analysis":
+			case 'analysis':
 				return <FileTextIcon className="h-4 w-4" />
-			case "model":
+			case 'model':
 				return <SettingsIcon className="h-4 w-4" />
-			case "preset":
+			case 'preset':
 				return <ZapIcon className="h-4 w-4" />
 			default:
 				return <ActivityIcon className="h-4 w-4" />
@@ -220,57 +217,57 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 	}
 
 	const getActivityColor = (type: string, status?: string) => {
-		if (status === "failed") return "text-red-600"
-		if (status === "running") return "text-blue-600"
+		if (status === 'failed') return 'text-red-600'
+		if (status === 'running') return 'text-blue-600'
 
 		switch (type) {
-			case "analysis":
-				return "text-green-600"
-			case "model":
-				return "text-purple-600"
-			case "preset":
-				return "text-orange-600"
+			case 'analysis':
+				return 'text-green-600'
+			case 'model':
+				return 'text-purple-600'
+			case 'preset':
+				return 'text-orange-600'
 			default:
-				return "text-gray-600"
+				return 'text-gray-600'
 		}
 	}
 
 	const formatDate = (date: Date) => {
-		return new Date(date).toLocaleDateString("es-ES", {
-			year: "numeric",
-			month: "long",
-			day: "numeric",
+		return new Date(date).toLocaleDateString('es-ES', {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
 		})
 	}
 
 	const formatDateTime = (date: Date | string) => {
-		return new Date(date).toLocaleDateString("es-ES", {
-			year: "numeric",
-			month: "short",
-			day: "numeric",
-			hour: "2-digit",
-			minute: "2-digit",
+		return new Date(date).toLocaleDateString('es-ES', {
+			year: 'numeric',
+			month: 'short',
+			day: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit',
 		})
 	}
 
 	const getInitials = (name: string) => {
 		return name
-			.split(" ")
-			.map((n) => n[0])
-			.join("")
+			.split(' ')
+			.map(n => n[0])
+			.join('')
 			.toUpperCase()
 			.slice(0, 2)
 	}
 
 	return (
-		<div className="min-h-screen bg-gray-50">
+		<div className="min-h-screen bg-background">
 			<div className="container mx-auto px-4 py-8">
 				{/* Header */}
 				<div className="mb-8">
-					<h1 className="mb-2 text-3xl font-bold text-gray-900">
+					<h1 className="mb-2 text-3xl font-bold text-foreground">
 						Mi Perfil
 					</h1>
-					<p className="text-gray-600">
+					<p className="text-foreground/80">
 						Gestiona tu información personal y configuraciones de
 						cuenta
 					</p>
@@ -285,22 +282,20 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 									<Avatar className="mx-auto h-24 w-24">
 										<AvatarImage
 											src={
-												user.image || "/placeholder.svg"
+												user.image || '/placeholder.svg'
 											}
 											alt={user.name}
 										/>
-										<AvatarFallback className="bg-blue-100 text-lg font-semibold text-blue-600">
+										<AvatarFallback className="bg-blue-100 text-lg font-semibold text-secondary-foreground">
 											{getInitials(user.name)}
 										</AvatarFallback>
 									</Avatar>
 									<Dialog>
-										<DialogTrigger asChild>
-											<Button
-												size="sm"
-												className="absolute -right-2 -bottom-2 h-8 w-8 rounded-full bg-blue-600 p-0 hover:bg-blue-700"
-											>
-												<CameraIcon className="h-4 w-4" />
-											</Button>
+										<DialogTrigger
+											render={<Button size="sm" />}
+											className="absolute -right-2 -bottom-2 h-8 w-8 rounded-full bg-blue-500 p-0 hover:bg-blue-700"
+										>
+											<CameraIcon className="h-4 w-4" />
 										</DialogTrigger>
 										<DialogContent className="sm:max-w-md">
 											<DialogHeader>
@@ -318,11 +313,11 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 														<AvatarImage
 															src={
 																user.image ||
-																"/placeholder.svg"
+																'/placeholder.svg'
 															}
 															alt={user.name}
 														/>
-														<AvatarFallback className="bg-blue-100 text-2xl font-semibold text-blue-600">
+														<AvatarFallback className="bg-background text-2xl font-semibold text-secondary-foreground">
 															{getInitials(
 																user.name,
 															)}
@@ -373,9 +368,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 							<CardContent className="space-y-4">
 								<div className="space-y-3">
 									<div className="flex items-center justify-between">
-										<span className="text-sm text-gray-600">
-											Rol
-										</span>
+										<span className="text-sm ">Rol</span>
 										<Badge
 											className={getRoleColor(user.role)}
 										>
@@ -385,20 +378,20 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 									</div>
 
 									<div className="flex items-center justify-between">
-										<span className="text-sm text-gray-600">
+										<span className="text-sm ">
 											Miembro desde
 										</span>
-										<span className="text-sm font-medium">
+										<span className="text-sm font-medium text-muted-foreground">
 											{formatDate(user.createdAt)}
 										</span>
 									</div>
 
 									{user.loggedAt && (
 										<div className="flex items-center justify-between">
-											<span className="text-sm text-gray-600">
+											<span className="text-sm">
 												Último acceso
 											</span>
-											<span className="text-sm font-medium">
+											<span className="text-sm font-medium text-muted-foreground">
 												{formatDateTime(user.loggedAt)}
 											</span>
 										</div>
@@ -423,14 +416,14 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 										open={isLogoutDialogOpen}
 										onOpenChange={setIsLogoutDialogOpen}
 									>
-										<AlertDialogTrigger asChild>
-											<Button
-												variant="outline"
-												className="w-full justify-start gap-2 bg-transparent text-red-600 hover:bg-red-50 hover:text-red-700"
-											>
-												<LogOutIcon className="h-4 w-4" />
-												Cerrar Sesión
-											</Button>
+										<AlertDialogTrigger
+											render={
+												<Button variant="destructive" />
+											}
+											className="w-full justify-start gap-2 "
+										>
+											<LogOutIcon className="h-4 w-4" />
+											Cerrar Sesión
 										</AlertDialogTrigger>
 										<AlertDialogContent>
 											<AlertDialogHeader>
@@ -449,8 +442,8 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 													Cancelar
 												</AlertDialogCancel>
 												<AlertDialogAction
+													variant="destructive"
 													onClick={handleLogout}
-													className="bg-red-600 hover:bg-red-700"
 												>
 													Cerrar Sesión
 												</AlertDialogAction>
@@ -514,7 +507,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 													<Input
 														id="name"
 														value={editForm.name}
-														onChange={(e) =>
+														onChange={e =>
 															setEditForm({
 																...editForm,
 																name: e.target
@@ -533,9 +526,8 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 														id="email"
 														value={user.email}
 														disabled
-														className="bg-gray-50 text-gray-500"
 													/>
-													<p className="text-xs text-gray-500">
+													<p className="text-xs text-muted-foreground">
 														El correo electrónico no
 														se puede modificar
 													</p>
@@ -551,7 +543,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 													>
 														{isPending ? (
 															<>
-																<div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+																<Loader />
 																Guardando...
 															</>
 														) : (
@@ -577,28 +569,28 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 											<div className="space-y-4">
 												<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 													<div className="space-y-2">
-														<Label className="text-sm font-medium text-gray-700">
+														<Label className="text-sm font-medium">
 															Nombre Completo
 														</Label>
-														<p className="text-gray-900">
+														<p className="text-muted-foreground">
 															{user.name}
 														</p>
 													</div>
 
 													<div className="space-y-2">
-														<Label className="text-sm font-medium text-gray-700">
+														<Label className="text-sm font-medium ">
 															Correo Electrónico
 														</Label>
-														<p className="text-gray-900">
+														<p className="text-muted-foreground">
 															{user.email}
 														</p>
 													</div>
 
 													<div className="space-y-2">
-														<Label className="text-sm font-medium text-gray-700">
+														<Label className="text-sm font-medium">
 															Fecha de Registro
 														</Label>
-														<p className="text-gray-900">
+														<p className="text-muted-foreground">
 															{formatDate(
 																user.createdAt,
 															)}
@@ -606,10 +598,10 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 													</div>
 
 													<div className="space-y-2">
-														<Label className="text-sm font-medium text-gray-700">
+														<Label className="text-sm font-medium ">
 															Última Actualización
 														</Label>
-														<p className="text-gray-900">
+														<p className="text-muted-foreground">
 															{formatDateTime(
 																user.updatedAt,
 															)}
@@ -638,7 +630,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 
 									<CardContent>
 										<div className="space-y-4">
-											{mockActivities.map((activity) => (
+											{mockActivities.map(activity => (
 												<div
 													key={activity.id}
 													className="flex items-start gap-4 border-b border-gray-100 pb-4 last:border-0"
@@ -673,23 +665,23 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 																variant="outline"
 																className={`mt-2 ${
 																	activity.status ===
-																	"completed"
-																		? "border-green-200 bg-green-50 text-green-700"
+																	'completed'
+																		? 'border-green-200 bg-green-50 text-green-700'
 																		: activity.status ===
-																			  "failed"
-																			? "border-red-200 bg-red-50 text-red-700"
-																			: "border-blue-200 bg-blue-50 text-blue-700"
+																			  'failed'
+																			? 'border-red-200 bg-red-50 text-red-700'
+																			: 'border-blue-200 bg-blue-50 text-blue-700'
 																}`}
 															>
 																{activity.status ===
-																	"completed" &&
-																	"Completado"}
+																	'completed' &&
+																	'Completado'}
 																{activity.status ===
-																	"failed" &&
-																	"Error"}
+																	'failed' &&
+																	'Error'}
 																{activity.status ===
-																	"running" &&
-																	"En Progreso"}
+																	'running' &&
+																	'En Progreso'}
 															</Badge>
 														)}
 													</div>

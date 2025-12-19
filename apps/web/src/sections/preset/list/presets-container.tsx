@@ -15,14 +15,14 @@ interface Props {
 
 export default function PresetsContainer({ searchParams }: Props) {
 	return (
-		<div className="min-h-screen bg-gray-50">
+		<div className="min-h-screen">
 			<div className="container mx-auto px-4 py-8">
 				{/* Header */}
 				<div className="mb-8">
-					<h1 className="mb-2 text-3xl font-bold text-gray-900">
+					<h1 className="mb-2 text-3xl font-bold">
 						{t`Presets Management`}
 					</h1>
-					<p className="text-gray-600">
+					<p className="text-muted-foreground">
 						{t`Manage model combinations with specific configurations`}
 					</p>
 				</div>

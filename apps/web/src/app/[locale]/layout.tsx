@@ -9,6 +9,7 @@ import { setServerLocale } from '@/locales/request'
 import { NuqsAdapter } from 'nuqs/adapters/next'
 import config from '../../../lingui.config'
 import Script from 'next/script'
+import ThemeRegister from '@/components/theme/theme-register'
 
 export function generateStaticParams() {
 	return config.locales.map(locale => ({ locale }))
@@ -21,6 +22,7 @@ export default async function RootLayout({
 	return (
 		<html lang={i18n.locale}>
 			<body className="relative">
+				<ThemeRegister />
 				<LinguiProvider
 					initialLocale={i18n.locale}
 					initialMessages={i18n.messages}

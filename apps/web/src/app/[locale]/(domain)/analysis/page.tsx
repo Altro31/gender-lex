@@ -3,13 +3,13 @@ import AnalysesContainer from '@/sections/analysis/list/analyses-container'
 import { Metadata } from 'next'
 import { t } from '@lingui/core/macro'
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
 	await setServerLocale()
 
 	return {
 		title: t`Analysis management | GenderLex`,
 		description: t`Manage gender bias detection analysis`,
-	} as Metadata
+	}
 }
 
 interface Props extends PageProps<'/[locale]/analysis/[id]'> {

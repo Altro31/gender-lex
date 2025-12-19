@@ -49,7 +49,7 @@ export default async function NavRecent() {
 								render={<Link href="/analysis" />}
 								className="text-sidebar-foreground/70"
 							>
-								<MoreHorizontal className="text-sidebar-foreground/70" />
+								<MoreHorizontal className="stroke-sidebar-foreground/70" />
 								<span>{t`More`}</span>
 							</SidebarMenuButton>
 						</SidebarMenuItem>

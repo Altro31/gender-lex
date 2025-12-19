@@ -12,15 +12,15 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { deleteAnalysis } from '@/services/analysis'
-import type { AnalysesResponseItem } from '@/types/analyses'
 import { AlertDialog as AlertDialogPrimitive } from '@base-ui/react'
 import { t } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
+import { Analysis } from '@repo/db/models'
 import { Loader2 } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
 
 interface DeleteAnalysisPayload {
-	analysis: AnalysesResponseItem
+	analysis: Analysis
 }
 
 const deleteAnalysisAlertDialog =

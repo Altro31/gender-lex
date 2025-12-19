@@ -1,19 +1,22 @@
-"use server"
+'use server'
 
-import { getSession } from "@/lib/auth/auth-server"
-import { getPrisma } from "@/lib/prisma/client"
-import { actionClient } from "@/lib/safe-action"
-import { revalidatePath } from "next/cache"
-import z from "zod"
+import { getSession } from '@/lib/auth/auth-server'
+import { getPrisma } from '@/lib/prisma/client'
+import { actionClient } from '@/lib/safe-action'
+import { revalidatePath } from 'next/cache'
+import z from 'zod'
 
 const UpdateProfileSchema = z.object({
-	name: z.string().min(1, "El nombre es requerido"),
+	name: z.string().min(1, 'El nombre es requerido'),
 })
 
+export type getUserProfile = Awaited<ReturnType<typeof getUserProfile>>
 export const getUserProfile = async () => {
+	'use cache: private'
+
 	const session = await getSession()
 	if (!session?.user || session.user.isAnonymous) {
-		throw new Error("Usuario no autenticado")
+		throw new Error('Usuario no autenticado')
 	}
 
 	const prisma = await getPrisma()
@@ -33,7 +36,7 @@ export const getUserProfile = async () => {
 	})
 
 	if (!user) {
-		throw new Error("Usuario no encontrado")
+		throw new Error('Usuario no encontrado')
 	}
 
 	return user
@@ -44,18 +47,16 @@ export const updateUserProfile = actionClient
 	.action(async ({ parsedInput }) => {
 		const session = await getSession()
 		if (!session?.user || session.user.isAnonymous) {
-			throw new Error("Usuario no autenticado")
+			throw new Error('Usuario no autenticado')
 		}
 
 		const prisma = await getPrisma()
 		const updatedUser = await prisma.user.update({
 			where: { id: session.user.id },
-			data: {
-				name: parsedInput.name,
-			},
+			data: { name: parsedInput.name },
 		})
 
-		revalidatePath("/profile")
+		revalidatePath('/profile')
 		return { success: true, user: updatedUser }
 	})
 
@@ -64,17 +65,15 @@ export const updateUserImage = actionClient
 	.action(async ({ parsedInput }) => {
 		const session = await getSession()
 		if (!session?.user || session.user.isAnonymous) {
-			throw new Error("Usuario no autenticado")
+			throw new Error('Usuario no autenticado')
 		}
 
 		const prisma = await getPrisma()
 		const updatedUser = await prisma.user.update({
 			where: { id: session.user.id },
-			data: {
-				image: parsedInput.image,
-			},
+			data: { image: parsedInput.image },
 		})
 
-		revalidatePath("/profile")
+		revalidatePath('/profile')
 		return { success: true, user: updatedUser }
 	})

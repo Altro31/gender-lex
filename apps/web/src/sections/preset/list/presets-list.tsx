@@ -23,13 +23,13 @@ export default function PresetsList({ presets }: Props) {
 	const [q] = useQueryState('q')
 	return presets.length === 0 ? (
 		<div className="py-12 text-center">
-			<div className="mb-4 text-gray-400">
-				<Zap className="mx-auto h-16 w-16" />
+			<div className="mb-4 text-muted-foreground">
+				<Zap className="mx-auto size-16" />
 			</div>
-			<h3 className="mb-2 text-lg font-medium text-gray-900">
+			<h3 className="mb-2 text-lg font-medium">
 				{q ? t`No results found` : t`There are no presets configured`}
 			</h3>
-			<p className="mb-4 text-gray-600">
+			<p className="mb-4 text-muted-foreground">
 				{q
 					? t`Try other search terms`
 					: t`Start by creating your first preset`}

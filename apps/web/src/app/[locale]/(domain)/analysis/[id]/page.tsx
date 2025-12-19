@@ -4,13 +4,13 @@ import { t } from '@lingui/core/macro'
 import { Metadata } from 'next'
 import { locale } from 'next/root-params'
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
 	await setServerLocale()
 
 	return {
 		title: t`Analysis detail | GenderLex`,
 		description: t`View details of the current analysis`,
-	} as Metadata
+	}
 }
 
 export default async function AnalysisDetailsPage(

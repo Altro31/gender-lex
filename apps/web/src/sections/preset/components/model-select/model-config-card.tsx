@@ -26,11 +26,11 @@ export default function ModelConfigCard({ index, onRemove }: Props) {
 	const getRoleColor = (role: ModelRole) => {
 		switch (role) {
 			case 'primary':
-				return 'border-blue-200 bg-blue-50'
+				return 'border-blue-200 bg-blue-50 dark:bg-blue-950'
 			case 'secondary':
-				return 'border-green-200 bg-green-50'
+				return 'border-green-200 bg-green-50 dark:bg-green-950'
 			default:
-				return 'border-gray-200 bg-gray-50'
+				return 'border-muted-foreground bg-muted'
 		}
 	}
 
@@ -41,7 +41,7 @@ export default function ModelConfigCard({ index, onRemove }: Props) {
 			<CardHeader className="pb-3">
 				<div className="flex items-center justify-between gap-1">
 					<div className="flex-1">
-						<CardTitle className="text-base">
+						<CardTitle>
 							{model.Model?.name || t`Unconfigured model`} -{' '}
 							{model.role || t`Unspecified role`}
 						</CardTitle>

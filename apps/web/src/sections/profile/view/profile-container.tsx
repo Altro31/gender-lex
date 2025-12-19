@@ -1,8 +1,10 @@
-import { getUserProfile } from "@/services/profile"
-import ProfileView from "./profile-view"
+import { getUserProfile } from '@/services/profile'
+import ProfileView from './profile-view'
 
-export default async function ProfileContainer() {
-	const user = await getUserProfile()
+interface Props {
+	user: getUserProfile
+}
 
+export default async function ProfileContainer({ user }: Props) {
 	return <ProfileView user={user} />
 }

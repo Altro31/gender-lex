@@ -1,6 +1,5 @@
 'use client'
 
-import { AlertDialog } from '@/components/ui/alert-dialog'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -10,29 +9,26 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { redoAnalysis } from '@/services/analysis'
 import type { AnalysesResponseItem } from '@/types/analyses'
+import { UseRenderRenderProp } from '@base-ui/react'
 import { useRouter } from '@bprogress/next/app'
 import { t } from '@lingui/core/macro'
+import { Analysis } from '@repo/db/models'
 import { Eye, RotateCcw, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import { type PropsWithChildren } from 'react'
 import { toast } from 'sonner'
-import {
-	DeleteAnalysisAlertDialog,
-	DeleteAnalysisAlertDialogTrigger,
-} from './dialogs/delete-analysis-alert-dialog'
-import { UseRenderElementProps, UseRenderRenderProp } from '@base-ui/react'
+import { DeleteAnalysisAlertDialogTrigger } from './dialogs/delete-analysis-alert-dialog'
 
 interface Props {
-	analysis: AnalysesResponseItem
+	analysis: Analysis
 	renderTrigger: UseRenderRenderProp
 }
 
 export function AnalysisActions({ analysis, renderTrigger }: Props) {
 	const router = useRouter()
-	const handleRedoAnalysis = (analysis: AnalysesResponseItem) => async () => {
+	const handleRedoAnalysis = (analysis: Analysis) => async () => {
 		const { error, data } = await redoAnalysis(analysis.id)
 		if (error) {
-			toast.error(error.value.message)
+			toast.error((error.value as any).message)
 			return
 		}
 		router.push(`/analysis/${data.id}`)
@@ -57,6 +53,7 @@ export function AnalysisActions({ analysis, renderTrigger }: Props) {
 
 					<DeleteAnalysisAlertDialogTrigger
 						payload={{ analysis }}
+						nativeButton={false}
 						render={<DropdownMenuItem variant="destructive" />}
 					>
 						<Trash2 className="" />

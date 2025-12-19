@@ -3,6 +3,7 @@
 import RHFSelectAutofetcher from '@/components/rhf/rhf-select-autofetcher'
 import RHFTextarea from '@/components/rhf/rhf-textarea'
 import { Button } from '@/components/ui/button'
+import { SelectItem } from '@/components/ui/select'
 import UploadButton from '@/sections/home/components/upload/upload-button'
 import HomeFiles from '@/sections/home/form/home-files'
 import FormSendButton from '@/sections/home/form/home-form-send-button'
@@ -22,7 +23,7 @@ export default function HomeFormContainer() {
 				<RHFTextarea
 					name="text"
 					placeholder={t`Analyze a text...`}
-					className="max-h-48 min-h-0 rounded-none border-none shadow-none focus-visible:ring-0 dark:bg-transparent"
+					className="resize-none max-h-48 min-h-0 rounded-none border-none shadow-none focus-visible:ring-0 dark:bg-transparent"
 					rows={1}
 				/>
 				<div className="bg-background flex justify-between rounded-lg p-2">
@@ -34,17 +35,18 @@ export default function HomeFormContainer() {
 							getKey={i => i.id}
 							renderValue={i => i.name}
 							renderItem={i => i.name}
-						>
-							<CreatePresetDialogTrigger
-								className="mt-1 w-full"
-								render={
-									<Button size="sm" variant="outline">
-										<Plus />
-										{t`New Preset`}
-									</Button>
-								}
-							/>
-						</RHFSelectAutofetcher>
+							renderLastItem={
+								<CreatePresetDialogTrigger
+									render={
+										<Button size="sm" variant="outline">
+											<Plus />
+											{t`New Preset`}
+										</Button>
+									}
+								/>
+							}
+						/>
+
 						<CreatePresetDialog />
 					</div>
 					<FormSendButton />

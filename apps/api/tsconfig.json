@@ -3,6 +3,7 @@
 	"compilerOptions": {
 		"paths": { "@/*": ["./src/*"] },
 		"noEmit": false,
+		"composite": true,
 		"allowImportingTsExtensions": false,
 		"declaration": false,
 		"plugins": [

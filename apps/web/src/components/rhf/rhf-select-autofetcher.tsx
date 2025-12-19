@@ -11,13 +11,14 @@ import {
 	SelectGroup,
 	SelectItem,
 	SelectLabel,
+	SelectSeparator,
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import type { ComponentProps, PropsWithChildren } from 'react'
+import type { ComponentProps } from 'react'
 
-interface Props<T> extends PropsWithChildren {
+interface Props<T> {
 	name: string
 	label?: string
 	required?: boolean
@@ -28,6 +29,7 @@ interface Props<T> extends PropsWithChildren {
 	getKey: (item: T) => string
 	renderItem: (item: T) => React.ReactNode
 	renderValue: (item: T) => React.ReactNode
+	renderLastItem?: React.ReactNode
 	getDisabled?: (item: T) => boolean
 	getGroup?: (item: T) => string
 }
@@ -39,13 +41,13 @@ export default function RHFSelectAutofetcher<T>({
 	placeholder,
 	size,
 	initialData = [],
-	children,
 	fetcherFunc,
 	getKey,
 	renderItem,
 	renderValue,
 	getDisabled,
 	getGroup,
+	renderLastItem,
 }: Props<T>) {
 	const { data } = useInfiniteQuery({
 		initialData: { pageParams: [0], pages: [initialData] },
@@ -87,7 +89,7 @@ export default function RHFSelectAutofetcher<T>({
 									</SelectValue>
 								</SelectTrigger>
 							</FormControl>
-							<SelectContent>
+							<SelectContent className="w-min">
 								{Object.entries(grouped).map(
 									([key, value]) =>
 										value && (
@@ -119,7 +121,14 @@ export default function RHFSelectAutofetcher<T>({
 											</SelectGroup>
 										),
 								)}
-								{children}
+								{renderLastItem && (
+									<>
+										<SelectSeparator />
+										<SelectGroup>
+											{renderLastItem}
+										</SelectGroup>
+									</>
+								)}
 							</SelectContent>
 						</Select>
 						<FormMessage />

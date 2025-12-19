@@ -23,9 +23,7 @@ export default function RHFModelSelectContainer() {
 				<div className="flex items-center justify-between">
 					<div>
 						<div className="flex justify-between">
-							<CardTitle className="text-lg">
-								{t`Model Configuration`}
-							</CardTitle>
+							<CardTitle>{t`Model Configuration`}</CardTitle>
 							<Button
 								type="button"
 								onClick={() =>
@@ -49,7 +47,7 @@ export default function RHFModelSelectContainer() {
 			</CardHeader>
 			<CardContent className="space-y-4">
 				{!models.length && (
-					<div className="rounded-lg border-2 border-dashed border-gray-300 py-8 text-center">
+					<div className="rounded-lg border-2 border-dashed border-muted-foreground py-8 text-center">
 						<Button
 							type="button"
 							onClick={() =>

@@ -73,9 +73,7 @@ export default function PresetListItem({ preset: initialPreset }: Props) {
 			>
 				<CardHeader>
 					<div className="flex items-start justify-between">
-						<CardTitle className="flex-1 text-lg">
-							{preset.name}
-						</CardTitle>
+						<CardTitle className="flex-1">{preset.name}</CardTitle>
 						<DropdownMenu>
 							<DropdownMenuTrigger
 								render={<Button variant="ghost" size="icon" />}
@@ -165,7 +163,7 @@ export default function PresetListItem({ preset: initialPreset }: Props) {
 				<CardContent className="flex-1">
 					<div className="space-y-2">
 						<div className="space-y-2">
-							<div className="text-xs font-medium tracking-wide text-gray-500 uppercase">
+							<div className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
 								{t`Models`}
 							</div>
 							{preset.Models.map((presetModel, index) => (
@@ -193,7 +191,7 @@ export default function PresetListItem({ preset: initialPreset }: Props) {
 							))}
 						</div>
 
-						<div className="grid grid-cols-2 gap-4 text-xs text-gray-500">
+						<div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground">
 							{preset.usedAt && (
 								<div>
 									<span className="font-medium">
@@ -209,7 +207,7 @@ export default function PresetListItem({ preset: initialPreset }: Props) {
 				</CardContent>
 
 				<CardFooter className="border-t">
-					<div className="w-full text-xs text-gray-500">
+					<div className="w-full text-xs text-muted-foreground">
 						<div className="flex items-center justify-between">
 							<span>
 								{t`Created at`}:{' '}
@@ -246,10 +244,10 @@ export default function PresetListItem({ preset: initialPreset }: Props) {
 const getRoleColor = (role: ModelRole) => {
 	switch (role) {
 		case 'primary':
-			return 'bg-blue-100 text-blue-800'
+			return 'border-blue-200 bg-blue-50 dark:bg-blue-950'
 		case 'secondary':
-			return 'bg-green-100 text-green-800'
+			return 'border-green-200 bg-green-50 dark:bg-green-950'
 		default:
-			return 'bg-gray-100 text-gray-800'
+			return 'border-muted-foreground bg-muted'
 	}
 }

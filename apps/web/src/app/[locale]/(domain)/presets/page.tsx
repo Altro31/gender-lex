@@ -3,13 +3,13 @@ import PresetsContainer from '@/sections/preset/list/presets-container'
 import { t } from '@lingui/core/macro'
 import { Metadata } from 'next'
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
 	await setServerLocale()
 
 	return {
 		title: t`Presets Management` + ' | GenderLex',
 		description: t`Manage model combinations with specific configurations`,
-	} as Metadata
+	}
 }
 
 export default async function PresetsPage({
