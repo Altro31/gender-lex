@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef, useEffect, useOptimistic } from "react"
+import { useState, useRef, useEffect } from "react"
 import { sendMessage, getMessages } from "@/services/chatbot"
 import { useAction } from "next-safe-action/hooks"
 import { Button } from "@/components/ui/button"
