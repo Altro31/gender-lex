@@ -25,6 +25,13 @@ interface Message {
 	timestamp: Date
 }
 
+interface ChatMessageResponse {
+	id: string
+	content: string
+	sender: string
+	createdAt: Date | string
+}
+
 export default function FloatingChatbot() {
 	const [isOpen, setIsOpen] = useState(false)
 	const [messages, setMessages] = useState<Message[]>([
@@ -86,12 +93,14 @@ export default function FloatingChatbot() {
 			getMessages()
 				.then((history) => {
 					if (history && history.length > 0) {
-						const formattedMessages = history.map((msg: any) => ({
-							id: msg.id,
-							content: msg.content,
-							sender: msg.sender as "user" | "bot",
-							timestamp: new Date(msg.createdAt),
-						}))
+						const formattedMessages = history.map(
+							(msg: ChatMessageResponse) => ({
+								id: msg.id,
+								content: msg.content,
+								sender: msg.sender as "user" | "bot",
+								timestamp: new Date(msg.createdAt),
+							}),
+						)
 						setMessages([...formattedMessages])
 					}
 				})

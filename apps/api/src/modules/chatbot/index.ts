@@ -33,17 +33,19 @@ export default new Elysia({
 		},
 		{ body: 'sendMessageInput', response: 'sendMessageOutput' },
 	)
-	.get('messages', ({ runEffect }) => {
-		const program = Effect.gen(function* () {
-			const { session, isAuthenticated } = yield* AuthService
-			if (!isAuthenticated || !session) {
-				return yield* Effect.fail(
-					new Error('Unauthorized'),
-				)
-			}
+	.get(
+		'messages',
+		({ runEffect }) => {
+			const program = Effect.gen(function* () {
+				const { session, isAuthenticated } = yield* AuthService
+				if (!isAuthenticated || !session) {
+					return yield* Effect.fail(new Error('Unauthorized'))
+				}
 
-			const chatbotService = yield* ChatbotService
-			return yield* chatbotService.getMessages(session.user.id)
-		}).pipe(ChatbotService.provide, AuthService.provide)
-		return runEffect(program)
-	})
+				const chatbotService = yield* ChatbotService
+				return yield* chatbotService.getMessages(session.user.id)
+			}).pipe(ChatbotService.provide, AuthService.provide)
+			return runEffect(program)
+		},
+		{ response: 'getMessagesOutput' },
+	)
