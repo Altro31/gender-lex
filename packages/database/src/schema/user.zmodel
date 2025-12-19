@@ -2,6 +2,7 @@ import "analysis"
 import "model"
 import "preset"
 import "shared/timestamps"
+import "chatbot"
 
 
 enum Role {

@@ -1,9 +1,7 @@
-import Elysia, { t } from 'elysia'
+import { t } from 'elysia'
 
-export const chatbotModels = new Elysia().model({
-	sendMessageInput: t.Object({
-		content: t.String(),
-	}),
+export const chatbotModels = {
+	sendMessageInput: t.Object({ content: t.String() }),
 	sendMessageOutput: t.Object({
 		userMessage: t.Object({
 			id: t.String(),
@@ -26,4 +24,4 @@ export const chatbotModels = new Elysia().model({
 			createdAt: t.Date(),
 		}),
 	),
-})
+}

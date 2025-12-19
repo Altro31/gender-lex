@@ -11,6 +11,7 @@ import config from '../../../lingui.config'
 import Script from 'next/script'
 import ThemeRegister from '@/components/theme/theme-register'
 import FloatingChatbot from '@/components/floating-chatbot'
+import { Suspense } from 'react'
 
 export function generateStaticParams() {
 	return config.locales.map(locale => ({ locale }))
@@ -34,7 +35,9 @@ export default async function RootLayout({
 								<EventSourceProvider>
 									<SidebarProvider>
 										{children}
-										<FloatingChatbot />
+										<Suspense>
+											<FloatingChatbot />
+										</Suspense>
 										<Toaster
 											richColors
 											position="bottom-right"

@@ -1,9 +1,9 @@
-import { effectPlugin } from '@/plugins/effect.plugin'
 import { chatbotModels } from '@/modules/chatbot/model'
 import { ChatbotService } from '@/modules/chatbot/service'
+import { effectPlugin } from '@/plugins/effect.plugin'
 import { AuthService } from '@/shared/auth/auth.service'
 import { Effect } from 'effect'
-import Elysia, { t } from 'elysia'
+import Elysia from 'elysia'
 
 export default new Elysia({
 	name: 'chatbot.controller',
@@ -18,9 +18,7 @@ export default new Elysia({
 			const program = Effect.gen(function* () {
 				const { session, isAuthenticated } = yield* AuthService
 				if (!isAuthenticated || !session) {
-					return yield* Effect.fail(
-						new Error('Unauthorized'),
-					)
+					return yield* Effect.fail(new Error('Unauthorized'))
 				}
 
 				const chatbotService = yield* ChatbotService
