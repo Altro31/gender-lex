@@ -46,6 +46,10 @@ export const auth = betterAuth({
 						where: { userId: anonymousUser.user.id },
 						data: { userId: newUser.user.id },
 					}),
+					client.chatConversation.updateMany({
+						where: { userId: anonymousUser.user.id },
+						data: { userId: newUser.user.id },
+					}),
 				])
 			},
 		}),
