@@ -1,63 +1,41 @@
-import { client } from "@/lib/api/client"
-import { getSession } from "@/lib/auth/auth-server"
-import { StreamingTextResponse } from "ai"
+import { chat, toServerSentEventsStream, toStreamResponse } from '@tanstack/ai'
+import { geminiText } from '@tanstack/ai-gemini'
 
-export const runtime = "edge"
+export async function POST(request: Request) {
+	// Check for API key
+	if (!process.env.GEMINI_API_KEY) {
+		return new Response(
+			JSON.stringify({ error: 'GEMINI_API_KEY not configured' }),
+			{ status: 500, headers: { 'Content-Type': 'application/json' } },
+		)
+	}
 
-export async function POST(req: Request) {
+	const { messages, conversationId } = await request.json()
 	try {
-		const session = await getSession()
-		if (!session) {
-			return new Response("Unauthorized", { status: 401 })
-		}
-
-		const { messages } = await req.json()
-		const lastMessage = messages[messages.length - 1]
-
-		if (!lastMessage || !lastMessage.content) {
-			return new Response("No message content", { status: 400 })
-		}
-
-		// Send message to our backend chatbot API
-		const response = await client.chatbot.message.post({
-			content: lastMessage.content,
+		// Create a streaming chat response
+		const stream = chat({
+			adapter: geminiText('gemini-2.5-flash'),
+			messages,
+			conversationId,
 		})
-
-		if (!response.data) {
-			throw new Error("Failed to get response from chatbot")
-		}
-
-		// Create a readable stream for the response
-		const encoder = new TextEncoder()
-		const stream = new ReadableStream({
-			start(controller) {
-				// Send the bot's message content as a stream
-				const text = response.data.botMessage.content
-				// Simulate streaming by sending chunks
-				const words = text.split(" ")
-				let index = 0
-				let intervalId: NodeJS.Timeout | null = null
-
-				intervalId = setInterval(() => {
-					if (index < words.length) {
-						const isLast = index === words.length - 1
-						const chunk = words[index] + (isLast ? "" : " ")
-						controller.enqueue(encoder.encode(chunk))
-						index++
-					} else {
-						if (intervalId) clearInterval(intervalId)
-						controller.close()
-					}
-				}, 50) // 50ms delay between words for smooth streaming effect
-			},
-			cancel() {
-				// Cleanup if stream is cancelled
+		const readableStream = toServerSentEventsStream(stream)
+		// Convert stream to HTTP response
+		return new Response(readableStream, {
+			headers: {
+				'Content-Type': 'text/event-stream',
+				'Cache-Control': 'no-cache',
+				Connection: 'keep-alive',
 			},
 		})
-
-		return new StreamingTextResponse(stream)
 	} catch (error) {
-		console.error("Chat API error:", error)
-		return new Response("Internal Server Error", { status: 500 })
+		return new Response(
+			JSON.stringify({
+				error:
+					error instanceof Error
+						? error.message
+						: 'An error occurred',
+			}),
+			{ status: 500, headers: { 'Content-Type': 'application/json' } },
+		)
 	}
 }

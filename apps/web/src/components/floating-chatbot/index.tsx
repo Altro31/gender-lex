@@ -1,256 +1,218 @@
 'use client'
-
-import type React from 'react'
-
-import { ChatMessage } from '@repo/db/models'
-import { useState, useRef, useEffect } from 'react'
-import { useChat } from 'ai/react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
+	Conversation,
+	ConversationContent,
+	ConversationScrollButton,
+} from '@/components/ai-elements/conversation'
+import {
+	Message,
+	MessageAction,
+	MessageActions,
+	MessageContent,
+	MessageResponse,
+} from '@/components/ai-elements/message'
+import {
+	PromptInput,
+	PromptInputActionAddAttachments,
+	PromptInputActionMenu,
+	PromptInputActionMenuContent,
+	PromptInputActionMenuTrigger,
+	PromptInputAttachment,
+	PromptInputAttachments,
+	PromptInputBody,
+	PromptInputFooter,
+	PromptInputHeader,
+	type PromptInputMessage,
+	PromptInputSubmit,
+	PromptInputTextarea,
+	PromptInputTools,
+} from '@/components/ai-elements/prompt-input'
+import {
+	Reasoning,
+	ReasoningContent,
+	ReasoningTrigger,
+} from '@/components/ai-elements/reasoning'
+import { Button } from '@/components/ui/button'
+import { fetchServerSentEvents, useChat } from '@tanstack/ai-react'
+import type { ChatStatus } from 'ai'
+import { CopyIcon, MessageCircle, RefreshCcwIcon, X } from 'lucide-react'
+import { Activity, useState } from 'react'
+import { Loader } from '../ai-elements/loader'
 
 export default function FloatingChatbot() {
 	const [isOpen, setIsOpen] = useState(false)
-	const [messages, setMessages] = useState<ChatMessage[]>([
-		{
-			id: '1',
-			content:
-				'¡Hola! Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?',
-			sender: 'bot',
-			createdAt: new Date(),
-			updatedAt: new Date(),
-			conversationId: '1',
-		},
-	])
-	const [inputValue, setInputValue] = useState('')
-	const [isTyping, setIsTyping] = useState(false)
-	const [isLoadingHistory, setIsLoadingHistory] = useState(false)
-	const messagesEndRef = useRef<HTMLDivElement>(null)
-	const inputRef = useRef<HTMLInputElement>(null)
+	const [input, setInput] = useState('')
+	const { messages, sendMessage, isLoading, error, reload } = useChat({
+		connection: fetchServerSentEvents('/api/chat'),
+	})
 
-	const { messages, input, handleInputChange, handleSubmit, isLoading } =
-		useChat({
-			api: '/api/chat',
-			initialMessages: [
-				{
-					id: 'welcome',
-					role: 'assistant',
-					content:
-						'¡Hola! Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?',
-				},
-			],
-		})
-
-	const scrollToBottom = () => {
-		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-	}
-
-	useEffect(() => {
-		scrollToBottom()
-	}, [messages])
-
-	useEffect(() => {
-		if (isOpen && inputRef.current) {
-			inputRef.current.focus()
+	const handleSubmit = (message: PromptInputMessage) => {
+		const hasText = Boolean(message.text)
+		if (!hasText) {
+			return
 		}
-		// Load message history when chat opens
-		if (isOpen && !isLoadingHistory && messages.length === 1) {
-			setIsLoadingHistory(true)
-			getMessages()
-				.then(history => {
-					if (!history.error) {
-						setMessages(history.data)
-					}
-				})
-				.catch(() => {
-					// Keep initial message on error
-				})
-				.finally(() => {
-					setIsLoadingHistory(false)
-				})
-		}
-	}, [isOpen, isLoadingHistory, messages.length])
-
-	const handleSendMessage = async () => {
-		if (!inputValue.trim() || isExecuting) return
-
-		const content = inputValue
-		setInputValue('')
-		setIsTyping(true)
-
-		// Execute the action to send message to backend
-		execute({ content })
+		sendMessage(message.text)
+		setInput('')
 	}
 
-	const handleKeyPress = (e: React.KeyboardEvent) => {
-		if (e.key === 'Enter' && !e.shiftKey) {
-			e.preventDefault()
-			handleSubmit(e as any)
-		}
-	}
-
-	const formatTime = (date: Date) => {
-		return date.toLocaleTimeString('es-ES', {
-			hour: '2-digit',
-			minute: '2-digit',
-		})
-	}
+	const status: ChatStatus = isLoading
+		? 'streaming'
+		: error
+			? 'error'
+			: 'ready'
 
 	return (
 		<>
-			{/* Floating Button */}
 			<div className="fixed right-6 bottom-6 z-50">
 				<Button
 					onClick={() => setIsOpen(!isOpen)}
 					size="lg"
-					className="h-14 w-14 rounded-full bg-blue-600 shadow-lg transition-all duration-200 hover:bg-blue-700 hover:shadow-xl"
+					className="group relative h-16 w-16 rounded-full shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl"
 				>
+					<div className="absolute inset-0 rounded-full bg-blue-400/20 blur-xl transition-opacity duration-300 group-hover:opacity-100 opacity-0" />
 					{isOpen ? (
-						<X className="h-6 w-6" />
+						<X className="relative h-6 w-6 text-white transition-transform duration-300 group-hover:rotate-90" />
 					) : (
-						<MessageCircle className="h-6 w-6" />
+						<MessageCircle className="relative h-6 w-6 text-white transition-transform duration-300 group-hover:scale-110" />
 					)}
 				</Button>
 			</div>
 
-			{/* Chat Window */}
-			{isOpen && (
-				<div className="fixed right-6 bottom-24 z-40 h-96 w-80 shadow-2xl sm:w-96">
-					<Card className="flex h-full flex-col">
-						<CardHeader className="rounded-t-lg bg-blue-600 pb-3 text-white">
+			<Activity mode={isOpen ? 'visible' : 'hidden'}>
+				<div className="fixed right-6 bottom-24 z-40 h-128 w-80 sm:w-96 animate-in slide-in-from-bottom-4 fade-in duration-300">
+					<div className="flex h-full flex-col rounded-2xl border border-border/50 bg-background/95 shadow-2xl backdrop-blur-xl">
+						<div className="flex items-center justify-between border-b border-border/50 bg-linear-to-r from-blue-600/10 to-purple-600/10 px-5 py-4 rounded-t-2xl">
 							<div className="flex items-center gap-3">
-								<Avatar className="h-8 w-8">
-									<AvatarFallback className="bg-blue-500 text-white">
-										<Bot className="h-4 w-4" />
-									</AvatarFallback>
-								</Avatar>
+								<div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600">
+									<MessageCircle className="h-5 w-5 text-white" />
+								</div>
 								<div>
-									<CardTitle className="text-lg">
-										Asistente Virtual
-									</CardTitle>
-									<p className="text-sm text-blue-100">
+									<h3 className="font-semibold text-foreground">
+										Asistente AI
+									</h3>
+									<p className="text-xs text-muted-foreground">
 										En línea
 									</p>
 								</div>
 							</div>
-						</CardHeader>
+						</div>
 
-						<CardContent className="flex-1 p-0">
-							<ScrollArea className="h-full p-4">
-								<div className="space-y-4">
+						<div className="flex-1 overflow-hidden px-4 py-3">
+							<Conversation className="h-full">
+								<ConversationContent>
 									{messages.map(message => (
-										<div
-											key={message.id}
-											className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-										>
-											{message.role === 'assistant' && (
-												<Avatar className="mt-1 h-8 w-8">
-													<AvatarFallback className="bg-blue-100 text-blue-600">
-														<Bot className="h-4 w-4" />
-													</AvatarFallback>
-												</Avatar>
-											)}
-
-											<div
-												className={`max-w-[70%] rounded-lg px-3 py-2 ${
-													message.role === 'user'
-														? 'bg-blue-600 text-white'
-														: 'bg-gray-100 text-gray-900'
-												}`}
-											>
-												<p className="text-sm whitespace-pre-wrap">
-													{message.content}
-												</p>
-												<p
-													className={`mt-1 text-xs ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'}`}
-												>
-													{formatTime(
-														message.createdAt,
-													)}
-												</p>
-											</div>
-
-											{message.role === 'user' && (
-												<Avatar className="mt-1 h-8 w-8">
-													<AvatarFallback className="bg-gray-100 text-gray-600">
-														<User className="h-4 w-4" />
-													</AvatarFallback>
-												</Avatar>
-											)}
+										<div key={message.id}>
+											{message.parts.map((part, i) => {
+												switch (part.type) {
+													case 'text':
+														return (
+															<Message
+																key={`${message.id}-${i}`}
+																from={
+																	message.role
+																}
+															>
+																<MessageContent>
+																	<MessageResponse>
+																		{
+																			part.content
+																		}
+																	</MessageResponse>
+																</MessageContent>
+																{message.role ===
+																	'assistant' &&
+																	i ===
+																		messages.length -
+																			1 && (
+																		<MessageActions>
+																			<MessageAction
+																				onClick={() =>
+																					reload()
+																				}
+																				label="Retry"
+																			>
+																				<RefreshCcwIcon className="size-3" />
+																			</MessageAction>
+																			<MessageAction
+																				onClick={() =>
+																					navigator.clipboard.writeText(
+																						part.content,
+																					)
+																				}
+																				label="Copy"
+																			>
+																				<CopyIcon className="size-3" />
+																			</MessageAction>
+																		</MessageActions>
+																	)}
+															</Message>
+														)
+													case 'thinking':
+														return (
+															<Reasoning
+																key={`${message.id}-${i}`}
+																className="w-full"
+																isStreaming={
+																	status ===
+																		'streaming' &&
+																	i ===
+																		message
+																			.parts
+																			.length -
+																			1 &&
+																	message.id ===
+																		messages.at(
+																			-1,
+																		)?.id
+																}
+															>
+																<ReasoningTrigger />
+																<ReasoningContent>
+																	{
+																		part.content
+																	}
+																</ReasoningContent>
+															</Reasoning>
+														)
+													default:
+														return null
+												}
+											})}
 										</div>
 									))}
+									{isLoading && <Loader />}
+								</ConversationContent>
+								<ConversationScrollButton />
+							</Conversation>
+						</div>
 
-									{/* Typing Indicator */}
-									{isLoading && (
-										<div className="flex justify-start gap-3">
-											<Avatar className="mt-1 h-8 w-8">
-												<AvatarFallback className="bg-blue-100 text-blue-600">
-													<Bot className="h-4 w-4" />
-												</AvatarFallback>
-											</Avatar>
-											<div className="rounded-lg bg-gray-100 px-3 py-2">
-												<div className="flex space-x-1">
-													<div className="h-2 w-2 animate-bounce rounded-full bg-gray-400"></div>
-													<div
-														className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
-														style={{
-															animationDelay:
-																'0.1s',
-														}}
-													></div>
-													<div
-														className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
-														style={{
-															animationDelay:
-																'0.2s',
-														}}
-													></div>
-												</div>
-											</div>
-										</div>
-									)}
-
-									<div ref={messagesEndRef} />
-								</div>
-							</ScrollArea>
-						</CardContent>
-
-						<CardFooter className="border-t p-4">
-							<form
+						<div className="border-t border-border/50 bg-muted/30 px-4 py-3 rounded-b-2xl">
+							<PromptInput
 								onSubmit={handleSubmit}
-								className="flex w-full gap-2"
+								globalDrop
+								multiple
+								className="rounded-xl border-border/50 bg-background shadow-sm transition-shadow duration-200 focus-within:shadow-md"
 							>
-								<Input
-									ref={inputRef}
-									value={input}
-									onChange={handleInputChange}
-									onKeyUp={handleKeyPress}
-									placeholder="Escribe tu mensaje..."
-									disabled={isLoading}
-									className="flex-1"
-								/>
-								<Button
-									type="submit"
-									disabled={!input.trim() || isLoading}
-									size="sm"
-									className="px-3"
-								>
-									<Send className="h-4 w-4" />
-								</Button>
-							</form>
-						</CardFooter>
-					</Card>
+								<PromptInputBody>
+									<PromptInputTextarea
+										onChange={e => setInput(e.target.value)}
+										value={input}
+										placeholder="Escribe tu mensaje..."
+										className="placeholder:text-muted-foreground/60"
+									/>
+								</PromptInputBody>
+								<PromptInputFooter>
+									<PromptInputTools></PromptInputTools>
+									<PromptInputSubmit
+										disabled={!input && !status}
+										status={status}
+									/>
+								</PromptInputFooter>
+							</PromptInput>
+						</div>
+					</div>
 				</div>
-			)}
+			</Activity>
 		</>
 	)
 }
