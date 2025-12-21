@@ -1,34 +1,322 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gender-Lex Web
+
+Frontend web application for Gender-Lex, a platform for analyzing gender bias in text and documents.
+
+## Overview
+
+This is the Next.js web application that provides the user interface for Gender-Lex. It enables users to upload documents, analyze them for gender bias, interact with an AI chatbot, and manage analysis presets and AI models. The application supports internationalization with English and Spanish languages.
+
+## Features
+
+- **Document Upload & Analysis**: Upload PDFs or paste text for gender bias analysis
+- **Real-time Analysis**: Stream analysis results as they're generated
+- **AI Chatbot**: Conversational assistant for gender-inclusive language guidance
+- **Model Management**: Configure and test AI models
+- **Preset Management**: Create and manage analysis presets
+- **User Profiles**: User authentication and profile management
+- **Multi-language Support**: English and Spanish interfaces (Lingui i18n)
+- **Dark/Light Themes**: Theme switching with persistent preferences
+- **Responsive Design**: Mobile-first responsive design
+- **Anonymous Access**: Start analyzing without creating an account
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **React**: React 19
+- **UI Components**: Radix UI, shadcn/ui
+- **Styling**: Tailwind CSS 4, Tailwind Animate
+- **Forms**: React Hook Form + Zod validation
+- **State Management**: Zustand
+- **Data Fetching**: TanStack Query (React Query)
+- **Authentication**: Better Auth (via @repo/auth)
+- **Database**: PostgreSQL via @repo/db
+- **API Client**: Elysia Eden (type-safe API client)
+- **Internationalization**: Lingui
+- **Animations**: Framer Motion (motion)
+- **Theme**: next-themes
+- **Icons**: Lucide React
+- **Real-time**: Server-Sent Events (reconnecting-eventsource)
+- **Functional Programming**: Effect
+- **Type Safety**: TypeScript with Next.js TypeGen
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── [locale]/          # Internationalized routes
+│   │   ├── (domain)/      # Main application routes
+│   │   │   ├── analysis/  # Analysis pages
+│   │   │   ├── models/    # Model configuration
+│   │   │   ├── presets/   # Preset management
+│   │   │   ├── profile/   # User profile
+│   │   │   └── page.tsx   # Home page
+│   │   ├── (security)/    # Auth pages (login, register)
+│   │   └── layout.tsx     # Locale layout
+│   └── api/               # API routes (auth callbacks)
+├── components/            # React components
+│   ├── ui/               # shadcn/ui components
+│   ├── rhf/              # React Hook Form components
+│   └── theme/            # Theme components
+├── lib/                  # Utilities and configurations
+│   ├── actions/         # Server actions
+│   ├── api/             # API client setup
+│   └── utils.ts         # Utility functions
+├── locales/             # i18n translations
+│   ├── components/      # Language switcher
+│   └── messages/        # Translation files
+└── styles/              # Global styles
+```
+
+## Main Features
+
+### Analysis Page
+- Upload multiple PDFs or paste text
+- Select analysis presets
+- View real-time analysis progress
+- Download analysis reports
+- View bias detection results with suggestions
+
+### Chatbot
+- AI-powered assistant
+- Context-aware responses
+- Conversation history
+- Gender-inclusive language suggestions
+
+### Model Management
+- Configure AI models (OpenAI-compatible)
+- Test model configurations
+- Manage API keys securely
+- Model preset system
+
+### Preset Management
+- Create custom analysis presets
+- Configure analysis parameters
+- Share presets with team
+- Default preset selection
+
+### User Profile
+- Account management
+- Change password
+- Language preferences
+- Analysis history
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 24.x
+- Bun 1.3.2 (package manager)
+- PostgreSQL database
+
+### Environment Variables
+
+Create a `.env.local` file in the apps/web directory:
+
+```env
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/genderlex
+
+# API URL
+NEXT_PUBLIC_API_URL=http://localhost:3000
+
+# Authentication (Better Auth)
+BETTER_AUTH_SECRET=your_secret_key
+BETTER_AUTH_URL=http://localhost:4000
+AUTH_GOOGLE_ID=your_google_client_id
+AUTH_GOOGLE_SECRET=your_google_secret
+AUTH_GITHUB_ID=your_github_client_id
+AUTH_GITHUB_SECRET=your_github_secret
+
+# Public URL
+NEXT_PUBLIC_URL=http://localhost:4000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Install dependencies (run from monorepo root)
+bun install
 
-## Learn More
+# Generate database schema
+bun run generate
 
-To learn more about Next.js, take a look at the following resources:
+# Run database migrations
+bun run migrate
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Generate locale messages
+cd apps/web
+bun run locales:gen
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Development
 
-## Deploy on Vercel
+```bash
+# Start development server (from monorepo root)
+bun run dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Or start only web (from monorepo root)
+cd apps/web
+bun run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The web app will be available at http://localhost:4000
+
+### Building
+
+```bash
+# Build for production (from monorepo root)
+bun run build
+
+# Or build only web
+bun run build:web
+```
+
+### Production
+
+```bash
+# Start production server
+bun run start
+
+# Or use monorepo script
+bun run prod:web
+```
+
+## Internationalization
+
+The application supports multiple languages using Lingui:
+
+### Supported Languages
+
+- English (en)
+- Spanish (es) - Default
+
+### Adding Translations
+
+1. Add translation keys in your components using Lingui macros:
+
+```tsx
+import { Trans, msg } from '@lingui/react/macro'
+
+function Component() {
+  return <Trans>Hello World</Trans>
+}
+```
+
+2. Extract messages:
+
+```bash
+bun run locales:gen
+```
+
+3. Translate in `src/locales/messages/{locale}/messages.po`
+
+4. Compile (automatic in dev/build)
+
+## Styling
+
+The application uses Tailwind CSS 4 with:
+
+- **shadcn/ui**: Pre-built accessible components
+- **Radix UI**: Unstyled, accessible component primitives
+- **CVA**: Class Variance Authority for component variants
+- **tailwind-merge**: Merge Tailwind classes intelligently
+- **tw-animate-css**: Additional animation utilities
+
+### Theme
+
+The app supports light and dark themes with smooth transitions:
+
+- System default detection
+- Manual theme toggle
+- Persistent preference storage
+- Theme-aware components
+
+## State Management
+
+- **Zustand**: Global client state
+- **React Query**: Server state management
+- **React Hook Form**: Form state
+- **nuqs**: URL state management
+
+## API Integration
+
+The app uses Elysia Eden for type-safe API calls:
+
+```typescript
+import { api } from '@/lib/api/client'
+
+// Fully typed API calls
+const analysis = await api.analysis.prepare.post({
+  files: [file],
+  selectedPreset: presetId
+})
+```
+
+## Authentication Flow
+
+1. Anonymous users can access the app and perform analyses
+2. Users can sign up/sign in via email or OAuth (Google, GitHub)
+3. Anonymous data is automatically migrated to the user account
+4. Session management handled by Better Auth
+
+## Testing
+
+```bash
+# Run tests (from monorepo root)
+bun run test
+
+# Run E2E tests
+bun run test:e2e
+```
+
+## Linting & Formatting
+
+```bash
+# Lint code
+bun run lint
+
+# Format code
+bun run format
+```
+
+## Scripts
+
+- `dev` - Start development server on port 4000
+- `build` - Build for production
+- `start` - Start production server
+- `lint` - Lint code with oxlint
+- `generate` - Generate workflow code
+- `locales:gen` - Extract translation messages
+- `type:gen` - Generate Next.js types
+- `studio` - Open workflow studio
+
+## Performance Optimizations
+
+- **React Compiler**: Automatic component memoization
+- **Next.js Image**: Optimized image loading
+- **Code Splitting**: Automatic route-based splitting
+- **Incremental Static Regeneration**: For static content
+- **Server Components**: Reduced client-side JavaScript
+
+## Accessibility
+
+- **Radix UI**: Built with accessibility in mind
+- **Keyboard Navigation**: Full keyboard support
+- **ARIA Labels**: Proper ARIA attributes
+- **Focus Management**: Logical focus flow
+- **Screen Reader Support**: Semantic HTML
+
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Related Packages
+
+- `@repo/auth` - Authentication configuration
+- `@repo/db` - Database models and client
+- `@repo/types` - Shared TypeScript types
+- `api` - Backend API server

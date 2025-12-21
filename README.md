@@ -1,122 +1,445 @@
-# Turborepo starter
+# Gender-Lex
 
 ![Cron job status](https://api.cron-job.org/jobs/6338465/4b2facbd69e67d1c/status-7.svg)
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+A comprehensive platform for analyzing gender bias in text and documents, powered by AI. Gender-Lex helps writers, organizations, and researchers identify gendered language and provides suggestions for more inclusive alternatives.
 
-## Using this example
+## 🎯 Overview
 
-Run the following command:
+Gender-Lex is a full-stack TypeScript monorepo that provides:
 
-```bash
-npx create-turbo@latest -e with-nestjs
+- **Automated Gender Bias Analysis**: Upload documents or paste text to detect gender bias
+- **AI-Powered Suggestions**: Get intelligent recommendations for gender-inclusive language
+- **Medical Terminology Support**: Specialized analysis for medical and scientific texts using UMLS
+- **Real-time Analysis**: Stream analysis results as they're generated
+- **AI Chatbot Assistant**: Conversational help for gender-inclusive writing
+- **Customizable Presets**: Create and manage analysis configurations for different use cases
+- **Multi-language Support**: Interface available in English and Spanish
+
+## 🏗️ Architecture
+
+This is a Turborepo monorepo with the following structure:
+
+```
+gender-lex/
+├── apps/
+│   ├── api/              # Backend API (Elysia + Bun)
+│   └── web/              # Frontend web app (Next.js 16)
+└── packages/
+    ├── auth/             # Authentication (@repo/auth)
+    ├── database/         # Database & schema (@repo/db)
+    └── types/            # Shared TypeScript types (@repo/types)
 ```
 
-## What's inside?
+### Applications
 
-This Turborepo includes the following packages/apps:
+#### 🔧 API (`apps/api`)
 
-### Apps and Packages
+RESTful API server built with:
+- **Runtime**: Bun
+- **Framework**: Elysia
+- **Database**: PostgreSQL (Prisma + ZenStack)
+- **Auth**: Better Auth
+- **AI**: OpenAI-compatible providers
+- **Workflow**: Custom workflow engine for analysis pipelines
+- **Real-time**: Server-Sent Events (SSE)
 
-    .
-    ├── apps
-    │   ├── api                       # NestJS app (https://nestjs.com).
-    │   └── web                       # Next.js app (https://nextjs.org).
-    └── packages
-        ├── @repo/api                 # Shared `NestJS` resources.
-        ├── @repo/eslint-config       # `eslint` configurations (includes `prettier`)
-        ├── @repo/jest-config         # `jest` configurations
-        ├── @repo/typescript-config   # `tsconfig.json`s used throughout the monorepo
-        └── @repo/ui                  # Shareable stub React component library.
+**Key Features**:
+- Document upload and processing (PDF, text)
+- Multi-step analysis workflows
+- AI model management
+- Preset configuration
+- Medical terminology extraction via UMLS
+- Chatbot endpoints
 
-Each package and application are 100% [TypeScript](https://www.typescriptlang.org/) safe.
+📚 [API Documentation](./apps/api/README.md)
 
-### Utilities
+#### 🎨 Web (`apps/web`)
 
-This `Turborepo` has some additional tools already set for you:
+Modern web application built with:
+- **Framework**: Next.js 16 (App Router)
+- **UI**: React 19 + Radix UI + shadcn/ui
+- **Styling**: Tailwind CSS 4
+- **i18n**: Lingui (English/Spanish)
+- **State**: TanStack Query + Zustand
+- **Type Safety**: Full end-to-end type safety with Elysia Eden
 
-- [TypeScript](https://www.typescriptlang.org/) for static type-safety
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-- [Jest](https://prettier.io) & [Playwright](https://playwright.dev/) for testing
+**Key Features**:
+- Document upload interface
+- Real-time analysis visualization
+- AI chatbot interface
+- Model and preset management
+- User authentication and profiles
+- Dark/light theme support
+- Mobile-responsive design
 
-### Commands
+📚 [Web Documentation](./apps/web/README.md)
 
-This `Turborepo` already configured useful commands for all your apps and packages.
+### Packages
 
-#### Build
+#### 🔐 Auth (`packages/auth`)
+
+Authentication package using Better Auth with:
+- Email/password authentication
+- OAuth (Google, GitHub)
+- Anonymous sessions with account linking
+- Custom session fields (language preferences)
+- ZenStack integration
+
+📚 [Auth Documentation](./packages/auth/README.md)
+
+#### 💾 Database (`packages/database`)
+
+Database layer with:
+- ZenStack schema with access control policies
+- Prisma ORM
+- PostgreSQL support
+- Effect-based client
+- Type-safe operations
+- Migration management
+
+**Models**: User, Session, Analysis, Model, Preset, Chatbot
+
+📚 [Database Documentation](./packages/database/README.md)
+
+#### 📝 Types (`packages/types`)
+
+Shared TypeScript types for:
+- API contracts
+- SSE events
+- Common utilities
+- Cross-package type safety
+
+📚 [Types Documentation](./packages/types/README.md)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Bun**: 1.3.2 or higher
+- **Node.js**: 24.x (for compatibility)
+- **PostgreSQL**: 14 or higher
+- **API Keys**:
+  - OpenAI API key (or compatible provider)
+  - Optional: Google OAuth, GitHub OAuth
+  - Optional: Adobe PDF Services (for PDF processing)
+  - Optional: UMLS API key (for medical terminology)
+
+### Installation
+
+1. **Clone the repository**:
 
 ```bash
-# Will build all the app & packages with the supported `build` script.
-pnpm run build
-
-# ℹ️ If you plan to only build apps individually,
-# Please make sure you've built the packages first.
+git clone https://github.com/whojas/gender-lex.git
+cd gender-lex
 ```
 
-#### Develop
+2. **Install dependencies**:
 
 ```bash
-# Will run the development server for all the app & packages with the supported `dev` script.
-pnpm run dev
+bun install
 ```
 
-#### test
+3. **Set up environment variables**:
+
+Copy the example env files and fill in your values:
 
 ```bash
-# Will launch a test suites for all the app & packages with the supported `test` script.
-pnpm run test
+# Database configuration (root level)
+cp packages/database/.env.example packages/database/.env
 
-# You can launch e2e testes with `test:e2e`
-pnpm run test:e2e
-
-# See `@repo/jest-config` to customize the behavior.
+# Web app configuration
+cp apps/web/.env.example apps/web/.env.local
 ```
 
-#### Lint
+Edit the `.env` files with your configuration:
+
+```env
+# packages/database/.env
+DATABASE_URL=postgresql://user:password@localhost:5432/genderlex
+
+# apps/web/.env.local
+DATABASE_URL=postgresql://user:password@localhost:5432/genderlex
+NEXT_PUBLIC_API_URL=http://localhost:3000
+BETTER_AUTH_SECRET=your_secret_key
+AUTH_GOOGLE_ID=your_google_client_id
+AUTH_GOOGLE_SECRET=your_google_secret
+# ... (see apps/web/.env.example for all options)
+```
+
+4. **Set up the database**:
 
 ```bash
-# Will lint all the app & packages with the supported `lint` script.
-# See `@repo/eslint-config` to customize the behavior.
-pnpm run lint
+# Generate Prisma client and ZenStack code
+bun run generate
+
+# Run migrations
+bun run migrate
 ```
 
-#### Format
+5. **Start development servers**:
 
 ```bash
-# Will format all the supported `.ts,.js,json,.tsx,.jsx` files.
-# See `@repo/eslint-config/prettier-base.js` to customize the behavior.
-pnpm format
+# Start all apps in development mode
+bun run dev
 ```
 
-### Remote Caching
+This will start:
+- API server at http://localhost:3000
+- Web app at http://localhost:4000
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+### Building for Production
 
 ```bash
-npx turbo login
+# Build all apps
+bun run build
+
+# Or build individually
+bun run build:api    # Build API only
+bun run build:web    # Build web only
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+### Running in Production
 
 ```bash
-npx turbo link
+# Run migrations in production
+bun run migrate:prod
+
+# Start API server
+bun run prod:api
+
+# Start web server (in another terminal)
+bun run prod:web
 ```
 
-## Useful Links
+## 📦 Scripts
 
-Learn more about the power of Turborepo:
+The root `package.json` provides these scripts:
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+### Development
+- `dev` - Start all apps in development mode with hot reload
+- `generate` - Generate Prisma client and ZenStack code
+- `migrate` - Run database migrations (development)
+- `migrate:prod` - Run database migrations (production)
+
+### Building
+- `build` - Build all apps and packages
+- `build:api` - Build API only
+- `build:web` - Build web only
+
+### Production
+- `prod:api` - Start API in production mode
+- `prod:web` - Start web in production mode
+
+### Quality
+- `test` - Run all tests
+- `test:e2e` - Run end-to-end tests
+- `lint` - Lint all code
+- `format` - Format code with Prettier
+
+## 🛠️ Tech Stack
+
+### Core Technologies
+- **Language**: TypeScript
+- **Package Manager**: Bun
+- **Monorepo**: Turborepo
+- **Database**: PostgreSQL
+- **ORM**: Prisma + ZenStack
+- **Authentication**: Better Auth
+
+### Backend
+- **Runtime**: Bun
+- **Framework**: Elysia
+- **Build Tool**: Nitro
+- **FP Library**: Effect
+- **Validation**: Zod
+- **AI/LLM**: AI SDK
+- **PDF**: Adobe PDF Services
+- **Medical Terms**: UMLS.js
+
+### Frontend
+- **Framework**: Next.js 16
+- **UI Library**: React 19
+- **Components**: Radix UI + shadcn/ui
+- **Styling**: Tailwind CSS 4
+- **i18n**: Lingui
+- **State**: TanStack Query + Zustand
+- **Forms**: React Hook Form
+- **Animation**: Framer Motion
+- **Icons**: Lucide React
+
+### Development Tools
+- **Linting**: oxlint
+- **Formatting**: Prettier
+- **Type Checking**: TypeScript
+- **Git Hooks**: Husky
+- **Staged Files**: lint-staged
+
+## 🏃 Development Workflow
+
+### Adding a New Feature
+
+1. **Create feature branch**:
+```bash
+git checkout -b feature/your-feature-name
+```
+
+2. **Make changes** in the relevant app or package
+
+3. **Test your changes**:
+```bash
+bun run test
+bun run lint
+```
+
+4. **Build to ensure no errors**:
+```bash
+bun run build
+```
+
+5. **Commit and push**:
+```bash
+git add .
+git commit -m "feat: your feature description"
+git push origin feature/your-feature-name
+```
+
+### Database Changes
+
+1. **Update schema** in `packages/database/schema.zmodel`
+
+2. **Generate migration**:
+```bash
+bun run migrate
+```
+
+3. **Generate types**:
+```bash
+bun run generate
+```
+
+### Adding Dependencies
+
+```bash
+# Add to root workspace
+bun add -D package-name
+
+# Add to specific package
+cd apps/api
+bun add package-name
+
+# Add to specific package (workspace)
+bun add package-name --filter=api
+```
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+bun run test
+
+# Run E2E tests
+bun run test:e2e
+
+# Run tests in specific package
+cd apps/api
+bun run test
+```
+
+## 📝 Code Style
+
+The project uses:
+- **oxlint** for linting TypeScript
+- **Prettier** for code formatting
+- **lint-staged** for pre-commit hooks
+
+Code is automatically formatted on commit via Husky hooks.
+
+## 🌍 Internationalization
+
+The web app supports multiple languages:
+- Spanish (es) - Default
+- English (en)
+
+To add translations:
+
+1. Add translation keys using Lingui macros
+2. Run `bun run locales:gen` in `apps/web`
+3. Edit translation files in `apps/web/src/locales/messages/`
+
+## 🔒 Security
+
+- **Authentication**: Secure session-based auth with Better Auth
+- **Database**: Row-level security policies with ZenStack
+- **API**: CORS configuration
+- **Secrets**: Environment variables for sensitive data
+- **Password**: Secure password hashing
+- **OAuth**: Social login with Google and GitHub
+
+## 🐛 Troubleshooting
+
+### Database Connection Issues
+
+```bash
+# Check if PostgreSQL is running
+pg_isready
+
+# Reset database (caution: deletes all data)
+bun run migrate:reset
+```
+
+### Build Errors
+
+```bash
+# Clean node_modules and reinstall
+rm -rf node_modules
+rm bun.lock
+bun install
+
+# Clear Next.js cache
+cd apps/web
+rm -rf .next
+```
+
+### Port Conflicts
+
+Default ports:
+- API: 3000
+- Web: 4000
+
+To use different ports:
+
+```bash
+# API (edit apps/api/nitro.config.ts)
+# Web
+cd apps/web
+bun run dev -- -p 4001
+```
+
+## 📄 License
+
+UNLICENSED - This is private/proprietary software.
+
+## 👥 Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+## 📧 Support
+
+For issues, questions, or contributions, please:
+- Open an issue on GitHub
+- Contact the maintainers
+
+## 🙏 Acknowledgments
+
+- Built with [Turborepo](https://turborepo.com)
+- UI components from [shadcn/ui](https://ui.shadcn.com)
+- Medical terminology via [UMLS](https://www.nlm.nih.gov/research/umls/)
+
+---
+
+**Note**: This project is under active development. Features and documentation may change.
