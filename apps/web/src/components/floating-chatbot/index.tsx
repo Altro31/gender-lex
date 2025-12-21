@@ -2,6 +2,7 @@
 
 import type React from 'react'
 
+import { ChatMessage } from '@repo/db/models'
 import { useState, useRef, useEffect } from 'react'
 import { useChat } from 'ai/react'
 import { Button } from '@/components/ui/button'
@@ -19,6 +20,20 @@ import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
 
 export default function FloatingChatbot() {
 	const [isOpen, setIsOpen] = useState(false)
+	const [messages, setMessages] = useState<ChatMessage[]>([
+		{
+			id: '1',
+			content:
+				'¡Hola! Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?',
+			sender: 'bot',
+			createdAt: new Date(),
+			updatedAt: new Date(),
+			conversationId: '1',
+		},
+	])
+	const [inputValue, setInputValue] = useState('')
+	const [isTyping, setIsTyping] = useState(false)
+	const [isLoadingHistory, setIsLoadingHistory] = useState(false)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 
@@ -47,7 +62,34 @@ export default function FloatingChatbot() {
 		if (isOpen && inputRef.current) {
 			inputRef.current.focus()
 		}
-	}, [isOpen])
+		// Load message history when chat opens
+		if (isOpen && !isLoadingHistory && messages.length === 1) {
+			setIsLoadingHistory(true)
+			getMessages()
+				.then(history => {
+					if (!history.error) {
+						setMessages(history.data)
+					}
+				})
+				.catch(() => {
+					// Keep initial message on error
+				})
+				.finally(() => {
+					setIsLoadingHistory(false)
+				})
+		}
+	}, [isOpen, isLoadingHistory, messages.length])
+
+	const handleSendMessage = async () => {
+		if (!inputValue.trim() || isExecuting) return
+
+		const content = inputValue
+		setInputValue('')
+		setIsTyping(true)
+
+		// Execute the action to send message to backend
+		execute({ content })
+	}
 
 	const handleKeyPress = (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter' && !e.shiftKey) {
@@ -128,17 +170,13 @@ export default function FloatingChatbot() {
 												<p className="text-sm whitespace-pre-wrap">
 													{message.content}
 												</p>
-												{message.createdAt && (
-													<p
-														className={`mt-1 text-xs ${message.role === 'user' ? 'text-blue-100' : 'text-gray-500'}`}
-													>
-														{formatTime(
-															new Date(
-																message.createdAt,
-															),
-														)}
-													</p>
-												)}
+												<p
+													className={`mt-1 text-xs ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'}`}
+												>
+													{formatTime(
+														message.createdAt,
+													)}
+												</p>
 											</div>
 
 											{message.role === 'user' && (

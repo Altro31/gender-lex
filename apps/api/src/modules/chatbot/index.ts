@@ -16,34 +16,17 @@ export default new Elysia({
 		'message',
 		({ body, runEffect }) => {
 			const program = Effect.gen(function* () {
-				const { session, isAuthenticated } = yield* AuthService
-				if (!isAuthenticated || !session) {
-					return yield* Effect.fail(new Error('Unauthorized'))
-				}
-
 				const chatbotService = yield* ChatbotService
-				return yield* chatbotService.sendMessage(
-					session.user.id,
-					body.content,
-				)
-			}).pipe(ChatbotService.provide, AuthService.provide)
+				return yield* chatbotService.sendMessage(body.content)
+			}).pipe(ChatbotService.provide)
 			return runEffect(program)
 		},
 		{ body: 'sendMessageInput', response: 'sendMessageOutput' },
 	)
-	.get(
-		'messages',
-		({ runEffect }) => {
-			const program = Effect.gen(function* () {
-				const { session, isAuthenticated } = yield* AuthService
-				if (!isAuthenticated || !session) {
-					return yield* Effect.fail(new Error('Unauthorized'))
-				}
-
-				const chatbotService = yield* ChatbotService
-				return yield* chatbotService.getMessages(session.user.id)
-			}).pipe(ChatbotService.provide, AuthService.provide)
-			return runEffect(program)
-		},
-		{ response: 'getMessagesOutput' },
-	)
+	.get('messages', ({ runEffect }) => {
+		const program = Effect.gen(function* () {
+			const chatbotService = yield* ChatbotService
+			return yield* chatbotService.getMessages()
+		}).pipe(ChatbotService.provide, AuthService.provide)
+		return runEffect(program)
+	})

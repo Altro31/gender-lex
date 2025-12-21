@@ -1,8 +1,8 @@
-"use server"
+'use server'
 
-import { client } from "@/lib/api/client"
-import { actionClient } from "@/lib/safe-action"
-import { z } from "zod"
+import { client } from '@/lib/api/client'
+import { actionClient } from '@/lib/safe-action'
+import { z } from 'zod'
 
 export const sendMessage = actionClient
 	.inputSchema(z.object({ content: z.string() }))
@@ -12,7 +12,8 @@ export const sendMessage = actionClient
 	})
 
 export async function getMessages() {
-	"use cache: private"
-	const { data } = await client.chatbot.messages.get()
-	return data
+	'use cache: private'
+	const { data, error } = await client.chatbot.messages.get()
+	if (error) return { error: true as const, ...error }
+	return { data, error: false as const }
 }

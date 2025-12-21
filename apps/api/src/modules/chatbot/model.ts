@@ -16,12 +16,4 @@ export const chatbotModels = {
 			createdAt: t.Date(),
 		}),
 	}),
-	getMessagesOutput: t.Array(
-		t.Object({
-			id: t.String(),
-			content: t.String(),
-			sender: t.String(),
-			createdAt: t.Date(),
-		}),
-	),
 }

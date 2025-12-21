@@ -1,26 +1,31 @@
 import "user"
 import "shared/timestamps"
 
+enum Sender {
+user
+bot
+}
+
 model ChatConversation with Timestamps {
   id        String           @id @default(cuid())
-  
+
   userId    String
   user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   messages  ChatMessage[]
-  
+
   @@allow('create,read,update', auth() == user)
   @@allow('delete', auth() == user)
 }
 
 model ChatMessage with Timestamps {
   id              String           @id @default(cuid())
-  
+
   conversationId  String
   conversation    ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  
+
   content         String
-  sender          String           // "user" or "bot"
-  
+  sender          Sender           // "user" or "bot"
+
   @@allow('create,read', auth() == conversation.user)
 }

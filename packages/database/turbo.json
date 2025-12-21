@@ -4,7 +4,7 @@
 	"tasks": {
 		"generate": {
 			"cache": true,
-			"inputs": ["./prisma/schema/**/*.zmodel", "./schema.zmodel"],
+			"inputs": ["./src/schema/**/*.zmodel", "./schema.zmodel"],
 			"outputs": ["./src/generated/**"],
 			"env": ["DATABASE_URL"]
 		},
