@@ -34,9 +34,13 @@ export class ChatbotService extends Effect.Service<ChatbotService>()(
 				// Get or create a conversation for a user
 				getOrCreateConversation: () =>
 					Effect.gen(function* () {
+						if (!session?.userId) {
+							return yield* Effect.fail(new Error('User session required'))
+						}
+
 						const existing = yield* Effect.tryPromise(() =>
 							repo.chatConversation.findFirst({
-								where: { userId: session?.userId },
+								where: { userId: session.userId },
 								orderBy: { updatedAt: 'desc' },
 							}),
 						)
@@ -47,7 +51,7 @@ export class ChatbotService extends Effect.Service<ChatbotService>()(
 
 						return yield* Effect.tryPromise(() =>
 							repo.chatConversation.create({
-								data: { userId: session!.userId },
+								data: { userId: session.userId },
 							}),
 						)
 					}),
@@ -55,10 +59,14 @@ export class ChatbotService extends Effect.Service<ChatbotService>()(
 				// Send a message and get bot response
 				sendMessage: (content: string) =>
 					Effect.gen(function* () {
+						if (!session?.userId) {
+							return yield* Effect.fail(new Error('User session required'))
+						}
+
 						// Get or create conversation
 						const conversation = yield* Effect.tryPromise(() =>
 							repo.chatConversation.findFirst({
-								where: { userId: session?.userId },
+								where: { userId: session.userId },
 								orderBy: { updatedAt: 'desc' },
 							}),
 						).pipe(
@@ -66,7 +74,7 @@ export class ChatbotService extends Effect.Service<ChatbotService>()(
 								if (conv) return Effect.succeed(conv)
 								return Effect.tryPromise(() =>
 									repo.chatConversation.create({
-										data: { userId: session!.userId },
+										data: { userId: session.userId },
 									}),
 								)
 							}),

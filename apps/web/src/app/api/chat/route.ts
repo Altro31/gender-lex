@@ -26,8 +26,9 @@ export async function POST(request: Request) {
 		// Extract text content from the message
 		const userContent = lastMessage.parts
 			.filter((part) => part.type === 'text')
-			.map((part) => part.content)
+			.map((part) => part.content.trim())
 			.join(' ')
+			.trim()
 
 		// Call backend API to send message (which persists to database)
 		const { data, error } = await client.chatbot.message.post({
