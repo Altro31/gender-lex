@@ -15,6 +15,7 @@ function parseEnvs(envs: any) {
         .object({
             PORT: z.coerce.number().int().min(0).default(4000),
             GROQ_API_KEY: z.string(),
+            GEMINI_API_KEY: z.string(),
             PDF_SERVICES_CLIENT_ID: z.string(),
             PDF_SERVICES_CLIENT_SECRET: z.string(),
             BETTER_AUTH_SECRET: z.string().min(32),
