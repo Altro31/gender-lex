@@ -16,7 +16,6 @@
 		"locales:gen": "lingui extract"
 	},
 	"dependencies": {
-		"ai": "^5.0.22",
 		"@base-ui/react": "^1.0.0",
 		"@bprogress/next": "^3.2.12",
 		"@effect/platform": "catalog:",
@@ -34,6 +33,7 @@
 		"@tanstack/react-query": "^5.87.1",
 		"@workflow/world-postgres": "catalog:",
 		"@zenstackhq/server": "catalog:",
+		"ai": "^5.0.22",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"better-auth": "catalog:",
 		"class-variance-authority": "^0.7.1",
@@ -44,7 +44,7 @@
 		"lucide-react": "^0.561.0",
 		"motion": "^12.23.12",
 		"negotiator": "^1.0.0",
-		"next": "^16.0.10",
+		"next": "^16.1.0",
 		"next-safe-action": "^8.0.8",
 		"next-themes": "^0.4.6",
 		"nuqs": "^2.5.1",
