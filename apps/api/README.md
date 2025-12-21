@@ -13,12 +13,12 @@ This is the REST API server built with Elysia and Bun. It provides endpoints for
 - **Gender Terminology Detection**: Identify gendered language and suggest alternatives
 - **Workflow Engine**: Step-by-step analysis pipeline using Workflow
 - **Real-time Updates**: Server-Sent Events (SSE) for streaming analysis progress
-- **AI Chatbot API**: Conversational assistant with intelligent responses
+- **AI Chatbot API**: Conversational assistant powered by Gemini AI
   - Message sending and retrieval endpoints
-  - Conversation history management
-  - Context-aware bot responses about platform features
-  - Keyword-based response system for common queries
-  - Support for models, presets, analysis, and general help topics
+  - Conversation history management with database persistence
+  - AI-generated context-aware responses using Gemini 1.5 Flash
+  - Specialized knowledge about Gender-Lex platform features
+  - Support for models, presets, analysis, and inclusive language suggestions
 - **Authentication**: Integrated with Better Auth for secure access
 - **Model Management**: Configure and manage AI models and analysis presets
 - **OpenAPI Documentation**: Auto-generated API documentation at `/swagger`
@@ -78,7 +78,7 @@ src/
   - Output: `{ userMessage, botMessage }` - Both messages with IDs and timestamps
   - Creates or retrieves existing conversation for the user
   - Saves both user and bot messages to database
-  - Returns context-aware responses based on keywords
+  - Uses Gemini AI to generate intelligent, context-aware responses
 - **GET `/chatbot/messages`** - Retrieve conversation history
   - Returns all messages from user's conversation
   - Messages ordered chronologically (oldest first)
@@ -86,15 +86,16 @@ src/
 
 **Chatbot Features**:
 - Automatic conversation management per user
-- Keyword-based intelligent responses
-- Support for queries about:
+- AI-powered intelligent responses using Gemini 1.5 Flash
+- Conversation history context (last 10 messages)
+- Specialized knowledge about Gender-Lex platform:
   - Models and LLM configuration
   - Analysis presets and combinations
   - Gender bias analysis features
   - Platform navigation and help
-  - Greetings and social interactions
-- Fallback responses for unrecognized queries
-- Bilingual support (Spanish primary, English keywords supported)
+  - Inclusive language suggestions
+- Bilingual support (Spanish primary, with English understanding)
+- Message persistence in database
 
 ### Models (`/models`)
 - Configure AI models for analysis
@@ -140,8 +141,8 @@ AUTH_GITHUB_ID=your_github_client_id
 AUTH_GITHUB_SECRET=your_github_secret
 
 # AI/LLM Configuration
-OPENAI_API_KEY=your_openai_api_key
-AI_MODEL_BASE_URL=https://api.openai.com/v1
+GROQ_API_KEY=your_groq_api_key
+GEMINI_API_KEY=your_gemini_api_key
 
 # Adobe PDF Services (for PDF processing)
 PDF_SERVICES_CLIENT_ID=your_adobe_client_id
@@ -149,6 +150,10 @@ PDF_SERVICES_CLIENT_SECRET=your_adobe_client_secret
 
 # UMLS API (for medical terminology)
 UMLS_API_KEY=your_umls_api_key
+UMLS_API_URL=https://uts-ws.nlm.nih.gov
+
+# Encryption
+ENCRYPTION_KEY=your_32_character_encryption_key
 ```
 
 ### Installation
