@@ -20,7 +20,7 @@ export class ChatbotService extends Effect.Service<ChatbotService>()(
 				name: 'gemini',
 				apiKey: envs.GEMINI_API_KEY,
 			})
-			const geminiModel = geminiProvider('gemini-2.0-flash-exp')
+			const geminiModel = geminiProvider('gemini-1.5-flash')
 
 			return {
 				// Get or create a conversation for a user
