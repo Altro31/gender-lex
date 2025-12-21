@@ -83,24 +83,25 @@ export class ChatbotService extends Effect.Service<ChatbotService>()(
 							}),
 						)
 
-						// Get conversation history for context
-						const messages = yield* effectify(
+						// Get conversation history for context (last 10 messages)
+						const allMessages = yield* effectify(
 							repo.chatMessage.findMany({
 								where: {
 									conversationId: conversation.id,
 								},
-								orderBy: { createdAt: 'asc' },
-								take: 10, // Last 10 messages for context
+								orderBy: { createdAt: 'desc' },
+								take: 10,
 							}),
 						)
 
+						// Reverse to get chronological order (oldest to newest)
+						const messages = allMessages.reverse()
+
 						// Build message history for AI
-						const conversationHistory: ConversationMessage[] = messages
-							.slice(-10) // Last 10 messages
-							.map(msg => ({
-								role: (msg.sender === 'user' ? 'user' : 'assistant') as MessageRole,
-								content: msg.content,
-							}))
+						const conversationHistory: ConversationMessage[] = messages.map(msg => ({
+							role: (msg.sender === 'user' ? 'user' : 'assistant') as MessageRole,
+							content: msg.content,
+						}))
 
 						// Generate AI response using Gemini
 						const { text: botResponse } = yield* Effect.promise(() =>
