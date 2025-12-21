@@ -5,6 +5,14 @@ import { effectify } from '@repo/db/effect'
 import { EnvsService } from '@/shared/envs.service'
 import { generateText } from 'ai'
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
+import { chatbotSystemPrompt } from './prompts/system.prompt'
+
+type MessageRole = 'user' | 'assistant'
+
+interface ConversationMessage {
+	role: MessageRole
+	content: string
+}
 
 export class ChatbotService extends Effect.Service<ChatbotService>()(
 	'ChatbotService',
@@ -87,10 +95,10 @@ export class ChatbotService extends Effect.Service<ChatbotService>()(
 						)
 
 						// Build message history for AI
-						const conversationHistory = messages
+						const conversationHistory: ConversationMessage[] = messages
 							.slice(-10) // Last 10 messages
 							.map(msg => ({
-								role: msg.sender === 'user' ? 'user' : 'assistant',
+								role: (msg.sender === 'user' ? 'user' : 'assistant') as MessageRole,
 								content: msg.content,
 							}))
 
@@ -98,17 +106,8 @@ export class ChatbotService extends Effect.Service<ChatbotService>()(
 						const { text: botResponse } = yield* Effect.promise(() =>
 							generateText({
 								model: geminiModel,
-								messages: conversationHistory as any,
-								system: `Eres un asistente útil para la plataforma Gender-Lex, una herramienta de análisis de sesgos de género en textos. 
-								
-								Puedes ayudar a los usuarios con:
-								- Información sobre modelos LLM y su configuración
-								- Gestión de presets para análisis de sesgos
-								- Explicación de resultados de análisis
-								- Guía sobre cómo usar la plataforma
-								- Sugerencias para lenguaje más inclusivo
-								
-								Responde de manera amigable, concisa y útil. Si no estás seguro de algo, admítelo honestamente.`,
+								messages: conversationHistory,
+								system: chatbotSystemPrompt,
 							}),
 						)
 

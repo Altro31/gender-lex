@@ -1,8 +1,18 @@
 import { client } from '@/lib/api/client'
 
+interface MessagePart {
+	type: string
+	content: string
+}
+
+interface ChatMessage {
+	role: string
+	parts: MessagePart[]
+}
+
 export async function POST(request: Request) {
 	try {
-		const { messages } = await request.json()
+		const { messages }: { messages: ChatMessage[] } = await request.json()
 		
 		// Get the last user message
 		const lastMessage = messages[messages.length - 1]
@@ -15,8 +25,8 @@ export async function POST(request: Request) {
 
 		// Extract text content from the message
 		const userContent = lastMessage.parts
-			.filter((part: any) => part.type === 'text')
-			.map((part: any) => part.content)
+			.filter((part) => part.type === 'text')
+			.map((part) => part.content)
 			.join(' ')
 
 		// Call backend API to send message (which persists to database)
