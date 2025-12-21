@@ -14,6 +14,8 @@ interface ConversationMessage {
 	content: string
 }
 
+const CONVERSATION_HISTORY_LIMIT = 10
+
 export class ChatbotService extends Effect.Service<ChatbotService>()(
 	'ChatbotService',
 	{
@@ -91,14 +93,14 @@ export class ChatbotService extends Effect.Service<ChatbotService>()(
 							}),
 						)
 
-						// Get conversation history for context (last 10 messages)
+						// Get conversation history for context (last N messages)
 						const allMessages = yield* effectify(
 							repo.chatMessage.findMany({
 								where: {
 									conversationId: conversation.id,
 								},
 								orderBy: { createdAt: 'desc' },
-								take: 10,
+								take: CONVERSATION_HISTORY_LIMIT,
 							}),
 						)
 
