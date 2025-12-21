@@ -10,7 +10,16 @@ This is the Next.js web application that provides the user interface for Gender-
 
 - **Document Upload & Analysis**: Upload PDFs or paste text for gender bias analysis
 - **Real-time Analysis**: Stream analysis results as they're generated
-- **AI Chatbot**: Conversational assistant for gender-inclusive language guidance
+- **Floating AI Chatbot**: Always-accessible AI assistant with advanced features
+  - **Fixed Position Widget**: Beautiful floating button accessible from any page
+  - **Smooth Animations**: Modern UI with slide-in/fade effects and hover animations
+  - **AI-Powered Responses**: Integrated with Gemini AI (gemini-2.5-flash) via TanStack AI
+  - **Real-time Streaming**: Server-Sent Events (SSE) for live response streaming
+  - **Conversation Management**: Persistent chat history across sessions
+  - **Interactive Features**: Copy responses, retry failed messages, auto-scroll
+  - **Context-Aware Help**: Get guidance on models, presets, analysis, and platform features
+  - **Bilingual Support**: Interface in Spanish with natural language understanding
+  - **Responsive Design**: Works seamlessly on desktop and mobile devices
 - **Model Management**: Configure and test AI models
 - **Preset Management**: Create and manage analysis presets
 - **User Profiles**: User authentication and profile management
@@ -77,11 +86,37 @@ src/
 - Download analysis reports
 - View bias detection results with suggestions
 
+### Floating AI Chatbot
+- **Modern Floating Widget**
+  - Fixed position at bottom-right corner
+  - Animated open/close transitions
+  - Beautiful gradient effects on hover
+  - Always accessible from any page
+- **AI-Powered Conversations**
+  - Gemini AI integration (gemini-2.5-flash model)
+  - Real-time streaming responses via SSE
+  - Natural language understanding
+  - Context-aware about platform features
+- **Interactive Features**
+  - Copy message content to clipboard
+  - Retry failed or incorrect responses
+  - Auto-scroll to latest messages
+  - Message history persistence
+  - Loading indicators during streaming
+- **User Experience**
+  - Smooth slide-in/fade animations
+  - Responsive design (mobile and desktop)
+  - Clean, modern chat interface
+  - Bilingual support (Spanish/English)
+  - Accessible keyboard navigation
+
 ### Chatbot
-- AI-powered assistant
+- AI-powered assistant (legacy)
 - Context-aware responses
 - Conversation history
 - Gender-inclusive language suggestions
+
+**Note**: The main chatbot feature is now the Floating AI Chatbot widget (see above), which provides a more modern and accessible experience.
 
 ### Model Management
 - Configure AI models (OpenAI-compatible)
@@ -127,6 +162,9 @@ AUTH_GOOGLE_ID=your_google_client_id
 AUTH_GOOGLE_SECRET=your_google_secret
 AUTH_GITHUB_ID=your_github_client_id
 AUTH_GITHUB_SECRET=your_github_secret
+
+# AI Chatbot (Required for Floating Chatbot Widget)
+GEMINI_API_KEY=your_gemini_api_key
 
 # Public URL
 NEXT_PUBLIC_URL=http://localhost:4000

@@ -13,7 +13,12 @@ This is the REST API server built with Elysia and Bun. It provides endpoints for
 - **Gender Terminology Detection**: Identify gendered language and suggest alternatives
 - **Workflow Engine**: Step-by-step analysis pipeline using Workflow
 - **Real-time Updates**: Server-Sent Events (SSE) for streaming analysis progress
-- **Chatbot**: AI-powered assistant for gender-inclusive language guidance
+- **AI Chatbot API**: Conversational assistant with intelligent responses
+  - Message sending and retrieval endpoints
+  - Conversation history management
+  - Context-aware bot responses about platform features
+  - Keyword-based response system for common queries
+  - Support for models, presets, analysis, and general help topics
 - **Authentication**: Integrated with Better Auth for secure access
 - **Model Management**: Configure and manage AI models and analysis presets
 - **OpenAPI Documentation**: Auto-generated API documentation at `/swagger`
@@ -68,9 +73,28 @@ src/
 - Cancel ongoing analyses
 
 ### Chatbot (`/chatbot`)
-- AI-powered conversational assistant
-- Context-aware responses about gender-inclusive language
-- Conversation history management
+- **POST `/chatbot/message`** - Send a message and receive bot response
+  - Input: `{ content: string }` - The user's message
+  - Output: `{ userMessage, botMessage }` - Both messages with IDs and timestamps
+  - Creates or retrieves existing conversation for the user
+  - Saves both user and bot messages to database
+  - Returns context-aware responses based on keywords
+- **GET `/chatbot/messages`** - Retrieve conversation history
+  - Returns all messages from user's conversation
+  - Messages ordered chronologically (oldest first)
+  - Includes sender type (user/bot) and timestamps
+
+**Chatbot Features**:
+- Automatic conversation management per user
+- Keyword-based intelligent responses
+- Support for queries about:
+  - Models and LLM configuration
+  - Analysis presets and combinations
+  - Gender bias analysis features
+  - Platform navigation and help
+  - Greetings and social interactions
+- Fallback responses for unrecognized queries
+- Bilingual support (Spanish primary, English keywords supported)
 
 ### Models (`/models`)
 - Configure AI models for analysis

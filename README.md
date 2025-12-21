@@ -12,7 +12,12 @@ Gender-Lex is a full-stack TypeScript monorepo that provides:
 - **AI-Powered Suggestions**: Get intelligent recommendations for gender-inclusive language
 - **Medical Terminology Support**: Specialized analysis for medical and scientific texts using UMLS
 - **Real-time Analysis**: Stream analysis results as they're generated
-- **AI Chatbot Assistant**: Conversational help for gender-inclusive writing
+- **Floating AI Chatbot**: Always-accessible AI assistant for instant help with gender-inclusive writing
+  - Modern floating widget with smooth animations
+  - Context-aware responses powered by Gemini AI
+  - Streaming responses for real-time interaction
+  - Conversation history management
+  - Copy and retry message features
 - **Customizable Presets**: Create and manage analysis configurations for different use cases
 - **Multi-language Support**: Interface available in English and Spanish
 
@@ -50,7 +55,10 @@ RESTful API server built with:
 - AI model management
 - Preset configuration
 - Medical terminology extraction via UMLS
-- Chatbot endpoints
+- AI Chatbot API with conversation management
+  - Message sending and retrieval endpoints
+  - Conversation history persistence
+  - Context-aware bot responses
 
 📚 [API Documentation](./apps/api/README.md)
 
@@ -67,7 +75,12 @@ Modern web application built with:
 **Key Features**:
 - Document upload interface
 - Real-time analysis visualization
-- AI chatbot interface
+- Floating AI Chatbot Widget
+  - Fixed position chatbot accessible from any page
+  - Smooth animations and modern UI design
+  - Real-time streaming responses via Server-Sent Events
+  - Message history with copy and retry actions
+  - Powered by Gemini AI (gemini-2.5-flash)
 - Model and preset management
 - User authentication and profiles
 - Dark/light theme support
@@ -121,6 +134,7 @@ Shared TypeScript types for:
 - **PostgreSQL**: 14 or higher
 - **API Keys**:
   - OpenAI API key (or compatible provider)
+  - **Gemini API key** (required for Floating AI Chatbot)
   - Optional: Google OAuth, GitHub OAuth
   - Optional: Adobe PDF Services (for PDF processing)
   - Optional: UMLS API key (for medical terminology)
