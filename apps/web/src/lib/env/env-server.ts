@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from 'zod'
 
 const Envs = z.object({
 	API_URL: z.url(),
@@ -10,6 +10,7 @@ const Envs = z.object({
 	BETTER_AUTH_URL: z.url(),
 	UI_URL: z.url(),
 	ENCRYPTION_KEY: z.string().length(32),
+	GEMINI_API_KEY: z.string(),
 })
 
 const envs = z.parse(Envs, process.env)

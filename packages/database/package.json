@@ -3,21 +3,21 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"generate": "zenstack generate --output src/generated",
-		"migrate": "prisma migrate dev --skip-generate",
-		"studio": "prisma studio -b none",
-		"migrate:prod": "prisma migrate deploy"
+		"generate": "zen generate --output src/generated",
+		"migrate": "zen migrate dev",
+		"studio": "zen studio -b none",
+		"migrate:prod": "zen migrate deploy"
 	},
 	"dependencies": {
-		"@zenstackhq/orm": "^3.0.0-beta.27",
-		"@zenstackhq/plugin-policy": "^3.0.0-beta.27",
+		"@zenstackhq/orm": "^3.0.0-beta.34",
+		"@zenstackhq/plugin-policy": "^3.0.0-beta.34",
 		"@zenstackhq/server": "catalog:",
 		"pg": "^8.16.3",
 		"effect": "catalog:"
 	},
 	"devDependencies": {
 		"@types/pg": "^8.15.6",
-		"@zenstackhq/cli": "^3.0.0-beta.27",
+		"@zenstackhq/cli": "^3.0.0-beta.34",
 		"type-fest": "^5.3.0"
 	},
 	"exports": {

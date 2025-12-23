@@ -8,38 +8,37 @@
 		"lint": "oxlint --fix --fix-suggestions --fix-dangerously"
 	},
 	"devDependencies": {
-		"@effect/language-service": "^0.57.1",
+		"@effect/language-service": "catalog:",
 		"@repo/types": "workspace:*",
 		"@types/adm-zip": "^0.5.6",
 		"bun-types": "latest",
-		"elysia": "latest",
 		"nitro": "latest",
 		"rolldown": "latest",
 		"oxlint": "^1.6.0"
 	},
 	"dependencies": {
 		"@adobe/pdfservices-node-sdk": "^4.1.0",
-		"@ai-sdk/openai-compatible": "^1.0.11",
+		"@ai-sdk/openai-compatible": "^2.0.0-beta.60",
 		"@effect/platform": "catalog:",
 		"@effect/platform-node": "catalog:",
 		"@elysiajs/cors": "latest",
 		"@elysiajs/openapi": "latest",
 		"@repo/auth": "workspace:*",
 		"@repo/db": "workspace:*",
+		"@workflow/world-postgres": "catalog:",
 		"@zenstackhq/server": "catalog:",
 		"adm-zip": "^0.5.16",
-		"ai": "^5.0.22",
+		"ai": "catalog:",
 		"better-auth": "catalog:",
 		"effect": "catalog:",
 		"elysia": "catalog:",
 		"umlsjs": "^1.2.1",
 		"workflow": "latest",
-		"@workflow/world-postgres": "catalog:",
 		"zod": "catalog:"
 	},
 	"peerDependencies": {
 		"kysely": "0.28.8",
-		"@ai-sdk/provider": "2.0.0"
+		"@ai-sdk/provider": "^3.0.0-beta.32"
 	},
 	"exports": {
 		".": "./src/index.ts"

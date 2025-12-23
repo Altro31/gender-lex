@@ -26,39 +26,46 @@ import {
 	ReasoningTrigger,
 } from '@/components/ai-elements/reasoning'
 import { Button } from '@/components/ui/button'
-import { fetchServerSentEvents, useChat } from '@tanstack/ai-react'
-import type { ChatStatus } from 'ai'
+import { useChat } from '@ai-sdk/react'
 import { CopyIcon, MessageCircle, RefreshCcwIcon, X } from 'lucide-react'
 import { Activity, useState } from 'react'
 import { Loader } from '../ai-elements/loader'
+import { useRouter } from 'next/navigation'
+import { AuthToolsMessage } from '@/lib/chatbot/tools/auth-helps'
+import { sendNotification } from '../pwa/actions'
 
 export default function FloatingChatbot() {
+	const router = useRouter()
 	const [isOpen, setIsOpen] = useState(false)
 	const [input, setInput] = useState('')
-	const { messages, sendMessage, isLoading, error, reload } = useChat({
-		connection: fetchServerSentEvents('/api/chat'),
-	})
+	const { messages, sendMessage, status, regenerate } =
+		useChat<AuthToolsMessage>({
+			onToolCall({ toolCall }) {
+				if (toolCall.dynamic) return
+				if (toolCall.toolName === 'authRedirect') {
+					alert(toolCall.input.redirect)
+					router.push('/auth/' + toolCall.input.redirect)
+				}
+			},
+		})
 
 	const handleSubmit = (message: PromptInputMessage) => {
 		const hasText = Boolean(message.text)
 		if (!hasText) {
 			return
 		}
-		sendMessage(message.text)
+		sendMessage({ text: message.text })
 		setInput('')
 	}
-
-	const status: ChatStatus = isLoading
-		? 'streaming'
-		: error
-			? 'error'
-			: 'ready'
 
 	return (
 		<>
 			<div className="fixed right-6 bottom-6 z-50">
 				<Button
-					onClick={() => setIsOpen(!isOpen)}
+					onClick={() => {
+						setIsOpen(!isOpen)
+						sendNotification('Hola')
+					}}
 					size="lg"
 					className="group relative h-16 w-16 rounded-full shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl"
 				>
@@ -108,7 +115,7 @@ export default function FloatingChatbot() {
 																<MessageContent>
 																	<MessageResponse>
 																		{
-																			part.content
+																			part.text
 																		}
 																	</MessageResponse>
 																</MessageContent>
@@ -120,7 +127,7 @@ export default function FloatingChatbot() {
 																		<MessageActions>
 																			<MessageAction
 																				onClick={() =>
-																					reload()
+																					regenerate()
 																				}
 																				label="Retry"
 																			>
@@ -129,7 +136,7 @@ export default function FloatingChatbot() {
 																			<MessageAction
 																				onClick={() =>
 																					navigator.clipboard.writeText(
-																						part.content,
+																						part.text,
 																					)
 																				}
 																				label="Copy"
@@ -140,7 +147,7 @@ export default function FloatingChatbot() {
 																	)}
 															</Message>
 														)
-													case 'thinking':
+													case 'reasoning':
 														return (
 															<Reasoning
 																key={`${message.id}-${i}`}
@@ -161,9 +168,7 @@ export default function FloatingChatbot() {
 															>
 																<ReasoningTrigger />
 																<ReasoningContent>
-																	{
-																		part.content
-																	}
+																	{part.text}
 																</ReasoningContent>
 															</Reasoning>
 														)
@@ -173,7 +178,7 @@ export default function FloatingChatbot() {
 											})}
 										</div>
 									))}
-									{isLoading && <Loader />}
+									{status === 'streaming' && <Loader />}
 								</ConversationContent>
 								<ConversationScrollButton />
 							</Conversation>

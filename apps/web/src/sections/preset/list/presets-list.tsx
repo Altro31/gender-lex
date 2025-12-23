@@ -35,7 +35,7 @@ export default function PresetsList({ presets }: Props) {
 					: t`Start by creating your first preset`}
 			</p>
 			{!q && (
-				<CreatePresetDialogTrigger>
+				<CreatePresetDialogTrigger render={<Button />}>
 					<Plus />
 					{t`Create First Preset`}
 				</CreatePresetDialogTrigger>

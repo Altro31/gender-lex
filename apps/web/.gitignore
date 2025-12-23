@@ -4,3 +4,5 @@ next-env.d.ts
 *types.d.ts
 .well-known
 .swc
+
+certificates

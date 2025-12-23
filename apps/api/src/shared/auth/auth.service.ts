@@ -5,10 +5,10 @@ import { DBService } from '../db/db.service'
 import { ContextService } from '../context.service'
 import { effectify } from '@repo/db/effect'
 
-const emptyReturn = { session: undefined, isAuthenticated: false } as {
-	session?: Session & { user: User }
-	isAuthenticated: boolean
-}
+const emptyReturn = {
+	session: undefined,
+	isAuthenticated: false,
+} as unknown as { session: Session & { user: User }; isAuthenticated: boolean }
 
 export class AuthService extends Effect.Service<AuthService>()('AuthService', {
 	effect: Effect.gen(function* () {
@@ -19,6 +19,7 @@ export class AuthService extends Effect.Service<AuthService>()('AuthService', {
 				headers: new Headers(Object.entries(headers as any)),
 			}),
 		)
+
 		if (!res) return emptyReturn
 		const session = yield* effectify(
 			client.session.findUniqueOrThrow({
@@ -27,7 +28,7 @@ export class AuthService extends Effect.Service<AuthService>()('AuthService', {
 			}),
 		)
 		return { session, isAuthenticated: Boolean(session) } as {
-			session?: Session & { user: User }
+			session: Session & { user: User }
 			isAuthenticated: boolean
 		}
 	}),

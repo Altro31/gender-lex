@@ -14,7 +14,10 @@ export const effectPlugin = new Elysia({ name: 'plugin.auth' })
 					.then((res): S => {
 						if (Exit.isSuccess(res)) return res.value
 						const cause = res.cause
-						if (Cause.isFailType(cause)) throw cause.error
+						if (Cause.isFailType(cause)) {
+							console.error(cause.error)
+							throw cause.error
+						}
 						return {} as S
 					}),
 	)
