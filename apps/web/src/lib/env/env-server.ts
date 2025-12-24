@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 const Envs = z
 	.object({
-		PORT: z.int().positive(),
+		PORT: z.coerce.number().int().positive(),
 		API_URL: z.url(),
 		AUTH_GOOGLE_ID: z.string(),
 		AUTH_GOOGLE_SECRET: z.string(),
@@ -17,7 +17,10 @@ const Envs = z
 		WORKFLOW_POSTGRES_URL: z.string().optional(),
 		DATABASE_URL: z.string(),
 		WORKFLOW_POSTGRES_JOB_PREFIX: z.string().optional(),
-		WORKFLOW_POSTGRES_WORKER_CONCURRENCY: z.int().optional(),
+		WORKFLOW_POSTGRES_WORKER_CONCURRENCY: z.coerce
+			.number()
+			.int()
+			.optional(),
 		NEXT_PUBLIC_VAPID_PUBLIC_KEY: z.string(),
 		VAPID_PRIVATE_KEY: z.string(),
 	})

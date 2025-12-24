@@ -1,6 +1,6 @@
 'use server'
 
-import { getPrisma } from '@/lib/prisma/client'
+import { getDB } from '@/lib/db/client'
 import { actionClient } from '@/lib/safe-action'
 import { PresetSchema } from '@/sections/preset/form/preset-schema'
 import { cacheTag, updateTag } from 'next/cache'
@@ -8,9 +8,9 @@ import { z } from 'zod/mini'
 export async function findPresets({ page, q }: { page: number; q?: string }) {
 	'use cache: private'
 	cacheTag('presets')
-	const prisma = await getPrisma()
+	const db = await getDB()
 
-	return prisma.preset.findMany({
+	return db.preset.findMany({
 		where: { name: { contains: q, mode: 'insensitive' } },
 		skip: (page - 1) * 10,
 		take: 10,
@@ -22,8 +22,8 @@ export async function findPresets({ page, q }: { page: number; q?: string }) {
 export const createPreset = actionClient
 	.inputSchema(PresetSchema)
 	.action(async ({ parsedInput: { Models, ...rest } }) => {
-		const prisma = await getPrisma()
-		const data = await prisma.preset.create({
+		const db = await getDB()
+		const data = await db.preset.create({
 			data: {
 				...rest,
 				Models: {
@@ -42,9 +42,9 @@ export const createPreset = actionClient
 export const editPreset = actionClient
 	.inputSchema(z.tuple([z.string(), PresetSchema]))
 	.action(async ({ parsedInput: [id, { Models, ...rest }] }) => {
-		const prisma = await getPrisma()
+		const db = await getDB()
 
-		const data = await prisma.$transaction(async tx => {
+		const data = await db.$transaction(async tx => {
 			await tx.preset.update({
 				where: { id },
 				data: { Models: { deleteMany: {} } },
@@ -74,9 +74,9 @@ export const editPreset = actionClient
 export const deletePreset = actionClient
 	.inputSchema(z.string())
 	.action(async ({ parsedInput: id }) => {
-		const prisma = await getPrisma()
+		const db = await getDB()
 
-		await prisma.preset.delete({ where: { id } })
+		await db.preset.delete({ where: { id } })
 
 		updateTag('presets')
 		return { success: true }
@@ -85,8 +85,8 @@ export const deletePreset = actionClient
 export const clonePreset = actionClient
 	.inputSchema(z.string())
 	.action(async ({ parsedInput: id }) => {
-		const prisma = await getPrisma()
-		const { Models, ...rest } = await prisma.preset.findUniqueOrThrow({
+		const db = await getDB()
+		const { Models, ...rest } = await db.preset.findUniqueOrThrow({
 			where: { id },
 			omit: {
 				id: true,
@@ -104,7 +104,7 @@ export const clonePreset = actionClient
 			},
 		})
 
-		const cloned = await prisma.preset.create({
+		const cloned = await db.preset.create({
 			data: {
 				name: rest.name + ' (Copy)',
 				description: rest.description,
@@ -125,14 +125,14 @@ export const getPresetsSelect = async ({ page }: { page: number }) => {
 	'use cache: private'
 	cacheTag('presets')
 
-	const prisma = await getPrisma()
-	return prisma.preset.findMany({ skip: page * 20, take: 20 })
+	const db = await getDB()
+	return db.preset.findMany({ skip: page * 20, take: 20 })
 }
 
 export const getLastUsedPreset = async () => {
 	'use cache: private'
 	cacheTag('presets')
 
-	const prisma = await getPrisma()
-	return prisma.preset.findFirst({ orderBy: [{ usedAt: 'desc' }] })
+	const db = await getDB()
+	return db.preset.findFirst({ orderBy: [{ usedAt: 'desc' }] })
 }

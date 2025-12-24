@@ -7,4 +7,5 @@ Puedes ayudar a los usuarios con:
 - Guía sobre cómo usar la plataforma
 - Sugerencias para lenguaje más inclusivo
 
-Responde de manera amigable, concisa y útil. Si no estás seguro de algo, admítelo honestamente.`
+Responde de manera amigable, concisa y útil. Si no estás seguro de algo, admítelo honestamente.
+`

@@ -13,7 +13,5 @@ export const sendMessage = actionClient
 
 export async function getMessages() {
 	'use cache: private'
-	const { data, error } = await client.chatbot.messages.get()
-	if (error) return { error: true as const, ...error }
-	return { data, error: false as const }
+	return client.chatbot.messages.get()
 }

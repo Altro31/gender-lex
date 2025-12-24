@@ -1,7 +1,7 @@
 'use server'
 
 import { getSession } from '@/lib/auth/auth-server'
-import { getPrisma } from '@/lib/prisma/client'
+import { getDB } from '@/lib/db/client'
 import { actionClient } from '@/lib/safe-action'
 import { revalidatePath } from 'next/cache'
 import z from 'zod'
@@ -19,8 +19,8 @@ export const getUserProfile = async () => {
 		throw new Error('Usuario no autenticado')
 	}
 
-	const prisma = await getPrisma()
-	const user = await prisma.user.findUnique({
+	const db = await getDB()
+	const user = await db.user.findUnique({
 		where: { id: session.user.id },
 		select: {
 			id: true,
@@ -50,8 +50,8 @@ export const updateUserProfile = actionClient
 			throw new Error('Usuario no autenticado')
 		}
 
-		const prisma = await getPrisma()
-		const updatedUser = await prisma.user.update({
+		const db = await getDB()
+		const updatedUser = await db.user.update({
 			where: { id: session.user.id },
 			data: { name: parsedInput.name },
 		})
@@ -68,8 +68,8 @@ export const updateUserImage = actionClient
 			throw new Error('Usuario no autenticado')
 		}
 
-		const prisma = await getPrisma()
-		const updatedUser = await prisma.user.update({
+		const db = await getDB()
+		const updatedUser = await db.user.update({
 			where: { id: session.user.id },
 			data: { image: parsedInput.image },
 		})

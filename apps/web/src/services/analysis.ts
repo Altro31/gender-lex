@@ -2,7 +2,7 @@
 
 import { client } from '@/lib/api/client'
 import { getSession } from '@/lib/auth/auth-server'
-import { getPrisma } from '@/lib/prisma/client'
+import { getDB } from '@/lib/db/client'
 import { actionClient } from '@/lib/safe-action'
 import type { HomeSchema } from '@/sections/home/form/home-schema'
 import { cacheTag, updateTag } from 'next/cache'
@@ -96,11 +96,8 @@ export async function findOneAnalysis(id: string) {
 export async function findRecentAnalyses() {
 	'use cache: private'
 	cacheTag(`analyses`)
-	const prisma = await getPrisma()
-	return prisma.analysis.findMany({
-		orderBy: [{ createdAt: 'desc' }],
-		take: 5,
-	})
+	const db = await getDB()
+	return db.analysis.findMany({ orderBy: [{ createdAt: 'desc' }], take: 5 })
 }
 
 export async function getStatusCount() {

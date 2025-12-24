@@ -44,7 +44,7 @@ export default function FloatingChatbot() {
 				if (toolCall.dynamic) return
 				if (toolCall.toolName === 'authRedirect') {
 					alert(toolCall.input.redirect)
-					router.push('/auth/' + toolCall.input.redirect)
+					// router.push('/auth/' + toolCall.input.redirect)
 				}
 			},
 		})
