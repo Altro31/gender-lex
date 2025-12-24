@@ -1,5 +1,5 @@
-import RHFInput from "@/components/rhf/rhf-input"
-import { Button } from "@/components/ui/button"
+import RHFInput from '@/components/rhf/rhf-input'
+import { Button } from '@/components/ui/button'
 import {
 	FormControl,
 	FormDescription,
@@ -7,14 +7,14 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form"
-import { Progress } from "@/components/ui/progress"
-import { Slider } from "@/components/ui/slider"
-import { useMultiStepForm } from "@/hooks/use-multistep-form"
-import type { ModelSchema } from "@/sections/model/form/model-schema"
-import { t } from "@lingui/core/macro"
-import { Loader2 } from "lucide-react"
-import { useFormContext, useFormState } from "react-hook-form"
+} from '@/components/ui/form'
+import { Progress } from '@/components/ui/progress'
+import { Slider } from '@/components/ui/slider'
+import { useMultiStepForm } from '@/hooks/use-multistep-form'
+import type { ModelSchema } from '@/sections/model/form/model-schema'
+import { t } from '@lingui/core/macro'
+import { Loader2 } from 'lucide-react'
+import { useFormContext, useFormState } from 'react-hook-form'
 
 export function MultiStepViewer() {
 	const { trigger } = useFormContext<ModelSchema>()
@@ -65,8 +65,8 @@ export function MultiStepViewer() {
 								max={1}
 								step={0.1}
 								value={[field.value]}
-								onValueChange={(values) => {
-									field.onChange(values[0])
+								onValueChange={value => {
+									field.onChange(value)
 								}}
 							/>
 						</FormControl>
@@ -92,9 +92,9 @@ export function MultiStepViewer() {
 		AnimateContainer,
 	} = useMultiStepForm({
 		steps: stepFormElements,
-		onStepValidation: async (step) => {
+		onStepValidation: async step => {
 			if (step === 1) {
-				return trigger(["apiKey", "connection", "name"], {
+				return trigger(['apiKey', 'connection', 'name'], {
 					shouldFocus: true,
 				})
 			}
@@ -134,7 +134,7 @@ export function MultiStepViewer() {
 					<Button
 						size="sm"
 						type="button"
-						variant={"secondary"}
+						variant={'secondary'}
 						onClick={goToNext}
 					>
 						{t`Next`}

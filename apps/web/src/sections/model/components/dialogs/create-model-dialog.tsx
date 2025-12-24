@@ -1,21 +1,23 @@
-"use client"
+'use client'
 
-import BaseDialog from "@/components/dialog/base-dialog"
 import {
+	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/ui/dialog"
-import CreateModelFormContainer from "@/sections/model/form/create-model-form-container"
-import { t } from "@lingui/core/macro"
-import { type PropsWithChildren } from "react"
+	DialogTrigger,
+} from '@/components/ui/dialog'
+import CreateModelFormContainer from '@/sections/model/form/create-model-form-container'
+import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
+import { t } from '@lingui/core/macro'
 
-interface Props extends PropsWithChildren {}
+const createModelDialog = DialogPrimitive.createHandle()
 
-export default function CreateModelDialog({ children }: Props) {
+export function CreateModelDialog() {
+	const handleSucceed = () => createModelDialog.close()
 	return (
-		<BaseDialog trigger={children}>
+		<Dialog handle={createModelDialog}>
 			<DialogContent className="max-w-2xl">
 				<DialogHeader>
 					<DialogTitle>{t`Create New Model`}</DialogTitle>
@@ -23,8 +25,14 @@ export default function CreateModelDialog({ children }: Props) {
 						{t`Set up a new connection to a language model`}
 					</DialogDescription>
 				</DialogHeader>
-				<CreateModelFormContainer />
+				<CreateModelFormContainer onSuccess={handleSucceed} />
 			</DialogContent>
-		</BaseDialog>
+		</Dialog>
 	)
+}
+
+export function CreateModelDialogTrigger(
+	props: Omit<React.ComponentProps<typeof DialogTrigger>, 'handle'>,
+) {
+	return <DialogTrigger handle={createModelDialog} {...props} />
 }

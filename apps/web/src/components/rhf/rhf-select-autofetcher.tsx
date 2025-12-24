@@ -63,6 +63,8 @@ export default function RHFSelectAutofetcher<T>({
 		item => getGroup?.(item) ?? '',
 	)
 
+	const groups = Object.entries(grouped)
+
 	return (
 		<FormField
 			name={name}
@@ -90,7 +92,7 @@ export default function RHFSelectAutofetcher<T>({
 								</SelectTrigger>
 							</FormControl>
 							<SelectContent className="w-min">
-								{Object.entries(grouped).map(
+								{groups.map(
 									([key, value]) =>
 										value && (
 											<SelectGroup key={key}>
@@ -123,7 +125,9 @@ export default function RHFSelectAutofetcher<T>({
 								)}
 								{renderLastItem && (
 									<>
-										<SelectSeparator />
+										{groups.length > 0 && (
+											<SelectSeparator />
+										)}
 										<SelectGroup>
 											{renderLastItem}
 										</SelectGroup>

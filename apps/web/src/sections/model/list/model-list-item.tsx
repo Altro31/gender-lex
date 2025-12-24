@@ -18,9 +18,12 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useSse } from '@/lib/sse'
-import DeleteModelAlertDialog from '@/sections/model/components/dialogs/delete-model-alert-dialog-content'
-import DetailsModelDialog from '@/sections/model/components/dialogs/details-model-dialog'
-import EditModelDialog from '@/sections/model/components/dialogs/edit-model-dialog'
+import { DeleteModelAlertDialogTrigger } from '@/sections/model/components/dialogs/delete-model-alert-dialog'
+import { DetailsModelDialogTrigger } from '@/sections/model/components/dialogs/details-model-dialog'
+import {
+	EditModelDialog,
+	EditModelDialogTrigger,
+} from '@/sections/model/components/dialogs/edit-model-dialog'
 import TestConnectionButton from '@/sections/model/components/test-connection-button'
 import {
 	getErrorMessage,
@@ -91,37 +94,48 @@ export default function ModelListItem({ model: initialModel }: Props) {
 							<Settings className="size-4" />
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
-							<DetailsModelDialog model={model}>
-								<DropdownMenuItem disabled={isDeleting}>
-									<Eye />
-									{t`Details`}
-								</DropdownMenuItem>
-							</DetailsModelDialog>
+							<DetailsModelDialogTrigger
+								nativeButton={false}
+								payload={{ model }}
+								render={
+									<DropdownMenuItem disabled={isDeleting} />
+								}
+							>
+								<Eye />
+								{t`Details`}
+							</DetailsModelDialogTrigger>
 
 							{!isDefault && (
 								<>
-									<EditModelDialog model={model}>
-										<DropdownMenuItem disabled={isDeleting}>
-											<Edit />
-											{t`Edit`}
-										</DropdownMenuItem>
-									</EditModelDialog>
-									<DeleteModelAlertDialog
-										model={model}
-										onDelete={handleItemStatus('deleting')}
+									<EditModelDialogTrigger
+										nativeButton={false}
+										payload={{ model }}
+										render={
+											<DropdownMenuItem
+												disabled={isDeleting}
+											/>
+										}
 									>
-										<DropdownMenuItem
-											variant="destructive"
-											disabled={isDeleting}
-										>
-											{isDeleting ? (
-												<Loader />
-											) : (
-												<Trash2 />
-											)}
-											{t`Delete`}
-										</DropdownMenuItem>
-									</DeleteModelAlertDialog>
+										<Edit />
+										{t`Edit`}
+									</EditModelDialogTrigger>
+									<DeleteModelAlertDialogTrigger
+										nativeButton={false}
+										payload={{
+											model,
+											onDelete:
+												handleItemStatus('deleting'),
+										}}
+										render={
+											<DropdownMenuItem
+												variant="destructive"
+												disabled={isDeleting}
+											/>
+										}
+									>
+										{isDeleting ? <Loader /> : <Trash2 />}
+										{t`Delete`}
+									</DeleteModelAlertDialogTrigger>
 								</>
 							)}
 						</DropdownMenuContent>

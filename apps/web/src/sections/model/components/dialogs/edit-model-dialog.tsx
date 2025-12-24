@@ -1,33 +1,55 @@
-"use client"
+'use client'
 
-import BaseDialog from "@/components/dialog/base-dialog"
 import {
+	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/ui/dialog"
-import EditModelFormContainer from "@/sections/model/form/edit-model-form-container"
-import type { ModelsResponseItem } from "@/types/model"
-import { t } from "@lingui/core/macro"
-import { type PropsWithChildren } from "react"
+	DialogTrigger,
+} from '@/components/ui/dialog'
+import EditModelFormContainer from '@/sections/model/form/edit-model-form-container'
+import type { ModelsResponseItem } from '@/types/model'
+import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
+import { t } from '@lingui/core/macro'
 
-interface Props extends PropsWithChildren {
+interface EditModelPayload {
 	model: ModelsResponseItem
 }
 
-export default function EditModelDialog({ children, model }: Props) {
+const editModelDialog = DialogPrimitive.createHandle<EditModelPayload>()
+
+export function EditModelDialog() {
+	const handleSucceed = () => editModelDialog.close()
 	return (
-		<BaseDialog trigger={children}>
-			<DialogContent className="max-w-2xl">
-				<DialogHeader>
-					<DialogTitle>{t`Edit Model: ${model.name}`}</DialogTitle>
-					<DialogDescription>
-						{t`Edit the connection of model: ${model.name}`}
-					</DialogDescription>
-				</DialogHeader>
-				<EditModelFormContainer model={model} />
-			</DialogContent>
-		</BaseDialog>
+		<Dialog handle={editModelDialog}>
+			{({ payload }) => {
+				if (!payload) return null
+				const { model } = payload
+				return (
+					<DialogContent className="max-w-2xl">
+						<DialogHeader>
+							<DialogTitle>{t`Edit Model: ${model.name}`}</DialogTitle>
+							<DialogDescription>
+								{t`Edit the connection of model: ${model.name}`}
+							</DialogDescription>
+						</DialogHeader>
+						<EditModelFormContainer
+							model={model}
+							onSuccess={handleSucceed}
+						/>
+					</DialogContent>
+				)
+			}}
+		</Dialog>
 	)
+}
+
+export function EditModelDialogTrigger(
+	props: Omit<
+		React.ComponentProps<typeof DialogTrigger>,
+		'handle' | ('payload' & { payload: EditModelPayload })
+	>,
+) {
+	return <DialogTrigger handle={editModelDialog} {...props} />
 }

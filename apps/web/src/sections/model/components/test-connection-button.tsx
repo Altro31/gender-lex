@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { testConnection } from "@/services/model"
-import { t } from "@lingui/core/macro"
-import { useAction } from "next-safe-action/hooks"
-import { type ComponentProps, type MouseEvent } from "react"
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { testConnection } from '@/services/model'
+import { ButtonProps } from '@base-ui/react'
+import { t } from '@lingui/core/macro'
+import { useAction } from 'next-safe-action/hooks'
 
-interface Props extends ComponentProps<typeof Button> {
+type Props = ButtonProps & {
 	id: string
 	onSuccess?: () => any
 	onError?: () => any
@@ -28,7 +28,7 @@ export default function TestConnectionButton({
 		onExecute,
 	})
 
-	const handleTest = (e: MouseEvent<HTMLButtonElement>) => {
+	const handleTest = (e: any) => {
 		execute(id)
 		onClick?.(e)
 	}
@@ -39,7 +39,7 @@ export default function TestConnectionButton({
 			size="sm"
 			disabled={isPending}
 			onClick={handleTest}
-			className={cn("text-sm", className)}
+			className={cn('text-sm', className)}
 			{...props}
 		>
 			{children}

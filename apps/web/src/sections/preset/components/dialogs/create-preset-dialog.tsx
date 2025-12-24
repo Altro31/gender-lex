@@ -22,7 +22,6 @@ const createPresetDialog = DialogPrimitive.createHandle()
 
 export function CreatePresetDialog() {
 	const handleSucceed = () => createPresetDialog.close()
-
 	return (
 		<Dialog handle={createPresetDialog}>
 			<DialogContent className="max-w-2xl">
