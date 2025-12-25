@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { t } from "@lingui/core/macro"
-import { Eye, EyeOff, Settings } from "lucide-react"
-import { useState } from "react"
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { t } from '@lingui/core/macro'
+import { Eye, EyeOff, Settings } from 'lucide-react'
+import { useState } from 'react'
 
 interface Props {
 	text: string
@@ -29,11 +29,7 @@ export default function AnalysisContentOriginalText({ text }: Props) {
 						}
 						className="gap-2"
 					>
-						{showSensitiveContent ? (
-							<EyeOff className="h-4 w-4" />
-						) : (
-							<Eye className="h-4 w-4" />
-						)}
+						{showSensitiveContent ? <EyeOff /> : <Eye />}
 						{showSensitiveContent ? t`Hide` : t`Show`}
 					</Button>
 				</div>

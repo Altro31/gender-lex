@@ -1,5 +1,4 @@
 import { InferUITools, tool, UIDataTypes, UIMessage } from 'ai'
-import { redirect } from 'next/navigation'
 import z from 'zod'
 
 export const authHelpTools = {

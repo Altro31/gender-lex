@@ -24,7 +24,7 @@ export default function SearchInput({ name, className, ...props }: Props) {
 	)
 	return (
 		<div className={cn(className, 'relative')} {...props}>
-			<Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
+			<Search className="absolute top-1/2 left-3  -translate-y-1/2 transform text-muted-foreground" />
 			<Input
 				value={searchTerm}
 				placeholder={t`Search models...`}

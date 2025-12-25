@@ -31,7 +31,7 @@ export default function ModelList({ modelsResponse: models }: Props) {
 			</p>
 			{!searchTerm && (
 				<CreateModelDialogTrigger render={<Button />}>
-					<Plus className="size-4" />
+					<Plus />
 					{t`Create First Model`}
 				</CreateModelDialogTrigger>
 			)}

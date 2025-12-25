@@ -41,7 +41,7 @@
 		]
 	},
 	"catalog": {
-		"ai": "^6.0.0-beta.168",
+		"ai": "^6.0.3",
 		"typescript": "^5.8.3",
 		"better-auth": "^1.4.0",
 		"@zenstackhq/server": "^3.0.0-beta.34",

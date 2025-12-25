@@ -1,47 +1,47 @@
-"use client"
+'use client'
 
 import {
 	DropdownMenuItem,
 	DropdownMenuSub,
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
-} from "@/components/ui/dropdown-menu"
-import { setTheme } from "@/services/registers"
-import { t } from "@lingui/core/macro"
-import { Moon, Sun } from "lucide-react"
-import { useState, type MouseEvent } from "react"
+} from '@/components/ui/dropdown-menu'
+import { t } from '@lingui/core/macro'
+import { LaptopMinimal, Moon, Sun } from 'lucide-react'
+import { useTheme } from 'next-themes'
+import { useState } from 'react'
 
 export default function ThemeSwitcher() {
 	const [open, setOpen] = useState(false)
-	const changeTheme = (isDark: boolean) => async (e: MouseEvent) => {
-		const target = document.querySelector<HTMLDivElement>("#theme")
-		if (!target) return
-		const newValue = !isDark
-		if (newValue) {
-			target.dataset.dark = newValue + ""
-		} else {
-			delete target.dataset.dark
-		}
-		void setTheme(newValue)
-	}
+	const { theme, setTheme } = useTheme()
+
+	const handleTheme = (theme: 'dark' | 'ligth' | 'system') => () =>
+		setTheme(theme)
 
 	return (
 		<DropdownMenuSub onOpenChange={setOpen} open={open}>
 			<DropdownMenuSubTrigger className="gap-2">
-				<Moon className="size-4 not-dark:hidden" />
-				<Sun className="size-4 dark:hidden" />
+				{theme === 'dark' && <Moon />}
+				{theme === 'ligth' && <Sun />}
+				{theme === 'system' && <LaptopMinimal />}
 				{t`Theme`}
 			</DropdownMenuSubTrigger>
 			<DropdownMenuSubContent>
 				<DropdownMenuItem
-					onClick={changeTheme(false)}
-					className="dark:pointer-events-none dark:opacity-50"
+					onClick={handleTheme('system')}
+					disabled={theme === 'system'}
+				>
+					<LaptopMinimal /> {t`System`}
+				</DropdownMenuItem>
+				<DropdownMenuItem
+					onClick={handleTheme('dark')}
+					disabled={theme === 'dark'}
 				>
 					<Moon /> {t`Dark`}
 				</DropdownMenuItem>
 				<DropdownMenuItem
-					onClick={changeTheme(true)}
-					className="not-dark:pointer-events-none not-dark:opacity-50"
+					onClick={handleTheme('ligth')}
+					disabled={theme === 'ligth'}
 				>
 					<Sun /> {t`Light`}
 				</DropdownMenuItem>

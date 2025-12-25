@@ -16,8 +16,8 @@
 		"locales:gen": "lingui extract"
 	},
 	"dependencies": {
-		"@ai-sdk/google": "^3.0.0-beta.89",
-		"@ai-sdk/react": "^3.0.0-beta.172",
+		"@ai-sdk/google": "^3.0.1",
+		"@ai-sdk/react": "^3.0.3",
 		"@base-ui/react": "^1.0.0",
 		"@bprogress/next": "^3.2.12",
 		"@effect/platform": "catalog:",

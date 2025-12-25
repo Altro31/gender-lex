@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { GalleryVerticalEnd, PanelLeftIcon } from "lucide-react"
+import { GalleryVerticalEnd, PanelLeftIcon } from 'lucide-react'
 
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar'
 
 export function Logo() {
 	const { toggleSidebar, state } = useSidebar()
@@ -20,10 +20,10 @@ export function Logo() {
 					className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 				>
 					<div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-						{state === "collapsed" ? (
-							<PanelLeftIcon className="size-4" />
+						{state === 'collapsed' ? (
+							<PanelLeftIcon />
 						) : (
-							<GalleryVerticalEnd className="size-4" />
+							<GalleryVerticalEnd />
 						)}
 					</div>
 					<div className="flex flex-col gap-0.5 leading-none">

@@ -133,7 +133,7 @@ function Login() {
 				render={<SidebarMenuButton size="lg" />}
 			>
 				<div className="grid size-8 shrink-0 place-content-center">
-					<LogIn className="size-4" />
+					<LogIn />
 				</div>
 				<div className="grid flex-1 text-left text-sm leading-tight">
 					<span className="truncate font-medium">{t`Login`}</span>

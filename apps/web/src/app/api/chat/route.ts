@@ -8,9 +8,8 @@ const google = createGoogleGenerativeAI({ apiKey: envs.GEMINI_API_KEY })
 const geminiModel = google('gemini-2.5-flash')
 
 export async function POST(request: Request) {
-	const { messages, ...rest }: { messages: UIMessage[]; message: any } =
+	const { messages }: { messages: UIMessage[]; message: any } =
 		await request.json()
-	console.log(rest)
 	const conversationHistory = await convertToModelMessages(messages)
 	const result = streamText({
 		model: geminiModel,

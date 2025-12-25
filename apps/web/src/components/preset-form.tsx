@@ -1,34 +1,34 @@
-"use client"
+'use client'
 
-import type React from "react"
+import type React from 'react'
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
+} from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import { Plus, Settings } from "lucide-react"
-import ModelConfigCard from "@/components/model-config-card"
+} from '@/components/ui/card'
+import { Plus, Settings } from 'lucide-react'
+import ModelConfigCard from '@/components/model-config-card'
 
 interface ModelConfig {
 	modelId: string
 	modelName: string
-	role: "primary" | "secondary" | "tertiary"
+	role: 'primary' | 'secondary' | 'tertiary'
 	parameters: {
 		temperature: number
 		maxTokens: number
@@ -53,31 +53,31 @@ interface Preset {
 
 interface PresetFormProps {
 	initialData?: Preset
-	onSubmit: (data: Omit<Preset, "id" | "createdAt" | "usageCount">) => void
+	onSubmit: (data: Omit<Preset, 'id' | 'createdAt' | 'usageCount'>) => void
 	isEditing?: boolean
 }
 
 // Mock data for available models
 const availableModels = [
-	{ id: "1", name: "GPT-4 Principal", provider: "OpenAI" },
-	{ id: "2", name: "Claude Sonnet", provider: "Anthropic" },
-	{ id: "3", name: "Llama Local", provider: "Meta" },
-	{ id: "4", name: "Gemini Pro", provider: "Google" },
+	{ id: '1', name: 'GPT-4 Principal', provider: 'OpenAI' },
+	{ id: '2', name: 'Claude Sonnet', provider: 'Anthropic' },
+	{ id: '3', name: 'Llama Local', provider: 'Meta' },
+	{ id: '4', name: 'Gemini Pro', provider: 'Google' },
 ]
 
 const categories = [
-	"Escritura",
-	"Desarrollo",
-	"Investigación",
-	"Análisis",
-	"Creatividad",
-	"General",
+	'Escritura',
+	'Desarrollo',
+	'Investigación',
+	'Análisis',
+	'Creatividad',
+	'General',
 ]
 
 const roleOptions = [
-	{ value: "primary", label: "Principal" },
-	{ value: "secondary", label: "Secundario" },
-	{ value: "tertiary", label: "Terciario" },
+	{ value: 'primary', label: 'Principal' },
+	{ value: 'secondary', label: 'Secundario' },
+	{ value: 'tertiary', label: 'Terciario' },
 ]
 
 export default function PresetForm({
@@ -86,9 +86,9 @@ export default function PresetForm({
 	isEditing = false,
 }: PresetFormProps) {
 	const [formData, setFormData] = useState({
-		name: initialData?.name || "",
-		description: initialData?.description || "",
-		category: initialData?.category || "",
+		name: initialData?.name || '',
+		description: initialData?.description || '',
+		category: initialData?.category || '',
 		isActive: initialData?.isActive ?? true,
 		models: initialData?.models || [],
 		lastUsed: initialData?.lastUsed,
@@ -100,31 +100,31 @@ export default function PresetForm({
 		const newErrors: Record<string, string> = {}
 
 		if (!formData.name.trim()) {
-			newErrors.name = "El nombre es requerido"
+			newErrors.name = 'El nombre es requerido'
 		}
 
 		if (!formData.category) {
-			newErrors.category = "La categoría es requerida"
+			newErrors.category = 'La categoría es requerida'
 		}
 
 		if (formData.models.length === 0) {
-			newErrors.models = "Debe agregar al menos un modelo"
+			newErrors.models = 'Debe agregar al menos un modelo'
 		}
 
 		// Validate that there's at least one primary model
 		const primaryModels = formData.models.filter(
-			(model) => model.role === "primary",
+			model => model.role === 'primary',
 		)
 		if (primaryModels.length === 0) {
-			newErrors.primaryModel = "Debe tener al menos un modelo principal"
+			newErrors.primaryModel = 'Debe tener al menos un modelo principal'
 		}
 
 		// Validate unique roles
-		const roles = formData.models.map((model) => model.role)
+		const roles = formData.models.map(model => model.role)
 		const uniqueRoles = new Set(roles)
 		if (roles.length !== uniqueRoles.size) {
 			newErrors.uniqueRoles =
-				"No puede haber modelos duplicados con el mismo rol"
+				'No puede haber modelos duplicados con el mismo rol'
 		}
 
 		setErrors(newErrors)
@@ -143,23 +143,20 @@ export default function PresetForm({
 
 	const addModel = () => {
 		const newModel: ModelConfig = {
-			modelId: "",
-			modelName: "",
-			role: "secondary",
+			modelId: '',
+			modelName: '',
+			role: 'secondary',
 			parameters: {
 				temperature: 0.7,
 				maxTokens: 2000,
 				topP: 0.9,
 				frequencyPenalty: 0.0,
 				presencePenalty: 0.0,
-				systemPrompt: "",
+				systemPrompt: '',
 			},
 		}
 
-		setFormData({
-			...formData,
-			models: [...formData.models, newModel],
-		})
+		setFormData({ ...formData, models: [...formData.models, newModel] })
 	}
 
 	const removeModel = (index: number) => {
@@ -172,10 +169,7 @@ export default function PresetForm({
 	const updateModel = (index: number, updatedModel: ModelConfig) => {
 		const updatedModels = [...formData.models]
 		updatedModels[index] = updatedModel
-		setFormData({
-			...formData,
-			models: updatedModels,
-		})
+		setFormData({ ...formData, models: updatedModels })
 	}
 
 	return (
@@ -197,14 +191,14 @@ export default function PresetForm({
 							<Input
 								id="name"
 								value={formData.name}
-								onChange={(e) =>
+								onChange={e =>
 									setFormData({
 										...formData,
 										name: e.target.value,
 									})
 								}
 								placeholder="ej. Análisis Creativo"
-								className={errors.name ? "border-red-500" : ""}
+								className={errors.name ? 'border-red-500' : ''}
 							/>
 							{errors.name && (
 								<p className="text-sm text-red-600">
@@ -217,7 +211,7 @@ export default function PresetForm({
 							<Label htmlFor="category">Categoría *</Label>
 							<Select
 								value={formData.category}
-								onValueChange={(value) =>
+								onValueChange={value =>
 									setFormData({
 										...formData,
 										category: value,
@@ -226,13 +220,13 @@ export default function PresetForm({
 							>
 								<SelectTrigger
 									className={
-										errors.category ? "border-red-500" : ""
+										errors.category ? 'border-red-500' : ''
 									}
 								>
 									<SelectValue placeholder="Selecciona una categoría" />
 								</SelectTrigger>
 								<SelectContent>
-									{categories.map((category) => (
+									{categories.map(category => (
 										<SelectItem
 											key={category}
 											value={category}
@@ -255,7 +249,7 @@ export default function PresetForm({
 						<Textarea
 							id="description"
 							value={formData.description}
-							onChange={(e) =>
+							onChange={e =>
 								setFormData({
 									...formData,
 									description: e.target.value,
@@ -270,7 +264,7 @@ export default function PresetForm({
 						<Switch
 							id="isActive"
 							checked={formData.isActive}
-							onCheckedChange={(checked) =>
+							onCheckedChange={checked =>
 								setFormData({ ...formData, isActive: checked })
 							}
 						/>
@@ -298,7 +292,7 @@ export default function PresetForm({
 							size="sm"
 							className="flex items-center gap-2"
 						>
-							<Plus className="h-4 w-4" />
+							<Plus />
 							Agregar Modelo
 						</Button>
 					</div>
@@ -329,7 +323,7 @@ export default function PresetForm({
 								onClick={addModel}
 								variant="outline"
 							>
-								<Plus className="mr-2 h-4 w-4" />
+								<Plus className="mr-2 " />
 								Agregar Primer Modelo
 							</Button>
 						</div>
@@ -341,7 +335,7 @@ export default function PresetForm({
 										model={model}
 										availableModels={availableModels}
 										roleOptions={roleOptions}
-										onUpdate={(updatedModel) =>
+										onUpdate={updatedModel =>
 											updateModel(index, updatedModel)
 										}
 										onRemove={() => removeModel(index)}
@@ -356,7 +350,7 @@ export default function PresetForm({
 
 			<div className="flex justify-end gap-3 pt-4">
 				<Button type="submit">
-					{isEditing ? "Actualizar Preset" : "Crear Preset"}
+					{isEditing ? 'Actualizar Preset' : 'Crear Preset'}
 				</Button>
 			</div>
 		</form>

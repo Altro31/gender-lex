@@ -149,7 +149,7 @@ export default function ChangePasswordDialog({
 							Contraseña Actual
 						</Label>
 						<div className="relative">
-							<Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+							<Lock className="absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-400" />
 							<Input
 								id="currentPassword"
 								type={showCurrentPassword ? 'text' : 'password'}
@@ -172,11 +172,7 @@ export default function ChangePasswordDialog({
 									setShowCurrentPassword(!showCurrentPassword)
 								}
 							>
-								{showCurrentPassword ? (
-									<EyeOff className="h-4 w-4" />
-								) : (
-									<Eye className="h-4 w-4" />
-								)}
+								{showCurrentPassword ? <EyeOff /> : <Eye />}
 							</Button>
 						</div>
 						{errors.currentPassword && (
@@ -189,7 +185,7 @@ export default function ChangePasswordDialog({
 					<div className="space-y-2">
 						<Label htmlFor="newPassword">Nueva Contraseña</Label>
 						<div className="relative">
-							<Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+							<Lock className="absolute top-1/2 left-3  -translate-y-1/2 transform text-gray-400" />
 							<Input
 								id="newPassword"
 								type={showNewPassword ? 'text' : 'password'}
@@ -212,11 +208,7 @@ export default function ChangePasswordDialog({
 									setShowNewPassword(!showNewPassword)
 								}
 							>
-								{showNewPassword ? (
-									<EyeOff className="h-4 w-4" />
-								) : (
-									<Eye className="h-4 w-4" />
-								)}
+								{showNewPassword ? <EyeOff /> : <Eye />}
 							</Button>
 						</div>
 
@@ -251,7 +243,7 @@ export default function ChangePasswordDialog({
 							Confirmar Nueva Contraseña
 						</Label>
 						<div className="relative">
-							<Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+							<Lock className="absolute top-1/2 left-3  -translate-y-1/2 transform text-gray-400" />
 							<Input
 								id="confirmPassword"
 								type={showConfirmPassword ? 'text' : 'password'}
@@ -274,18 +266,14 @@ export default function ChangePasswordDialog({
 									setShowConfirmPassword(!showConfirmPassword)
 								}
 							>
-								{showConfirmPassword ? (
-									<EyeOff className="h-4 w-4" />
-								) : (
-									<Eye className="h-4 w-4" />
-								)}
+								{showConfirmPassword ? <EyeOff /> : <Eye />}
 							</Button>
 						</div>
 						{formData.confirmPassword &&
 							formData.newPassword ===
 								formData.confirmPassword && (
 								<div className="flex items-center gap-2 text-green-600">
-									<Check className="h-4 w-4" />
+									<Check />
 									<span className="text-sm">
 										Las contraseñas coinciden
 									</span>
@@ -306,7 +294,7 @@ export default function ChangePasswordDialog({
 						>
 							{isLoading ? (
 								<div className="flex items-center gap-2">
-									<div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+									<div className=" animate-spin rounded-full border-2 border-white border-t-transparent" />
 									Cambiando...
 								</div>
 							) : (

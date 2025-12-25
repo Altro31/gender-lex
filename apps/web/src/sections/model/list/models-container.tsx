@@ -42,7 +42,7 @@ export default function ModelsContainer({ searchParams }: Props) {
 						className="flex items-center gap-2"
 						render={<Button />}
 					>
-						<Plus className="size-4" />
+						<Plus />
 						{t`New model`}
 					</CreateModelDialogTrigger>
 				</div>

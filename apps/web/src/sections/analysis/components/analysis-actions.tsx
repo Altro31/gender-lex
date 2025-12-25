@@ -42,11 +42,11 @@ export function AnalysisActions({ analysis, renderTrigger }: Props) {
 					<DropdownMenuItem
 						render={<Link href={`/analysis/${analysis.id}`} />}
 					>
-						<Eye className="mr-2 h-4 w-4" />
+						<Eye className="mr-2 " />
 						{t`Details`}
 					</DropdownMenuItem>
 					<DropdownMenuItem onClick={handleRedoAnalysis(analysis)}>
-						<RotateCcw className="mr-2 h-4 w-4" />
+						<RotateCcw className="mr-2 " />
 						{t`Redo Analysis`}
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />

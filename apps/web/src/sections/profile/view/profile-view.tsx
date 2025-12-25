@@ -206,13 +206,13 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 	const getActivityIcon = (type: string) => {
 		switch (type) {
 			case 'analysis':
-				return <FileTextIcon className="h-4 w-4" />
+				return <FileTextIcon />
 			case 'model':
-				return <SettingsIcon className="h-4 w-4" />
+				return <SettingsIcon />
 			case 'preset':
-				return <ZapIcon className="h-4 w-4" />
+				return <ZapIcon />
 			default:
-				return <ActivityIcon className="h-4 w-4" />
+				return <ActivityIcon />
 		}
 	}
 
@@ -295,7 +295,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 											render={<Button size="sm" />}
 											className="absolute -right-2 -bottom-2 h-8 w-8 rounded-full bg-blue-500 p-0 hover:bg-blue-700"
 										>
-											<CameraIcon className="h-4 w-4" />
+											<CameraIcon />
 										</DialogTrigger>
 										<DialogContent className="sm:max-w-md">
 											<DialogHeader>
@@ -352,7 +352,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 									{user.name}
 								</CardTitle>
 								<CardDescription className="flex items-center justify-center gap-2">
-									<MailIcon className="h-4 w-4" />
+									<MailIcon />
 									{user.email}
 									{user.emailVerified && (
 										<Badge
@@ -408,7 +408,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 										variant="outline"
 										className="w-full justify-start gap-2 bg-transparent"
 									>
-										<LockIcon className="h-4 w-4" />
+										<LockIcon />
 										Cambiar Contraseña
 									</Button>
 
@@ -422,7 +422,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 											}
 											className="w-full justify-start gap-2 "
 										>
-											<LogOutIcon className="h-4 w-4" />
+											<LogOutIcon />
 											Cerrar Sesión
 										</AlertDialogTrigger>
 										<AlertDialogContent>
@@ -490,7 +490,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 													size="sm"
 													className="gap-2 bg-transparent"
 												>
-													<EditIcon className="h-4 w-4" />
+													<EditIcon />
 													Editar
 												</Button>
 											)}
@@ -548,7 +548,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 															</>
 														) : (
 															<>
-																<SaveIcon className="h-4 w-4" />
+																<SaveIcon />
 																Guardar Cambios
 															</>
 														)}
@@ -560,7 +560,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 														variant="outline"
 														className="gap-2 bg-transparent"
 													>
-														<XIcon className="h-4 w-4" />
+														<XIcon />
 														Cancelar
 													</Button>
 												</div>

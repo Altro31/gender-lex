@@ -116,11 +116,7 @@ export default function ModelConfigCard({
 								className="h-8 w-8 p-0"
 								render={<Button variant="ghost" size="sm" />}
 							>
-								{isExpanded ? (
-									<ChevronUp className="h-4 w-4" />
-								) : (
-									<ChevronDown className="h-4 w-4" />
-								)}
+								{isExpanded ? <ChevronUp /> : <ChevronDown />}
 							</CollapsibleTrigger>
 						</Collapsible>
 						{canRemove && (
@@ -130,7 +126,7 @@ export default function ModelConfigCard({
 								className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
 								onClick={onRemove}
 							>
-								<Trash2 className="h-4 w-4" />
+								<Trash2 />
 							</Button>
 						)}
 					</div>

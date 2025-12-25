@@ -1,17 +1,17 @@
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import RegisterForm from "@/sections/auth/register/form/register-form"
-import RegisterFormContainer from "@/sections/auth/register/form/register-form-container"
-import { t } from "@lingui/core/macro"
+} from '@/components/ui/card'
+import RegisterForm from '@/sections/auth/register/form/register-form'
+import RegisterFormContainer from '@/sections/auth/register/form/register-form-container'
+import { t } from '@lingui/core/macro'
 
-import { ArrowLeft, Lock } from "lucide-react"
-import Link from "next/link"
+import { ArrowLeft, Lock } from 'lucide-react'
+import Link from 'next/link'
 
 export default function RegisterContainer() {
 	return (
@@ -25,7 +25,7 @@ export default function RegisterContainer() {
 							size="sm"
 							className="gap-2 text-gray-600 hover:text-gray-900"
 						>
-							<ArrowLeft className="h-4 w-4" />
+							<ArrowLeft />
 							{t`Back to home`}
 						</Button>
 					</Link>
@@ -52,7 +52,7 @@ export default function RegisterContainer() {
 						</RegisterFormContainer>
 						<div className="text-center">
 							<p className="text-sm text-gray-600">
-								{t`Do you already have an account?`}{" "}
+								{t`Do you already have an account?`}{' '}
 								<Link
 									href="/auth/login"
 									className="font-medium text-blue-600 hover:text-blue-800"

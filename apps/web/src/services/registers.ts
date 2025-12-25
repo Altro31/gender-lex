@@ -7,11 +7,6 @@ import { actionClient } from '@/lib/safe-action'
 import { cookies, headers } from 'next/headers'
 import z from 'zod'
 
-export async function setTheme(isDark: boolean) {
-	const cookiesStore = await cookies()
-	cookiesStore.set('THEME_DARK', isDark + '')
-}
-
 export const setLanguage = actionClient
 	.inputSchema(z.string())
 	.action(async ({ parsedInput: lang }) => {

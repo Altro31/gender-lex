@@ -1,14 +1,14 @@
-"use client"
+'use client'
 
-import { Badge } from "@/components/ui/badge"
+import { Badge } from '@/components/ui/badge'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
+} from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
 import {
 	Calendar,
 	Tag,
@@ -19,12 +19,12 @@ import {
 	Percent,
 	Brain,
 	MessageSquare,
-} from "lucide-react"
+} from 'lucide-react'
 
 interface ModelConfig {
 	modelId: string
 	modelName: string
-	role: "primary" | "secondary" | "tertiary"
+	role: 'primary' | 'secondary' | 'tertiary'
 	parameters: {
 		temperature: number
 		maxTokens: number
@@ -54,25 +54,25 @@ interface PresetDetailsProps {
 export default function PresetDetails({ preset }: PresetDetailsProps) {
 	const getRoleColor = (role: string) => {
 		switch (role) {
-			case "primary":
-				return "bg-blue-100 text-blue-800"
-			case "secondary":
-				return "bg-green-100 text-green-800"
-			case "tertiary":
-				return "bg-purple-100 text-purple-800"
+			case 'primary':
+				return 'bg-blue-100 text-blue-800'
+			case 'secondary':
+				return 'bg-green-100 text-green-800'
+			case 'tertiary':
+				return 'bg-purple-100 text-purple-800'
 			default:
-				return "bg-gray-100 text-gray-800"
+				return 'bg-gray-100 text-gray-800'
 		}
 	}
 
 	const getRoleText = (role: string) => {
 		switch (role) {
-			case "primary":
-				return "Principal"
-			case "secondary":
-				return "Secundario"
-			case "tertiary":
-				return "Terciario"
+			case 'primary':
+				return 'Principal'
+			case 'secondary':
+				return 'Secundario'
+			case 'tertiary':
+				return 'Terciario'
 			default:
 				return role
 		}
@@ -80,33 +80,33 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 
 	const getParameterIcon = (param: string) => {
 		switch (param) {
-			case "temperature":
-				return <Thermometer className="h-4 w-4" />
-			case "maxTokens":
-				return <Hash className="h-4 w-4" />
-			case "topP":
-				return <Percent className="h-4 w-4" />
-			case "frequencyPenalty":
-				return <Brain className="h-4 w-4" />
-			case "presencePenalty":
-				return <MessageSquare className="h-4 w-4" />
+			case 'temperature':
+				return <Thermometer />
+			case 'maxTokens':
+				return <Hash />
+			case 'topP':
+				return <Percent />
+			case 'frequencyPenalty':
+				return <Brain />
+			case 'presencePenalty':
+				return <MessageSquare />
 			default:
-				return <Settings className="h-4 w-4" />
+				return <Settings />
 		}
 	}
 
 	const getParameterLabel = (param: string) => {
 		switch (param) {
-			case "temperature":
-				return "Temperatura"
-			case "maxTokens":
-				return "Tokens Máximos"
-			case "topP":
-				return "Top P"
-			case "frequencyPenalty":
-				return "Penalización de Frecuencia"
-			case "presencePenalty":
-				return "Penalización de Presencia"
+			case 'temperature':
+				return 'Temperatura'
+			case 'maxTokens':
+				return 'Tokens Máximos'
+			case 'topP':
+				return 'Top P'
+			case 'frequencyPenalty':
+				return 'Penalización de Frecuencia'
+			case 'presencePenalty':
+				return 'Penalización de Presencia'
 			default:
 				return param
 		}
@@ -125,11 +125,11 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 						<Badge
 							className={
 								preset.isActive
-									? "bg-green-100 text-green-800"
-									: "bg-gray-100 text-gray-800"
+									? 'bg-green-100 text-green-800'
+									: 'bg-gray-100 text-gray-800'
 							}
 						>
-							{preset.isActive ? "Activo" : "Inactivo"}
+							{preset.isActive ? 'Activo' : 'Inactivo'}
 						</Badge>
 					</div>
 				</div>
@@ -192,7 +192,7 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 							<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 								{Object.entries(model.parameters).map(
 									([key, value]) => {
-										if (key === "systemPrompt") return null // Handle separately
+										if (key === 'systemPrompt') return null // Handle separately
 
 										return (
 											<div
@@ -212,20 +212,20 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 															{value}
 														</span>
 													</div>
-													{(key === "temperature" ||
-														key === "topP" ||
+													{(key === 'temperature' ||
+														key === 'topP' ||
 														key ===
-															"frequencyPenalty" ||
+															'frequencyPenalty' ||
 														key ===
-															"presencePenalty") && (
+															'presencePenalty') && (
 														<Progress
 															value={
 																key ===
-																"temperature"
+																'temperature'
 																	? (value as number) *
 																		50
 																	: key ===
-																		  "topP"
+																		  'topP'
 																		? (value as number) *
 																			100
 																		: ((value as number) +
@@ -246,7 +246,7 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 							{model.parameters.systemPrompt && (
 								<div className="space-y-2 border-t pt-4">
 									<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-										<MessageSquare className="h-4 w-4" />
+										<MessageSquare />
 										Prompt del Sistema
 									</div>
 									<div className="rounded-lg bg-gray-50 p-3">
@@ -280,11 +280,11 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 							</div>
 							<p className="text-gray-900">
 								{new Date(preset.createdAt).toLocaleDateString(
-									"es-ES",
+									'es-ES',
 									{
-										year: "numeric",
-										month: "long",
-										day: "numeric",
+										year: 'numeric',
+										month: 'long',
+										day: 'numeric',
 									},
 								)}
 							</p>
@@ -298,10 +298,10 @@ export default function PresetDetails({ preset }: PresetDetailsProps) {
 								<p className="text-gray-900">
 									{new Date(
 										preset.lastUsed,
-									).toLocaleDateString("es-ES", {
-										year: "numeric",
-										month: "long",
-										day: "numeric",
+									).toLocaleDateString('es-ES', {
+										year: 'numeric',
+										month: 'long',
+										day: 'numeric',
 									})}
 								</p>
 							</div>

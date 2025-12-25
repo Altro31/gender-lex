@@ -91,7 +91,7 @@ export default function ModelListItem({ model: initialModel }: Props) {
 							render={<Button variant="ghost" size="sm" />}
 							className="size-8 p-0"
 						>
-							<Settings className="size-4" />
+							<Settings />
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
 							<DetailsModelDialogTrigger

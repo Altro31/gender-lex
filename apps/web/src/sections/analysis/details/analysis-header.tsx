@@ -1,8 +1,8 @@
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { startAnalysis } from "@/services/analysis"
-import { t } from "@lingui/core/macro"
-import { Select } from "@lingui/react/macro"
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { startAnalysis } from '@/services/analysis'
+import { t } from '@lingui/core/macro'
+import { Select } from '@lingui/react/macro'
 import {
 	AlertTriangle,
 	ArrowLeft,
@@ -12,20 +12,20 @@ import {
 	Download,
 	Share2,
 	User,
-} from "lucide-react"
-import Link from "next/link"
-import { Suspense } from "react"
-import UrlFixer from "../../../components/url-fixer"
+} from 'lucide-react'
+import Link from 'next/link'
+import { Suspense } from 'react'
+import UrlFixer from '../../../components/url-fixer'
 
 export default function AnalysisHeader(
-	props: PageProps<"/[locale]/analysis/[id]">,
+	props: PageProps<'/[locale]/analysis/[id]'>,
 ) {
 	return (
 		<div className="mb-8">
 			<div className="mb-4 flex items-center gap-4">
 				<Link href="/analysis">
 					<Button variant="ghost" size="sm" className="gap-2">
-						<ArrowLeft className="h-4 w-4" />
+						<ArrowLeft />
 						{t`Return to Analysis`}
 					</Button>
 				</Link>
@@ -40,28 +40,28 @@ export default function AnalysisHeader(
 async function Container({
 	params,
 	searchParams,
-}: PageProps<"/[locale]/analysis/[id]">) {
+}: PageProps<'/[locale]/analysis/[id]'>) {
 	const { id, locale } = await params
 	const { run } = await searchParams
 	const analysis = await startAnalysis(id, !!run)
 	const getStatusConfig = (status: string) => {
 		switch (status) {
-			case "analyzing":
+			case 'analyzing':
 				return {
 					label: t`Analizing`,
-					color: "bg-blue-100 text-blue-800",
+					color: 'bg-blue-100 text-blue-800',
 					icon: Clock,
 				}
-			case "done":
+			case 'done':
 				return {
 					label: t`Done`,
-					color: "bg-green-100 text-green-800",
+					color: 'bg-green-100 text-green-800',
 					icon: CheckCircle,
 				}
 			default:
 				return {
 					label: t`Pending`,
-					color: "bg-yellow-100 text-yellow-800",
+					color: 'bg-yellow-100 text-yellow-800',
 					icon: AlertTriangle,
 				}
 		}
@@ -78,20 +78,20 @@ async function Container({
 				</h1>
 				<div className="flex items-center gap-4 text-sm text-gray-600">
 					<div className="flex items-center gap-2">
-						<Calendar className="h-4 w-4" />
+						<Calendar />
 						{new Date(analysis.createdAt).toLocaleDateString(
-							"es-ES",
+							'es-ES',
 							{
-								year: "numeric",
-								month: "long",
-								day: "numeric",
-								hour: "2-digit",
-								minute: "2-digit",
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric',
+								hour: '2-digit',
+								minute: '2-digit',
 							},
 						)}
 					</div>
 					<div className="flex items-center gap-2">
-						<User className="h-4 w-4" />
+						<User />
 						ID: {analysis.id}
 					</div>
 				</div>
@@ -104,12 +104,12 @@ async function Container({
 				</Badge>
 				<Badge
 					variant={
-						analysis.visibility === "public"
-							? "default"
-							: "secondary"
+						analysis.visibility === 'public'
+							? 'default'
+							: 'secondary'
 					}
 				>
-					{" "}
+					{' '}
 					<Select
 						value={analysis.visibility}
 						_public="Public"
@@ -122,7 +122,7 @@ async function Container({
 					size="sm"
 					className="gap-2 bg-transparent"
 				>
-					<Download className="h-4 w-4" />
+					<Download />
 					{t`Export`}
 				</Button>
 				<Button
@@ -130,7 +130,7 @@ async function Container({
 					size="sm"
 					className="gap-2 bg-transparent"
 				>
-					<Share2 className="h-4 w-4" />
+					<Share2 />
 					{t`Share`}
 				</Button>
 			</div>
