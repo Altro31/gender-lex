@@ -1,3 +1,5 @@
+import '@workflow/world-postgres'
+
 export async function register() {
 	if (process.env.NEXT_RUNTIME !== 'edge') {
 		// Dynamic import to avoid edge runtime bundling issues
