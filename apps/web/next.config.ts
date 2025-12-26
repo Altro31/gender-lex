@@ -16,8 +16,7 @@ const nextConfig: NextConfig = {
 	rewrites: async () => [
 		{ source: '/api/:path*', destination: `${envs.API_URL}/api/:path*` },
 	],
-	serverExternalPackages: ['pg', '@repo/types'],
-	transpilePackages: ['@workflow/world-postgres'],
+	serverExternalPackages: ['pg', '@repo/types', '@workflow/world-postgres'],
 	turbopack: {
 		resolveExtensions: [
 			'.mdx',
