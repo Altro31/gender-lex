@@ -9,7 +9,6 @@ import { actionClient } from '@/lib/safe-action'
 import type { HomeSchema } from '@/sections/home/form/home-schema'
 import { cacheTag, updateTag } from 'next/cache'
 import { unauthorized } from 'next/navigation'
-import { getRun, start } from 'workflow/api'
 import z from 'zod'
 
 export async function prepareAnalysis(input: HomeSchema) {
@@ -33,19 +32,19 @@ export async function startAnalysis(id: string, isRun: boolean) {
 	const session = await getSession()
 	if (!session) unauthorized()
 	let data: any
-	if (isRun) {
-		const run = getRun(id)
-		data = await run.returnValue
-	} else {
-		let res = await client.analysis.start({ id }).post()
-		if (res.error) {
-			console.error(res.error.value)
-			throw new Error(
-				'An error occurred when trying access analysis with id',
-			)
-		}
-		data = res.data
-	}
+	// if (isRun) {
+	// 	const run = getRun(id)
+	// 	data = await run.returnValue
+	// } else {
+	// 	let res = await client.analysis.start({ id }).post()
+	// 	if (res.error) {
+	// 		console.error(res.error.value)
+	// 		throw new Error(
+	// 			'An error occurred when trying access analysis with id',
+	// 		)
+	// 	}
+	// 	data = res.data
+	// }
 
 	return data
 }

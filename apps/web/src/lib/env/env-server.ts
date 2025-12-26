@@ -13,11 +13,11 @@ const Envs = z
 		UI_URL: z.url(),
 		ENCRYPTION_KEY: z.string().length(32),
 		GEMINI_API_KEY: z.string(),
-		WORKFLOW_TARGET_WORLD: z.enum(['@workflow/world-postgres']).optional(),
-		WORKFLOW_POSTGRES_URL: z.string().optional(),
+		// WORKFLOW_TARGET_WORLD: z.enum(['@workflow/world-postgres']).optional(),
+		// WORKFLOW_POSTGRES_URL: z.string().optional(),
 		DATABASE_URL: z.string(),
-		WORKFLOW_POSTGRES_JOB_PREFIX: z.string().optional(),
-		WORKFLOW_POSTGRES_WORKER_CONCURRENCY: z.coerce
+		// WORKFLOW_POSTGRES_JOB_PREFIX: z.string().optional(),
+		// WORKFLOW_POSTGRES_WORKER_CONCURRENCY: z.coerce
 			.number()
 			.int()
 			.optional(),
