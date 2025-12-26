@@ -14,7 +14,7 @@
 		"prod:api": "turbo api#start",
 		"prod:web": "turbo web#start",
 		"migrate": "turbo migrate",
-		"migrate:prod": "turbo migrate:prod && workflow-postgres-setup",
+		"migrate:prod": "turbo migrate:prod",
 		"test": "turbo run test",
 		"test:e2e": "turbo run test:e2e",
 		"lint": "turbo run lint",

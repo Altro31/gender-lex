@@ -1,5 +1,3 @@
-import { EnvsService } from '@/shared/envs.service'
-import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 import type { ChatMessage, Model } from '@repo/db/models'
 import { streamText, type ModelMessage } from 'ai'
@@ -8,11 +6,6 @@ import { chatbotSystemPrompt } from '../chatbot/prompts/system.prompt'
 
 export class AiService extends Effect.Service<AiService>()('AiService', {
 	effect: Effect.gen(function* () {
-		const envs = yield* EnvsService
-
-		const google = createGoogleGenerativeAI({ apiKey: envs.GEMINI_API_KEY })
-		const geminiModel = google('gemini-3-flash-preview')
-
 		return {
 			buildLanguageModel: (model: Model) =>
 				Effect.gen(function* () {
@@ -46,7 +39,6 @@ export class AiService extends Effect.Service<AiService>()('AiService', {
 				}),
 		}
 	}),
-	dependencies: [EnvsService.Default],
 }) {
 	static provide = Effect.provide(this.Default)
 }
