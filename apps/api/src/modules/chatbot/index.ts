@@ -21,9 +21,7 @@ export default new Elysia({
 				const chatbotService = yield* ChatbotService
 				return yield* chatbotService.sendMessage(body.content)
 			}).pipe(ChatbotService.provide)
-			for await (const chunk of await runEffect(program)) {
-				yield chunk
-			}
+			return runEffect(program)
 		},
 		{
 			body: 'sendMessageInput',

@@ -1,12 +1,9 @@
 import { AuthService } from '@/shared/auth/auth.service'
 import { EnvsService } from '@/shared/envs.service'
-import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { effectify } from '@repo/db/effect'
-import { generateText } from 'ai'
-import { Console, Effect, Stream } from 'effect'
+import { Effect } from 'effect'
 import { ChatbotRepository } from './repository'
 
-import { chatbotSystemPrompt } from './prompts/system.prompt'
 import { AiService } from '../ai/service'
 
 const CONVERSATION_HISTORY_LIMIT = 10

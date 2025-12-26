@@ -29,13 +29,7 @@ export class AiService extends Effect.Service<AiService>()('AiService', {
 						}),
 					)
 
-					const result = streamText({
-						model: geminiModel,
-						messages: conversationHistory,
-						system: chatbotSystemPrompt,
-					})
-
-					return result.toUIMessageStream()
+					return {}
 				}),
 		}
 	}),
