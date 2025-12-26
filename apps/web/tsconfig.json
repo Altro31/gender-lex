@@ -15,11 +15,7 @@
 		"jsx": "react-jsx",
 		"incremental": true,
 		"noUncheckedIndexedAccess": true,
-		"plugins": [
-			{ "name": "next" },
-			{ "name": "workflow" },
-			{ "name": "@effect/language-service" }
-		],
+		"plugins": [{ "name": "next" }, { "name": "@effect/language-service" }],
 		"paths": { "@/*": ["./src/*"] }
 	},
 	"include": [

@@ -2,17 +2,15 @@
 
 import { client } from '@/lib/api/client'
 import { getSession } from '@/lib/auth/auth-server'
+import { serializedCookies } from '@/lib/cookies'
 import { getDB } from '@/lib/db/client'
+import { serializeFile } from '@/lib/files'
 import { actionClient } from '@/lib/safe-action'
 import type { HomeSchema } from '@/sections/home/form/home-schema'
 import { cacheTag, updateTag } from 'next/cache'
 import { unauthorized } from 'next/navigation'
-import z from 'zod'
 import { getRun, start } from 'workflow/api'
-import { startAnalysisWorkflow } from '@/workflows/start-analysis/workflow'
-import { serializeFile } from '@/lib/files'
-import { serializedCookies } from '@/lib/cookies'
-import type { Analysis } from '@repo/db/models'
+import z from 'zod'
 
 export async function prepareAnalysis(input: HomeSchema) {
 	const session = await getSession()
@@ -26,9 +24,9 @@ export async function prepareAnalysis(input: HomeSchema) {
 		),
 	}
 	const cookies = await serializedCookies()
-	const run = await start(startAnalysisWorkflow, [wfInput, cookies])
+	// const run = await start(startAnalysisWorkflow, [wfInput, cookies])
 	updateTag('analyses')
-	return { data: { id: run.runId }, error: null }
+	return { data: { id: '' }, error: null }
 }
 
 export async function startAnalysis(id: string, isRun: boolean) {
