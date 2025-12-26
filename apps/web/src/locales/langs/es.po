@@ -14,12 +14,12 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. placeholder {0}: presetModel.role
-#: src/sections/preset/list/preset-list-item.tsx:150
+#: src/sections/preset/list/preset-list-item.tsx:183
 msgid "{0, select, primary {Principal} secondary {Secondary} other {Other}}"
 msgstr "{0, select, primary {Principal} secondary {Secundario} other {Otro}}"
 
 #. placeholder {0}: analysis.visibility
-#: src/sections/analysis/details/analysis-header.tsx:109
+#: src/sections/analysis/details/analysis-header.tsx:113
 msgid "{0, select, public {Public} private {Private} other {Other}}"
 msgstr "{0, select, public {Público} private {Privado} other {Otro}}"
 
@@ -56,7 +56,7 @@ msgid "<0>Welcome to Genderlex,</0><1/><2>your smart writing assistant.</2>"
 msgstr "<0>Bienvenido a Genderlex,</0><1/><2>su asistente de escritura inteligente.</2>"
 
 #. placeholder {0}: preset.name
-#: src/sections/preset/components/dialogs/clone-preset-alert-dialog-content.tsx:49
+#: src/sections/preset/components/dialogs/clone-preset-alert-dialog-content.tsx:60
 msgid "A new preset will be created with the same name, description and model settings as: <0>{0}</0>"
 msgstr "Una nueva configuración será creada con el mismo nombre, descripción y configuración de modelos, en base a: <0>{0}</0>"
 
@@ -68,11 +68,11 @@ msgstr "Ausencia de representación"
 msgid "Access to Care"
 msgstr "Acceso a la atención"
 
-#: src/components/app-sidebar/nav-user.tsx:100
+#: src/components/app-sidebar/nav-user.tsx:116
 msgid "Account"
 msgstr "Cuenta"
 
-#: src/sections/preset/components/model-select/rhf-model-select-container.tsx:45
+#: src/sections/preset/components/model-select/rhf-model-select-container.tsx:43
 msgid "Add and configure the models that will be part of this preset"
 msgstr "Añade y configura los modelos que serán parte de la configuración"
 
@@ -89,8 +89,7 @@ msgstr "Afectado"
 msgid "Affected Groups"
 msgstr "Grupos afectados"
 
-#: src/sections/analysis/components/stats-cards.tsx:29
-#: src/sections/analysis/list/analyses-tabs.tsx:27
+#: src/sections/analysis/list/analyses-tabs.tsx:32
 msgid "All"
 msgstr "Todos"
 
@@ -98,23 +97,22 @@ msgstr "Todos"
 msgid "Alternative"
 msgstr "Alternativa"
 
-#: src/sections/analysis/details/analysis-details-container.tsx:28
+#: src/sections/analysis/details/analysis-details-container.tsx:27
 #: src/sections/analysis/details/content/analysis-content.tsx:56
 msgid "Alternatives"
 msgstr "Alternativas"
 
-#: src/sections/analysis/components/stats-cards.tsx:30
-#: src/sections/analysis/details/analysis-header.tsx:48
+#: src/sections/analysis/details/analysis-header.tsx:51
 #: src/sections/analysis/list/analyses-list-item.tsx:28
-#: src/sections/analysis/list/analyses-tabs.tsx:29
+#: src/sections/analysis/list/analyses-tabs.tsx:38
 msgid "Analizing"
 msgstr "Analizando"
 
-#: src/app/[locale]/(domain)/analysis/[id]/page.tsx:12
+#: src/app/[locale]/(domain)/analysis/[id]/page.tsx:11
 msgid "Analysis detail | GenderLex"
 msgstr "Detalles del análisis | GenderLex"
 
-#: src/sections/analysis/details/analysis-header.tsx:73
+#: src/sections/analysis/details/analysis-header.tsx:77
 msgid "Analysis Details"
 msgstr "Detalles del análisis"
 
@@ -122,11 +120,11 @@ msgstr "Detalles del análisis"
 msgid "Analysis management"
 msgstr "Gestión de análisis"
 
-#: src/app/[locale]/(domain)/analysis/page.tsx:12
+#: src/app/[locale]/(domain)/analysis/page.tsx:10
 msgid "Analysis management | GenderLex"
 msgstr "Gestión de análisis | GenderLex"
 
-#: src/sections/home/form/home-form-container.tsx:22
+#: src/sections/home/form/home-form-container.tsx:25
 msgid "Analyze a text..."
 msgstr "Analiza un texto..."
 
@@ -134,7 +132,7 @@ msgstr "Analiza un texto..."
 msgid "Analyze text in search of biased or stigmatizing content"
 msgstr "Analiza texto in búsqueda de contenido sesgado o estigmatizado"
 
-#: src/sections/analysis/list/analyses-list-item.tsx:85
+#: src/sections/analysis/list/analyses-list-item.tsx:88
 msgid "Analyzed Text"
 msgstr "Texto analizado"
 
@@ -147,10 +145,10 @@ msgstr "Clave API"
 #~ msgid "Are you shure?"
 #~ msgstr "¿Está seguro?"
 
-#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:39
-#: src/sections/model/components/dialogs/delete-model-alert-dialog-content.tsx:41
-#: src/sections/preset/components/dialogs/clone-preset-alert-dialog-content.tsx:47
-#: src/sections/preset/components/dialogs/delete-preset-alert-dialog-content.tsx:41
+#: src/sections/analysis/components/dialogs/delete-analysis-alert-dialog.tsx:48
+#: src/sections/model/components/dialogs/delete-model-alert-dialog.tsx:46
+#: src/sections/preset/components/dialogs/clone-preset-alert-dialog-content.tsx:58
+#: src/sections/preset/components/dialogs/delete-preset-alert-dialog-content.tsx:54
 msgid "Are you sure?"
 msgstr "¿Está seguro?"
 
@@ -176,12 +174,12 @@ msgstr "Términos sesgados"
 msgid "By continuing, you accept our <0>Terms of service</0> and <1>Privacy Policy</1>"
 msgstr "Al continuar, aceptas nuestros <0>Términos de Servicio</0> y <1>Política de Privacidad</1>"
 
-#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:53
-#: src/sections/model/components/dialogs/delete-model-alert-dialog-content.tsx:48
-#: src/sections/preset/components/dialogs/clone-preset-alert-dialog-content.tsx:60
-#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:42
-#: src/sections/preset/components/dialogs/delete-preset-alert-dialog-content.tsx:54
-#: src/sections/preset/components/dialogs/edit-preset-dialog.tsx:46
+#: src/sections/analysis/components/dialogs/delete-analysis-alert-dialog.tsx:62
+#: src/sections/model/components/dialogs/delete-model-alert-dialog.tsx:57
+#: src/sections/preset/components/dialogs/clone-preset-alert-dialog-content.tsx:70
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:41
+#: src/sections/preset/components/dialogs/delete-preset-alert-dialog-content.tsx:67
+#: src/sections/preset/components/dialogs/edit-preset-dialog.tsx:54
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -189,29 +187,29 @@ msgstr "Cancelar"
 msgid "Choose a model"
 msgstr "Elige un modelo"
 
-#: src/sections/preset/components/model-select/model-config-card.tsx:77
+#: src/sections/preset/components/model-select/model-config-card.tsx:78
 msgid "Choose the role"
 msgstr "Elige un rol"
 
-#: src/sections/preset/components/dialogs/clone-preset-alert-dialog-content.tsx:63
-#: src/sections/preset/list/preset-list-item.tsx:104
+#: src/sections/preset/components/dialogs/clone-preset-alert-dialog-content.tsx:74
+#: src/sections/preset/list/preset-list-item.tsx:123
 msgid "Clone"
 msgstr "Duplicar"
 
-#: src/sections/preset/list/preset-list-item.tsx:202
+#: src/sections/preset/list/preset-list-item.tsx:235
 msgid "Clonning..."
 msgstr "Duplicando..."
 
 #. placeholder {0}: model.name
-#: src/sections/model/components/dialogs/details-model-dialog.tsx:29
+#: src/sections/model/components/dialogs/details-model-dialog.tsx:38
 msgid "Complete information of the model: {0}"
 msgstr "Complete la información del modelo: {0}"
 
-#: src/sections/preset/components/dialogs/details-preset-dialog.tsx:25
+#: src/sections/preset/components/dialogs/details-preset-dialog.tsx:32
 msgid "Complete information of the selected preset"
 msgstr "Información completa de la configuración seleccionada"
 
-#: src/sections/analysis/list/analyses-list-item.tsx:102
+#: src/sections/analysis/list/analyses-list-item.tsx:105
 msgid "Completed at"
 msgstr "Completado el"
 
@@ -231,11 +229,11 @@ msgstr "Confiram tu contraseña"
 msgid "Connection Test"
 msgstr "Prueba de conexión"
 
-#: src/sections/analysis/details/content/analysis-content-original-text.tsx:49
+#: src/sections/analysis/details/content/analysis-content-original-text.tsx:45
 msgid "Content hidden for privacy"
 msgstr "Contenido oculto por privacidad"
 
-#: src/sections/analysis/details/analysis-details-container.tsx:26
+#: src/sections/analysis/details/analysis-details-container.tsx:25
 msgid "Context"
 msgstr "Contexto"
 
@@ -247,7 +245,7 @@ msgstr "Continuar con Github"
 msgid "Continue with Google"
 msgstr "Continuar con Google"
 
-#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:44
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:43
 msgid "Create"
 msgstr "Crear"
 
@@ -255,30 +253,30 @@ msgstr "Crear"
 msgid "Create account"
 msgstr "Crear cuenta"
 
-#: src/sections/model/list/model-list-container.tsx:62
-#: src/sections/preset/components/model-select/rhf-model-select-container.tsx:61
+#: src/sections/model/list/model-list.tsx:35
+#: src/sections/preset/components/model-select/rhf-model-select-container.tsx:59
 msgid "Create First Model"
 msgstr "Crea tu primer modelo"
 
-#: src/sections/preset/list/preset-list-container.tsx:59
+#: src/sections/preset/list/presets-list.tsx:40
 msgid "Create First Preset"
 msgstr "Crea tu primera configuración"
 
-#: src/sections/model/components/dialogs/create-model-dialog.tsx:21
+#: src/sections/model/components/dialogs/create-model-dialog.tsx:23
 msgid "Create New Model"
 msgstr "Crea un nuevo modelo"
 
-#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:30
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:29
 msgid "Create New Preset"
 msgstr "Crear nueva Configuración"
 
-#: src/sections/model/list/model-list-item.tsx:159
-#: src/sections/preset/list/preset-list-item.tsx:180
+#: src/sections/model/list/model-list-item.tsx:171
+#: src/sections/preset/list/preset-list-item.tsx:213
 msgid "Created at"
 msgstr "Creado el"
 
 #: src/sections/model/details/model-details.tsx:136
-#: src/sections/preset/details/preset-details.tsx:127
+#: src/sections/preset/details/preset-details.tsx:121
 msgid "Creation date"
 msgstr "Fecha de creación"
 
@@ -286,19 +284,18 @@ msgstr "Fecha de creación"
 msgid "Dark"
 msgstr "Oscuro"
 
-#: src/components/app-sidebar/nav-recent.tsx:63
-#: src/sections/analysis/components/analysis-actions.tsx:45
-#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:60
-#: src/sections/model/components/dialogs/delete-model-alert-dialog-content.tsx:51
-#: src/sections/model/list/model-list-item.tsx:124
-#: src/sections/preset/components/dialogs/delete-preset-alert-dialog-content.tsx:59
-#: src/sections/preset/list/preset-list-item.tsx:117
+#: src/sections/analysis/components/analysis-actions.tsx:60
+#: src/sections/analysis/components/dialogs/delete-analysis-alert-dialog.tsx:71
+#: src/sections/model/components/dialogs/delete-model-alert-dialog.tsx:63
+#: src/sections/model/list/model-list-item.tsx:137
+#: src/sections/preset/components/dialogs/delete-preset-alert-dialog-content.tsx:72
+#: src/sections/preset/list/preset-list-item.tsx:149
 msgid "Delete"
 msgstr "Eliminar"
 
-#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:60
-#: src/sections/model/list/model-list-item.tsx:175
-#: src/sections/preset/list/preset-list-item.tsx:201
+#: src/sections/analysis/components/dialogs/delete-analysis-alert-dialog.tsx:71
+#: src/sections/model/list/model-list-item.tsx:191
+#: src/sections/preset/list/preset-list-item.tsx:234
 msgid "Deleting..."
 msgstr "Eliminando..."
 
@@ -306,19 +303,19 @@ msgstr "Eliminando..."
 msgid "Describe the purpose and use of this preset..."
 msgstr "Describe el propósito y uso de esta configuración"
 
-#: src/sections/preset/details/preset-details.tsx:67
+#: src/sections/preset/details/preset-details.tsx:59
 #: src/sections/preset/form/preset-form.tsx:19
 msgid "Description"
 msgstr "Descripción"
 
-#: src/sections/analysis/components/analysis-actions.tsx:33
-#: src/sections/model/list/model-list-item.tsx:99
-#: src/sections/preset/list/preset-list-item.tsx:87
+#: src/sections/analysis/components/analysis-actions.tsx:46
+#: src/sections/model/list/model-list-item.tsx:105
+#: src/sections/preset/list/preset-list-item.tsx:94
 msgid "Details"
 msgstr "Detalles"
 
 #. placeholder {0}: model.name
-#: src/sections/model/components/dialogs/details-model-dialog.tsx:26
+#: src/sections/model/components/dialogs/details-model-dialog.tsx:35
 msgid "Details of model: {0}"
 msgstr "Detalles del modelo: {0}"
 
@@ -330,10 +327,9 @@ msgstr "¿Ya tienes una cuenta?"
 msgid "Don't you have an account?"
 msgstr "¿No tienes una cuenta?"
 
-#: src/sections/analysis/components/stats-cards.tsx:31
-#: src/sections/analysis/details/analysis-header.tsx:54
+#: src/sections/analysis/details/analysis-header.tsx:57
 #: src/sections/analysis/list/analyses-list-item.tsx:33
-#: src/sections/analysis/list/analyses-tabs.tsx:30
+#: src/sections/analysis/list/analyses-tabs.tsx:41
 msgid "Done"
 msgstr "Terminado"
 
@@ -345,33 +341,32 @@ msgstr "Suelte el archivo aquí"
 msgid "e.g.: Creative Analysis"
 msgstr "Análisis creativo"
 
-#: src/components/app-sidebar/nav-recent.tsx:57
-#: src/sections/model/list/model-list-item.tsx:108
-#: src/sections/preset/list/preset-list-item.tsx:93
+#: src/sections/model/list/model-list-item.tsx:120
+#: src/sections/preset/list/preset-list-item.tsx:107
 msgid "Edit"
 msgstr "Editar"
 
 #. placeholder {0}: model.name
-#: src/sections/model/components/dialogs/edit-model-dialog.tsx:24
+#: src/sections/model/components/dialogs/edit-model-dialog.tsx:32
 msgid "Edit Model: {0}"
 msgstr "Edita el modelo: {0}"
 
 #. placeholder {0}: preset.name
-#: src/sections/preset/components/dialogs/edit-preset-dialog.tsx:32
+#: src/sections/preset/components/dialogs/edit-preset-dialog.tsx:38
 msgid "Edit preset: {0}"
 msgstr "Editar configuración: {0}"
 
 #. placeholder {0}: model.name
-#: src/sections/model/components/dialogs/edit-model-dialog.tsx:26
+#: src/sections/model/components/dialogs/edit-model-dialog.tsx:34
 msgid "Edit the connection of model: {0}"
 msgstr "Edita la conexiión al modelo: {0}"
 
 #. placeholder {0}: preset.name
-#: src/sections/preset/components/dialogs/edit-preset-dialog.tsx:34
+#: src/sections/preset/components/dialogs/edit-preset-dialog.tsx:40
 msgid "Edit the information of preset: {0}"
 msgstr "Editar información de la configuración: {0}"
 
-#: src/components/app-sidebar/nav-user.tsx:138
+#: src/components/app-sidebar/nav-user.tsx:151
 #: src/sections/auth/login/form/login-form.tsx:21
 #: src/sections/auth/register/form/register-form.tsx:43
 msgid "Email"
@@ -381,7 +376,7 @@ msgstr "Correo Electrónico"
 msgid "Endpoint"
 msgstr "Entrada"
 
-#: src/locales/components/language-switcher.tsx:55
+#: src/locales/components/language-switcher.tsx:32
 msgid "English"
 msgstr "Inglés"
 
@@ -389,9 +384,8 @@ msgstr "Inglés"
 msgid "Enter your account to continue"
 msgstr "Ingresa a tu cuenta para continuar"
 
-#: src/sections/analysis/components/stats-cards.tsx:32
 #: src/sections/analysis/list/analyses-list-item.tsx:38
-#: src/sections/analysis/list/analyses-tabs.tsx:31
+#: src/sections/analysis/list/analyses-tabs.tsx:44
 msgid "Error"
 msgstr "Error"
 
@@ -413,7 +407,7 @@ msgstr "Grupos excluidos"
 msgid "Explanation"
 msgstr "Explicación"
 
-#: src/sections/analysis/details/analysis-header.tsx:122
+#: src/sections/analysis/details/analysis-header.tsx:126
 msgid "Export"
 msgstr "Exportar"
 
@@ -429,7 +423,7 @@ msgstr "GenderLex | Su asistente de escritura inteligente"
 msgid "GenderLex, your smart writing assistant"
 msgstr "GenderLex, su asistente de escritura inteligente"
 
-#: src/sections/analysis/details/content/analysis-content-original-text.tsx:37
+#: src/sections/analysis/details/content/analysis-content-original-text.tsx:33
 msgid "Hide"
 msgstr "Ocultar"
 
@@ -441,7 +435,7 @@ msgstr "Contexto histórico"
 msgid "History"
 msgstr "Historial"
 
-#: src/sections/analysis/details/analysis-details-container.tsx:24
+#: src/sections/analysis/details/analysis-details-container.tsx:23
 #: src/sections/analysis/details/content/analysis-content.tsx:110
 msgid "Identified Biased Terms"
 msgstr "Terminos"
@@ -450,12 +444,12 @@ msgstr "Terminos"
 msgid "Identifier"
 msgstr "Identificador"
 
-#: src/sections/analysis/details/analysis-details-container.tsx:30
+#: src/sections/analysis/details/analysis-details-container.tsx:29
 msgid "Impact"
 msgstr "Impacto"
 
 #: src/sections/model/details/model-details.tsx:129
-#: src/sections/preset/details/preset-details.tsx:120
+#: src/sections/preset/details/preset-details.tsx:114
 msgid "Important dates and usage statistics"
 msgstr "Fechas importantes y estadísticas de uso"
 
@@ -481,14 +475,14 @@ msgstr "Interseccionalidad"
 msgid "Join our platform in seconds"
 msgstr "Únete a nuestra plataforma en segundos"
 
-#: src/locales/components/language-switcher.tsx:47
+#: src/locales/components/language-switcher.tsx:25
 msgid "Language"
 msgstr "Idioma"
 
 #: src/sections/model/details/model-details.tsx:153
-#: src/sections/model/list/model-list-item.tsx:164
-#: src/sections/preset/details/preset-details.tsx:144
-#: src/sections/preset/list/preset-list-item.tsx:165
+#: src/sections/model/list/model-list-item.tsx:178
+#: src/sections/preset/details/preset-details.tsx:138
+#: src/sections/preset/list/preset-list-item.tsx:198
 msgid "Last use"
 msgstr "Último uso"
 
@@ -497,7 +491,7 @@ msgid "Light"
 msgstr "Claro"
 
 #: src/app/[locale]/(security)/auth/login/page.tsx:9
-#: src/components/app-sidebar/nav-user.tsx:124
+#: src/components/app-sidebar/nav-user.tsx:139
 #: src/sections/auth/login/login-container.tsx:42
 msgid "Login"
 msgstr "Iniciar sesión"
@@ -506,24 +500,28 @@ msgstr "Iniciar sesión"
 msgid "Login to your account"
 msgstr "Inicia sesión en tu cuenta"
 
-#: src/components/app-sidebar/nav-user.tsx:106
+#: src/components/app-sidebar/nav-user.tsx:122
 msgid "Logout"
 msgstr "Cerrar sesión"
 
-#: src/app/[locale]/(domain)/analysis/page.tsx:13
+#: src/app/[locale]/(domain)/analysis/page.tsx:11
 #: src/sections/analysis/list/analyses-container.tsx:22
 msgid "Manage gender bias detection analysis"
 msgstr "Administra los análisis de detección de sesgos de género"
 
-#: src/app/[locale]/(domain)/presets/page.tsx:14
-#: src/sections/preset/list/preset-list-container.tsx:24
+#: src/app/[locale]/(domain)/presets/page.tsx:11
+#: src/sections/preset/list/presets-container.tsx:26
 msgid "Manage model combinations with specific configurations"
 msgstr "Gestione la combinación de modelos con configuraciones específicas"
 
-#: src/app/[locale]/(domain)/models/page.tsx:14
-#: src/sections/model/list/model-list-container.tsx:27
+#: src/app/[locale]/(domain)/models/page.tsx:11
+#: src/sections/model/list/models-container.tsx:30
 msgid "Manage your connections to large language models"
 msgstr "Gestiona tus conexiones a modelos de lenguage"
+
+#: src/app/[locale]/(domain)/profile/page.tsx:12
+msgid "Manage your profile and account settings"
+msgstr "Administra tu perfil y las configuraciónes de la cuenta"
 
 #: src/sections/analysis/details/content/analysis-content.tsx:156
 msgid "Metaphorical expressions that perpetuate gender biases"
@@ -531,12 +529,12 @@ msgstr "Expresiones metafóricas que perpetúan sesgos de género"
 
 #: src/sections/model/details/model-details.tsx:89
 #: src/sections/preset/components/model-select/model-config-card.tsx:66
-#: src/sections/preset/list/preset-list-item.tsx:189
+#: src/sections/preset/list/preset-list-item.tsx:222
 msgid "Model"
 msgstr "Modelo"
 
-#: src/sections/preset/components/model-select/rhf-model-select-container.tsx:27
-#: src/sections/preset/details/preset-details.tsx:81
+#: src/sections/preset/components/model-select/rhf-model-select-container.tsx:26
+#: src/sections/preset/details/preset-details.tsx:75
 msgid "Model Configuration"
 msgstr "Configuración de modelos"
 
@@ -548,7 +546,7 @@ msgstr "ID del modelo"
 msgid "Model identifier"
 msgstr "Indentificador del modelo"
 
-#: src/sections/model/list/model-list-container.tsx:24
+#: src/sections/model/list/models-container.tsx:27
 msgid "Model Management"
 msgstr "Gestión de Modelos"
 
@@ -561,15 +559,15 @@ msgid "Model URL"
 msgstr "URL del modelo"
 
 #: src/components/app-sidebar/index.tsx:30
-#: src/sections/preset/list/preset-list-item.tsx:134
+#: src/sections/preset/list/preset-list-item.tsx:167
 msgid "Models"
 msgstr "Modelos"
 
-#: src/sections/preset/details/preset-details.tsx:84
+#: src/sections/preset/details/preset-details.tsx:78
 msgid "Models configured in this preset"
 msgstr "Modelos configurados en esta configuración"
 
-#: src/app/[locale]/(domain)/models/page.tsx:13
+#: src/app/[locale]/(domain)/models/page.tsx:10
 msgid "Models management"
 msgstr "Gestión de modelos"
 
@@ -585,8 +583,8 @@ msgstr "Modificado"
 msgid "Modified version of the original text without gender bias"
 msgstr "Versión modificada del texto original sin sesgos de género"
 
-#: src/components/app-sidebar/nav-recent.tsx:46
-#: src/components/app-sidebar/nav-recent.tsx:81
+#: src/components/app-sidebar/nav-recent.tsx:41
+#: src/components/app-sidebar/nav-recent.tsx:53
 msgid "More"
 msgstr "Más"
 
@@ -598,13 +596,13 @@ msgstr "Nombre"
 msgid "New Analysis"
 msgstr "Nuevo análisis"
 
-#: src/sections/model/list/model-list-container.tsx:37
-#: src/sections/preset/components/model-select/rhf-model-select-container.tsx:41
+#: src/sections/model/list/models-container.tsx:46
+#: src/sections/preset/components/model-select/rhf-model-select-container.tsx:39
 msgid "New model"
 msgstr "Nuevo modelo"
 
-#: src/sections/home/form/home-form-container.tsx:42
-#: src/sections/preset/list/preset-list-container.tsx:34
+#: src/sections/home/form/home-form-container.tsx:43
+#: src/sections/preset/list/presets-container.tsx:39
 msgid "New Preset"
 msgstr "Nueva configuración"
 
@@ -622,8 +620,8 @@ msgid "No analyses available"
 msgstr "No hay análisis disponibles"
 
 #: src/sections/analysis/list/analyses-list-empty-state.tsx:16
-#: src/sections/model/list/model-list-container.tsx:50
-#: src/sections/preset/list/preset-list-container.tsx:47
+#: src/sections/model/list/model-list.tsx:24
+#: src/sections/preset/list/presets-list.tsx:30
 msgid "No results found"
 msgstr "No se encontraron resultados"
 
@@ -652,10 +650,9 @@ msgstr "Texto original"
 msgid "Password"
 msgstr "Contraseña"
 
-#: src/sections/analysis/components/stats-cards.tsx:33
-#: src/sections/analysis/details/analysis-header.tsx:60
+#: src/sections/analysis/details/analysis-header.tsx:63
 #: src/sections/analysis/list/analyses-list-item.tsx:23
-#: src/sections/analysis/list/analyses-tabs.tsx:28
+#: src/sections/analysis/list/analyses-tabs.tsx:35
 msgid "Pending"
 msgstr "Pendiente"
 
@@ -671,11 +668,11 @@ msgstr "Asimatría de poder"
 msgid "Preset"
 msgstr "Configuración"
 
-#: src/sections/preset/components/dialogs/details-preset-dialog.tsx:23
+#: src/sections/preset/components/dialogs/details-preset-dialog.tsx:30
 msgid "Preset Details"
 msgstr "Detalles de la configuración"
 
-#: src/sections/preset/details/preset-details.tsx:162
+#: src/sections/preset/details/preset-details.tsx:156
 msgid "Preset ID"
 msgstr "ID de la configuración"
 
@@ -687,14 +684,18 @@ msgstr "Nombre de la configuración"
 msgid "Presets"
 msgstr "Configuraciones"
 
-#: src/app/[locale]/(domain)/presets/page.tsx:13
-#: src/sections/preset/list/preset-list-container.tsx:21
+#: src/app/[locale]/(domain)/presets/page.tsx:10
+#: src/sections/preset/list/presets-container.tsx:23
 msgid "Presets Management"
 msgstr "Gestión de configuraciones"
 
 #: src/sections/model/form/model-form.tsx:126
 msgid "Previous"
 msgstr "Anterior"
+
+#: src/app/[locale]/(domain)/profile/page.tsx:11
+msgid "Profile"
+msgstr "Perfil"
 
 #: src/sections/home/home-container.tsx:28
 msgid "Provides alternatives of biased terms or expressions"
@@ -704,11 +705,11 @@ msgstr "Provee alternativas a terminos o expresiones sesgadas"
 msgid "Reason"
 msgstr "Causa"
 
-#: src/components/app-sidebar/nav-recent.tsx:31
+#: src/components/app-sidebar/nav-recent.tsx:25
 msgid "Recent"
 msgstr "Reciente"
 
-#: src/sections/analysis/components/analysis-actions.tsx:38
+#: src/sections/analysis/components/analysis-actions.tsx:50
 msgid "Redo Analysis"
 msgstr "Rehacer análisis"
 
@@ -732,15 +733,15 @@ msgstr "Creando cuenta..."
 msgid "Remember me"
 msgstr "Recordarme"
 
-#: src/sections/analysis/details/analysis-header.tsx:30
+#: src/sections/analysis/details/analysis-header.tsx:29
 msgid "Return to Analysis"
 msgstr "Regresar a Análisis"
 
-#: src/sections/preset/components/model-select/model-config-card.tsx:76
+#: src/sections/preset/components/model-select/model-config-card.tsx:77
 msgid "Role"
 msgstr "Rol"
 
-#: src/components/search-input.tsx:29
+#: src/components/search-input.tsx:30
 msgid "Search models..."
 msgstr "Buscar modelos..."
 
@@ -752,11 +753,11 @@ msgstr "Enviar"
 msgid "Sending..."
 msgstr "Enviando..."
 
-#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:32
+#: src/sections/preset/components/dialogs/create-preset-dialog.tsx:31
 msgid "Set up a new combination of models with specific parameters"
 msgstr "Establece una nueva combinación de modelos con parámetros específicos"
 
-#: src/sections/model/components/dialogs/create-model-dialog.tsx:23
+#: src/sections/model/components/dialogs/create-model-dialog.tsx:25
 msgid "Set up a new connection to a language model"
 msgstr "Establece una nueva conexión a un modelo de lenguaje"
 
@@ -764,11 +765,11 @@ msgstr "Establece una nueva conexión a un modelo de lenguaje"
 msgid "Settings"
 msgstr "Configuración"
 
-#: src/sections/analysis/details/analysis-header.tsx:130
+#: src/sections/analysis/details/analysis-header.tsx:134
 msgid "Share"
 msgstr "Compartir"
 
-#: src/sections/analysis/details/content/analysis-content-original-text.tsx:37
+#: src/sections/analysis/details/content/analysis-content-original-text.tsx:33
 msgid "Show"
 msgstr "Mostrar"
 
@@ -788,15 +789,15 @@ msgstr "Registrarse"
 msgid "Sing in here"
 msgstr "Inicie sesión aquí"
 
-#: src/locales/components/language-switcher.tsx:62
+#: src/locales/components/language-switcher.tsx:38
 msgid "Spanish"
 msgstr "Español"
 
-#: src/sections/model/list/model-list-container.tsx:56
+#: src/sections/model/list/model-list.tsx:30
 msgid "Start by creating your first model"
 msgstr "Comienza creando tu primer modelo"
 
-#: src/sections/preset/list/preset-list-container.tsx:53
+#: src/sections/preset/list/presets-list.tsx:35
 msgid "Start by creating your first preset"
 msgstr "Inicie creando su primera configuración"
 
@@ -805,7 +806,7 @@ msgid "Starting session..."
 msgstr "Iniciando sesión..."
 
 #: src/sections/model/details/model-details.tsx:193
-#: src/sections/model/list/model-list-item.tsx:138
+#: src/sections/model/list/model-list-item.tsx:150
 msgid "Status"
 msgstr "Estado"
 
@@ -825,9 +826,13 @@ msgstr "Estigmatización"
 msgid "Successful authenticated user"
 msgstr "Usuario autenticado con éxito"
 
-#: src/sections/analysis/details/analysis-details-container.tsx:22
+#: src/sections/analysis/details/analysis-details-container.tsx:21
 msgid "Summary"
 msgstr "Resumen"
+
+#: src/components/theme/theme-switcher.tsx:34
+msgid "System"
+msgstr "Sistema"
 
 #: src/sections/analysis/details/content/analysis-content.tsx:454
 msgid "Systemic Biases"
@@ -849,19 +854,19 @@ msgstr "Prueba de conexión"
 msgid "The analyzes will appear here once they are run"
 msgstr "Los análisis apareceran aquí una vez que se ejecuten"
 
-#: src/components/theme/theme-switcher.tsx:33
+#: src/components/theme/theme-switcher.tsx:27
 msgid "Theme"
 msgstr "Tema"
 
-#: src/sections/model/list/model-list-container.tsx:51
+#: src/sections/model/list/model-list.tsx:25
 msgid "There are no models configured"
 msgstr "No hay modelos configurados"
 
-#: src/sections/preset/list/preset-list-container.tsx:48
+#: src/sections/preset/list/presets-list.tsx:30
 msgid "There are no presets configured"
 msgstr "No hay presets configurados"
 
-#: src/sections/model/components/dialogs/delete-model-alert-dialog-content.tsx:43
+#: src/sections/model/components/dialogs/delete-model-alert-dialog.tsx:48
 msgid ""
 "This action cannot be undone. \n"
 "The model will be permanently eliminated"
@@ -869,19 +874,23 @@ msgstr ""
 "Esta acción no se puede revertir. \n"
 "El modelo será eliminado permanentemente"
 
-#. placeholder {0}: analysis.name
 #: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:41
-msgid "This action cannot be undone. \\nWill be permanently eliminated the analysis<0> {0}</0> and all its results."
-msgstr "Esta acción no se puede deshacer. \\nEl análisis será eliminado permanentemente<0> {0}</0> y todos sus resultados."
+#~ msgid "This action cannot be undone. \\nWill be permanently eliminated the analysis<0> {0}</0> and all its results."
+#~ msgstr "Esta acción no se puede deshacer. \\nEl análisis será eliminado permanentemente<0> {0}</0> y todos sus resultados."
 
 #. placeholder {0}: preset.name
-#: src/sections/preset/components/dialogs/delete-preset-alert-dialog-content.tsx:43
+#: src/sections/preset/components/dialogs/delete-preset-alert-dialog-content.tsx:56
 msgid "This action cannot be undone. <0/>The preset will be permanently deleted<1> {0}</1>"
 msgstr "Esta acción es irreversible. <0/>El preset será eliminado permanentemente<1> {0}</1>"
 
+#. placeholder {0}: analysis.name
+#: src/sections/analysis/components/dialogs/delete-analysis-alert-dialog.tsx:50
+msgid "This action cannot be undone. <0/>Will be permanently eliminated the analysis<1> {0}</1> and all its results."
+msgstr "Esta acción no se puede deshacer. <0/>Será eliminado de forma permanente el analisis<1> {0}</1> y todos sus resultados."
+
 #: src/sections/analysis/list/analyses-list-empty-state.tsx:20
-#: src/sections/model/list/model-list-container.tsx:55
-#: src/sections/preset/list/preset-list-container.tsx:52
+#: src/sections/model/list/model-list.tsx:29
+#: src/sections/preset/list/presets-list.tsx:34
 msgid "Try other search terms"
 msgstr "Intenta con otros términos de búsqueda"
 
@@ -893,16 +902,16 @@ msgstr "Model no configurado"
 msgid "Unspecified role"
 msgstr "Rol no especificado"
 
-#: src/sections/preset/components/dialogs/edit-preset-dialog.tsx:48
+#: src/sections/preset/components/dialogs/edit-preset-dialog.tsx:56
 msgid "Update"
 msgstr "Actualizar"
 
-#: src/sections/home/components/upload/upload-button.tsx:29
+#: src/sections/home/components/upload/upload-button.tsx:28
 msgid "Upload File"
 msgstr "Cargar archivo"
 
 #: src/sections/model/details/model-details.tsx:126
-#: src/sections/preset/details/preset-details.tsx:117
+#: src/sections/preset/details/preset-details.tsx:111
 msgid "Usage Information"
 msgstr "Información de uso"
 
@@ -915,10 +924,10 @@ msgid "Verify that the model configuration is correct"
 msgstr "Verifica que la configuración del modelo es correcta"
 
 #: src/components/app-sidebar/nav-recent.tsx:53
-msgid "View details"
-msgstr "Ver detalles"
+#~ msgid "View details"
+#~ msgstr "Ver detalles"
 
-#: src/app/[locale]/(domain)/analysis/[id]/page.tsx:13
+#: src/app/[locale]/(domain)/analysis/[id]/page.tsx:12
 msgid "View details of the current analysis"
 msgstr "Detalles del análisis actual"
 
