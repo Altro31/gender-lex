@@ -2,13 +2,10 @@ import { client } from '@repo/db/client'
 import { zenstackAdapter } from '@zenstackhq/better-auth'
 import { betterAuth } from 'better-auth'
 import { nextCookies } from 'better-auth/next-js'
-import { anonymous, customSession } from 'better-auth/plugins'
+import { customSession } from 'better-auth/plugins'
 
 export const auth = betterAuth({
 	database: zenstackAdapter(client as any, { provider: 'postgresql' }),
-	session: {
-		additionalFields: { lang: { type: 'string', defaultValue: 'es' } },
-	},
 	emailAndPassword: { enabled: true },
 	socialProviders: {
 		google: {
@@ -30,25 +27,7 @@ export const auth = betterAuth({
 				include: { user: true },
 			})
 			if (!session) throw new Error('Session not found')
-			return { user: session.user, session }
-		}),
-		anonymous({
-			async onLinkAccount({ anonymousUser, newUser }) {
-				await client.$transaction([
-					client.analysis.updateMany({
-						where: { userId: anonymousUser.user.id },
-						data: { userId: newUser.user.id },
-					}),
-					client.model.updateMany({
-						where: { userId: anonymousUser.user.id },
-						data: { userId: newUser.user.id },
-					}),
-					client.preset.updateMany({
-						where: { userId: anonymousUser.user.id },
-						data: { userId: newUser.user.id },
-					}),
-				])
-			},
+			return session
 		}),
 	],
 })

@@ -15,7 +15,7 @@ export const getUserProfile = async () => {
 	'use cache: private'
 
 	const session = await getSession()
-	if (!session?.user || session.user.isAnonymous) {
+	if (!session) {
 		throw new Error('Usuario no autenticado')
 	}
 
@@ -46,7 +46,7 @@ export const updateUserProfile = actionClient
 	.inputSchema(UpdateProfileSchema)
 	.action(async ({ parsedInput }) => {
 		const session = await getSession()
-		if (!session?.user || session.user.isAnonymous) {
+		if (!session) {
 			throw new Error('Usuario no autenticado')
 		}
 
@@ -64,7 +64,7 @@ export const updateUserImage = actionClient
 	.inputSchema(z.object({ image: z.string().url() }))
 	.action(async ({ parsedInput }) => {
 		const session = await getSession()
-		if (!session?.user || session.user.isAnonymous) {
+		if (!session) {
 			throw new Error('Usuario no autenticado')
 		}
 

@@ -25,33 +25,13 @@ import ThemeSwitcher from '@/components/theme/theme-switcher'
 import LanguageSwitcher from '@/locales/components/language-switcher'
 import { t } from '@lingui/core/macro'
 import Link from 'next/link'
-import { Activity } from 'react'
 
 export default async function NavUser() {
 	const session = await getSession()
 
 	return (
 		<SidebarMenu>
-			<SidebarMenuItem>
-				<Activity
-					mode={
-						session && !session.user.isAnonymous
-							? 'visible'
-							: 'hidden'
-					}
-				>
-					<User />
-				</Activity>
-				<Activity
-					mode={
-						session && !session.user.isAnonymous
-							? 'hidden'
-							: 'visible'
-					}
-				>
-					<Login />
-				</Activity>
-			</SidebarMenuItem>
+			<SidebarMenuItem>{session ? <User /> : <Login />}</SidebarMenuItem>
 		</SidebarMenu>
 	)
 }

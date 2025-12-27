@@ -20,6 +20,7 @@
 		"@zenstackhq/cli": "^3.0.0-beta.34",
 		"type-fest": "^5.3.0"
 	},
+	"types": "./index.ts",
 	"exports": {
 		"./input": "./src/generated/input.ts",
 		"./models": "./src/generated/models.ts",

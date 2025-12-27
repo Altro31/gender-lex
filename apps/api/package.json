@@ -38,7 +38,8 @@
 	},
 	"peerDependencies": {
 		"kysely": "0.28.8",
-		"@ai-sdk/provider": "^3.0.0"
+		"@ai-sdk/provider": "^3.0.0",
+		"@zenstackhq/orm": "^3.0.0-beta.34"
 	},
 	"exports": {
 		".": "./src/index.ts"

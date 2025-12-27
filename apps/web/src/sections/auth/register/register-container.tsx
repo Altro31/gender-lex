@@ -3,6 +3,7 @@ import {
 	Card,
 	CardContent,
 	CardDescription,
+	CardFooter,
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
@@ -15,16 +16,12 @@ import Link from 'next/link'
 
 export default function RegisterContainer() {
 	return (
-		<div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+		<div className="flex min-h-screen w-full items-center justify-center  p-4">
 			<div className="w-full max-w-md">
 				{/* Back Button */}
 				<div className="mb-6">
 					<Link href="/">
-						<Button
-							variant="ghost"
-							size="sm"
-							className="gap-2 text-gray-600 hover:text-gray-900"
-						>
+						<Button variant="ghost" size="sm">
 							<ArrowLeft />
 							{t`Back to home`}
 						</Button>
@@ -34,14 +31,14 @@ export default function RegisterContainer() {
 				<Card className="border-0 shadow-xl">
 					<CardHeader className="space-y-1 pb-2">
 						<div className="mb-1 flex justify-center">
-							<div className="bg-primary flex h-12 w-12 items-center justify-center rounded-xl">
-								<Lock className="h-6 w-6 text-white" />
+							<div className="bg-primary flex size-12 items-center justify-center rounded-xl">
+								<Lock className="size-6 " />
 							</div>
 						</div>
-						<CardTitle className="text-center text-2xl font-bold text-gray-900">
+						<CardTitle className="text-center text-2xl font-bold">
 							{t`Create account`}
 						</CardTitle>
-						<CardDescription className="text-center text-gray-600">
+						<CardDescription className="text-center text-muted-foreground">
 							{t`Join our platform in seconds`}
 						</CardDescription>
 					</CardHeader>
@@ -50,18 +47,19 @@ export default function RegisterContainer() {
 						<RegisterFormContainer>
 							<RegisterForm />
 						</RegisterFormContainer>
-						<div className="text-center">
-							<p className="text-sm text-gray-600">
-								{t`Do you already have an account?`}{' '}
-								<Link
-									href="/auth/login"
-									className="font-medium text-blue-600 hover:text-blue-800"
-								>
-									{t`Sing in here`}
-								</Link>
-							</p>
-						</div>
+						<div className="text-center"></div>
 					</CardContent>
+					<CardFooter>
+						<p className="flex-1 text-sm text-center text-muted-foreground">
+							{t`Do you already have an account?`}{' '}
+							<Link
+								href="/auth/login"
+								className="font-medium text-blue-600 hover:text-blue-800"
+							>
+								{t`Sing in here`}
+							</Link>
+						</p>
+					</CardFooter>
 				</Card>
 			</div>
 		</div>

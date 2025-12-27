@@ -1,12 +1,12 @@
-"use server"
+'use server'
 
-import { auth, getSession } from "@/lib/auth/auth-server"
-import envs from "@/lib/env/env-server"
-import { actionClient } from "@/lib/safe-action"
-import { LoginSchema } from "@/sections/auth/login/form/login-schema"
-import { RegisterSchema } from "@/sections/auth/register/form/register-schema"
-import { redirect } from "next/navigation"
-import z from "zod"
+import { auth } from '@/lib/auth/auth-server'
+import envs from '@/lib/env/env-server'
+import { actionClient } from '@/lib/safe-action'
+import { LoginSchema } from '@/sections/auth/login/form/login-schema'
+import { RegisterSchema } from '@/sections/auth/register/form/register-schema'
+import { redirect } from 'next/navigation'
+import z from 'zod'
 
 export const signInEmail = actionClient
 	.inputSchema(LoginSchema)
@@ -16,13 +16,13 @@ export const signInEmail = actionClient
 	})
 
 export const signInSocial = actionClient
-	.inputSchema(z.enum(["github", "google"]))
+	.inputSchema(z.enum(['github', 'google']))
 	.action(async ({ parsedInput: provider }) => {
 		const res = await auth.api.signInSocial({
 			body: { provider, callbackURL: envs.UI_URL },
 		})
 		if (res.redirect) {
-			redirect(res.url ?? "/")
+			redirect(res.url ?? '/')
 		}
 		return { success: true }
 	})

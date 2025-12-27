@@ -23,7 +23,7 @@ export class AuthService extends Effect.Service<AuthService>()('AuthService', {
 		if (!res) return emptyReturn
 		const session = yield* effectify(
 			client.session.findUniqueOrThrow({
-				where: { id: res.session.id },
+				where: { id: res.id },
 				include: { user: true },
 			}),
 		)

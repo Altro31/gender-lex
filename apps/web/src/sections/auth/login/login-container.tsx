@@ -1,25 +1,26 @@
-import TermsAndConditions from "@/components/terms-and-conditions"
-import { Button } from "@/components/ui/button"
+import TermsAndConditions from '@/components/terms-and-conditions'
+import { Button } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
 	CardDescription,
+	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import LoginForm from "@/sections/auth/login/form/login-form"
-import LoginFormContainer from "@/sections/auth/login/form/login-form-container"
-import { signInSocial } from "@/services/auth"
-import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons"
-import { t } from "@lingui/core/macro"
+} from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import LoginForm from '@/sections/auth/login/form/login-form'
+import LoginFormContainer from '@/sections/auth/login/form/login-form-container'
+import { signInSocial } from '@/services/auth'
+import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons'
+import { t } from '@lingui/core/macro'
 
-import { ArrowLeft, Lock } from "lucide-react"
-import Link from "next/link"
+import { ArrowLeft, Lock } from 'lucide-react'
+import Link from 'next/link'
 
 export default function LoginContainer() {
 	return (
-		<div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+		<div className="flex min-h-screen w-full items-center justify-center p-4">
 			<div className="w-full max-w-md">
 				{/* Back Button */}
 				<div className="mb-6">
@@ -34,11 +35,11 @@ export default function LoginContainer() {
 				<Card className="border-0 shadow-xl">
 					<CardHeader className="space-y-1 pb-2">
 						<div className="mb-1 flex justify-center">
-							<div className="bg-primary flex h-12 w-12 items-center justify-center rounded-xl">
-								<Lock className="h-6 w-6 text-white" />
+							<div className="bg-primary flex size-12 items-center justify-center rounded-xl">
+								<Lock className="size-6" />
 							</div>
 						</div>
-						<CardTitle className="text-muted-foreground text-center text-2xl font-bold">
+						<CardTitle className=" text-center text-2xl font-bold">
 							{t`Login`}
 						</CardTitle>
 						<CardDescription className="text-muted-foreground text-center">
@@ -50,10 +51,10 @@ export default function LoginContainer() {
 						<div className="space-y-3">
 							<Button
 								variant="outline"
-								className="h-11 w-full gap-3 bg-transparent hover:bg-gray-50"
+								className="h-11 w-full gap-3 bg-transparent hover:bg-muted"
 								onClick={async () => {
-									"use server"
-									await signInSocial("google")
+									'use server'
+									await signInSocial('google')
 								}}
 							>
 								<SiGoogle className="size-5" />
@@ -61,10 +62,10 @@ export default function LoginContainer() {
 							</Button>
 							<Button
 								variant="outline"
-								className="h-11 w-full gap-3 bg-transparent hover:bg-gray-50"
+								className="h-11 w-full gap-3 bg-transparent hover:bg-muted"
 								onClick={async () => {
-									"use server"
-									await signInSocial("github")
+									'use server'
+									await signInSocial('github')
 								}}
 							>
 								<SiGithub className="size-5" />
@@ -77,7 +78,7 @@ export default function LoginContainer() {
 								<Separator className="w-full" />
 							</div>
 							<div className="relative flex justify-center text-xs uppercase">
-								<span className="text-muted-foreground bg-white px-2">
+								<span className="text-muted-foreground bg-muted px-2">
 									{t`Or continue with email`}
 								</span>
 							</div>
@@ -87,18 +88,18 @@ export default function LoginContainer() {
 						<LoginFormContainer>
 							<LoginForm />
 						</LoginFormContainer>
-						<div className="text-center">
-							<p className="text-sm text-gray-600">
-								{t`Don't you have an account?`}{" "}
-								<Link
-									href="/auth/register"
-									className="font-medium text-blue-600 hover:text-blue-800"
-								>
-									{t`Register here`}
-								</Link>
-							</p>
-						</div>
 					</CardContent>
+					<CardFooter>
+						<p className="flex-1 text-center text-sm text-muted-foreground">
+							{t`Don't you have an account?`}{' '}
+							<Link
+								href="/auth/register"
+								className="font-medium text-blue-600 hover:text-blue-800"
+							>
+								{t`Register here`}
+							</Link>
+						</p>
+					</CardFooter>
 				</Card>
 
 				{/* Footer */}
