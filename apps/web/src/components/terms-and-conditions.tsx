@@ -1,11 +1,13 @@
+'use client'
+
+import { useLocale } from '@/hooks/use-locale'
 import { t } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import Link from 'next/link'
 import { Button } from './ui/button'
-import { getLocale } from '@/locales/utils/locale'
 
-export default async function TermsAndConditions() {
-	const locale = await getLocale()
+export default function TermsAndConditions() {
+	const locale = useLocale()
 	return (
 		<p>
 			<Trans>
