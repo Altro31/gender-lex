@@ -58,22 +58,15 @@ export default async function LoginContainer() {
 					<CardFooter>
 						<p className="flex-1 text-center text-sm text-muted-foreground">
 							{t`Don't you have an account?`}{' '}
-							<Button
-								variant="link"
-								nativeButton={false}
-								className="p-0"
-								render={
-									<Link href={`/${locale}/auth/register`} />
-								}
-							>
+							<Link href={`/${locale}/auth/register`}>
 								{t`Register here`}
-							</Button>
+							</Link>
 						</p>
 					</CardFooter>
 				</Card>
 
 				{/* Footer */}
-				<div className="mt-8 text-center text-xs text-gray-500">
+				<div className="mt-8 text-center text-xs text-muted-foreground">
 					<TermsAndConditions />
 				</div>
 			</div>

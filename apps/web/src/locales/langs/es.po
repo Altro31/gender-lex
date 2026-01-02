@@ -60,15 +60,15 @@ msgstr "<0>Bienvenido a Genderlex,</0><1/><2>su asistente de escritura inteligen
 msgid "A new preset will be created with the same name, description and model settings as: <0>{0}</0>"
 msgstr "Una nueva configuración será creada con el mismo nombre, descripción y configuración de modelos, en base a: <0>{0}</0>"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:331
+#: src/sections/analysis/details/content/analysis-content.tsx:325
 msgid "Absence of Representation"
 msgstr "Ausencia de representación"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:591
+#: src/sections/analysis/details/content/analysis-content.tsx:585
 msgid "Access to Care"
 msgstr "Acceso a la atención"
 
-#: src/components/app-sidebar/nav-user.tsx:116
+#: src/components/app-sidebar/nav-user.tsx:97
 msgid "Account"
 msgstr "Cuenta"
 
@@ -80,12 +80,12 @@ msgstr "Añade y configura los modelos que serán parte de la configuración"
 msgid "Adjust the model temperature"
 msgstr "Ajuste la temperatura del modelo"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:607
-#: src/sections/analysis/details/content/analysis-content.tsx:643
+#: src/sections/analysis/details/content/analysis-content.tsx:601
+#: src/sections/analysis/details/content/analysis-content.tsx:637
 msgid "Affected"
 msgstr "Afectado"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:367
+#: src/sections/analysis/details/content/analysis-content.tsx:361
 msgid "Affected Groups"
 msgstr "Grupos afectados"
 
@@ -93,12 +93,12 @@ msgstr "Grupos afectados"
 msgid "All"
 msgstr "Todos"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:511
+#: src/sections/analysis/details/content/analysis-content.tsx:505
 msgid "Alternative"
 msgstr "Alternativa"
 
 #: src/sections/analysis/details/analysis-details-container.tsx:27
-#: src/sections/analysis/details/content/analysis-content.tsx:56
+#: src/sections/analysis/details/content/analysis-content.tsx:51
 msgid "Alternatives"
 msgstr "Alternativas"
 
@@ -116,7 +116,7 @@ msgstr "Detalles del análisis | GenderLex"
 msgid "Analysis Details"
 msgstr "Detalles del análisis"
 
-#: src/sections/analysis/list/analyses-container.tsx:19
+#: src/sections/analysis/list/analyses-container.tsx:18
 msgid "Analysis management"
 msgstr "Gestión de análisis"
 
@@ -136,7 +136,7 @@ msgstr "Analiza texto in búsqueda de contenido sesgado o estigmatizado"
 msgid "Analyzed Text"
 msgstr "Texto analizado"
 
-#: src/sections/model/details/model-details.tsx:99
+#: src/sections/model/details/model-details.tsx:98
 #: src/sections/model/form/model-form.tsx:48
 msgid "API Key"
 msgstr "Clave API"
@@ -152,27 +152,32 @@ msgstr "Clave API"
 msgid "Are you sure?"
 msgstr "¿Está seguro?"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:66
+#: src/sections/analysis/details/content/analysis-content.tsx:60
 msgid "Average Influence"
 msgstr "Influencia promedio"
 
-#: src/sections/auth/login/login-container.tsx:29
-#: src/sections/auth/register/register-container.tsx:29
+#: src/sections/auth/register/register-container.tsx:26
 msgid "Back to home"
 msgstr "Regresar a inicio"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:46
-#: src/sections/analysis/details/content/analysis-content.tsx:154
+#: src/sections/analysis/details/content/analysis-content.tsx:43
+#: src/sections/analysis/details/content/analysis-content.tsx:148
 msgid "Biased Metaphors"
 msgstr "Metáforas sesgadas"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:36
+#: src/sections/analysis/details/content/analysis-content.tsx:35
 msgid "Biased terms"
 msgstr "Términos sesgados"
 
+#. placeholder {0}: 'use client' import { useLocale } from '@/hooks/use-locale' import { t } from '@lingui/core/macro' import { Trans } from '@lingui/react/macro' import Link from 'next/link' import { Button } from './ui/button' export default function TermsAndConditions() { const locale = useLocale() return ( <p> <Trans> By continuing, you accept our{' '} <Button size="xs" variant="link" nativeButton={false} className="p-0" render={<Link href={`/${locale}/terms`} />} > {t`Terms of service`} </Button>{' '} and{' '} <Button size="xs" variant="link" nativeButton={false} className="p-0" render={<Link href={`/${locale}/privacy`} />} > {t`Privacy Policy`} </Button> </Trans> </p> ) }
+#. placeholder {1}: 'use client' import { useLocale } from '@/hooks/use-locale' import { t } from '@lingui/core/macro' import { Trans } from '@lingui/react/macro' import Link from 'next/link' import { Button } from './ui/button' export default function TermsAndConditions() { const locale = useLocale() return ( <p> <Trans> By continuing, you accept our{' '} <Button size="xs" variant="link" nativeButton={false} className="p-0" render={<Link href={`/${locale}/terms`} />} > {t`Terms of service`} </Button>{' '} and{' '} <Button size="xs" variant="link" nativeButton={false} className="p-0" render={<Link href={`/${locale}/privacy`} />} > {t`Privacy Policy`} </Button> </Trans> </p> ) }
+#: src/components/terms-and-conditions.tsx:13
+msgid "By continuing, you accept our <0>{0}</0> and <1>{1}</1>"
+msgstr "Al continuar, acepta nuestros <0>{0}</0> y <1>{1}</1>"
+
 #: src/components/terms-and-conditions.tsx:7
-msgid "By continuing, you accept our <0>Terms of service</0> and <1>Privacy Policy</1>"
-msgstr "Al continuar, aceptas nuestros <0>Términos de Servicio</0> y <1>Política de Privacidad</1>"
+#~ msgid "By continuing, you accept our <0>Terms of service</0> and <1>Privacy Policy</1>"
+#~ msgstr "Al continuar, aceptas nuestros <0>Términos de Servicio</0> y <1>Política de Privacidad</1>"
 
 #: src/sections/analysis/components/dialogs/delete-analysis-alert-dialog.tsx:62
 #: src/sections/model/components/dialogs/delete-model-alert-dialog.tsx:57
@@ -213,7 +218,7 @@ msgstr "Información completa de la configuración seleccionada"
 msgid "Completed at"
 msgstr "Completado el"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:94
+#: src/sections/analysis/details/content/analysis-content.tsx:88
 msgid "Conclusion"
 msgstr "msgstr Conclusión"
 
@@ -225,7 +230,7 @@ msgstr "Confirmar contraseña"
 msgid "Confirm your password"
 msgstr "Confiram tu contraseña"
 
-#: src/sections/model/details/model-details.tsx:184
+#: src/sections/model/details/model-details.tsx:183
 msgid "Connection Test"
 msgstr "Prueba de conexión"
 
@@ -237,11 +242,11 @@ msgstr "Contenido oculto por privacidad"
 msgid "Context"
 msgstr "Contexto"
 
-#: src/sections/auth/login/login-container.tsx:71
+#: src/sections/auth/login/components/social-login-buttons.tsx:56
 msgid "Continue with Github"
 msgstr "Continuar con Github"
 
-#: src/sections/auth/login/login-container.tsx:60
+#: src/sections/auth/login/components/social-login-buttons.tsx:40
 msgid "Continue with Google"
 msgstr "Continuar con Google"
 
@@ -249,7 +254,7 @@ msgstr "Continuar con Google"
 msgid "Create"
 msgstr "Crear"
 
-#: src/sections/auth/register/register-container.tsx:42
+#: src/sections/auth/register/register-container.tsx:39
 msgid "Create account"
 msgstr "Crear cuenta"
 
@@ -270,13 +275,13 @@ msgstr "Crea un nuevo modelo"
 msgid "Create New Preset"
 msgstr "Crear nueva Configuración"
 
-#: src/sections/model/list/model-list-item.tsx:171
+#: src/sections/model/list/model-list-item.tsx:167
 #: src/sections/preset/list/preset-list-item.tsx:213
 msgid "Created at"
 msgstr "Creado el"
 
 #: src/sections/model/details/model-details.tsx:136
-#: src/sections/preset/details/preset-details.tsx:121
+#: src/sections/preset/details/preset-details.tsx:120
 msgid "Creation date"
 msgstr "Fecha de creación"
 
@@ -284,17 +289,17 @@ msgstr "Fecha de creación"
 msgid "Dark"
 msgstr "Oscuro"
 
-#: src/sections/analysis/components/analysis-actions.tsx:60
+#: src/sections/analysis/components/analysis-actions.tsx:59
 #: src/sections/analysis/components/dialogs/delete-analysis-alert-dialog.tsx:71
 #: src/sections/model/components/dialogs/delete-model-alert-dialog.tsx:63
-#: src/sections/model/list/model-list-item.tsx:137
+#: src/sections/model/list/model-list-item.tsx:135
 #: src/sections/preset/components/dialogs/delete-preset-alert-dialog-content.tsx:72
 #: src/sections/preset/list/preset-list-item.tsx:149
 msgid "Delete"
 msgstr "Eliminar"
 
 #: src/sections/analysis/components/dialogs/delete-analysis-alert-dialog.tsx:71
-#: src/sections/model/list/model-list-item.tsx:191
+#: src/sections/model/list/model-list-item.tsx:187
 #: src/sections/preset/list/preset-list-item.tsx:234
 msgid "Deleting..."
 msgstr "Eliminando..."
@@ -308,8 +313,8 @@ msgstr "Describe el propósito y uso de esta configuración"
 msgid "Description"
 msgstr "Descripción"
 
-#: src/sections/analysis/components/analysis-actions.tsx:46
-#: src/sections/model/list/model-list-item.tsx:105
+#: src/sections/analysis/components/analysis-actions.tsx:45
+#: src/sections/model/list/model-list-item.tsx:103
 #: src/sections/preset/list/preset-list-item.tsx:94
 msgid "Details"
 msgstr "Detalles"
@@ -319,13 +324,13 @@ msgstr "Detalles"
 msgid "Details of model: {0}"
 msgstr "Detalles del modelo: {0}"
 
-#: src/sections/auth/register/register-container.tsx:55
+#: src/sections/auth/register/register-container.tsx:54
 msgid "Do you already have an account?"
 msgstr "¿Ya tienes una cuenta?"
 
 #: src/sections/auth/login/login-container.tsx:92
-msgid "Don't you have an account?"
-msgstr "¿No tienes una cuenta?"
+#~ msgid "Don't you have an account?"
+#~ msgstr "¿No tienes una cuenta?"
 
 #: src/sections/analysis/details/analysis-header.tsx:57
 #: src/sections/analysis/list/analyses-list-item.tsx:33
@@ -341,7 +346,7 @@ msgstr "Suelte el archivo aquí"
 msgid "e.g.: Creative Analysis"
 msgstr "Análisis creativo"
 
-#: src/sections/model/list/model-list-item.tsx:120
+#: src/sections/model/list/model-list-item.tsx:118
 #: src/sections/preset/list/preset-list-item.tsx:107
 msgid "Edit"
 msgstr "Editar"
@@ -366,7 +371,7 @@ msgstr "Edita la conexiión al modelo: {0}"
 msgid "Edit the information of preset: {0}"
 msgstr "Editar información de la configuración: {0}"
 
-#: src/components/app-sidebar/nav-user.tsx:151
+#: src/components/app-sidebar/buttons/EmailButton.tsx:16
 #: src/sections/auth/login/form/login-form.tsx:21
 #: src/sections/auth/register/form/register-form.tsx:43
 msgid "Email"
@@ -376,11 +381,11 @@ msgstr "Correo Electrónico"
 msgid "Endpoint"
 msgstr "Entrada"
 
-#: src/locales/components/language-switcher.tsx:32
+#: src/locales/components/language-switcher.tsx:33
 msgid "English"
 msgstr "Inglés"
 
-#: src/sections/auth/login/login-container.tsx:45
+#: src/sections/auth/login/login-container.tsx:40
 msgid "Enter your account to continue"
 msgstr "Ingresa a tu cuenta para continuar"
 
@@ -393,17 +398,17 @@ msgstr "Error"
 msgid "ex: GPT-4 Main"
 msgstr "ej: GPT-4 Principal"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:255
-#: src/sections/analysis/details/content/analysis-content.tsx:310
-#: src/sections/analysis/details/content/analysis-content.tsx:488
+#: src/sections/analysis/details/content/analysis-content.tsx:249
+#: src/sections/analysis/details/content/analysis-content.tsx:304
+#: src/sections/analysis/details/content/analysis-content.tsx:482
 msgid "Examples"
 msgstr "Ejemplos"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:428
+#: src/sections/analysis/details/content/analysis-content.tsx:422
 msgid "Excluded Groups"
 msgstr "Grupos excluidos"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:189
+#: src/sections/analysis/details/content/analysis-content.tsx:183
 msgid "Explanation"
 msgstr "Explicación"
 
@@ -427,16 +432,16 @@ msgstr "GenderLex, su asistente de escritura inteligente"
 msgid "Hide"
 msgstr "Ocultar"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:197
+#: src/sections/analysis/details/content/analysis-content.tsx:191
 msgid "Historical Context"
 msgstr "Contexto histórico"
 
-#: src/components/app-sidebar/index.tsx:29
+#: src/components/app-sidebar/index.tsx:33
 msgid "History"
 msgstr "Historial"
 
 #: src/sections/analysis/details/analysis-details-container.tsx:23
-#: src/sections/analysis/details/content/analysis-content.tsx:110
+#: src/sections/analysis/details/content/analysis-content.tsx:104
 msgid "Identified Biased Terms"
 msgstr "Terminos"
 
@@ -453,13 +458,13 @@ msgstr "Impacto"
 msgid "Important dates and usage statistics"
 msgstr "Fechas importantes y estadísticas de uso"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:129
-#: src/sections/analysis/details/content/analysis-content.tsx:171
-#: src/sections/analysis/details/content/analysis-content.tsx:227
-#: src/sections/analysis/details/content/analysis-content.tsx:282
-#: src/sections/analysis/details/content/analysis-content.tsx:337
-#: src/sections/analysis/details/content/analysis-content.tsx:399
-#: src/sections/analysis/details/content/analysis-content.tsx:460
+#: src/sections/analysis/details/content/analysis-content.tsx:123
+#: src/sections/analysis/details/content/analysis-content.tsx:165
+#: src/sections/analysis/details/content/analysis-content.tsx:221
+#: src/sections/analysis/details/content/analysis-content.tsx:276
+#: src/sections/analysis/details/content/analysis-content.tsx:331
+#: src/sections/analysis/details/content/analysis-content.tsx:393
+#: src/sections/analysis/details/content/analysis-content.tsx:454
 msgid "Influence"
 msgstr "Influencia"
 
@@ -467,32 +472,36 @@ msgstr "Influencia"
 msgid "Insert the API Key"
 msgstr "Inserte la Clave API"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:393
+#: src/sections/analysis/details/content/analysis-content.tsx:387
 msgid "Intersectionality"
 msgstr "Interseccionalidad"
 
-#: src/sections/auth/register/register-container.tsx:45
+#: src/sections/auth/register/register-container.tsx:42
 msgid "Join our platform in seconds"
 msgstr "Únete a nuestra plataforma en segundos"
 
-#: src/locales/components/language-switcher.tsx:25
+#: src/locales/components/language-switcher.tsx:26
 msgid "Language"
 msgstr "Idioma"
 
 #: src/sections/model/details/model-details.tsx:153
-#: src/sections/model/list/model-list-item.tsx:178
-#: src/sections/preset/details/preset-details.tsx:138
+#: src/sections/model/list/model-list-item.tsx:174
+#: src/sections/preset/details/preset-details.tsx:137
 #: src/sections/preset/list/preset-list-item.tsx:198
 msgid "Last use"
 msgstr "Último uso"
+
+#: src/components/last-used-badge.tsx:17
+msgid "Lastest"
+msgstr "Último"
 
 #: src/components/theme/theme-switcher.tsx:46
 msgid "Light"
 msgstr "Claro"
 
 #: src/app/[locale]/(security)/auth/login/page.tsx:9
-#: src/components/app-sidebar/nav-user.tsx:139
-#: src/sections/auth/login/login-container.tsx:42
+#: src/components/app-sidebar/nav-user.tsx:120
+#: src/sections/auth/login/login-container.tsx:37
 msgid "Login"
 msgstr "Iniciar sesión"
 
@@ -500,12 +509,12 @@ msgstr "Iniciar sesión"
 msgid "Login to your account"
 msgstr "Inicia sesión en tu cuenta"
 
-#: src/components/app-sidebar/nav-user.tsx:122
+#: src/components/app-sidebar/nav-user.tsx:103
 msgid "Logout"
 msgstr "Cerrar sesión"
 
 #: src/app/[locale]/(domain)/analysis/page.tsx:11
-#: src/sections/analysis/list/analyses-container.tsx:22
+#: src/sections/analysis/list/analyses-container.tsx:21
 msgid "Manage gender bias detection analysis"
 msgstr "Administra los análisis de detección de sesgos de género"
 
@@ -523,11 +532,11 @@ msgstr "Gestiona tus conexiones a modelos de lenguage"
 msgid "Manage your profile and account settings"
 msgstr "Administra tu perfil y las configuraciónes de la cuenta"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:156
+#: src/sections/analysis/details/content/analysis-content.tsx:150
 msgid "Metaphorical expressions that perpetuate gender biases"
 msgstr "Expresiones metafóricas que perpetúan sesgos de género"
 
-#: src/sections/model/details/model-details.tsx:89
+#: src/sections/model/details/model-details.tsx:87
 #: src/sections/preset/components/model-select/model-config-card.tsx:66
 #: src/sections/preset/list/preset-list-item.tsx:222
 msgid "Model"
@@ -558,7 +567,7 @@ msgstr "Nombre del modelo"
 msgid "Model URL"
 msgstr "URL del modelo"
 
-#: src/components/app-sidebar/index.tsx:30
+#: src/components/app-sidebar/index.tsx:39
 #: src/sections/preset/list/preset-list-item.tsx:167
 msgid "Models"
 msgstr "Modelos"
@@ -571,15 +580,15 @@ msgstr "Modelos configurados en esta configuración"
 msgid "Models management"
 msgstr "Gestión de modelos"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:528
+#: src/sections/analysis/details/content/analysis-content.tsx:522
 msgid "Modifications Made"
 msgstr "Modificaciones hechas"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:552
+#: src/sections/analysis/details/content/analysis-content.tsx:546
 msgid "Modified"
 msgstr "Modificado"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:514
+#: src/sections/analysis/details/content/analysis-content.tsx:508
 msgid "Modified version of the original text without gender bias"
 msgstr "Versión modificada del texto original sin sesgos de género"
 
@@ -592,7 +601,7 @@ msgstr "Más"
 msgid "Name"
 msgstr "Nombre"
 
-#: src/components/app-sidebar/index.tsx:24
+#: src/components/app-sidebar/index.tsx:26
 msgid "New Analysis"
 msgstr "Nuevo análisis"
 
@@ -610,8 +619,8 @@ msgstr "Nueva configuración"
 msgid "Next"
 msgstr "Siguiente"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:608
-#: src/sections/analysis/details/content/analysis-content.tsx:644
+#: src/sections/analysis/details/content/analysis-content.tsx:602
+#: src/sections/analysis/details/content/analysis-content.tsx:638
 msgid "No Affected"
 msgstr "No Afectado"
 
@@ -633,11 +642,11 @@ msgstr "de"
 msgid "Optional"
 msgstr "Opcional"
 
-#: src/sections/auth/login/login-container.tsx:81
+#: src/sections/auth/login/components/social-login-buttons.tsx:65
 msgid "Or continue with email"
 msgstr "O continua con tu correo electrónico"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:540
+#: src/sections/analysis/details/content/analysis-content.tsx:534
 msgid "Original"
 msgstr "Original"
 
@@ -656,11 +665,11 @@ msgstr "Contraseña"
 msgid "Pending"
 msgstr "Pendiente"
 
-#: src/components/app-sidebar/nav-main.tsx:23
+#: src/components/app-sidebar/nav-main.tsx:26
 msgid "Platform"
 msgstr "Plataforma"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:276
+#: src/sections/analysis/details/content/analysis-content.tsx:270
 msgid "Power Asymmetry"
 msgstr "Asimatría de poder"
 
@@ -672,7 +681,7 @@ msgstr "Configuración"
 msgid "Preset Details"
 msgstr "Detalles de la configuración"
 
-#: src/sections/preset/details/preset-details.tsx:156
+#: src/sections/preset/details/preset-details.tsx:154
 msgid "Preset ID"
 msgstr "ID de la configuración"
 
@@ -680,7 +689,7 @@ msgstr "ID de la configuración"
 msgid "Preset Name"
 msgstr "Nombre de la configuración"
 
-#: src/components/app-sidebar/index.tsx:31
+#: src/components/app-sidebar/index.tsx:45
 msgid "Presets"
 msgstr "Configuraciones"
 
@@ -693,6 +702,10 @@ msgstr "Gestión de configuraciones"
 msgid "Previous"
 msgstr "Anterior"
 
+#: src/components/terms-and-conditions.tsx:32
+msgid "Privacy Policy"
+msgstr "Política de privacidad"
+
 #: src/app/[locale]/(domain)/profile/page.tsx:11
 msgid "Profile"
 msgstr "Perfil"
@@ -701,7 +714,7 @@ msgstr "Perfil"
 msgid "Provides alternatives of biased terms or expressions"
 msgstr "Provee alternativas a terminos o expresiones sesgadas"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:565
+#: src/sections/analysis/details/content/analysis-content.tsx:559
 msgid "Reason"
 msgstr "Causa"
 
@@ -709,7 +722,7 @@ msgstr "Causa"
 msgid "Recent"
 msgstr "Reciente"
 
-#: src/sections/analysis/components/analysis-actions.tsx:50
+#: src/sections/analysis/components/analysis-actions.tsx:49
 msgid "Redo Analysis"
 msgstr "Rehacer análisis"
 
@@ -718,8 +731,8 @@ msgid "Register"
 msgstr "Regístrate"
 
 #: src/sections/auth/login/login-container.tsx:97
-msgid "Register here"
-msgstr "Regístrate aquí"
+#~ msgid "Register here"
+#~ msgstr "Regístrate aquí"
 
 #: src/app/[locale]/(security)/auth/register/page.tsx:11
 msgid "Register your account"
@@ -761,7 +774,7 @@ msgstr "Establece una nueva combinación de modelos con parámetros específicos
 msgid "Set up a new connection to a language model"
 msgstr "Establece una nueva conexión a un modelo de lenguaje"
 
-#: src/sections/model/details/model-details.tsx:78
+#: src/sections/model/details/model-details.tsx:76
 msgid "Settings"
 msgstr "Configuración"
 
@@ -785,11 +798,11 @@ msgstr "Iniciar sesión"
 msgid "Sign up"
 msgstr "Registrarse"
 
-#: src/sections/auth/register/register-container.tsx:60
+#: src/sections/auth/register/register-container.tsx:59
 msgid "Sing in here"
 msgstr "Inicie sesión aquí"
 
-#: src/locales/components/language-switcher.tsx:38
+#: src/locales/components/language-switcher.tsx:39
 msgid "Spanish"
 msgstr "Español"
 
@@ -805,8 +818,8 @@ msgstr "Inicie creando su primera configuración"
 msgid "Starting session..."
 msgstr "Iniciando sesión..."
 
-#: src/sections/model/details/model-details.tsx:193
-#: src/sections/model/list/model-list-item.tsx:150
+#: src/sections/model/details/model-details.tsx:191
+#: src/sections/model/list/model-list-item.tsx:147
 msgid "Status"
 msgstr "Estado"
 
@@ -814,15 +827,15 @@ msgstr "Estado"
 msgid "Step"
 msgstr "Paso"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:221
+#: src/sections/analysis/details/content/analysis-content.tsx:215
 msgid "Stereotypes"
 msgstr "Estereotipos"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:627
+#: src/sections/analysis/details/content/analysis-content.tsx:621
 msgid "Stigmatization"
 msgstr "Estigmatización"
 
-#: src/sections/auth/login/form/login-form-container.tsx:30
+#: src/sections/auth/login/form/login-form-container.tsx:29
 msgid "Successful authenticated user"
 msgstr "Usuario autenticado con éxito"
 
@@ -834,17 +847,21 @@ msgstr "Resumen"
 msgid "System"
 msgstr "Sistema"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:454
+#: src/sections/analysis/details/content/analysis-content.tsx:448
 msgid "Systemic Biases"
 msgstr "Sesgos sistémicos"
 
-#: src/sections/model/details/model-details.tsx:81
+#: src/sections/model/details/model-details.tsx:79
 msgid "Technical details of the connection to the model"
 msgstr "Detalles técnicos de la conexión del modelo"
 
 #: src/sections/model/form/model-form.tsx:59
 msgid "Temperature"
 msgstr "Temperatura"
+
+#: src/components/terms-and-conditions.tsx:22
+msgid "Terms of service"
+msgstr "Términos de servicio"
 
 #: src/sections/model/components/test-connection-button.tsx:22
 msgid "Test Connection"
@@ -919,7 +936,7 @@ msgstr "Información de uso"
 msgid "User registered successfully"
 msgstr "Usuario registrado con éxito"
 
-#: src/sections/model/details/model-details.tsx:187
+#: src/sections/model/details/model-details.tsx:185
 msgid "Verify that the model configuration is correct"
 msgstr "Verifica que la configuración del modelo es correcta"
 
@@ -931,7 +948,7 @@ msgstr "Verifica que la configuración del modelo es correcta"
 msgid "View details of the current analysis"
 msgstr "Detalles del análisis actual"
 
-#: src/sections/analysis/details/content/analysis-content.tsx:112
+#: src/sections/analysis/details/content/analysis-content.tsx:106
 msgid "Words or phrases that contain gender bias detected in the text"
 msgstr "Palabras o frases que contienen sesgos de género detectados en el texto"
 

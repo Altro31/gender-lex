@@ -70,4 +70,7 @@ function SocialLoginButtons() {
 	)
 }
 
-export default dynamic(async () => SocialLoginButtons, { ssr: false })
+export default dynamic(async () => SocialLoginButtons, {
+	ssr: false,
+	loading: () => null,
+})

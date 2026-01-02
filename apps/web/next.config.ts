@@ -1,7 +1,6 @@
 import envs from '@/lib/env/env-server' with { type: 'macro' }
 import type { NextConfig } from 'next'
 import path from 'path'
-// import { withWorkflow } from 'workflow/next'
 
 const nextConfig: NextConfig = {
 	reactCompiler: true,
@@ -65,5 +64,4 @@ const nextConfig: NextConfig = {
 	// },
 }
 
-// export default withWorkflow(nextConfig)
 export default nextConfig
