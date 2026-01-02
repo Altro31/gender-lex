@@ -4,3 +4,4 @@ dist
 .nitro
 .swc
 .output
+src/**/*.d.ts

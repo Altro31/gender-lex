@@ -4,6 +4,7 @@ const Envs = z.object({
 	PORT: z.coerce.number().int().positive(),
 	API_URL: z.url(),
 	AUTH_GOOGLE_ID: z.string(),
+	NEXT_PUBLIC_AUTH_GOOGLE_ID: z.string(),
 	AUTH_GOOGLE_SECRET: z.string(),
 	AUTH_GITHUB_ID: z.string(),
 	AUTH_GITHUB_SECRET: z.string(),

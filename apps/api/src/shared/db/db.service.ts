@@ -1,9 +1,9 @@
 import { Effect } from 'effect'
 
-import { client } from '@repo/db/client'
+import { db } from '@repo/db/client'
 
 export class DBService extends Effect.Service<DBService>()('DBService', {
-	sync: () => client,
+	sync: () => db,
 }) {
 	static provide = Effect.provide(this.Default)
 }

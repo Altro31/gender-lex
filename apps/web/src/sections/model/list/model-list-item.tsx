@@ -78,10 +78,8 @@ export default function ModelListItem({ model: initialModel }: Props) {
 			<CardHeader>
 				<div className="flex items-start justify-between">
 					<div className="flex-1">
-						<CardTitle className="mb-1 text-lg">
-							{model.name}
-						</CardTitle>
-						<CardDescription className="text-sm">
+						<CardTitle>{model.name}</CardTitle>
+						<CardDescription>
 							{model.connection.identifier}
 						</CardDescription>
 					</div>
@@ -143,29 +141,27 @@ export default function ModelListItem({ model: initialModel }: Props) {
 				</div>
 			</CardHeader>
 
-			<CardContent>
-				<div className="space-y-2">
-					<div className="flex flex-wrap items-center gap-2">
-						<span className="text-sm text-gray-600">
-							{t`Status`}:
-						</span>
-						<Badge className={getStatusColor(status)}>
-							{status === 'connecting' && (
-								<Loader2 className="animate-spin" />
-							)}
-							{getStatusText(status)}
-						</Badge>
-						<TestConnectionButton
-							id={model.id}
-							onExecute={() => setStatus('connecting')}
-							onSuccess={() => setStatus('active')}
-							onError={() => setStatus('error')}
-						/>
-					</div>
+			<CardContent className="flex-1 space-y-2">
+				<div className="flex flex-wrap items-center gap-2">
+					<span className="text-sm text-muted-foreground">
+						{t`Status`}:
+					</span>
+					<Badge className={getStatusColor(status)}>
+						{status === 'connecting' && (
+							<Loader2 className="animate-spin" />
+						)}
+						{getStatusText(status)}
+					</Badge>
+					<TestConnectionButton
+						id={model.id}
+						onExecute={() => setStatus('connecting')}
+						onSuccess={() => setStatus('active')}
+						onError={() => setStatus('error')}
+					/>
 				</div>
 			</CardContent>
 			<CardFooter className="border-t">
-				<div className="w-full text-xs text-gray-500">
+				<div className="w-full text-xs text-muted-foreground">
 					<div className="flex justify-between">
 						<span>
 							{t`Created at`}:{' '}

@@ -16,15 +16,15 @@ export default function ModelList({ modelsResponse: models }: Props) {
 	const [searchTerm] = useQueryState('q')
 	return models.length === 0 ? (
 		<div className="py-6 text-center">
-			<div className="mb-4 text-gray-400">
-				<Settings className="mx-auto h-16 w-16" />
+			<div className="mb-4 text-muted">
+				<Settings className="mx-auto size-16" />
 			</div>
-			<h3 className="mb-2 text-lg font-medium text-gray-900">
+			<h3 className="mb-2 text-lg font-medium">
 				{searchTerm
 					? t`No results found`
 					: t`There are no models configured`}
 			</h3>
-			<p className="mb-4 text-gray-600">
+			<p className="mb-4 text-muted-foreground">
 				{searchTerm
 					? t`Try other search terms`
 					: t`Start by creating your first model`}
@@ -37,7 +37,10 @@ export default function ModelList({ modelsResponse: models }: Props) {
 			)}
 		</div>
 	) : (
-		<ul className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+		<ul className="grid max-grid-cols-md gap-2">
+			{models.map(model => (
+				<ModelListItem model={model} key={model.id} />
+			))}
 			{models.map(model => (
 				<ModelListItem model={model} key={model.id} />
 			))}

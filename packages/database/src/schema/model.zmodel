@@ -2,13 +2,14 @@ import "user"
 import "preset"
 import "shared/timestamps"
 
+attribute @encrypted()
 
 model Model with Timestamps {
     id           String        @id @default(cuid())
     connection   Connection    @json
     settings     Settings      @json
     name         String
-    apiKey       String?       // @encrypted
+    apiKey       String?       @encrypted
 
     status       ModelStatus   @default(inactive)
     error        ModelError?

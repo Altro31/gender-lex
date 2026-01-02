@@ -12,6 +12,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next'
 import { Suspense } from 'react'
 import config from '@/../lingui.config'
 import ThemeProvider from '@/components/providers/theme-provider'
+import { OneTapGoogle } from '@/components/one-tap-google'
 
 export function generateStaticParams() {
 	return config.locales.map(locale => ({ locale }))
@@ -23,20 +24,22 @@ export default async function RootLayout({
 	const i18n = await setServerLocale()
 	return (
 		<html lang={i18n.locale} suppressHydrationWarning>
-			<body className="relative">
-				<PushNotificationManager />
-				<ThemeProvider>
-					{/*<ThemeRegister />*/}
-					<LinguiProvider
-						initialLocale={i18n.locale}
-						initialMessages={i18n.messages}
-					>
-						<ProgressProvider>
+			<body>
+				<div className="root">
+					<ThemeProvider>
+						<LinguiProvider
+							initialLocale={i18n.locale}
+							initialMessages={i18n.messages}
+						>
 							<NuqsAdapter>
 								<QueryProvider>
 									<EventSourceProvider>
 										<SidebarProvider>
 											{children}
+											<PushNotificationManager />
+											<Suspense>
+												<OneTapGoogle />
+											</Suspense>
 											<Suspense>
 												<FloatingChatbot />
 											</Suspense>
@@ -48,9 +51,9 @@ export default async function RootLayout({
 									</EventSourceProvider>
 								</QueryProvider>
 							</NuqsAdapter>
-						</ProgressProvider>
-					</LinguiProvider>
-				</ThemeProvider>
+						</LinguiProvider>
+					</ThemeProvider>
+				</div>
 			</body>
 		</html>
 	)

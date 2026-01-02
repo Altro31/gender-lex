@@ -18,7 +18,14 @@ const app = new Elysia()
 	.mount(auth.handler)
 	.use(
 		openapi({
-			references: fromTypes(),
+			references: fromTypes('./src/index.d.ts'),
+			documentation: {
+				info: { title: 'Gender Lex API', version: '1.0.0' },
+				externalDocs: {
+					url: '/api/auth/reference',
+					description: 'Auth',
+				},
+			},
 			mapJsonSchema: {
 				effect: JSONSchema.make,
 				zod: (arg: any) =>

@@ -400,13 +400,13 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 
 								<Separator />
 
-								<div className="space-y-2">
+								<div className="grid grid-cols-2 gap-2">
 									<Button
 										onClick={() =>
 											setIsChangePasswordOpen(true)
 										}
 										variant="outline"
-										className="w-full justify-start gap-2 bg-transparent"
+										className="bg-transparent"
 									>
 										<LockIcon />
 										Cambiar Contraseña
@@ -420,7 +420,6 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 											render={
 												<Button variant="destructive" />
 											}
-											className="w-full justify-start gap-2 "
 										>
 											<LogOutIcon />
 											Cerrar Sesión

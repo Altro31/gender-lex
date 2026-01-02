@@ -14,7 +14,7 @@ export class ChatbotService extends Effect.Service<ChatbotService>()(
 		effect: Effect.gen(function* () {
 			const aiService = yield* AiService
 			const repo = yield* ChatbotRepository
-			const { session } = yield* AuthService
+			const session = yield* AuthService
 
 			const services = {
 				// Get or create a conversation for a user

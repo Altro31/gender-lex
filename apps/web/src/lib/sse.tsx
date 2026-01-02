@@ -1,29 +1,32 @@
-"use client"
+'use client'
 
+import type { MessageMapper } from '@repo/types/sse'
 import {
 	createContext,
 	use,
 	useEffect,
 	useState,
 	type PropsWithChildren,
-} from "react"
-import type { MessageMapper } from "@repo/types/sse"
-import ReconnectingEventSource from "reconnecting-eventsource"
+} from 'react'
+import ReconnectingEventSource from 'reconnecting-eventsource'
+import { useSession } from './auth/auth-client'
 
 const EventSourceContext = createContext<EventSource | null>(null)
 
 interface Props extends PropsWithChildren {}
 
 export function EventSourceProvider({ children }: Props) {
+	const { data } = useSession()
 	const [eventSource, setEventSource] = useState<EventSource | null>(null)
 	// oxlint-disable-next-line exhaustive-deps
 	useEffect(() => {
-		const source = new ReconnectingEventSource("/api/sse", {
+		if (!data) return
+		const source = new ReconnectingEventSource('/api/sse', {
 			withCredentials: true,
 		})
 		setEventSource(source)
 		return () => source.close()
-	}, [setEventSource])
+	}, [setEventSource, data])
 	return (
 		<EventSourceContext value={eventSource}>{children}</EventSourceContext>
 	)

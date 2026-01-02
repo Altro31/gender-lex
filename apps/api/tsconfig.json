@@ -1,5 +1,6 @@
 {
 	"extends": "nitro/tsconfig",
+
 	"compilerOptions": {
 		"paths": { "@/*": ["./src/*"] },
 		"noEmit": false,
@@ -7,8 +8,8 @@
 		"allowImportingTsExtensions": false,
 		"plugins": [
 			{ "name": "workflow" },
-			{ "name": "@effect/language-service" }
-		]
+			{ "name": "@effect/language-service" },
+		],
 	},
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules"],
 }

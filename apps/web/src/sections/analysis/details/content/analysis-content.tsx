@@ -32,9 +32,7 @@ export default async function AnalysisContent({
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-4">
 					<Card>
 						<CardContent>
-							<div className="text-sm text-gray-600">
-								{t`Biased terms`}
-							</div>
+							<div className="text-sm">{t`Biased terms`}</div>
 							<div className="text-2xl font-bold text-red-600">
 								{analysis.biasedTerms.length}
 							</div>
@@ -42,9 +40,7 @@ export default async function AnalysisContent({
 					</Card>
 					<Card>
 						<CardContent>
-							<div className="text-sm text-gray-600">
-								{t`Biased Metaphors`}
-							</div>
+							<div className="text-sm">{t`Biased Metaphors`}</div>
 							<div className="text-2xl font-bold text-orange-600">
 								{analysis.biasedMetaphors.length}
 							</div>
@@ -52,9 +48,7 @@ export default async function AnalysisContent({
 					</Card>
 					<Card>
 						<CardContent>
-							<div className="text-sm text-gray-600">
-								{t`Alternatives`}
-							</div>
+							<div className="text-sm">{t`Alternatives`}</div>
 							<div className="text-2xl font-bold text-blue-600">
 								{analysis.modifiedTextAlternatives.length}
 							</div>
@@ -62,7 +56,7 @@ export default async function AnalysisContent({
 					</Card>
 					<Card>
 						<CardContent>
-							<div className="text-sm text-gray-600">
+							<div className="text-sm">
 								{t`Average Influence`}
 							</div>
 							<div className="text-2xl font-bold text-green-600">

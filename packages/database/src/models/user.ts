@@ -11,7 +11,6 @@ export class User
 		email: Schema.String,
 		emailVerified: Schema.Boolean,
 		image: Schema.NullOr(Schema.String),
-		isAnonymous: Schema.NullOr(Schema.Boolean),
 		loggedAt: Schema.NullOr(Schema.Date),
 		role: Schema.Enums(Role),
 		createdAt: Schema.Date,

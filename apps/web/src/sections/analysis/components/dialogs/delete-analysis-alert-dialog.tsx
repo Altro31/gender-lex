@@ -62,8 +62,8 @@ export function DeleteAnalysisAlertDialog() {
 							<AlertDialogCancel>{t`Cancel`}</AlertDialogCancel>
 							<AlertDialogAction
 								disabled={isDeleting}
+								variant="destructive"
 								onClick={handleDeleteAnalysis(analysis.id)}
-								className="bg-red-600 hover:bg-red-700"
 							>
 								{isDeleting && (
 									<Loader2 className="animate-spin" />

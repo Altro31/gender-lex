@@ -34,7 +34,10 @@ function parseEnvs(envs: any) {
 			WORKFLOW_POSTGRES_URL: z.string().optional(),
 			DATABASE_URL: z.string(),
 			WORKFLOW_POSTGRES_JOB_PREFIX: z.string().optional(),
-			WORKFLOW_POSTGRES_WORKER_CONCURRENCY: z.int().optional(),
+			WORKFLOW_POSTGRES_WORKER_CONCURRENCY: z.coerce
+				.number()
+				.int()
+				.optional(),
 		})
 		.superRefine(
 			(

@@ -36,12 +36,12 @@ export default function AnalysisContentOriginalText({ text }: Props) {
 			</CardHeader>
 			<CardContent>
 				{showSensitiveContent ? (
-					<div className="rounded-lg bg-gray-50 p-4">
-						<p className="leading-relaxed text-gray-900">{text}</p>
+					<div className="rounded-lg p-4">
+						<p className="leading-relaxed">{text}</p>
 					</div>
 				) : (
-					<div className="rounded-lg bg-gray-100 p-4 text-center">
-						<p className="text-gray-500">
+					<div className="rounded-lg p-4 text-center">
+						<p className="text-muted-foreground">
 							{t`Content hidden for privacy`}
 						</p>
 					</div>

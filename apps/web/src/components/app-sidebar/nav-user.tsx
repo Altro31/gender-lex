@@ -1,5 +1,5 @@
 import envs from '@/lib/env/env-server' with { type: 'macro' }
-import { BadgeCheck, ChevronsUpDown, LogIn, UserIcon } from 'lucide-react'
+import { BadgeCheck, ChevronsUpDown, LogIn } from 'lucide-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -20,11 +20,12 @@ import { getSession } from '@/lib/auth/auth-server'
 
 import GithubButton from '@/components/app-sidebar/buttons/GithubButton'
 import GoogleButton from '@/components/app-sidebar/buttons/GoogleButton'
-import LogoutButton from '@/components/app-sidebar/buttons/LogoutButton'
 import ThemeSwitcher from '@/components/theme/theme-switcher'
 import LanguageSwitcher from '@/locales/components/language-switcher'
 import { t } from '@lingui/core/macro'
 import Link from 'next/link'
+import EmailButton from './buttons/EmailButton'
+import { LogoutDropdownMenuItem, SessionDropdownMenu } from './session-dropdown'
 
 export default async function NavUser() {
 	const session = await getSession()
@@ -39,7 +40,7 @@ export default async function NavUser() {
 async function User() {
 	const session = await getSession()
 	return (
-		<DropdownMenu>
+		<SessionDropdownMenu>
 			<DropdownMenuTrigger
 				className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 				render={<SidebarMenuButton size="lg" />}
@@ -99,9 +100,9 @@ async function User() {
 					<LanguageSwitcher />
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
-				<LogoutButton>{t`Logout`}</LogoutButton>
+				<LogoutDropdownMenuItem>{t`Logout`}</LogoutDropdownMenuItem>
 			</DropdownMenuContent>
-		</DropdownMenu>
+		</SessionDropdownMenu>
 	)
 }
 
@@ -126,16 +127,13 @@ function Login() {
 				sideOffset={4}
 			>
 				<DropdownMenuGroup>
-					<DropdownMenuItem render={<Link href="/auth/login" />}>
-						<UserIcon />
-						{t`Email`}
-					</DropdownMenuItem>
+					<EmailButton />
 					<DropdownMenuSeparator />
 					<GoogleButton redirect={envs.UI_URL} />
 					<GithubButton redirect={envs.UI_URL} />
 					<DropdownMenuSeparator />
-					{/*<ThemeSwitcher />
-					<LanguageSwitcher />*/}
+					<ThemeSwitcher />
+					<LanguageSwitcher />
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>

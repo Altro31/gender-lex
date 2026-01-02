@@ -1,6 +1,7 @@
 import { ContextService } from '@/shared/context.service'
 import { Cause, Effect, Exit, Logger, LogLevel, ManagedRuntime } from 'effect'
 import Elysia from 'elysia'
+import type { Prettify } from 'elysia/types'
 
 export const effectPlugin = new Elysia({ name: 'plugin.auth' })
 	.decorate(
@@ -11,14 +12,17 @@ export const effectPlugin = new Elysia({ name: 'plugin.auth' })
 					.runPromiseExit(
 						effect.pipe(Logger.withMinimumLogLevel(LogLevel.Debug)),
 					)
-					.then((res): S => {
+					.then((res): Prettify<S> => {
+						console.log(
+							'Effect result:',
+							JSON.stringify(res, null, '\t'),
+						)
 						if (Exit.isSuccess(res)) return res.value
 						const cause = res.cause
 						if (Cause.isFailType(cause)) {
-							console.error(cause.error)
 							throw cause.error
 						}
-						return {} as S
+						return {} as Prettify<S>
 					}),
 	)
 	.derive(ctx => ({

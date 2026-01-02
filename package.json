@@ -22,12 +22,12 @@
 		"prepare": "husky"
 	},
 	"devDependencies": {
-		"@effect/language-service": "^0.57.1",
+		"@effect/language-service": "^0.63.2",
 		"@types/node": "^22.10.7",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.1.2",
 		"prettier": "^3.2.5",
-		"turbo": "^2.5.5",
+		"turbo": "^2.7.2",
 		"typescript": "catalog:"
 	},
 	"engines": {
@@ -43,16 +43,17 @@
 	"catalog": {
 		"ai": "^6.0.3",
 		"typescript": "^5.8.3",
-		"better-auth": "^1.4.0",
-		"@zenstackhq/server": "^3.0.0-beta.34",
-		"zod": "^4.0.17",
-		"@effect/platform": "^0.90.6",
-		"@effect/platform-node": "^0.96.1",
+		"better-auth": "^1.4.9",
+		"@zenstackhq/server": "^3.1.0",
+		"zod": "^4.2.1",
+		"@effect/platform": "^0.94.0",
+		"@effect/platform-node": "^0.104.0",
 		"elysia": "latest",
 		"workflow": "latest",
 		"@workflow/world-postgres": "latest",
 		"@effect/language-service": "latest",
-		"effect": "^3.17.9"
+		"effect": "^3.19.13",
+		"pg": "^8.16.3"
 	},
 	"lint-staged": {
 		"!(package-lock).{ts,json}": [

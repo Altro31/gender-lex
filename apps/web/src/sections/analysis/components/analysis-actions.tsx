@@ -8,7 +8,6 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { redoAnalysis } from '@/services/analysis'
-import type { AnalysesResponseItem } from '@/types/analyses'
 import { UseRenderRenderProp } from '@base-ui/react'
 import { useRouter } from '@bprogress/next/app'
 import { t } from '@lingui/core/macro'

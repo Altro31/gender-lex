@@ -9,18 +9,20 @@
 		"migrate:prod": "zen migrate deploy"
 	},
 	"dependencies": {
-		"@zenstackhq/orm": "^3.0.0-beta.34",
-		"@zenstackhq/plugin-policy": "^3.0.0-beta.34",
+		"@zenstackhq/orm": "^3.1.0",
+		"@zenstackhq/plugin-policy": "^3.1.0",
 		"@zenstackhq/server": "catalog:",
-		"pg": "^8.16.3",
+		"pg": "catalog:",
 		"effect": "catalog:"
 	},
 	"devDependencies": {
-		"@types/pg": "^8.15.6",
-		"@zenstackhq/cli": "^3.0.0-beta.34",
-		"type-fest": "^5.3.0"
+		"@types/pg": "^8.16.0",
+		"@zenstackhq/cli": "^3.1.0",
+		"type-fest": "^5.3.1"
 	},
-	"types": "./index.ts",
+	"peerDependencies": {
+		"kysely": "^0.28.8"
+	},
 	"exports": {
 		"./input": "./src/generated/input.ts",
 		"./models": "./src/generated/models.ts",

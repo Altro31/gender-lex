@@ -1,9 +1,14 @@
 import { rejectAuthRoutes } from '@/middlewares/reject-auth-routes'
 import { routingMiddleware } from '@/middlewares/routing-middleware'
 import { type NextRequest } from 'next/server'
+import { protectedRoutes } from './middlewares/protected-routes'
 
 export async function proxy(req: NextRequest) {
-	return (await rejectAuthRoutes(req)) ?? routingMiddleware(req as any)
+	return (
+		(await protectedRoutes(req)) ??
+		(await rejectAuthRoutes(req)) ??
+		routingMiddleware(req as any)
+	)
 }
 
 export const config = {

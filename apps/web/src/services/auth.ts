@@ -30,6 +30,6 @@ export const signInSocial = actionClient
 export const signUp = actionClient
 	.inputSchema(RegisterSchema)
 	.action(async ({ parsedInput }) => {
-		auth.api.signUpEmail({ body: parsedInput })
+		await auth.api.signUpEmail({ body: parsedInput })
 		return { success: true }
 	})

@@ -5,10 +5,11 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import { getSession } from '@/lib/auth/auth-server'
 import { t } from '@lingui/core/macro'
 import Link from 'next/link'
 
-export function NavMain({
+export default async function NavMain({
 	items,
 }: {
 	items: {
@@ -16,23 +17,27 @@ export function NavMain({
 		url: string
 		icon?: React.ReactNode
 		isActive?: boolean
+		needAuth: boolean
 	}[]
 }) {
+	const session = await getSession()
 	return (
 		<SidebarGroup>
 			<SidebarGroupLabel>{t`Platform`}</SidebarGroupLabel>
 			<SidebarMenu>
-				{items.map(item => (
-					<SidebarMenuItem key={item.title}>
-						<SidebarMenuButton
-							tooltip={item.title}
-							render={<Link href={item.url} />}
-						>
-							{item.icon}
-							<span>{item.title}</span>
-						</SidebarMenuButton>
-					</SidebarMenuItem>
-				))}
+				{items
+					.filter(i => !i.needAuth || session)
+					.map(item => (
+						<SidebarMenuItem key={item.title}>
+							<SidebarMenuButton
+								tooltip={item.title}
+								render={<Link href={item.url} />}
+							>
+								{item.icon}
+								<span>{item.title}</span>
+							</SidebarMenuButton>
+						</SidebarMenuItem>
+					))}
 			</SidebarMenu>
 		</SidebarGroup>
 	)

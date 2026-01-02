@@ -7,6 +7,7 @@ import {
 	DropdownMenuSubTrigger,
 } from '@/components/ui/dropdown-menu'
 import { t } from '@lingui/core/macro'
+import { Globe } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
 
@@ -21,7 +22,7 @@ export default function LanguageSwitcher() {
 		<>
 			<DropdownMenuSub>
 				<DropdownMenuSubTrigger className="gap-2">
-					<span className="rounded-sm border px-1">{locale}</span>
+					<Globe />
 					{t`Language`}
 				</DropdownMenuSubTrigger>
 				<DropdownMenuSubContent>

@@ -1,8 +1,7 @@
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 import type { ChatMessage, Model } from '@repo/db/models'
-import { streamText, type ModelMessage } from 'ai'
+import { type ModelMessage } from 'ai'
 import { Effect } from 'effect'
-import { chatbotSystemPrompt } from '../chatbot/prompts/system.prompt'
 
 export class AiService extends Effect.Service<AiService>()('AiService', {
 	effect: Effect.gen(function* () {
@@ -22,12 +21,7 @@ export class AiService extends Effect.Service<AiService>()('AiService', {
 
 			chatbot: (history: Pick<ChatMessage, 'content' | 'sender'>[]) =>
 				Effect.gen(function* () {
-					const conversationHistory: ModelMessage[] = history.map(
-						msg => ({
-							role: msg.sender === 'user' ? 'user' : 'assistant',
-							content: msg.content,
-						}),
-					)
+					
 
 					return {}
 				}),

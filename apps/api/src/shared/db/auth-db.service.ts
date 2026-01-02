@@ -1,4 +1,4 @@
-import { authClient } from '@repo/db/client'
+import { authDB } from '@repo/db/client'
 import { Effect } from 'effect'
 import { AuthService } from '../auth/auth.service'
 
@@ -6,8 +6,8 @@ export class AuthDBService extends Effect.Service<AuthDBService>()(
 	'AuthDBService',
 	{
 		effect: Effect.gen(function* () {
-			const { session } = yield* AuthService
-			return authClient.$setAuth(session?.user)
+			const session = yield* AuthService
+			return authDB.$setAuth(session?.user)
 		}),
 		dependencies: [AuthService.Default],
 	},

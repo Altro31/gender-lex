@@ -1,9 +1,9 @@
 import { analysisModels } from '@/modules/analysis/model'
+import { effectPlugin } from '@/plugins/effect.plugin'
 import { Effect } from 'effect'
 import Elysia from 'elysia'
-import { AnalysisService } from './service'
-import { effectPlugin } from '@/plugins/effect.plugin'
 import z from 'zod'
+import { AnalysisService } from './service'
 
 export default new Elysia({
 	name: 'analysis.controller',
@@ -61,6 +61,7 @@ export default new Elysia({
 		'status-count',
 		({ runEffect }) => {
 			const program = Effect.gen(function* () {
+				console.log('Hola')
 				const analysisService = yield* AnalysisService
 				return yield* analysisService.statusCount()
 			}).pipe(AnalysisService.provide)
@@ -111,7 +112,6 @@ export default new Elysia({
 				const analysisService = yield* AnalysisService
 				return yield* analysisService.redo(params.id!)
 			}).pipe(AnalysisService.provide)
-
 			return runEffect(program)
 		},
 		// { response: 'redoOutput' },

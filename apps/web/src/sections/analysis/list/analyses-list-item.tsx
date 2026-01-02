@@ -97,11 +97,11 @@ export default function AnalysesListItem({ analysis }: Props) {
 			</CardContent>
 
 			<CardFooter className="border-t pt-3">
-				<div className="flex w-full items-center justify-between text-xs text-gray-500">
+				<div className="flex w-full items-center justify-between text-xs">
 					<span>ID: {analysis.id}</span>
 
 					{analysis.updatedAt && (
-						<span>
+						<span className="text-muted-foreground">
 							{t`Completed at`}:{' '}
 							{new Date(analysis.updatedAt).toLocaleString()}
 						</span>

@@ -103,6 +103,7 @@ export async function getStatusCount() {
 	const session = await getSession()
 	if (!session) unauthorized()
 	const { error, data } = await client.analysis['status-count'].get()
+	console.log('Error:', JSON.stringify(error, null, '\t'))
 	if (error) throw new Error(error.value.summary)
 	return data
 }

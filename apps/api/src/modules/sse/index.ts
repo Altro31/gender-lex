@@ -18,15 +18,13 @@ export default new Elysia({
 			yield sse('Connected!!!')
 			const stream = await runEffect(
 				Effect.gen(function* () {
-					const authService = yield* AuthService
+					const session = yield* AuthService
 					const sseService = yield* SseService
 					const stream = sseService.stream$.pipe(
 						Stream.filter(
 							message =>
-								message?.sessionId ===
-									authService.session?.id ||
-								message?.userId ===
-									authService.session?.user?.id ||
+								message?.sessionId === session.id ||
+								message?.userId === session.user.id ||
 								message?.event === 'ping',
 						),
 					)

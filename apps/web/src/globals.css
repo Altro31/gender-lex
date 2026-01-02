@@ -3,7 +3,7 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
-@custom-variant dark (&:is(body:has(#theme[data-dark]) *));
+@custom-variant dark (&:where(.dark *));
 
 @theme inline {
 	--radius-sm: calc(var(--radius) - 4px);
@@ -61,7 +61,7 @@
 	--secondary-foreground: oklch(0.21 0.006 285.885);
 	--muted: oklch(0.967 0.001 286.375);
 	--muted-foreground: oklch(0.552 0.016 285.938);
-	--accent: oklch(0.59 0.22 1);
+	--accent: oklch(0.59 0.19 1);
 	--accent-foreground: oklch(0.97 0.01 343);
 	--destructive: oklch(0.577 0.245 27.325);
 	--border: oklch(0.92 0.004 286.32);
@@ -125,10 +125,13 @@
 		@apply border-border outline-ring/50;
 	}
 	body {
-		@apply bg-background text-foreground;
+		@apply bg-background text-foreground relative;
 	}
 	form {
 		display: contents;
+	}
+	.root {
+		isolation: isolate;
 	}
 }
 
@@ -136,4 +139,25 @@
 	syntax: '<percentage>';
 	initial-value: 0%;
 	inherits: true;
+}
+
+@theme {
+	--grid-cols-xs: 48;
+	--grid-cols-sm: 62;
+	--grid-cols-md: 76;
+	--grid-cols-lg: 90;
+	--grid-cols-xl: 104;
+	--grid-cols-2xl: 126;
+	--grid-cols-3xl: 140;
+	--grid-cols-4xl: 154;
+	--grid-cols-5xl: 168;
+	--grid-cols-6xl: 182;
+	--grid-cols-7xl: 196;
+}
+
+@utility max-grid-cols-* {
+	grid-template-columns: repeat(
+		auto-fit,
+		minmax(calc(--value(--grid-cols-*) * var(--spacing)), 1fr)
+	);
 }

@@ -42,11 +42,11 @@ export default function PresetDetails({ preset }: Props) {
 	}
 
 	return (
-		<div className="space-y-6">
+		<div className="space-y-3">
 			{/* Header */}
 			<div className="flex items-start justify-between">
 				<div>
-					<h3 className="text-2xl font-semibold">{preset.name}</h3>
+					<h3 className="text-lg font-semibold">{preset.name}</h3>
 				</div>
 			</div>
 
@@ -78,7 +78,7 @@ export default function PresetDetails({ preset }: Props) {
 						{t`Models configured in this preset`}
 					</CardDescription>
 				</CardHeader>
-				<CardContent className="space-y-6">
+				<CardContent className="space-y-3">
 					{preset.Models.map(model => (
 						<div
 							key={model.modelId + '_' + model.presetId}
@@ -114,14 +114,30 @@ export default function PresetDetails({ preset }: Props) {
 						{t`Important dates and usage statistics`}
 					</CardDescription>
 				</CardHeader>
-				<CardContent className="space-y-4">
-					<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-						<div className="space-y-2">
-							<div className="text-sm font-medium text-muted-foreground">
-								{t`Creation date`}
+				<CardContent className="space-y-2">
+					<div>
+						<div className="text-sm font-medium ">
+							{t`Creation date`}
+						</div>
+						<p className="text-muted-foreground">
+							{new Date(preset.createdAt).toLocaleDateString(
+								'es-ES',
+								{
+									year: 'numeric',
+									month: 'long',
+									day: 'numeric',
+								},
+							)}
+						</p>
+					</div>
+
+					{preset.usedAt && (
+						<div>
+							<div className="text-sm font-medium ">
+								{t`Last use`}
 							</div>
-							<p>
-								{new Date(preset.createdAt).toLocaleDateString(
+							<p className="text-muted-foreground">
+								{new Date(preset.usedAt).toLocaleDateString(
 									'es-ES',
 									{
 										year: 'numeric',
@@ -131,31 +147,15 @@ export default function PresetDetails({ preset }: Props) {
 								)}
 							</p>
 						</div>
+					)}
 
-						{preset.usedAt && (
-							<div className="space-y-2">
-								<div className="text-sm font-medium text-muted-foreground">
-									{t`Last use`}
-								</div>
-								<p>
-									{new Date(preset.usedAt).toLocaleDateString(
-										'es-ES',
-										{
-											year: 'numeric',
-											month: 'long',
-											day: 'numeric',
-										},
-									)}
-								</p>
-							</div>
-						)}
-					</div>
-
-					<div className="space-y-2">
-						<div className="text-sm font-medium text-muted-foreground">
+					<div>
+						<div className="text-sm font-medium ">
 							{t`Preset ID`}
 						</div>
-						<p className="font-mono text-sm">{preset.id}</p>
+						<p className="font-mono text-sm text-muted-foreground">
+							{preset.id}
+						</p>
 					</div>
 				</CardContent>
 			</Card>

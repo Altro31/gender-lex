@@ -1,24 +1,34 @@
-import { Trans } from "@lingui/react/macro"
-import Link from "next/link"
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
+import Link from 'next/link'
+import { Button } from './ui/button'
+import { getLocale } from '@/locales/utils/locale'
 
-export default function TermsAndConditions() {
+export default async function TermsAndConditions() {
+	const locale = await getLocale()
 	return (
 		<p>
 			<Trans>
-				By continuing, you accept our{" "}
-				<Link
-					href="/terms"
-					className="text-blue-600 hover:text-blue-800"
+				By continuing, you accept our{' '}
+				<Button
+					size="xs"
+					variant="link"
+					nativeButton={false}
+					className="p-0"
+					render={<Link href={`/${locale}/terms`} />}
 				>
-					Terms of service
-				</Link>{" "}
-				and{" "}
-				<Link
-					href="/privacy"
-					className="text-blue-600 hover:text-blue-800"
+					{t`Terms of service`}
+				</Button>{' '}
+				and{' '}
+				<Button
+					size="xs"
+					variant="link"
+					nativeButton={false}
+					className="p-0"
+					render={<Link href={`/${locale}/privacy`} />}
 				>
-					Privacy Policy
-				</Link>
+					{t`Privacy Policy`}
+				</Button>
 			</Trans>
 		</p>
 	)

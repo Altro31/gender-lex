@@ -43,7 +43,7 @@ export default function PresetsList({ presets }: Props) {
 			<CreatePresetDialog />
 		</div>
 	) : (
-		<div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
+		<div className="grid gap-2 max-grid-cols-md">
 			{presets.map(preset => (
 				<PresetListItem key={preset.id} preset={preset} />
 			))}

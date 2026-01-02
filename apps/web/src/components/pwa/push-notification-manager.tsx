@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { subscribeUser, unsubscribeUser, sendNotification } from './actions'
+import { useSession } from '@/lib/auth/auth-client'
 
 function urlBase64ToUint8Array(base64String: string) {
 	const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -19,14 +20,13 @@ function urlBase64ToUint8Array(base64String: string) {
 }
 
 export function PushNotificationManager() {
-	const [isSupported, setIsSupported] = useState(false)
+	const { data } = useSession()
 
 	useEffect(() => {
-		if ('serviceWorker' in navigator && 'PushManager' in window) {
-			setIsSupported(true)
+		if ('serviceWorker' in navigator && 'PushManager' in window && data) {
 			registerServiceWorker()
 		}
-	}, [])
+	}, [data])
 
 	async function registerServiceWorker() {
 		const registration = await navigator.serviceWorker.register('/sw.js', {

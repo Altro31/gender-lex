@@ -58,10 +58,8 @@ export default function ModelDetails({
 			{/* Header */}
 			<div className="flex items-start justify-between">
 				<div>
-					<h3 className="text-2xl font-semibold text-gray-900">
-						{model.name}
-					</h3>
-					<p className="mt-1 text-gray-600">
+					<h3 className="text-lg font-semibold ">{model.name}</h3>
+					<p className="mt-1 text-muted-foreground">
 						{model.connection.identifier}
 					</p>
 				</div>
@@ -73,8 +71,8 @@ export default function ModelDetails({
 			{/* Configuration Details */}
 			<Card>
 				<CardHeader>
-					<CardTitle className="flex items-center gap-2 text-lg">
-						<Server className="h-5 w-5" />
+					<CardTitle className="flex items-center gap-2 ">
+						<Server className="size-5" />
 						{t`Settings`}
 					</CardTitle>
 					<CardDescription>
@@ -84,32 +82,34 @@ export default function ModelDetails({
 				<CardContent className="space-y-4">
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div className="space-y-2">
-							<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-								<Tag />
+							<div className="flex items-center gap-2 text-sm font-medium ">
+								<Tag className="size-4" />
 								{t`Model`}
 							</div>
-							<p className="font-mono text-gray-900">
-								{model.connection.identifier}
+							<p className="font-mono text-muted-foreground">
+								{model.name}
 							</p>
 						</div>
 
-						<div className="space-y-2">
-							<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-								<Key />
-								{t`API Key`}
+						{model.apiKey && (
+							<div className="space-y-2">
+								<div className="flex items-center gap-2 text-sm font-medium">
+									<Key className="size-4" />
+									{t`API Key`}
+								</div>
+								<p className="font-mono text-muted-foreground">
+									{model.apiKey}
+								</p>
 							</div>
-							<p className="font-mono text-gray-900">
-								{model.apiKey}
-							</p>
-						</div>
+						)}
 
 						{model.connection.url && (
 							<div className="space-y-2">
-								<div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-									<Link />
+								<div className="flex items-center gap-2 text-sm font-medium">
+									<Link className="size-4" />
 									{t`Endpoint`}
 								</div>
-								<p className="font-mono break-all text-gray-900">
+								<p className="font-mono break-all text-muted-foreground">
 									{model.connection.url}
 								</p>
 							</div>
@@ -121,8 +121,8 @@ export default function ModelDetails({
 			{/* Usage Information */}
 			<Card>
 				<CardHeader>
-					<CardTitle className="flex items-center gap-2 text-lg">
-						<Calendar className="h-5 w-5" />
+					<CardTitle className="flex items-center gap-2">
+						<Calendar className="size-5" />
 						{t`Usage Information`}
 					</CardTitle>
 					<CardDescription>
@@ -132,10 +132,10 @@ export default function ModelDetails({
 				<CardContent className="space-y-4">
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div className="space-y-2">
-							<div className="text-sm font-medium text-gray-700">
+							<div className="text-sm font-medium">
 								{t`Creation date`}
 							</div>
-							<p className="text-gray-900">
+							<p className="text-muted-foreground">
 								{new Date(model.createdAt).toLocaleDateString(
 									'es-ES',
 									{
@@ -149,10 +149,10 @@ export default function ModelDetails({
 
 						{model.usedAt && (
 							<div className="space-y-2">
-								<div className="text-sm font-medium text-gray-700">
+								<div className="text-sm font-medium">
 									{t`Last use`}
 								</div>
-								<p className="text-gray-900">
+								<p className="text-muted-foreground">
 									{new Date(model.usedAt).toLocaleDateString(
 										'es-ES',
 										{
@@ -166,11 +166,11 @@ export default function ModelDetails({
 						)}
 
 						<div className="space-y-2">
-							<div className="text-sm font-medium text-gray-700">
+							<div className="text-sm font-medium ">
 								{t`Model ID`}
 							</div>
-							<p className="font-mono text-gray-900">
-								{model.id}
+							<p className="font-mono text-muted-foreground">
+								{model.connection.identifier}
 							</p>
 						</div>
 					</div>
@@ -180,16 +180,14 @@ export default function ModelDetails({
 			{/* Connection Test */}
 			<Card>
 				<CardHeader>
-					<CardTitle className="text-lg">
-						{t`Connection Test`}
-					</CardTitle>
+					<CardTitle className="">{t`Connection Test`}</CardTitle>
 					<CardDescription>
 						{t`Verify that the model configuration is correct`}
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<div className="flex flex-wrap items-center gap-2">
-						<span className="text-sm text-gray-600">
+						<span className="text-sm text-muted-foreground">
 							{t`Status`}:
 						</span>
 						<Badge className={getStatusColor(model.status)}>

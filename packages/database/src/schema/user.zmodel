@@ -11,11 +11,6 @@ enum Role {
   authenticated
 }
 
-enum AuthProvider {
-  local
-  google
-}
-
 model User with Timestamps {
   @@auth
 
@@ -33,6 +28,7 @@ model User with Timestamps {
 
   // Only users can update it's last time login
   loggedAt      DateTime? // @allow('update', auth() == this)
+
 
   // 1.Only admins can update a user role
   // 2.Only a superadmin can update the role of other admin

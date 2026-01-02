@@ -13,7 +13,7 @@ const pubsub = Effect.runSync(PubSub.unbounded<MessageEvent<any>>())
 
 export class SseService extends Effect.Service<SseService>()('SseService', {
 	effect: Effect.gen(function* () {
-		const { session } = yield* AuthService
+		const session = yield* AuthService
 
 		yield* PubSub.publish(pubsub, { event: 'ping' }).pipe(
 			Effect.repeat(Schedule.fixed('15 seconds')),

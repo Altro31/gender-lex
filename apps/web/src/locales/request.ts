@@ -1,9 +1,9 @@
 import { i18n } from '@lingui/core'
 import { setI18n } from '@lingui/react/server'
-import { locale as getLocale } from 'next/root-params'
+import { getLocale } from './utils/locale'
 
 export async function setServerLocale() {
-	let locale: string = await getLocale()
+	let locale = await getLocale()
 	if (!locale.match(/en|es/)) locale = 'en'
 	const { messages } = await import(`./langs/${locale}.po`)
 	i18n.load(locale, messages)
