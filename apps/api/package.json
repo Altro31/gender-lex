@@ -2,9 +2,9 @@
 	"name": "api",
 	"type": "module",
 	"scripts": {
-		"build": "bun build src/index.ts --target bun --outdir ./dist",
-		"dev": "bun src/index.ts",
-		"start": "NODE_ENV=production bun dist/index.js",
+		"build": "nitro build",
+		"dev": "nitro dev",
+		"start": "node .output/server/index.mjs",
 		"lint": "oxlint --fix --fix-suggestions --fix-dangerously"
 	},
 	"devDependencies": {
