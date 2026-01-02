@@ -1,7 +1,7 @@
 import { AiService } from '@/modules/ai/service'
 import { genderLexSystemPrompt } from '@/modules/bias-detection/prompts/system.prompt'
 import type { Analysis, Model, RawAnalysis } from '@repo/db/models'
-import { Analysis as AnalysisSchema } from '@repo/db/schema/analysis.js'
+import { Analysis as AnalysisSchema } from '@repo/db/schema/analysis.ts'
 import { JSONSchema } from 'effect'
 
 import { generateText, jsonSchema, Output, stepCountIs } from 'ai'

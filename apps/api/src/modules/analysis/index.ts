@@ -61,7 +61,6 @@ export default new Elysia({
 		'status-count',
 		({ runEffect }) => {
 			const program = Effect.gen(function* () {
-				console.log('Hola')
 				const analysisService = yield* AnalysisService
 				return yield* analysisService.statusCount()
 			}).pipe(AnalysisService.provide)

@@ -4,8 +4,9 @@
 	"compilerOptions": {
 		"paths": { "@/*": ["./src/*"] },
 		"noEmit": false,
+		"emitDeclarationOnly": true,
 		"composite": true,
-		"allowImportingTsExtensions": false,
+		"allowImportingTsExtensions": true,
 		"plugins": [
 			{ "name": "workflow" },
 			{ "name": "@effect/language-service" },
