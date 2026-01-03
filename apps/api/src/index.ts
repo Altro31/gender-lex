@@ -11,6 +11,8 @@ import z from 'zod'
 import { authPlugin } from './plugins/auth.plugin'
 import { effectPlugin } from './plugins/effect.plugin'
 import { JSONSchema } from 'effect'
+import { start } from 'workflow/api'
+import { testWorkflow } from './workflows/test'
 
 export type App = typeof app
 const app = new Elysia()
@@ -40,8 +42,10 @@ const app = new Elysia()
 	.use(analysis)
 	.use(chatbot)
 	.use(zen)
-	.get('/', () => {
-		return { ok: true }
+	.get('/', () => ({ ok: true }))
+	.get('/workflow', async () => {
+		await start(testWorkflow, [])
+		return { message: 'User signup workflow started' }
 	})
 
 export default app.compile()
