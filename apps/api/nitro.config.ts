@@ -5,6 +5,6 @@ export default defineConfig({
     modules: ["workflow/nitro"],
     plugins: [
         "nitro/plugins/start-pg-world.ts",
-        "nitro/plugins/defaults-models-and-presets.ts",
+        // "nitro/plugins/defaults-models-and-presets.ts",
     ],
 })
