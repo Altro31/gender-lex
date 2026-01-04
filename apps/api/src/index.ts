@@ -6,14 +6,11 @@ import zen from "@/modules/zen"
 import { cors } from "@elysiajs/cors"
 import openapi, { fromTypes } from "@elysiajs/openapi"
 import { auth } from "@repo/auth/api"
+import { JSONSchema } from "effect"
 import { Elysia } from "elysia"
 import z from "zod"
 import { authPlugin } from "./plugins/auth.plugin"
 import { effectPlugin } from "./plugins/effect.plugin"
-import { JSONSchema } from "effect"
-import { start } from "workflow/api"
-import { testWorkflow } from "./workflows/test"
-import { defaultModelsAndPresetsPlugin } from "./plugins/defaults-models-and-presets"
 
 export type App = typeof app
 const app = new Elysia()
@@ -38,16 +35,11 @@ const app = new Elysia()
     )
     .use(authPlugin)
     .use(effectPlugin)
-    .use(defaultModelsAndPresetsPlugin)
     .use(sse)
     .use(model)
     .use(analysis)
     .use(chatbot)
     .use(zen)
     .get("/", () => ({ ok: true }))
-    .get("/workflow", async () => {
-        await start(testWorkflow, [])
-        return { message: "User signup workflow started" }
-    })
 
 export default app.compile()

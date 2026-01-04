@@ -1,21 +1,24 @@
 {
-	"compilerOptions": {
-		"module": "ESNext",
-		"moduleResolution": "bundler",
-		// Core checks
-		"strict": true,
-		"noEmit": false,
-		// "declaration": true,
-		"composite": true, // monorepos only
-		// "declarationMap": true,
-		"skipLibCheck": true,
-		"allowSyntheticDefaultImports": true,
-		// Additional safety
-		"forceConsistentCasingInFileNames": true,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": true,
-		"useUnknownInCatchVariables": true,
-		"noUnusedLocals": true
-		// "isolatedModules": true
-	}
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    // Core checks
+    "strict": true,
+    "noEmit": true,
+    // "declaration": true,
+    "composite": true, // monorepos only
+    // "declarationMap": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    // Additional safety
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": true,
+    "noUnusedLocals": true,
+    // "isolatedModules": true
+  },
 }

@@ -1,5 +1,14 @@
 import { ContextService } from "@/shared/context.service"
-import { Cause, Effect, Exit, Logger, LogLevel, ManagedRuntime } from "effect"
+import { UserProviderService } from "@/shared/user-provider.service"
+import {
+    Cause,
+    Effect,
+    Exit,
+    Layer,
+    Logger,
+    LogLevel,
+    ManagedRuntime,
+} from "effect"
 import Elysia from "elysia"
 import type { Prettify } from "elysia/types"
 
@@ -7,8 +16,12 @@ export const effectPlugin = new Elysia({ name: "plugin.effect" })
     .decorate(
         "runEffectWithContext",
         (ctx: any) =>
-            <S, E>(effect: Effect.Effect<S, E, ContextService>) =>
-                ManagedRuntime.make(ContextService.Default(ctx))
+            <S, E>(effect: Effect.Effect<S, E, UserProviderService>) =>
+                ManagedRuntime.make(
+                    UserProviderService.Default.pipe(
+                        Layer.provide(ContextService.Default(ctx)),
+                    ),
+                )
                     .runPromiseExit(
                         effect.pipe(Logger.withMinimumLogLevel(LogLevel.Debug)),
                     )
@@ -26,7 +39,11 @@ export const effectPlugin = new Elysia({ name: "plugin.effect" })
                     }),
     )
     .derive(ctx => ({
-        runtime: ManagedRuntime.make(ContextService.Default(ctx)),
+        runtime: ManagedRuntime.make(
+            UserProviderService.Default.pipe(
+                Layer.provide(ContextService.Default(ctx)),
+            ),
+        ),
         runEffect: ctx.runEffectWithContext(ctx),
     }))
     .as("scoped")

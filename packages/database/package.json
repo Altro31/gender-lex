@@ -1,33 +1,33 @@
 {
-	"name": "@repo/db",
-	"version": "0.0.0",
-	"type": "module",
-	"scripts": {
-		"generate": "zen generate --output src/generated",
-		"migrate": "zen migrate dev",
-		"studio": "zen studio -b none",
-		"migrate:prod": "zen migrate deploy"
-	},
-	"dependencies": {
-		"@zenstackhq/orm": "^3.1.0",
-		"@zenstackhq/plugin-policy": "^3.1.0",
-		"@zenstackhq/server": "catalog:",
-		"pg": "catalog:",
-		"effect": "catalog:"
-	},
-	"devDependencies": {
-		"@types/pg": "^8.16.0",
-		"@zenstackhq/cli": "^3.1.0",
-		"type-fest": "^5.3.1"
-	},
-	"peerDependencies": {
-		"kysely": "^0.28.8"
-	},
-	"exports": {
-		"./input": "./src/generated/input.ts",
-		"./models": "./src/generated/models.ts",
-		"./client": "./src/client.ts",
-		"./effect": "./src/effect.ts",
-		"./schema/*": "./src/models/*"
-	}
+  "name": "@repo/db",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "generate": "zen generate",
+    "migrate": "zen migrate dev",
+    "studio": "zen studio -b none",
+    "migrate:prod": "zen migrate deploy"
+  },
+  "dependencies": {
+    "@zenstackhq/orm": "^3.1.0",
+    "@zenstackhq/plugin-policy": "^3.1.0",
+    "@zenstackhq/server": "catalog:",
+    "pg": "catalog:",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.16.0",
+    "@zenstackhq/cli": "^3.1.0",
+    "type-fest": "^5.3.1"
+  },
+  "peerDependencies": {
+    "kysely": "^0.28.8"
+  },
+  "exports": {
+    "./input": "./src/generated/input.ts",
+    "./models": "./src/generated/models.ts",
+    "./client": "./src/client.ts",
+    "./effect": "./src/effect.ts",
+    "./schema/*": "./src/models/*"
+  }
 }

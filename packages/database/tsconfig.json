@@ -1,22 +1,22 @@
 {
-	"compilerOptions": {
-		"module": "ESNext",
-		"moduleResolution": "bundler",
-		// Core checks
-		"strict": true,
-		"noEmit": true,
-		"composite": true, // monorepos only
-		"declaration": true,
-		"declarationMap": true,
-		"skipLibCheck": true,
-		"allowSyntheticDefaultImports": true,
-		"allowImportingTsExtensions": true,
-		// Additional safety
-		"forceConsistentCasingInFileNames": true,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": true,
-		"useUnknownInCatchVariables": true,
-		"noUnusedLocals": true,
-		"isolatedModules": true
-	}
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    // Core checks
+    "strict": true,
+    "noEmit": true,
+    "composite": true, // monorepos only
+    "declaration": true,
+    "declarationMap": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    // Additional safety
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": true,
+    "noUnusedLocals": true,
+    "isolatedModules": true,
+  },
 }

@@ -3,7 +3,7 @@ import "preset"
 import "shared/timestamps"
 
 type RawAnalysis {
-    originalText                String
+    originalText                String?
     modifiedTextAlternatives    ModifiedAlternative[]        @json
     biasedTerms                 BiasedTerm[]                 @json
     biasedMetaphors             BiasedMetaphor[]             @json

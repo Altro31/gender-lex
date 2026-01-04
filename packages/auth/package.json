@@ -1,14 +1,15 @@
 {
-	"name": "@repo/auth",
-	"version": "0.0.0",
-	"dependencies": {
-		"@repo/db": "workspace:*",
-		"@zenstackhq/better-auth": "^3.1.0",
-		"better-auth": "catalog:"
-	},
-	"exports": {
-		"./api": "./api.ts",
-		"./next": "./next.ts",
-		"./encrypt": "./encrypt.ts"
-	}
+  "name": "@repo/auth",
+  "version": "0.0.0",
+  "type": "module",
+  "dependencies": {
+    "@repo/db": "workspace:*",
+    "@zenstackhq/better-auth": "^3.1.0",
+    "better-auth": "catalog:"
+  },
+  "exports": {
+    "./api": "./api.ts",
+    "./next": "./next.ts",
+    "./encrypt": "./encrypt.ts"
+  }
 }
