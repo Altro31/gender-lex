@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
 import { UploadArea } from "@/sections/home/components/upload/upload-area"
 import HomeForm from "@/sections/home/form/home-form"
 import { t } from "@lingui/core/macro"
@@ -74,7 +75,7 @@ export default async function HomeContainer() {
 						</Card>
 					))}
 				</div>
-				<Suspense>
+				<Suspense fallback={<Skeleton className="h-64 w-full" />}>
 					<HomeForm />
 				</Suspense>
 			</div>

@@ -36,10 +36,10 @@ export default async function RootLayout({
                     <SidebarProvider>
                       {children}
                       <PushNotificationManager />
-                      <Suspense>
+                      <Suspense fallback={null}>
                         <OneTapGoogle />
                       </Suspense>
-                      <Suspense>
+                      <Suspense fallback={null}>
                         <FloatingChatbot />
                       </Suspense>
                       <Toaster richColors position="bottom-right" />

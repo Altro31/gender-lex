@@ -1,4 +1,5 @@
 import SearchInput, { SearchInputFallback } from '@/components/search-input'
+import { Skeleton } from '@/components/ui/skeleton'
 import { t } from '@lingui/core/macro'
 import { Suspense } from 'react'
 import { Button } from '@/components/ui/button'
@@ -41,7 +42,15 @@ export default function PresetsContainer({ searchParams }: Props) {
 				</div>
 
 				{/* Presets Grid */}
-				<Suspense>
+				<Suspense
+					fallback={
+						<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							{[1, 2, 3, 4, 5, 6].map((i) => (
+								<Skeleton key={i} className="h-48 w-full" />
+							))}
+						</div>
+					}
+				>
 					<PresetsListContainer searchParams={searchParams} />
 				</Suspense>
 			</div>

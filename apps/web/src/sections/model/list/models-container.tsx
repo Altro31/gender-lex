@@ -5,6 +5,7 @@ import {
 	CreateModelDialogTrigger,
 } from '../components/dialogs/create-model-dialog'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Plus } from 'lucide-react'
 import SearchInput, { SearchInputFallback } from '@/components/search-input'
 import { Suspense } from 'react'
@@ -48,7 +49,15 @@ export default function ModelsContainer({ searchParams }: Props) {
 				</div>
 
 				{/* Models Grid */}
-				<Suspense>
+				<Suspense
+					fallback={
+						<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							{[1, 2, 3, 4, 5, 6].map((i) => (
+								<Skeleton key={i} className="h-48 w-full" />
+							))}
+						</div>
+					}
+				>
 					<ModelListsContainer searchParams={searchParams} />
 				</Suspense>
 				<CreateModelDialog />
