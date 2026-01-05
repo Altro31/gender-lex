@@ -1,4 +1,5 @@
 import SearchInput, { SearchInputFallback } from '@/components/search-input'
+import { Skeleton } from '@/components/ui/skeleton'
 import AnalysesListContainer from '@/sections/analysis/list/analyses-list-container'
 import { t } from '@lingui/core/macro'
 import { Suspense } from 'react'
@@ -24,10 +25,18 @@ export default async function AnalysesContainer({ searchParams }: Props) {
 				<Suspense fallback={<SearchInputFallback />}>
 					<SearchInput name="q" />
 				</Suspense>
-				<Suspense>
+				<Suspense fallback={<Skeleton className="h-10 w-full" />}>
 					<AnalysesTabsContainer />
 				</Suspense>
-				<Suspense>
+				<Suspense
+					fallback={
+						<div className="space-y-4">
+							{[1, 2, 3, 4, 5].map((i) => (
+								<Skeleton key={i} className="h-32 w-full" />
+							))}
+						</div>
+					}
+				>
 					<AnalysesListContainer searchParams={searchParams} />
 				</Suspense>
 			</div>

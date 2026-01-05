@@ -12,6 +12,7 @@ import {
 	SidebarHeader,
 	SidebarRail,
 } from '@/components/ui/sidebar'
+import { Skeleton } from '@/components/ui/skeleton'
 import { t } from '@lingui/core/macro'
 import { Suspense } from 'react'
 import { getLocale } from '@/locales/utils/locale'
@@ -62,15 +63,15 @@ export default async function AppSidebar(
 				<Logo />
 			</SidebarHeader>
 			<SidebarContent>
-				<Suspense>
+				<Suspense fallback={<Skeleton className="h-32 w-full" />}>
 					<NavMain items={data.navMain} />
 				</Suspense>
-				<Suspense>
+				<Suspense fallback={<Skeleton className="h-24 w-full" />}>
 					<NavRecent />
 				</Suspense>
 			</SidebarContent>
 			<SidebarFooter>
-				<Suspense>
+				<Suspense fallback={<Skeleton className="h-12 w-full" />}>
 					<NavUser />
 				</Suspense>
 			</SidebarFooter>
