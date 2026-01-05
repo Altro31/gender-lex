@@ -3,8 +3,7 @@ import { defineConfig } from "nitro"
 export default defineConfig({
     routes: { "/**": "./src/index.ts" },
     modules: ["workflow/nitro"],
-    plugins: [
-        "nitro/plugins/start-pg-world.ts",
-        // "nitro/plugins/defaults-models-and-presets.ts",
-    ],
+    externals: { traceInclude: ["@workflow/world-postgres"] },
+
+    plugins: ["nitro/plugins/start-pg-world.ts"],
 })

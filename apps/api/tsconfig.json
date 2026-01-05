@@ -1,16 +1,16 @@
 {
-	"extends": "nitro/tsconfig",
+    "extends": "nitro/tsconfig",
 
-	"compilerOptions": {
-		"paths": { "@/*": ["./src/*"] },
-		"noEmit": false,
-		"emitDeclarationOnly": true,
-		"composite": true,
-		"allowImportingTsExtensions": true,
-		"plugins": [
-			{ "name": "workflow" },
-			{ "name": "@effect/language-service" },
-		],
-	},
-	// "exclude": ["node_modules"],
+    "compilerOptions": {
+        "paths": { "@/*": ["./src/*"] },
+        "noEmit": false,
+        "emitDeclarationOnly": true,
+        "composite": true,
+        "allowImportingTsExtensions": true,
+        "plugins": [
+            { "name": "workflow" },
+            { "name": "@effect/language-service" },
+        ],
+    },
+    // "exclude": ["node_modules"],
 }

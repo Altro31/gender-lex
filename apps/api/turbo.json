@@ -4,12 +4,7 @@
     "tasks": {
         "build": {
             "dependsOn": ["@repo/db#generate"],
-            "outputs": [
-                "dist/**",
-                "!tsconfig.build.tsbuildinfo",
-                ".swc/**",
-                ".well-known/**"
-            ],
+            "outputs": [".output/**"],
             "env": [
                 "PORT",
                 "AUTH_GOOGLE_ID",
