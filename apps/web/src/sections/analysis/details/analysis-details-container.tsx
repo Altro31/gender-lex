@@ -4,6 +4,7 @@ import { t } from "@lingui/core/macro";
 import { Suspense } from "react";
 import AnalysisHeader from "./analysis-header";
 import AnalysisContent from "./content/analysis-content";
+import TabsContainer from "./tabs-container";
 
 export default function AnalysisDetailsContainer() {
   return (
@@ -15,7 +16,7 @@ export default function AnalysisDetailsContainer() {
           <AnalysisHeader />
         </Suspense>
         {/* Content */}
-        <Tabs defaultValue="overview" className="space-y-6">
+        <TabsContainer className="space-y-6">
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">{t`Summary`}</TabsTrigger>
             <TabsTrigger value="terms">
@@ -29,7 +30,7 @@ export default function AnalysisDetailsContainer() {
           <Suspense>
             <AnalysisContent />
           </Suspense>
-        </Tabs>
+        </TabsContainer>
       </div>
     </div>
   );
