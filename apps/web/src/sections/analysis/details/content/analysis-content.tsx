@@ -77,11 +77,11 @@ export default function AnalysisContent() {
                 <div className="text-2xl font-bold text-green-600">
                   {analysis?.additionalContextEvaluation
                     ? Math.round(
-                        // @ts-expect-error asdasdasdasdasdasdas
+                        // @ts-expect-error - additionalContextEvaluation has dynamic keys from the model
                         (Object.values(
                           analysis?.additionalContextEvaluation,
                         ).reduce(
-                          // @ts-expect-error asdasdasdasdasdasdas
+                          // @ts-expect-error - reduce callback type inference needs explicit typing
                           (
                             acc: number,
                             item: AdditionalContextEvaluationItemBase,
