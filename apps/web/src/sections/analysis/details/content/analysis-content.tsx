@@ -13,22 +13,26 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TabsContent } from "@/components/ui/tabs";
 import AnalysisContentOriginalText from "@/sections/analysis/details/content/analysis-content-original-text";
-import { t } from "@lingui/core/macro";
+// import { t } from "@lingui/core/macro";
 import { AdditionalContextEvaluationItemBase } from "@repo/db/models";
 import { useParams } from "next/navigation";
 import { ParamsOf } from "../../../../../.next/types/routes";
 import { useAnalysisStream } from "../../hooks/use-analysis-stream";
+import { useLingui } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 
 export default function AnalysisContent() {
   const { id } = useParams<ParamsOf<"/[locale]/analysis/[id]">>();
   const [analysis, { isFetching }] = useAnalysisStream(id);
-
   return (
     <>
       {/* Overview Tab */}
       <TabsContent value="overview" className="space-y-6">
         {/* Original Text */}
-        <AnalysisContentOriginalText text={analysis?.originalText ?? ""} isFetching={isFetching} />
+        <AnalysisContentOriginalText
+          text={analysis?.originalText ?? ""}
+          isFetching={isFetching}
+        />
 
         {/* Summary Stats */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -611,39 +615,41 @@ export default function AnalysisContent() {
                     {t`Modifications Made`}:
                   </h4>
                   <div className="space-y-3">
-                    {alternative.modificationsExplanation.map((mod, modIndex) => (
-                      <div
-                        key={modIndex}
-                        className="space-y-2 rounded-lg border p-3"
-                      >
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                          <div>
-                            <h5 className="mb-1 text-sm font-medium text-red-700">
-                              {t`Original`}:
-                            </h5>
-                            <p className="rounded bg-red-50 p-2 text-sm">
-                              "{mod.originalFragment}"
-                            </p>
+                    {alternative.modificationsExplanation.map(
+                      (mod, modIndex) => (
+                        <div
+                          key={modIndex}
+                          className="space-y-2 rounded-lg border p-3"
+                        >
+                          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div>
+                              <h5 className="mb-1 text-sm font-medium text-red-700">
+                                {t`Original`}:
+                              </h5>
+                              <p className="rounded bg-red-50 p-2 text-sm">
+                                "{mod.originalFragment}"
+                              </p>
+                            </div>
+                            <div>
+                              <h5 className="mb-1 text-sm font-medium text-green-700">
+                                {t`Modified`}:
+                              </h5>
+                              <p className="rounded bg-green-50 p-2 text-sm">
+                                "{mod.modifiedFragment}"
+                              </p>
+                            </div>
                           </div>
                           <div>
-                            <h5 className="mb-1 text-sm font-medium text-green-700">
-                              {t`Modified`}:
+                            <h5 className="mb-1 text-sm font-medium text-muted-foreground">
+                              {t`Reason`}:
                             </h5>
-                            <p className="rounded bg-green-50 p-2 text-sm">
-                              "{mod.modifiedFragment}"
+                            <p className="text-sm text-muted-foreground">
+                              {mod.reason}
                             </p>
                           </div>
                         </div>
-                        <div>
-                          <h5 className="mb-1 text-sm font-medium text-muted-foreground">
-                            {t`Reason`}:
-                          </h5>
-                          <p className="text-sm text-muted-foreground">
-                            {mod.reason}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                      ),
+                    )}
                   </div>
                 </div>
               </CardContent>

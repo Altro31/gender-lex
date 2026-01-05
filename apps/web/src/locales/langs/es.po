@@ -220,7 +220,7 @@ msgstr "Completado el"
 
 #: src/sections/analysis/details/content/analysis-content.tsx:88
 msgid "Conclusion"
-msgstr "msgstr Conclusión"
+msgstr "Conclusión"
 
 #: src/sections/auth/register/form/register-form.tsx:84
 msgid "Confirm Password"

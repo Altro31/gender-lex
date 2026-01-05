@@ -15,6 +15,7 @@ import { AnalysisActions } from "@/sections/analysis/components/analysis-actions
 import { t } from "@lingui/core/macro";
 import Link from "next/link";
 import { getSession } from "@/lib/auth/auth-server";
+import NavRecentAnalysisAction from "./nav-recent-analysis-action";
 
 export default async function NavRecent() {
   const session = await getSession();
@@ -35,15 +36,7 @@ export default async function NavRecent() {
                 >
                   {item.name}
                 </SidebarMenuButton>
-                <AnalysisActions
-                  analysis={item}
-                  renderTrigger={
-                    <SidebarMenuAction showOnHover>
-                      <MoreHorizontal />
-                      <span className="sr-only">{t`More`}</span>
-                    </SidebarMenuAction>
-                  }
-                />
+                <NavRecentAnalysisAction item={item} />
               </SidebarMenuItem>
             ))}
             <SidebarMenuItem>
