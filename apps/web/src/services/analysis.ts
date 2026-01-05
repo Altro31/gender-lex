@@ -5,11 +5,8 @@ import { getSession } from "@/lib/auth/auth-server";
 import { getDB } from "@/lib/db/client";
 import { actionClient } from "@/lib/safe-action";
 import type { HomeSchema } from "@/sections/home/form/home-schema";
-import { Analysis } from "@repo/db/models";
-import { refresh } from "next/cache";
 import { cacheTag, updateTag } from "next/cache";
 import { unauthorized } from "next/navigation";
-import { after } from "next/server";
 import z from "zod";
 
 export async function prepareAnalysis(input: HomeSchema) {
