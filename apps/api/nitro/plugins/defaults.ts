@@ -3,36 +3,14 @@ import type { ModelCreateArgs } from "@repo/db/input"
 
 const models = [
     {
-        name: "Qwen3-32b",
+        name: "Gemini-2.5 flash",
         connection: {
-            identifier: "qwen/qwen3-32b",
-            url: "https://api.groq.com/openai/v1",
+            identifier: "gemini-2.5-flash",
+            url: "https://generativelanguage.googleapis.com/v1beta",
         },
 
         settings: { temperature: 0.2 },
-        apiKey: process.env.GROQ_API_KEY,
-        isDefault: true,
-    },
-    {
-        name: "GPT-OSS-120b",
-        connection: {
-            identifier: "openai/gpt-oss-120b",
-            url: "https://api.groq.com/openai/v1",
-        },
-
-        settings: { temperature: 0.2 },
-        apiKey: process.env.GROQ_API_KEY,
-        isDefault: true,
-    },
-    {
-        name: "Deepseek-R1-32b",
-        connection: {
-            identifier: "deepseek-r1-distill-qwen-32b",
-            url: "https://api.groq.com/openai/v1",
-        },
-
-        settings: { temperature: 0.2 },
-        apiKey: process.env.GROQ_API_KEY,
+        apiKey: process.env.GEMINI_API_KEY,
         isDefault: true,
     },
 ] satisfies ModelCreateArgs["data"][]

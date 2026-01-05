@@ -1,139 +1,120 @@
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { startAnalysis } from '@/services/analysis'
-import { t } from '@lingui/core/macro'
-import { Select } from '@lingui/react/macro'
+"use client";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useSession } from "@/lib/auth/auth-client";
+import { t } from "@lingui/core/macro";
+import { Select } from "@lingui/react/macro";
 import {
-	AlertTriangle,
-	ArrowLeft,
-	Calendar,
-	CheckCircle,
-	Clock,
-	Download,
-	Share2,
-	User,
-} from 'lucide-react'
-import Link from 'next/link'
-import { Suspense } from 'react'
-import UrlFixer from '../../../components/url-fixer'
+  AlertTriangle,
+  ArrowLeft,
+  Calendar,
+  CheckCircle,
+  Clock,
+  Download,
+  Share2,
+  User,
+} from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { ParamsOf } from "../../../../.next/types/routes";
+import UrlFixer from "../../../components/url-fixer";
+import { useAnalysisStream } from "../hooks/use-analysis-stream";
 
-export default function AnalysisHeader(
-	props: PageProps<'/[locale]/analysis/[id]'>,
-) {
-	return (
-		<div className="mb-8">
-			<div className="mb-4 flex items-center gap-4">
-				<Link href="/analysis">
-					<Button variant="ghost" size="sm" className="gap-2">
-						<ArrowLeft />
-						{t`Return to Analysis`}
-					</Button>
-				</Link>
-			</div>
-			<Suspense>
-				<Container {...props} />
-			</Suspense>
-		</div>
-	)
-}
+export default function AnalysisHeader() {
+  const { data: session } = useSession();
+  const { locale, id } = useParams<ParamsOf<"/[locale]/analysis/[id]">>();
+  const [analysis, { isFetching }] = useAnalysisStream(id);
 
-async function Container({
-	params,
-	searchParams,
-}: PageProps<'/[locale]/analysis/[id]'>) {
-	const { id, locale } = await params
-	const { run } = await searchParams
-	const analysis = await startAnalysis(id, !!run)
-	const getStatusConfig = (status: string) => {
-		switch (status) {
-			case 'analyzing':
-				return {
-					label: t`Analizing`,
-					color: 'bg-blue-100 text-blue-800',
-					icon: Clock,
-				}
-			case 'done':
-				return {
-					label: t`Done`,
-					color: 'bg-green-100 text-green-800',
-					icon: CheckCircle,
-				}
-			default:
-				return {
-					label: t`Pending`,
-					color: 'bg-yellow-100 text-yellow-800',
-					icon: AlertTriangle,
-				}
-		}
-	}
+  const getStatusConfig = (status: string) => {
+    switch (status) {
+      case "analyzing":
+        return {
+          label: t`Analizing`,
+          color: "bg-blue-100 text-blue-800",
+          icon: Clock,
+        };
+      case "done":
+        return {
+          label: t`Done`,
+          color: "bg-green-100 text-green-800",
+          icon: CheckCircle,
+        };
+      default:
+        return {
+          label: t`Pending`,
+          color: "bg-yellow-100 text-yellow-800",
+          icon: AlertTriangle,
+        };
+    }
+  };
 
-	const statusConfig = getStatusConfig(analysis.status)
-	const StatusIcon = statusConfig.icon
-	return (
-		<div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-			<UrlFixer url={`/${locale}/analysis/${analysis.id}`} />
-			<div>
-				<h1 className="mb-2 text-3xl font-bold text-gray-900">
-					{t`Analysis Details`}
-				</h1>
-				<div className="flex items-center gap-4 text-sm text-gray-600">
-					<div className="flex items-center gap-2">
-						<Calendar />
-						{new Date(analysis.createdAt).toLocaleDateString(
-							'es-ES',
-							{
-								year: 'numeric',
-								month: 'long',
-								day: 'numeric',
-								hour: '2-digit',
-								minute: '2-digit',
-							},
-						)}
-					</div>
-					<div className="flex items-center gap-2">
-						<User />
-						ID: {analysis.id}
-					</div>
-				</div>
-			</div>
+  const statusConfig = getStatusConfig(analysis?.status ?? "");
+  const StatusIcon = statusConfig.icon;
 
-			<div className="flex items-center gap-3">
-				<Badge className={statusConfig.color}>
-					<StatusIcon className="mr-1 h-3 w-3" />
-					{statusConfig.label}
-				</Badge>
-				<Badge
-					variant={
-						analysis.visibility === 'public'
-							? 'default'
-							: 'secondary'
-					}
-				>
-					{' '}
-					<Select
-						value={analysis.visibility}
-						_public="Public"
-						_private="Private"
-						other="Other"
-					/>
-				</Badge>
-				<Button
-					variant="outline"
-					size="sm"
-					className="gap-2 bg-transparent"
-				>
-					<Download />
-					{t`Export`}
-				</Button>
-				<Button
-					variant="outline"
-					size="sm"
-					className="gap-2 bg-transparent"
-				>
-					<Share2 />
-					{t`Share`}
-				</Button>
-			</div>
-		</div>
-	)
+  return (
+    <div className="mb-8">
+      <div className="mb-4 flex items-center gap-4">
+        <Link href={session ? "/analysis" : "/"}>
+          <Button variant="ghost" size="sm" className="gap-2">
+            <ArrowLeft />
+            {t`Return to Analysis`}
+          </Button>
+        </Link>
+      </div>
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <UrlFixer url={`/${locale}/analysis/${analysis?.id}`} />
+        <div>
+          <h1 className="mb-2 text-3xl font-bold ">{t`Analysis Details`}</h1>
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Calendar />
+              {new Date(analysis?.createdAt ?? new Date()).toLocaleDateString(
+                "es-ES",
+                {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                },
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <User />
+              ID: {analysis?.id}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Badge className={statusConfig.color}>
+            <StatusIcon className="mr-1 h-3 w-3" />
+            {statusConfig.label}
+          </Badge>
+          <Badge
+            variant={
+              analysis?.visibility === "public" ? "default" : "secondary"
+            }
+          >
+            {" "}
+            <Select
+              value={analysis?.visibility ?? ""}
+              _public="Public"
+              _private="Private"
+              other="Other"
+            />
+          </Badge>
+          <Button variant="outline" size="sm" className="gap-2 bg-transparent">
+            <Download />
+            {t`Export`}
+          </Button>
+          <Button variant="outline" size="sm" className="gap-2 bg-transparent">
+            <Share2 />
+            {t`Share`}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
 }

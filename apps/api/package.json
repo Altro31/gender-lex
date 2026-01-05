@@ -6,8 +6,8 @@
         "dev": "nitro dev",
         "start": "node .output/server/index.mjs",
         "lint": "oxlint --fix --fix-suggestions --fix-dangerously",
-        "migrate:prod": "workflow-postgres-setup",
-        "studio": "workflow inspect runs --web --backend=@workflow/world-postgres"
+        "migrate:prod": "workflow-postgres-setup && bun ./nitro/plugins/defaults.ts",
+        "studio": "workflow web"
     },
     "devDependencies": {
         "@effect/language-service": "catalog:",

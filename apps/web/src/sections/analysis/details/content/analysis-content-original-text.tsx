@@ -1,52 +1,43 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { t } from '@lingui/core/macro'
-import { Eye, EyeOff, Settings } from 'lucide-react'
-import { useState } from 'react'
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { t } from "@lingui/core/macro";
+import { Eye, EyeOff, Settings } from "lucide-react";
+import { useState } from "react";
 
 interface Props {
-	text: string
+  text: string;
 }
 
 export default function AnalysisContentOriginalText({ text }: Props) {
-	const [showSensitiveContent, setShowSensitiveContent] = useState(true)
+  const [showMore, setShowMore] = useState(false);
 
-	return (
-		<Card>
-			<CardHeader>
-				<div className="flex items-center justify-between">
-					<CardTitle className="flex items-center gap-2">
-						<Settings className="h-5 w-5" />
-						{t`Original text`}
-					</CardTitle>
-					<Button
-						variant="ghost"
-						size="sm"
-						onClick={() =>
-							setShowSensitiveContent(!showSensitiveContent)
-						}
-						className="gap-2"
-					>
-						{showSensitiveContent ? <EyeOff /> : <Eye />}
-						{showSensitiveContent ? t`Hide` : t`Show`}
-					</Button>
-				</div>
-			</CardHeader>
-			<CardContent>
-				{showSensitiveContent ? (
-					<div className="rounded-lg p-4">
-						<p className="leading-relaxed">{text}</p>
-					</div>
-				) : (
-					<div className="rounded-lg p-4 text-center">
-						<p className="text-muted-foreground">
-							{t`Content hidden for privacy`}
-						</p>
-					</div>
-				)}
-			</CardContent>
-		</Card>
-	)
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            <Settings className="h-5 w-5" />
+            {t`Original text`}
+          </CardTitle>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowMore(!showMore)}
+            className="gap-2"
+          >
+            {showMore ? <EyeOff /> : <Eye />}
+            {showMore ? t`Show less` : t`Show more`}
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <p className={cn("leading-relaxed ", !showMore && "line-clamp-4")}>
+          {text}
+        </p>
+      </CardContent>
+    </Card>
+  );
 }

@@ -2,11 +2,11 @@ import { analysisModels } from "@/modules/analysis/model"
 import { effectPlugin } from "@/plugins/effect.plugin"
 import { UserProviderService } from "@/shared/user-provider.service"
 import { startAnalysisWorkflow } from "@/workflows/start-analysis"
-import { Effect } from "effect"
-import Elysia from "elysia"
-import { start } from "workflow/api"
-import z from "zod"
+import { Chunk, Console, Effect, Stream } from "effect"
+import Elysia, { sse } from "elysia"
+import { getRun, start } from "workflow/api"
 import { AnalysisService } from "./service"
+import type { Analysis } from "@repo/db/models"
 
 export default new Elysia({
     name: "analysis.controller",
@@ -22,7 +22,7 @@ export default new Elysia({
                 resource: File | string
                 presetId: string
             }[]
-            if (body.files.length) {
+            if (body.files?.length) {
                 for (const file of body.files) {
                     toAnalice.push({
                         resource: file,
@@ -39,32 +39,29 @@ export default new Elysia({
             const program = Effect.gen(function* () {
                 const { user } = yield* UserProviderService
 
-                toAnalice.map(input =>
-                    start(startAnalysisWorkflow, [input, { user }]),
-                )
+                const id = yield* Effect.async<string>(resume => {
+                    toAnalice.forEach(async ({ resource, presetId }) => {
+                        const run = await start(startAnalysisWorkflow, [
+                            resource instanceof File
+                                ? resource.stream()
+                                : resource,
+                            { presetId },
+                            { user },
+                        ])
+                        for await (const event of run.getReadable<string>({
+                            namespace: "id",
+                        })) {
+                            resume(Effect.succeed(event))
+                            break
+                        }
+                    })
+                })
 
-                return { ok: true }
+                return { id }
             }).pipe(AnalysisService.provide)
             return runEffect(program)
         },
         { body: "prepareInput" },
-    )
-
-    .post(
-        "start/:id",
-        ({ runEffect, params }) => {
-            const program = Effect.gen(function* () {
-                const analysisService = yield* AnalysisService
-                return (yield* analysisService.start(params.id)) as any
-            }).pipe(AnalysisService.provide)
-            return runEffect(program)
-        },
-        {
-            response: {
-                // 200: 'startOutput',
-                404: z.string(),
-            },
-        },
     )
 
     .get(
@@ -88,18 +85,25 @@ export default new Elysia({
         return runEffect(program)
     })
 
-    .get(
-        ":id",
-        ({ runEffect, params }) => {
-            const program = Effect.gen(function* () {
-                const analysisService = yield* AnalysisService
-                return (yield* analysisService.findOne(params.id!)) as any
-            }).pipe(AnalysisService.provide)
+    .get(":id", async function* ({ runEffect, params }) {
+        const program = Effect.gen(function* () {
+            const analysisService = yield* AnalysisService
+            const analysis = yield* analysisService.findOne(params.id!)
+            const run = getRun(analysis.workflow)
 
-            return runEffect(program)
-        },
-        // { response: 'findOneOutput' },
-    )
+            const stream = Stream.fromAsyncIterable(
+                run.getReadable<Analysis>({ namespace: "update" }),
+                e => console.log(e),
+            )
+
+            return Stream.toAsyncIterable(stream)
+        }).pipe(AnalysisService.provide)
+        const stream = await runEffect(program)
+        for await (const update of stream) {
+            const data = sse({ data: update })
+            yield data as { data: Analysis }
+        }
+    })
 
     .get(
         "",

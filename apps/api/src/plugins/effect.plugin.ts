@@ -26,10 +26,6 @@ export const effectPlugin = new Elysia({ name: "plugin.effect" })
                         effect.pipe(Logger.withMinimumLogLevel(LogLevel.Debug)),
                     )
                     .then((res): Prettify<S> => {
-                        console.log(
-                            "Effect result:",
-                            JSON.stringify(res, null, "\t"),
-                        )
                         if (Exit.isSuccess(res)) return res.value
                         const cause = res.cause
                         if (Cause.isFailType(cause)) {

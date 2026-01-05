@@ -5,42 +5,25 @@ import { getSession } from "@/lib/auth/auth-server";
 import { getDB } from "@/lib/db/client";
 import { actionClient } from "@/lib/safe-action";
 import type { HomeSchema } from "@/sections/home/form/home-schema";
+import { Analysis } from "@repo/db/models";
+import { refresh } from "next/cache";
 import { cacheTag, updateTag } from "next/cache";
 import { unauthorized } from "next/navigation";
+import { after } from "next/server";
 import z from "zod";
 
 export async function prepareAnalysis(input: HomeSchema) {
-  const session = await getSession();
-  console.log("prepareAnalysis", session);
-  if (!session) unauthorized();
-  const { data, error } = await client.analysis.prepare.post(input);
+  const { data, error } = await client.analysis.prepare.post({
+    text: input.text,
+    files: input.files.map((i) => i.file),
+    selectedPreset: input.selectedPreset.id,
+  });
   if (error) {
-    console.error(error);
+    console.error(JSON.stringify(error, null, "\t"));
+    return { data: undefined, error };
   }
-  console.log(data);
   updateTag("analyses");
-  return { data: { id: "" }, error: null };
-}
-
-export async function startAnalysis(id: string, isRun: boolean) {
-  const session = await getSession();
-  if (!session) unauthorized();
-  let data: any;
-  // if (isRun) {
-  // 	const run = getRun(id)
-  // 	data = await run.returnValue
-  // } else {
-  // 	let res = await client.analysis.start({ id }).post()
-  // 	if (res.error) {
-  // 		console.error(res.error.value)
-  // 		throw new Error(
-  // 			'An error occurred when trying access analysis with id',
-  // 		)
-  // 	}
-  // 	data = res.data
-  // }
-
-  return data;
+  return { data, error: null };
 }
 
 export const deleteAnalysis = actionClient
@@ -75,13 +58,13 @@ export async function findAnalyses(query: {
 }
 
 export async function findOneAnalysis(id: string) {
-  "use cache: remote";
-  cacheTag(`analysis-${id}`);
-  const session = await getSession();
-  if (!session) unauthorized();
   const { data, error } = await client.analysis({ id }).get();
-  if (error) throw new Error(error.value as string);
-  return data;
+  if (error) {
+    console.log(JSON.stringify(error, null, "\t"));
+    throw new Error();
+  }
+  let analysis = (await data.next()).value!.data;
+  return analysis;
 }
 
 export async function findRecentAnalyses() {
@@ -94,8 +77,7 @@ export async function findRecentAnalyses() {
 export async function getStatusCount() {
   "use cache: private";
   cacheTag(`analyses`);
-  const session = await getSession();
-  if (!session) unauthorized();
+
   const { error, data } = await client.analysis["status-count"].get();
   console.log("Error:", JSON.stringify(error, null, "\t"));
   if (error) throw new Error(error.value.summary);
@@ -103,8 +85,6 @@ export async function getStatusCount() {
 }
 
 export async function redoAnalysis(id: string) {
-  const session = await getSession();
-  if (!session) unauthorized();
   const { data, error } = await client.analysis({ id }).redo.post();
   if (error) {
     console.error(error);

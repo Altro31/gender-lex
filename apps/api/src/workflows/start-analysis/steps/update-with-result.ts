@@ -15,7 +15,6 @@ export async function updateWithResult(
     { user }: Context,
 ) {
     "use step"
-    console.log("updateWithResult")
     const program = Effect.gen(function* () {
         const repository = yield* AnalysisRepository
 

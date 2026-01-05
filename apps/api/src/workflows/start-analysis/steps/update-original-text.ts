@@ -14,7 +14,6 @@ export async function updateOriginalText(
     { user }: Context,
 ) {
     "use step"
-    console.log("updateOriginalText")
     const program = Effect.gen(function* () {
         const repository = yield* AnalysisRepository
 
