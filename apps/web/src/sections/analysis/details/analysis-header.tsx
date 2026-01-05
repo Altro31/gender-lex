@@ -31,7 +31,7 @@ export default function AnalysisHeader() {
     switch (status) {
       case "analyzing":
         return {
-          label: t`Analizing`,
+          label: t`Analyzing`,
           color: "bg-blue-100 text-blue-800",
           icon: Clock,
         };
