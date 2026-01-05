@@ -151,7 +151,7 @@ export default function AnalysisContent() {
                   </div>
                 ))}
               </div>
-            ) : analysis?.biasedTerms && analysis.biasedTerms.length > 0 ? (
+            ) : analysis?.biasedTerms?.length ? (
               analysis.biasedTerms.map((term, index) => (
                 <div key={index} className="space-y-3 rounded-lg border p-4">
                   <div className="flex items-center justify-between">
@@ -209,7 +209,7 @@ export default function AnalysisContent() {
                   </div>
                 ))}
               </div>
-            ) : analysis?.biasedMetaphors && analysis.biasedMetaphors.length > 0 ? (
+            ) : analysis?.biasedMetaphors?.length ? (
               analysis.biasedMetaphors.map((metaphor, index) => (
                 <div key={index} className="space-y-3 rounded-lg border p-4">
                   <div className="flex items-center justify-between">
@@ -586,7 +586,7 @@ export default function AnalysisContent() {
               </Card>
             ))}
           </div>
-        ) : analysis?.modifiedTextAlternatives && analysis.modifiedTextAlternatives.length > 0 ? (
+        ) : analysis?.modifiedTextAlternatives?.length ? (
           analysis.modifiedTextAlternatives.map((alternative, index) => (
             <Card key={index}>
               <CardHeader>
