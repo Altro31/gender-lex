@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "@/lib/auth/auth-client";
 import { t } from "@lingui/core/macro";
 import { Select } from "@lingui/react/macro";
@@ -69,42 +70,58 @@ export default function AnalysisHeader() {
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Calendar />
-              {new Date(analysis?.createdAt ?? new Date()).toLocaleDateString(
-                "es-ES",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                },
+              {isFetching && !analysis?.createdAt ? (
+                <Skeleton className="h-4 w-48" />
+              ) : (
+                new Date(analysis?.createdAt ?? new Date()).toLocaleDateString(
+                  "es-ES",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  },
+                )
               )}
             </div>
             <div className="flex items-center gap-2">
               <User />
-              ID: {analysis?.id}
+              {isFetching && !analysis?.id ? (
+                <Skeleton className="h-4 w-32" />
+              ) : (
+                <>ID: {analysis?.id}</>
+              )}
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
-          <Badge className={statusConfig.color}>
-            <StatusIcon className="mr-1 h-3 w-3" />
-            {statusConfig.label}
-          </Badge>
-          <Badge
-            variant={
-              analysis?.visibility === "public" ? "default" : "secondary"
-            }
-          >
-            {" "}
-            <Select
-              value={analysis?.visibility ?? ""}
-              _public="Public"
-              _private="Private"
-              other="Other"
-            />
-          </Badge>
+          {isFetching && !analysis?.status ? (
+            <Skeleton className="h-6 w-24" />
+          ) : (
+            <Badge className={statusConfig.color}>
+              <StatusIcon className="mr-1 h-3 w-3" />
+              {statusConfig.label}
+            </Badge>
+          )}
+          {isFetching && !analysis?.visibility ? (
+            <Skeleton className="h-6 w-20" />
+          ) : (
+            <Badge
+              variant={
+                analysis?.visibility === "public" ? "default" : "secondary"
+              }
+            >
+              {" "}
+              <Select
+                value={analysis?.visibility ?? ""}
+                _public="Public"
+                _private="Private"
+                other="Other"
+              />
+            </Badge>
+          )}
           <Button variant="outline" size="sm" className="gap-2 bg-transparent">
             <Download />
             {t`Export`}

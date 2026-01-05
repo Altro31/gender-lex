@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import { TabsContent } from "@/components/ui/tabs";
 import AnalysisContentOriginalText from "@/sections/analysis/details/content/analysis-content-original-text";
 import { t } from "@lingui/core/macro";
@@ -27,63 +28,92 @@ export default function AnalysisContent() {
       {/* Overview Tab */}
       <TabsContent value="overview" className="space-y-6">
         {/* Original Text */}
-        <AnalysisContentOriginalText text={analysis?.originalText ?? ""} />
+        <AnalysisContentOriginalText text={analysis?.originalText ?? ""} isFetching={isFetching} />
 
         {/* Summary Stats */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <Card>
             <CardContent>
               <div className="text-sm">{t`Biased terms`}</div>
-              <div className="text-2xl font-bold text-red-600">
-                {analysis?.biasedTerms?.length ?? 0}
-              </div>
+              {isFetching && !analysis?.biasedTerms ? (
+                <Skeleton className="mt-1 h-8 w-16" />
+              ) : (
+                <div className="text-2xl font-bold text-red-600">
+                  {analysis?.biasedTerms?.length ?? 0}
+                </div>
+              )}
             </CardContent>
           </Card>
           <Card>
             <CardContent>
               <div className="text-sm">{t`Biased Metaphors`}</div>
-              <div className="text-2xl font-bold text-orange-600">
-                {analysis?.biasedMetaphors?.length ?? 0}
-              </div>
+              {isFetching && !analysis?.biasedMetaphors ? (
+                <Skeleton className="mt-1 h-8 w-16" />
+              ) : (
+                <div className="text-2xl font-bold text-orange-600">
+                  {analysis?.biasedMetaphors?.length ?? 0}
+                </div>
+              )}
             </CardContent>
           </Card>
           <Card>
             <CardContent>
               <div className="text-sm">{t`Alternatives`}</div>
-              <div className="text-2xl font-bold text-blue-600">
-                {analysis?.modifiedTextAlternatives?.length ?? 0}
-              </div>
+              {isFetching && !analysis?.modifiedTextAlternatives ? (
+                <Skeleton className="mt-1 h-8 w-16" />
+              ) : (
+                <div className="text-2xl font-bold text-blue-600">
+                  {analysis?.modifiedTextAlternatives?.length ?? 0}
+                </div>
+              )}
             </CardContent>
           </Card>
           <Card>
             <CardContent>
               <div className="text-sm">{t`Average Influence`}</div>
-              <div className="text-2xl font-bold text-green-600">
-                {analysis?.additionalContextEvaluation
-                  ? Math.round(
-                      // @ts-expect-error asdasdasdasdasdasdas
-                      (Object.values(
-                        analysis?.additionalContextEvaluation,
-                      ).reduce(
+              {isFetching && !analysis?.additionalContextEvaluation ? (
+                <Skeleton className="mt-1 h-8 w-16" />
+              ) : (
+                <div className="text-2xl font-bold text-green-600">
+                  {analysis?.additionalContextEvaluation
+                    ? Math.round(
                         // @ts-expect-error asdasdasdasdasdasdas
-                        (
-                          acc: number,
-                          item: AdditionalContextEvaluationItemBase,
-                        ) => acc + (item.influencePercentage || 0),
-                        0,
-                      ) /
-                        5) *
-                        100,
-                    )
-                  : 0}
-                %
-              </div>
+                        (Object.values(
+                          analysis?.additionalContextEvaluation,
+                        ).reduce(
+                          // @ts-expect-error asdasdasdasdasdasdas
+                          (
+                            acc: number,
+                            item: AdditionalContextEvaluationItemBase,
+                          ) => acc + (item.influencePercentage || 0),
+                          0,
+                        ) /
+                          5) *
+                          100,
+                      )
+                    : 0}
+                  %
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
 
         {/* Conclusion */}
-        {analysis?.conclusion && (
+        {isFetching && !analysis?.conclusion ? (
+          <Card>
+            <CardHeader>
+              <CardTitle>{t`Conclusion`}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+              </div>
+            </CardContent>
+          </Card>
+        ) : analysis?.conclusion ? (
           <Card>
             <CardHeader>
               <CardTitle>{t`Conclusion`}</CardTitle>
@@ -94,7 +124,7 @@ export default function AnalysisContent() {
               </p>
             </CardContent>
           </Card>
-        )}
+        ) : null}
       </TabsContent>
 
       {/* Terms Tab */}
@@ -108,30 +138,49 @@ export default function AnalysisContent() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {analysis?.biasedTerms?.map((term, index) => (
-              <div key={index} className="space-y-3 rounded-lg border p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="text-lg font-medium">
-                      "{term.content}"
-                    </span>
+            {isFetching && !analysis?.biasedTerms ? (
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="space-y-3 rounded-lg border p-4">
+                    <div className="flex items-center justify-between">
+                      <Skeleton className="h-6 w-32" />
+                      <Skeleton className="h-6 w-16" />
+                    </div>
+                    <Skeleton className="h-2 w-full" />
+                    <Skeleton className="h-4 w-full" />
                   </div>
-                  <div className="text-right">
-                    <div className="text-sm text-muted-foreground">{t`Influence`}</div>
-                    <div className="text-lg font-bold text-red-600">
-                      {Math.round(term.influencePercentage * 100)}%
+                ))}
+              </div>
+            ) : analysis?.biasedTerms && analysis.biasedTerms.length > 0 ? (
+              analysis.biasedTerms.map((term, index) => (
+                <div key={index} className="space-y-3 rounded-lg border p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg font-medium">
+                        "{term.content}"
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm text-muted-foreground">{t`Influence`}</div>
+                      <div className="text-lg font-bold text-red-600">
+                        {Math.round(term.influencePercentage * 100)}%
+                      </div>
                     </div>
                   </div>
+                  <Progress
+                    value={term.influencePercentage * 100}
+                    className="h-2"
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    {term.explanation}
+                  </p>
                 </div>
-                <Progress
-                  value={term.influencePercentage * 100}
-                  className="h-2"
-                />
-                <p className="text-sm text-muted-foreground">
-                  {term.explanation}
-                </p>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-center text-sm text-muted-foreground py-4">
+                {t`No biased terms detected`}
+              </p>
+            )}
           </CardContent>
         </Card>
 
@@ -144,50 +193,111 @@ export default function AnalysisContent() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {analysis?.biasedMetaphors?.map((metaphor, index) => (
-              <div key={index} className="space-y-3 rounded-lg border p-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-lg font-medium">
-                    "{metaphor.content}"
-                  </span>
-                  <div className="text-right">
-                    <div className="text-sm text-muted-foreground">{t`Influence`}</div>
-                    <div className="text-lg font-bold text-orange-600">
-                      {Math.round(metaphor.influencePercentage * 100)}%
+            {isFetching && !analysis?.biasedMetaphors ? (
+              <div className="space-y-4">
+                {[1, 2].map((i) => (
+                  <div key={i} className="space-y-3 rounded-lg border p-4">
+                    <div className="flex items-center justify-between">
+                      <Skeleton className="h-6 w-40" />
+                      <Skeleton className="h-6 w-16" />
+                    </div>
+                    <Skeleton className="h-2 w-full" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : analysis?.biasedMetaphors && analysis.biasedMetaphors.length > 0 ? (
+              analysis.biasedMetaphors.map((metaphor, index) => (
+                <div key={index} className="space-y-3 rounded-lg border p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-medium">
+                      "{metaphor.content}"
+                    </span>
+                    <div className="text-right">
+                      <div className="text-sm text-muted-foreground">{t`Influence`}</div>
+                      <div className="text-lg font-bold text-orange-600">
+                        {Math.round(metaphor.influencePercentage * 100)}%
+                      </div>
+                    </div>
+                  </div>
+                  <Progress
+                    value={metaphor.influencePercentage * 100}
+                    className="h-2"
+                  />
+                  <div className="space-y-2">
+                    <div>
+                      <h4 className="text-sm font-medium text-muted-foreground">
+                        {t`Explanation`}:
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {metaphor.explanation}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-muted-foreground">
+                        {t`Historical Context`}:
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {metaphor.historicalContext}
+                      </p>
                     </div>
                   </div>
                 </div>
-                <Progress
-                  value={metaphor.influencePercentage * 100}
-                  className="h-2"
-                />
-                <div className="space-y-2">
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">
-                      {t`Explanation`}:
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      {metaphor.explanation}
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">
-                      {t`Historical Context`}:
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      {metaphor.historicalContext}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-center text-sm text-muted-foreground py-4">
+                {t`No biased metaphors detected`}
+              </p>
+            )}
           </CardContent>
         </Card>
       </TabsContent>
 
       {/* Context Tab */}
       <TabsContent value="context" className="space-y-6">
-        {analysis?.additionalContextEvaluation && (
+        {isFetching && !analysis?.additionalContextEvaluation ? (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {[1, 2, 3, 4].map((i) => (
+              <Card key={i}>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Skeleton className="h-3 w-3 rounded-full" />
+                    <Skeleton className="h-6 w-32" />
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-12" />
+                  </div>
+                  <Skeleton className="h-2 w-full" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                </CardContent>
+              </Card>
+            ))}
+            <Card className="lg:col-span-2">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Skeleton className="h-3 w-3 rounded-full" />
+                  <Skeleton className="h-6 w-32" />
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-4 w-12" />
+                </div>
+                <Skeleton className="h-2 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+              </CardContent>
+            </Card>
+          </div>
+        ) : analysis?.additionalContextEvaluation ? (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Stereotype */}
             <Card>
@@ -445,78 +555,132 @@ export default function AnalysisContent() {
               </CardContent>
             </Card>
           </div>
+        ) : (
+          <p className="text-center text-sm text-muted-foreground py-8">
+            {t`No context evaluation data available`}
+          </p>
         )}
       </TabsContent>
 
       {/* Alternatives Tab */}
       <TabsContent value="alternatives" className="space-y-6">
-        {analysis?.modifiedTextAlternatives?.map((alternative, index) => (
-          <Card key={index}>
-            <CardHeader>
-              <CardTitle>
-                {t`Alternative`} {alternative.alternativeNumber}
-              </CardTitle>
-              <CardDescription>
-                {t`Modified version of the original text without gender bias`}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="rounded-lg border border-green-200 bg-green-50 p-4">
-                <p className="leading-relaxed text-muted-foreground">
-                  {alternative.alternativeText}
-                </p>
-              </div>
-
-              <Separator />
-
-              <div>
-                <h4 className="mb-3 font-medium text-muted-foreground">
-                  {t`Modifications Made`}:
-                </h4>
-                <div className="space-y-3">
-                  {alternative.modificationsExplanation.map((mod, modIndex) => (
-                    <div
-                      key={modIndex}
-                      className="space-y-2 rounded-lg border p-3"
-                    >
-                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div>
-                          <h5 className="mb-1 text-sm font-medium text-red-700">
-                            {t`Original`}:
-                          </h5>
-                          <p className="rounded bg-red-50 p-2 text-sm">
-                            "{mod.originalFragment}"
-                          </p>
-                        </div>
-                        <div>
-                          <h5 className="mb-1 text-sm font-medium text-green-700">
-                            {t`Modified`}:
-                          </h5>
-                          <p className="rounded bg-green-50 p-2 text-sm">
-                            "{mod.modifiedFragment}"
-                          </p>
-                        </div>
-                      </div>
-                      <div>
-                        <h5 className="mb-1 text-sm font-medium text-muted-foreground">
-                          {t`Reason`}:
-                        </h5>
-                        <p className="text-sm text-muted-foreground">
-                          {mod.reason}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+        {isFetching && !analysis?.modifiedTextAlternatives ? (
+          <div className="space-y-6">
+            {[1, 2].map((i) => (
+              <Card key={i}>
+                <CardHeader>
+                  <CardTitle>
+                    <Skeleton className="h-6 w-32" />
+                  </CardTitle>
+                  <CardDescription>
+                    <Skeleton className="h-4 w-64" />
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-3/4" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : analysis?.modifiedTextAlternatives && analysis.modifiedTextAlternatives.length > 0 ? (
+          analysis.modifiedTextAlternatives.map((alternative, index) => (
+            <Card key={index}>
+              <CardHeader>
+                <CardTitle>
+                  {t`Alternative`} {alternative.alternativeNumber}
+                </CardTitle>
+                <CardDescription>
+                  {t`Modified version of the original text without gender bias`}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="rounded-lg border border-green-200 bg-green-50 p-4">
+                  <p className="leading-relaxed text-muted-foreground">
+                    {alternative.alternativeText}
+                  </p>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+
+                <Separator />
+
+                <div>
+                  <h4 className="mb-3 font-medium text-muted-foreground">
+                    {t`Modifications Made`}:
+                  </h4>
+                  <div className="space-y-3">
+                    {alternative.modificationsExplanation.map((mod, modIndex) => (
+                      <div
+                        key={modIndex}
+                        className="space-y-2 rounded-lg border p-3"
+                      >
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                          <div>
+                            <h5 className="mb-1 text-sm font-medium text-red-700">
+                              {t`Original`}:
+                            </h5>
+                            <p className="rounded bg-red-50 p-2 text-sm">
+                              "{mod.originalFragment}"
+                            </p>
+                          </div>
+                          <div>
+                            <h5 className="mb-1 text-sm font-medium text-green-700">
+                              {t`Modified`}:
+                            </h5>
+                            <p className="rounded bg-green-50 p-2 text-sm">
+                              "{mod.modifiedFragment}"
+                            </p>
+                          </div>
+                        </div>
+                        <div>
+                          <h5 className="mb-1 text-sm font-medium text-muted-foreground">
+                            {t`Reason`}:
+                          </h5>
+                          <p className="text-sm text-muted-foreground">
+                            {mod.reason}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <p className="text-center text-sm text-muted-foreground py-8">
+            {t`No text alternatives generated`}
+          </p>
+        )}
       </TabsContent>
 
       {/* Impact Tab */}
       <TabsContent value="impact" className="space-y-6">
-        {analysis?.impactAnalysis && (
+        {isFetching && !analysis?.impactAnalysis ? (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {[1, 2].map((i) => (
+              <Card key={i}>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Skeleton className="h-3 w-3 rounded-full" />
+                    <Skeleton className="h-6 w-32" />
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <Skeleton className="h-6 w-24" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-3/4" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : analysis?.impactAnalysis ? (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <Card>
               <CardHeader>
@@ -580,6 +744,10 @@ export default function AnalysisContent() {
               </CardContent>
             </Card>
           </div>
+        ) : (
+          <p className="text-center text-sm text-muted-foreground py-8">
+            {t`No impact analysis data available`}
+          </p>
         )}
       </TabsContent>
     </>
