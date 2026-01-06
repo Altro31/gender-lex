@@ -1,19 +1,15 @@
 import { paginationSchema } from "@/lib/pagination"
 import { AnalysisStatus } from "@repo/db/models"
-import { t } from "elysia"
 import z from "zod"
 
 export const analysisModels = {
-    prepareInput: t.Object({
-        files: t.Optional(t.Files()),
-        text: t.Optional(t.String()),
-        selectedPreset: t.String(),
+    // Note: File handling in Hono is different from Elysia
+    // Files should be validated at the route level using FormData
+    prepareInput: z.object({
+        files: z.any().optional(), // Files will be handled via FormData
+        text: z.string().optional(),
+        selectedPreset: z.string(),
     }),
-    // z.object({
-    // 	files: z.file().array().default([]),
-    // 	text: z.optional(z.string()),
-    // 	selectedPreset: z.string(),
-    // })
     prepareOutput: z.object({ id: z.string() }),
     // startOutput: Schema.Struct({
     // 	...Analysis.fields,
@@ -25,11 +21,11 @@ export const analysisModels = {
     // 	}),
     // }).pipe(Schema.omit('userId')),
     statusCountOutput: z.object({
-        all: z.int(),
-        pending: z.int(),
-        analyzing: z.int(),
-        done: z.int(),
-        error: z.int(),
+        all: z.number().int(),
+        pending: z.number().int(),
+        analyzing: z.number().int(),
+        done: z.number().int(),
+        error: z.number().int(),
     }),
     // findOneOutput: Schema.Struct({ ...Analysis.fields, Preset }).pipe(
     // 	Schema.omit('userId'),

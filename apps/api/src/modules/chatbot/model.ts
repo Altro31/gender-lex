@@ -1,19 +1,19 @@
-import { t } from 'elysia'
+import z from 'zod'
 
 export const chatbotModels = {
-	sendMessageInput: t.Object({ content: t.String() }),
-	sendMessageOutput: t.Object({
-		userMessage: t.Object({
-			id: t.String(),
-			content: t.String(),
-			sender: t.String(),
-			createdAt: t.Date(),
+	sendMessageInput: z.object({ content: z.string() }),
+	sendMessageOutput: z.object({
+		userMessage: z.object({
+			id: z.string(),
+			content: z.string(),
+			sender: z.string(),
+			createdAt: z.date(),
 		}),
-		botMessage: t.Object({
-			id: t.String(),
-			content: t.String(),
-			sender: t.String(),
-			createdAt: t.Date(),
+		botMessage: z.object({
+			id: z.string(),
+			content: z.string(),
+			sender: z.string(),
+			createdAt: z.date(),
 		}),
 	}),
 }
