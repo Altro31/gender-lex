@@ -4,6 +4,8 @@ import type { App } from "@repo/types/api";
 import { cookies } from "next/headers";
 import "server-only";
 
+// Note: Client API usage needs to be updated from Eden syntax to Hono RPC syntax
+// Example: client.analysis.prepare.post() becomes client.analysis.prepare.$post()
 export const client = hc<App>(envs.API_URL, {
   fetch: async (input, options) => {
     const headers = new Headers(options?.headers);
