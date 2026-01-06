@@ -1,3 +1,4 @@
+import { getWorkflowMetadata } from "workflow"
 import type { Context } from "../common-types"
 import { closeStream } from "../shared/close-stream"
 import { biasDetection } from "./steps/bias-detection"
@@ -22,7 +23,12 @@ export async function startAnalysisWorkflow(
 
     const { presetId } = input
 
-    const persistedAnalysis = await persistOnDatabase({ presetId }, ctx)
+    const { workflowRunId } = getWorkflowMetadata()
+
+    const persistedAnalysis = await persistOnDatabase(
+        { presetId, workflow: workflowRunId },
+        ctx,
+    )
 
     await streamGeneratedId(persistedAnalysis.id)
 

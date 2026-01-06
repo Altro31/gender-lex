@@ -7,22 +7,21 @@ import { getWorkflowMetadata } from "workflow"
 
 interface Args {
     presetId: string
+    workflow: string
 }
 
-export async function persistOnDatabase({ presetId }: Args, { user }: Context) {
+export async function persistOnDatabase(
+    { presetId, workflow }: Args,
+    { user }: Context,
+) {
     "use step"
-
-    const metadata = getWorkflowMetadata()
 
     const program = Effect.gen(function* () {
         const repository = yield* AnalysisRepository
 
         return yield* effectify(
             repository.create({
-                data: {
-                    workflow: metadata.workflowRunId,
-                    Preset: { connect: { id: presetId } },
-                },
+                data: { workflow, Preset: { connect: { id: presetId } } },
                 select: { id: true },
             }),
         )
