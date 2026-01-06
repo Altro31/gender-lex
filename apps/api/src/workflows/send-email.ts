@@ -3,6 +3,7 @@ import { sleep } from "workflow"
 
 export async function handleUserSignup(email: string) {
     "use workflow"
+    getWritable()
     const user = await createUser(email)
     await sendWelcomeEmail(user)
     await sleep("5s") // Pause for 5s - doesn't consume any resources
@@ -17,7 +18,6 @@ export async function handleUserSignup(email: string) {
 async function createUser(email: string) {
     "use step"
 
-    getWritable()
     console.log(`Creating user with email: ${email}`)
     // Full Node.js access - database calls, APIs, etc.
     return { id: crypto.randomUUID(), email }
