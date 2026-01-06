@@ -35,7 +35,7 @@ export async function startAnalysisWorkflow(
     )
 
     await streamGeneratedId(persistedAnalysis.id, streamId)
-    await streamId.close()
+    await closeStream(streamId)
 
     await streamAnalysisUpdate(
         await updateStatus(
@@ -68,7 +68,7 @@ export async function startAnalysisWorkflow(
     )
     await streamAnalysisUpdate(updated, streamUpdate)
 
-    await streamUpdate.close()
+    await closeStream(streamUpdate)
 
     return updated
 }

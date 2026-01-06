@@ -1,7 +1,4 @@
-import { getWritable } from "workflow"
-
-export async function closeStream(namespace?: string) {
+export async function closeStream(stream: WritableStream) {
     "use step"
-    const stream = getWritable({ namespace })
     await stream.close()
 }
