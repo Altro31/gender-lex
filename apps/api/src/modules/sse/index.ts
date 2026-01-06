@@ -1,44 +1,47 @@
-import { sseModels } from "@/modules/sse/model"
 import { SseService } from "@/modules/sse/service"
-import { effectPlugin } from "@/plugins/effect.plugin"
 import { AuthService } from "@/shared/auth/auth.service"
 import { ContextService } from "@/shared/context.service"
 import { Effect, Stream } from "effect"
-import Elysia, { sse } from "elysia"
+import { Hono } from "hono"
+import { streamSSE } from "hono/streaming"
 
-export default new Elysia({
-    name: "sse.controller",
-    prefix: "sse",
-    tags: ["Sse"],
+const sse = new Hono()
+
+sse.get("/", async (c) => {
+    const runEffect = c.get("runEffect") as any
+    
+    return streamSSE(c, async (stream) => {
+        // Send initial connection message
+        await stream.writeSSE({
+            data: "Connected!!!",
+        })
+        
+        const asyncIterable = await runEffect(
+            Effect.gen(function* () {
+                const session = yield* AuthService.unsafe
+                const sseService = yield* SseService
+                const effectStream = sseService.stream$.pipe(
+                    Stream.filter(
+                        message =>
+                            message?.sessionId === session?.id ||
+                            message?.userId === session?.user.id ||
+                            message?.event === "ping",
+                    ),
+                )
+                return Stream.toAsyncIterable(effectStream)
+            }).pipe(
+                SseService.provide,
+                AuthService.provide,
+                ContextService.provide(c),
+            ),
+        )
+        
+        for await (const message of asyncIterable) {
+            await stream.writeSSE({
+                data: JSON.stringify(message),
+            })
+        }
+    })
 })
-    .use(effectPlugin)
-    .model(sseModels)
-    .get(
-        "",
-        async function* ({ runEffect, ...ctx }) {
-            yield sse("Connected!!!")
-            const stream = await runEffect(
-                Effect.gen(function* () {
-                    const session = yield* AuthService.unsafe
-                    const sseService = yield* SseService
-                    const stream = sseService.stream$.pipe(
-                        Stream.filter(
-                            message =>
-                                message?.sessionId === session?.id ||
-                                message?.userId === session?.user.id ||
-                                message?.event === "ping",
-                        ),
-                    )
-                    return Stream.toAsyncIterable(stream)
-                }).pipe(
-                    SseService.provide,
-                    AuthService.provide,
-                    ContextService.provide(ctx),
-                ),
-            )
-            for await (const a of stream) {
-                yield sse(a)
-            }
-        },
-        { response: { "model.status.change": "model.status.change" } },
-    )
+
+export default sse

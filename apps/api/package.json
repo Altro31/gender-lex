@@ -24,8 +24,7 @@
         "@ai-sdk/openai-compatible": "^2.0.2",
         "@effect/platform": "catalog:",
         "@effect/platform-node": "catalog:",
-        "@elysiajs/cors": "latest",
-        "@elysiajs/openapi": "latest",
+        "@hono/zod-openapi": "^0.18.4",
         "@repo/auth": "workspace:*",
         "@repo/db": "workspace:*",
         "@workflow/world-postgres": "catalog:",
@@ -34,7 +33,7 @@
         "ai": "catalog:",
         "better-auth": "catalog:",
         "effect": "catalog:",
-        "elysia": "catalog:",
+        "hono": "^4.7.10",
         "umlsjs": "^1.2.1",
         "workflow": "catalog:",
         "zod": "catalog:"
