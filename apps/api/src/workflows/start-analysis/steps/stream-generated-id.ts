@@ -1,9 +1,9 @@
-import { getWritable } from "workflow"
-
-export async function streamGeneratedId(id: string) {
+export async function streamGeneratedId(
+    id: string,
+    stream: WritableStream<string>,
+) {
     "use step"
 
-    const stream = getWritable<string>({ namespace: "id" })
     const writer = stream.getWriter()
     await writer.write(id)
     writer.releaseLock()

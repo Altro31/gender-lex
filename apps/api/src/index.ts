@@ -11,8 +11,6 @@ import { Elysia } from "elysia"
 import z from "zod"
 import { authPlugin } from "./plugins/auth.plugin"
 import { effectPlugin } from "./plugins/effect.plugin"
-import { handleUserSignup } from "./workflows/send-email"
-import { start } from "workflow/api"
 
 export type App = typeof app
 const app = new Elysia()
@@ -43,9 +41,5 @@ const app = new Elysia()
     .use(chatbot)
     .use(zen)
     .get("/", () => ({ ok: true }))
-    .get("/workflow", async c => {
-        await start(handleUserSignup, ["albe@gmail.com"])
-        return { message: "User signup workflow started" }
-    })
 
 export default app.compile()
