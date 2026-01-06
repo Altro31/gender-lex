@@ -5,10 +5,12 @@ import { UnauthorizedError } from "./errors/unauthorized.error"
 
 export class AuthService extends Effect.Service<AuthService>()("AuthService", {
     effect: Effect.gen(function* () {
-        const { headers } = yield* ContextService
+        const ctx = yield* ContextService
+        // Hono context: headers are at ctx.req.raw.headers
+        const headers = ctx.req?.raw?.headers || new Headers()
         const res = yield* Effect.promise(() =>
             auth.api.getSession({
-                headers: new Headers(Object.entries(headers as any)),
+                headers,
             }),
         )
         return {
