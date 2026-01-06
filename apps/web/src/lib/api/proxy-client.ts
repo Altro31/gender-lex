@@ -1,14 +1,14 @@
-import { treaty } from "@elysiajs/eden";
+import { hc } from "hono/client";
 import type { App } from "@repo/types/api";
 import envs from "../env/env-server";
 
-export const proxyClient = treaty<App>(
+export const proxyClient = hc<App>(
   process.env.NEXT_PUBLIC_UI_URL! + "/api/proxy",
   {
-    fetcher: async (path, options) => {
+    fetch: async (input, options) => {
       const headers = new Headers(options?.headers);
       headers.set("cookie", window.cookieStore.toString());
-      return fetch(path, { ...options, headers });
+      return fetch(input, { ...options, headers });
     },
   },
 );
