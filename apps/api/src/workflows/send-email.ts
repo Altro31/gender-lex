@@ -1,4 +1,4 @@
-import { FatalError } from "workflow"
+import { FatalError, getWritable } from "workflow"
 import { sleep } from "workflow"
 
 export async function handleUserSignup(email: string) {
@@ -16,6 +16,8 @@ export async function handleUserSignup(email: string) {
 // Our workflow function defined earlier
 async function createUser(email: string) {
     "use step"
+
+    getWritable()
     console.log(`Creating user with email: ${email}`)
     // Full Node.js access - database calls, APIs, etc.
     return { id: crypto.randomUUID(), email }
