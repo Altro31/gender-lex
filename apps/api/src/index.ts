@@ -3,45 +3,34 @@ import chatbot from "@/modules/chatbot"
 import model from "@/modules/model"
 import sse from "@/modules/sse"
 import zen from "@/modules/zen"
-import { cors } from "@elysiajs/cors"
-import openapi, { fromTypes } from "@elysiajs/openapi"
 import { auth } from "@repo/auth/api"
-import { JSONSchema } from "effect"
-import { Elysia, env } from "elysia"
-import z from "zod"
-import { authPlugin } from "./plugins/auth.plugin"
-import { effectPlugin } from "./plugins/effect.plugin"
+import { Hono } from "hono"
+import { cors } from "hono/cors"
+import { authMiddleware } from "./plugins/auth.plugin"
+import { effectMiddleware } from "./plugins/effect.plugin"
 
 export type App = typeof app
-const app = new Elysia()
-    .use(cors())
-    .mount(auth.handler)
-    .use(
-        openapi({
-            references: fromTypes(),
-            documentation: {
-                info: { title: "Gender Lex API", version: "1.0.0" },
-                externalDocs: {
-                    url: "/api/auth/reference",
-                    description: "Auth",
-                },
-            },
-            mapJsonSchema: {
-                effect: JSONSchema.make,
-                zod: (arg: any) =>
-                    z.toJSONSchema(arg, { unrepresentable: "any" }),
-            },
-        }),
-    )
-    .use(authPlugin)
-    .use(effectPlugin)
-    .use(sse)
-    .use(model)
-    .use(analysis)
-    .use(chatbot)
-    .use(zen)
-    .get("/", () => {
-        return { ok: true }
-    })
+const app = new Hono()
 
-export default app.compile()
+// Apply CORS middleware
+app.use("*", cors())
+
+// Mount better-auth handler
+app.route("/api/auth", auth.handler as any)
+
+// Apply Effect middleware
+app.use("*", effectMiddleware)
+
+// Mount module routes
+app.route("/analysis", analysis)
+app.route("/model", model)
+app.route("/sse", sse)
+app.route("/chatbot", chatbot)
+app.route("/api/crud", zen)
+
+// Health check endpoint
+app.get("/", (c) => {
+    return c.json({ ok: true })
+})
+
+export default app

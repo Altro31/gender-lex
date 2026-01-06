@@ -1,5 +1,5 @@
 import { Context as EffectContext, Effect, Layer } from "effect"
-import type { Context } from "elysia"
+import type { Context } from "hono"
 
 export class ContextService extends EffectContext.Tag("ContextService")<
     ContextService,

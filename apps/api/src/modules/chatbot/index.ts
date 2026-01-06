@@ -1,37 +1,32 @@
-import { chatbotModels } from "@/modules/chatbot/model"
 import { ChatbotService } from "@/modules/chatbot/service"
-import { authPlugin } from "@/plugins/auth.plugin"
-import { effectPlugin } from "@/plugins/effect.plugin"
+import { requireAuth } from "@/plugins/auth.plugin"
 import { AuthService } from "@/shared/auth/auth.service"
 import { Effect } from "effect"
-import Elysia from "elysia"
+import { Hono } from "hono"
 
-export default new Elysia({
-    name: "chatbot.controller",
-    tags: ["Chatbot"],
-    prefix: "chatbot",
+const chatbot = new Hono()
+
+chatbot.use("*", requireAuth)
+
+chatbot.post("/message", async (c) => {
+    const runEffect = c.get("runEffect") as any
+    const body = await c.req.json()
+    const program = Effect.gen(function* () {
+        const chatbotService = yield* ChatbotService
+        return yield* chatbotService.sendMessage(body.content)
+    }).pipe(ChatbotService.provide)
+    const result = await runEffect(program)
+    return c.json(result)
 })
-    .use(authPlugin)
-    .use(effectPlugin)
-    .model(chatbotModels)
-    .post(
-        "message",
-        async function* ({ body, runEffect }) {
-            const program = Effect.gen(function* () {
-                const chatbotService = yield* ChatbotService
-                return yield* chatbotService.sendMessage(body.content)
-            }).pipe(ChatbotService.provide)
-            return runEffect(program)
-        },
-        {
-            body: "sendMessageInput",
-            // response: 'sendMessageOutput'
-        },
-    )
-    .get("messages", ({ runEffect }) => {
-        const program = Effect.gen(function* () {
-            const chatbotService = yield* ChatbotService
-            return yield* chatbotService.getMessages()
-        }).pipe(ChatbotService.provide, AuthService.provide)
-        return runEffect(program)
-    })
+
+chatbot.get("/messages", async (c) => {
+    const runEffect = c.get("runEffect") as any
+    const program = Effect.gen(function* () {
+        const chatbotService = yield* ChatbotService
+        return yield* chatbotService.getMessages()
+    }).pipe(ChatbotService.provide, AuthService.provide)
+    const result = await runEffect(program)
+    return c.json(result)
+})
+
+export default chatbot
