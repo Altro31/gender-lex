@@ -41,9 +41,9 @@
     "@effect/platform": "^0.94.1",
     "@effect/platform-node": "^0.104.0",
     "elysia": "1.4.20",
-    "workflow": "4.0.1-beta.40",
-    "@workflow/world-postgres": "latest",
-    "@effect/language-service": "latest",
+    "workflow": "4.0.1-beta.41",
+    "@workflow/world-postgres": "4.1.0-beta.26",
+    "@effect/language-service": "^0.63.2",
     "effect": "^3.19.14",
     "pg": "^8.16.3",
     "oxlint": "^1.36.0"
