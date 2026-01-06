@@ -1,7 +1,7 @@
 import { analysisModels } from "@/modules/analysis/model"
 import { effectPlugin } from "@/plugins/effect.plugin"
 import { UserProviderService } from "@/shared/user-provider.service"
-import { startAnalysisWorkflow } from "@/workflows/start-analysis"
+import { startAnalysisWorkflow } from "@/workflows/start-analysis/workflow"
 import { Chunk, Console, Effect, Stream } from "effect"
 import Elysia, { sse } from "elysia"
 import { getRun, start } from "workflow/api"

@@ -64,7 +64,6 @@ export default function AnalysisHeader() {
         </Link>
       </div>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <UrlFixer url={`/${locale}/analysis/${analysis?.id}`} />
         <div>
           <h1 className="mb-2 text-3xl font-bold ">{t`Analysis Details`}</h1>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">

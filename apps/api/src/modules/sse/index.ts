@@ -1,7 +1,8 @@
-import { effectPlugin } from "@/plugins/effect.plugin"
 import { sseModels } from "@/modules/sse/model"
 import { SseService } from "@/modules/sse/service"
+import { effectPlugin } from "@/plugins/effect.plugin"
 import { AuthService } from "@/shared/auth/auth.service"
+import { ContextService } from "@/shared/context.service"
 import { Effect, Stream } from "effect"
 import Elysia, { sse } from "elysia"
 
@@ -14,22 +15,26 @@ export default new Elysia({
     .model(sseModels)
     .get(
         "",
-        async function* ({ runEffect }) {
+        async function* ({ runEffect, ...ctx }) {
             yield sse("Connected!!!")
             const stream = await runEffect(
                 Effect.gen(function* () {
-                    const { session } = yield* AuthService.safe
+                    const session = yield* AuthService.unsafe
                     const sseService = yield* SseService
                     const stream = sseService.stream$.pipe(
                         Stream.filter(
                             message =>
-                                message?.sessionId === session.id ||
-                                message?.userId === session.user.id ||
+                                message?.sessionId === session?.id ||
+                                message?.userId === session?.user.id ||
                                 message?.event === "ping",
                         ),
                     )
                     return Stream.toAsyncIterable(stream)
-                }).pipe(SseService.provide, AuthService.provide),
+                }).pipe(
+                    SseService.provide,
+                    AuthService.provide,
+                    ContextService.provide(ctx),
+                ),
             )
             for await (const a of stream) {
                 yield sse(a)

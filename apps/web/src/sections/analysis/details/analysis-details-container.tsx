@@ -1,5 +1,5 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AnalysisSidebarTrigger from "@/sections/analysis/details/analysis-sidebar-trigger";
 import { t } from "@lingui/core/macro";
 import { Suspense } from "react";

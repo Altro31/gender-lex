@@ -7,7 +7,7 @@ import { cors } from "@elysiajs/cors"
 import openapi, { fromTypes } from "@elysiajs/openapi"
 import { auth } from "@repo/auth/api"
 import { JSONSchema } from "effect"
-import { Elysia } from "elysia"
+import { Elysia, env } from "elysia"
 import z from "zod"
 import { authPlugin } from "./plugins/auth.plugin"
 import { effectPlugin } from "./plugins/effect.plugin"
@@ -40,6 +40,8 @@ const app = new Elysia()
     .use(analysis)
     .use(chatbot)
     .use(zen)
-    .get("/", () => ({ ok: true }))
+    .get("/", () => {
+        return { ok: true }
+    })
 
 export default app.compile()

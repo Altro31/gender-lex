@@ -17,10 +17,6 @@ const nextConfig: NextConfig = {
       source: "/api/auth/:path*",
       destination: `${envs.API_URL}/api/auth/:path*`,
     },
-    {
-      source: "/api/proxy/:path*",
-      destination: `${envs.API_URL}/:path*`,
-    },
   ],
   serverExternalPackages: ["pg", "@repo/types", "@workflow/world-postgres"],
   turbopack: {

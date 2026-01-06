@@ -24,7 +24,6 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
                                 ],
                                 { concurrency: "unbounded" },
                             )
-                        console.log({ all, pending, analyzing, done, error })
                         return { all, pending, analyzing, done, error }
                     }),
 
