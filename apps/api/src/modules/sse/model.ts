@@ -1,11 +1,11 @@
 import { ModelStatus } from "@repo/db/models"
 import type { MessageMapper } from "@repo/types/sse"
-import { t } from "elysia"
+import z from "zod"
 
 export const sseModels = {
-    "model.status.change": t.Object({
-        id: t.String(),
-        status: t.Enum(ModelStatus),
-        message: t.Optional(t.String()),
+    "model.status.change": z.object({
+        id: z.string(),
+        status: z.nativeEnum(ModelStatus),
+        message: z.string().optional(),
     }),
 } satisfies Record<keyof MessageMapper, any>
