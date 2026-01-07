@@ -15,10 +15,10 @@ export class SseService extends Effect.Service<SseService>()("SseService", {
     effect: Effect.gen(function* () {
         const { session } = yield* AuthService.safe
 
-        yield* PubSub.publish(pubsub, { event: "ping" }).pipe(
-            Effect.repeat(Schedule.fixed("15 seconds")),
-            Effect.forkDaemon,
-        )
+        // yield* PubSub.publish(pubsub, { event: "ping" }).pipe(
+        //     Effect.repeat(Schedule.fixed("15 seconds")),
+        //     Effect.forkDaemon,
+        // )
         const services = {
             get stream$() {
                 return Stream.fromPubSub(pubsub)
