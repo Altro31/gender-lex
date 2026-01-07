@@ -47,28 +47,28 @@ export async function startAnalysisWorkflow(
 
     const content = await extractContent(resource)
 
-    // const analysisWithOriginalText = await updateOriginalText(
-    //     { content, analysisId: persistedAnalysis.id },
-    //     ctx,
-    // )
-    // await streamAnalysisUpdate(
-    //     await updateStatus(
-    //         { status: "analyzing", analysisId: persistedAnalysis.id },
-    //         ctx,
-    //     ),
-    //     streamUpdate,
-    // )
+    const analysisWithOriginalText = await updateOriginalText(
+        { content, analysisId: persistedAnalysis.id },
+        ctx,
+    )
+    await streamAnalysisUpdate(
+        await updateStatus(
+            { status: "analyzing", analysisId: persistedAnalysis.id },
+            ctx,
+        ),
+        streamUpdate,
+    )
 
-    // const result = await biasDetection({ analysis: analysisWithOriginalText })
+    const result = await biasDetection({ analysis: analysisWithOriginalText })
 
-    // await updateWithResult({ result, analysisId: persistedAnalysis.id }, ctx)
-    // const updated = await updateStatus(
-    //     { status: "done", analysisId: persistedAnalysis.id },
-    //     ctx,
-    // )
-    // await streamAnalysisUpdate(updated, streamUpdate)
+    await updateWithResult({ result, analysisId: persistedAnalysis.id }, ctx)
+    const updated = await updateStatus(
+        { status: "done", analysisId: persistedAnalysis.id },
+        ctx,
+    )
+    await streamAnalysisUpdate(updated, streamUpdate)
 
     await closeStream(streamUpdate)
 
-    // return updated
+    return updated
 }
