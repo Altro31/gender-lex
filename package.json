@@ -2,9 +2,17 @@
   "name": "gender-lex",
   "version": "0.0.0",
   "private": true,
-  "description": "",
-  "author": "",
+  "description": "A comprehensive platform for analyzing gender bias in text and documents, powered by AI",
+  "author": "Altro31",
   "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Altro31/gender-lex.git"
+  },
+  "homepage": "https://github.com/Altro31/gender-lex#readme",
+  "bugs": {
+    "url": "https://github.com/Altro31/gender-lex/issues"
+  },
   "scripts": {
     "generate": "turbo run generate",
     "build:api": "turbo api#build",
