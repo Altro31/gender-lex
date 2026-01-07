@@ -1,26 +1,32 @@
 "use server";
 
 import { client } from "@/lib/api/client";
+import { handle } from "@/lib/api/util";
 import { getSession } from "@/lib/auth/auth-server";
 import { getDB } from "@/lib/db/client";
 import { actionClient } from "@/lib/safe-action";
 import type { HomeSchema } from "@/sections/home/form/home-schema";
+import { DetailedError, parseResponse } from "hono/client";
 import { cacheTag, updateTag } from "next/cache";
 import { unauthorized } from "next/navigation";
 import z from "zod";
 
 export async function prepareAnalysis(input: HomeSchema) {
-  const { data, error } = await client.analysis.prepare.post({
-    text: input.text,
-    files: input.files.map((i) => i.file),
-    selectedPreset: input.selectedPreset.id,
-  });
-  if (error) {
-    console.error(JSON.stringify(error, null, "\t"));
-    return { data: undefined, error };
+  const res = await handle(
+    client.analysis.prepare.$post({
+      form: {
+        text: input.text,
+        files: input.files.map((i) => i.file),
+        selectedPreset: input.selectedPreset.id,
+      },
+    }),
+  );
+  if (res.error) {
+    console.error(res.error);
+    return res;
   }
   updateTag("analyses");
-  return { data, error: null };
+  return res;
 }
 
 export const deleteAnalysis = actionClient
@@ -28,7 +34,7 @@ export const deleteAnalysis = actionClient
   .action(async ({ parsedInput: id }) => {
     const session = await getSession();
     if (!session) unauthorized();
-    await client.analysis({ id }).delete();
+    await parseResponse(client.analysis[":id"].$delete({ param: { id } }));
     updateTag("analyses");
   });
 
@@ -43,25 +49,11 @@ export async function findAnalyses(query: {
   const session = await getSession();
   if (!session) unauthorized();
 
-  const { error, data } = await client.analysis.get({
-    query: {
-      q: query.q || "",
-      page: query.page ? Number(query.page) : 1,
-      status: (query.status as any) || undefined,
-    },
-  });
-  if (error) throw new Error(JSON.stringify(error));
-  return data;
-}
-
-export async function findOneAnalysis(id: string) {
-  const { data, error } = await client.analysis({ id }).get();
-  if (error) {
-    console.log(JSON.stringify(error, null, "\t"));
-    throw new Error();
-  }
-  let analysis = (await data.next()).value!.data;
-  return analysis;
+  return parseResponse(
+    client.analysis.$get({
+      query,
+    }),
+  );
 }
 
 export async function findRecentAnalyses() {
@@ -75,19 +67,18 @@ export async function getStatusCount() {
   "use cache: private";
   cacheTag(`analyses`);
 
-  const { error, data } = await client.analysis["status-count"].get();
-  console.log("Error:", JSON.stringify(error, null, "\t"));
-  if (error) throw new Error(error.value.summary);
-  return data;
+  return parseResponse(client.analysis["status-count"].$get());
 }
 
 export async function redoAnalysis(id: string) {
-  const { data, error } = await client.analysis({ id }).redo.post();
-  if (error) {
-    console.error(error);
-    return { error };
+  const res = await handle(
+    client.analysis[":id"].redo.$post({ param: { id } }),
+  );
+  if (res.error) {
+    console.error(res.error);
+    return res;
   }
   updateTag("analyses");
   updateTag(`analysys-${id}`);
-  return { data, error: null };
+  return res;
 }

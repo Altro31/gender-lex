@@ -4,5 +4,5 @@ import { openAPI } from "better-auth/plugins";
 
 export const auth = betterAuth({
   ...baseOptions,
-  plugins: [...baseOptions.plugins, openAPI()],
+  plugins: [...baseOptions.plugins, openAPI({ disableDefaultReference: true })],
 });

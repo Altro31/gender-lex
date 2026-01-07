@@ -1,3 +1,4 @@
+import type { HonoVariables } from "@/lib/types/hono-variables"
 import { SseService } from "@/modules/sse/service"
 import { AuthService } from "@/shared/auth/auth.service"
 import { ContextService } from "@/shared/context.service"
@@ -5,17 +6,13 @@ import { Effect, Stream } from "effect"
 import { Hono } from "hono"
 import { streamSSE } from "hono/streaming"
 
-const sse = new Hono()
+const sse = new Hono<HonoVariables>().get("/", async c => {
+    const runEffect = c.get("runEffect")
 
-sse.get("/", async (c) => {
-    const runEffect = c.get("runEffect") as any
-    
-    return streamSSE(c, async (stream) => {
+    return streamSSE(c, async stream => {
         // Send initial connection message
-        await stream.writeSSE({
-            data: "Connected!!!",
-        })
-        
+        await stream.writeSSE({ data: "Connected!!!" })
+
         const asyncIterable = await runEffect(
             Effect.gen(function* () {
                 const session = yield* AuthService.unsafe
@@ -35,13 +32,12 @@ sse.get("/", async (c) => {
                 ContextService.provide(c),
             ),
         )
-        
+
         for await (const message of asyncIterable) {
-            await stream.writeSSE({
-                data: JSON.stringify(message),
-            })
+            await stream.writeSSE({ data: JSON.stringify(message) })
         }
     })
 })
 
 export default sse
+export type SseAppType = typeof sse

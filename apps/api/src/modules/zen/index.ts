@@ -1,46 +1,22 @@
-import { ContextService } from '@/shared/context.service'
-import { AuthDBService } from '@/shared/db/auth-db.service'
-import { ApiHandler } from '@repo/db/client'
-import { Effect } from 'effect'
-import { Hono } from 'hono'
+import type { HonoVariables } from "@/lib/types/hono-variables"
+import { AuthDBService } from "@/shared/db/auth-db.service"
+import { ApiHandler } from "@repo/db/client"
+import { createHonoHandler } from "@zenstackhq/server/hono"
+import { Hono } from "hono"
 
-const zen = new Hono()
+const zen = new Hono<HonoVariables>()
 
-// Create a handler that mimics ZenStack's behavior for Hono
-const createZenStackHandler = (apiHandler: ApiHandler) => {
-	return async (c: any) => {
-		const path = c.req.path.replace('/api/crud/', '')
-		const method = c.req.method
-		
-		const client = await Effect.runPromise(
-			AuthDBService.pipe(
-				AuthDBService.provide,
-				ContextService.provide(c),
-			),
-		)
-		
-		const body = method !== 'GET' ? await c.req.json() : undefined
-		const query = c.req.query()
-		
-		try {
-			const result = await apiHandler.handleRequest({
-				method,
-				path,
-				query,
-				requestBody: body,
-				prisma: client as any,
-			})
-			
-			return c.json(result.body, result.status)
-		} catch (error: any) {
-			return c.json({ error: error.message }, 500)
-		}
-	}
-}
-
-const apiHandler = new ApiHandler({ endpoint: 'api/crud' })
-const handler = createZenStackHandler(apiHandler)
-
-zen.all('/*', handler)
+zen.use(
+    "/api/model/*",
+    createHonoHandler({
+        apiHandler: new ApiHandler(),
+        // getSessionUser extracts the current session user from the request,
+        // its implementation depends on your auth solution
+        getClient: async ctx => {
+            const runEffect = ctx.get("runEffect")
+            return runEffect(AuthDBService.pipe(AuthDBService.provide)) as any
+        },
+    }),
+)
 
 export default zen

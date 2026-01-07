@@ -27,7 +27,7 @@ export function AnalysisActions({ analysis, renderTrigger }: Props) {
   const handleRedoAnalysis = (analysis: Analysis) => async () => {
     const { error, data } = await redoAnalysis(analysis.id);
     if (error) {
-      toast.error((error.value as any).message);
+      toast.error(error.message);
       return;
     }
     router.push(`/analysis/${data.id}`);

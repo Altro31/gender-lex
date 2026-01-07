@@ -1,5 +1,6 @@
 import { ContextService } from "@/shared/context.service"
 import { UserProviderService } from "@/shared/user-provider.service"
+import type { Prettify } from "better-auth"
 import {
     Cause,
     Effect,
@@ -10,14 +11,15 @@ import {
     ManagedRuntime,
 } from "effect"
 import type { Context, MiddlewareHandler } from "hono"
-import type { Prettify } from "hono/utils/types"
 
-export const runEffectWithContext = (ctx: Context) => 
-    <S, E>(effect: Effect.Effect<S, E, UserProviderService>) =>
+export const runEffectWithContext =
+    (ctx: Context) =>
+    <S, E>(effect: Effect.Effect<S, E, UserProviderService | ContextService>) =>
         ManagedRuntime.make(
-            UserProviderService.Default.pipe(
-                Layer.provide(ContextService.Default(ctx)),
-            ),
+            Layer.merge(
+                UserProviderService.Default,
+                ContextService.Default(ctx),
+            ).pipe(ContextService.layerProvide(ctx)),
         )
             .runPromiseExit(
                 effect.pipe(Logger.withMinimumLogLevel(LogLevel.Debug)),
@@ -33,14 +35,14 @@ export const runEffectWithContext = (ctx: Context) =>
 
 export const effectMiddleware: MiddlewareHandler = async (c, next) => {
     const runtime = ManagedRuntime.make(
-        UserProviderService.Default.pipe(
-            Layer.provide(ContextService.Default(c)),
-        ),
+        Layer.merge(
+            UserProviderService.Default,
+            ContextService.Default(c),
+        ).pipe(ContextService.layerProvide(c)),
     )
-    
     c.set("runtime", runtime)
     c.set("runEffect", runEffectWithContext(c))
     c.set("runEffectWithContext", runEffectWithContext)
-    
+
     await next()
 }
