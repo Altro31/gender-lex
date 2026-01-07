@@ -1,11 +1,5 @@
 import { BiasDetectionService } from "@/modules/bias-detection/service"
-import type {
-    Analysis,
-    Model,
-    Preset,
-    PresetModel,
-    RawAnalysis,
-} from "@repo/db/models"
+import type { Analysis, Model, Preset, PresetModel } from "@repo/db/models"
 import { Effect } from "effect"
 
 interface Args {
