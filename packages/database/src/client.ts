@@ -1,26 +1,26 @@
-import { ZenStackClient } from '@zenstackhq/orm'
-import { PostgresDialect } from '@zenstackhq/orm/dialects/postgres'
-import { PolicyPlugin } from '@zenstackhq/plugin-policy'
+import { ZenStackClient } from "@zenstackhq/orm";
+import { PostgresDialect } from "@zenstackhq/orm/dialects/postgres";
+import { PolicyPlugin } from "@zenstackhq/plugin-policy";
 import {
-	RestApiHandler,
-	type RestApiHandlerOptions,
-} from '@zenstackhq/server/api'
-import { Pool } from 'pg'
-import { schema } from './generated/schema.ts'
-export type { ClientContract } from '@zenstackhq/orm'
-export type { SchemaType } from './generated/schema.ts'
+  RestApiHandler,
+  type RestApiHandlerOptions,
+} from "@zenstackhq/server/api";
+import { Pool } from "pg";
+import { schema } from "./generated/schema.ts";
+export type { ClientContract } from "@zenstackhq/orm";
+export type { SchemaType } from "./generated/schema.ts";
 
 export const db = new ZenStackClient(schema, {
-	dialect: new PostgresDialect({
-		pool: new Pool({ connectionString: process.env.DATABASE_URL }),
-	}),
-})
+  dialect: new PostgresDialect({
+    pool: new Pool({ connectionString: process.env.DATABASE_URL }),
+  }),
+});
 
-export const authDB = db.$use(new PolicyPlugin())
+export const authDB = db.$use(new PolicyPlugin());
 
-type Options = Omit<RestApiHandlerOptions, 'schema'>
+type Options = Partial<Omit<RestApiHandlerOptions, "schema">>;
 export class ApiHandler extends RestApiHandler {
-	constructor(options: Options) {
-		super({ schema, ...options })
-	}
+  constructor(options?: Options) {
+    super({ schema, ...(options as any) });
+  }
 }
