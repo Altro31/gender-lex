@@ -300,23 +300,16 @@ const analysis = await api.analysis.prepare.post({
 
 ## Testing
 
-```bash
-# Run tests (from monorepo root)
-bun run test
-
-# Run E2E tests
-bun run test:e2e
-```
+Testing infrastructure is not yet implemented.
 
 ## Linting & Formatting
 
 ```bash
 # Lint code
 bun run lint
-
-# Format code
-bun run format
 ```
+
+Code formatting is configured via Prettier (see `prettier.config.json`).
 
 ## Scripts
 
