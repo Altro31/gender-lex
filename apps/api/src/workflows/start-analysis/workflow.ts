@@ -45,7 +45,7 @@ export async function startAnalysisWorkflow(
         streamUpdate,
     )
 
-    // const content = await extractContent(resource)
+    const content = await extractContent(resource)
 
     // const analysisWithOriginalText = await updateOriginalText(
     //     { content, analysisId: persistedAnalysis.id },
