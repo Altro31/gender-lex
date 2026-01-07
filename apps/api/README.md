@@ -127,7 +127,7 @@ src/
 
 ### Environment Variables
 
-Create a `.env` file in the root directory:
+Create a `.env` file in the `apps/api` directory:
 
 ```env
 # Database
