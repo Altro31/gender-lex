@@ -1,6 +1,6 @@
 import { AuthService } from "@/shared/auth/auth.service"
 import { ContextService } from "@/shared/context.service"
-import type { Context, MiddlewareHandler } from "hono"
+import type { MiddlewareHandler } from "hono"
 import { runEffectWithContext } from "./effect.plugin"
 
 export const authMiddleware: MiddlewareHandler = async (c, next) => {
