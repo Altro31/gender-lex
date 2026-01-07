@@ -12,12 +12,6 @@ const nextConfig: NextConfig = {
     swcPlugins: [["@lingui/swc-plugin", {}]],
     rootParams: true,
   },
-  rewrites: async () => [
-    {
-      source: "/api/auth/:path*",
-      destination: `${envs.API_URL}/api/auth/:path*`,
-    },
-  ],
   serverExternalPackages: ["pg", "@repo/types", "@workflow/world-postgres"],
   turbopack: {
     resolveExtensions: [

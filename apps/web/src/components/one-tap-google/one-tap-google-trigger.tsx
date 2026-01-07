@@ -1,18 +1,14 @@
-'use client'
+"use client";
 
-import { authClient } from '@/lib/auth/auth-client'
-import { useEffect } from 'react'
+import { authClient } from "@/lib/auth/auth-client";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-interface Props {
-	disableOneTapGoogleAction: () => Promise<void>
-}
+export default function OneTapGoogleTrigger() {
+  const router = useRouter();
+  useEffect(() => {
+    authClient.oneTap({ fetchOptions: { onSuccess: () => router.refresh() } });
+  }, []);
 
-export default function OneTapGoogleTrigger({
-	disableOneTapGoogleAction,
-}: Props) {
-	useEffect(() => {
-		authClient.oneTap()
-	}, [])
-
-	return null
+  return null;
 }
