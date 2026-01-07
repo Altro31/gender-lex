@@ -1,6 +1,6 @@
 import { AuthService } from "@/shared/auth/auth.service"
 import type { MessageMapper } from "@repo/types/sse"
-import { Effect, PubSub, Schedule, Stream } from "effect"
+import { Effect, PubSub, Stream } from "effect"
 
 type MessageEvent<Type extends keyof MessageMapper> = {
     event: Type | "ping"
