@@ -144,7 +144,7 @@ Shared TypeScript types for:
 1. **Clone the repository**:
 
 ```bash
-git clone https://github.com/whojas/gender-lex.git
+git clone https://github.com/Altro31/gender-lex.git
 cd gender-lex
 ```
 
@@ -195,7 +195,7 @@ bun run migrate
 
 ```bash
 # Start all apps in development mode
-bun run dev
+turbo run dev
 ```
 
 This will start:
@@ -231,7 +231,7 @@ bun run prod:web
 The root `package.json` provides these scripts:
 
 ### Development
-- `dev` - Start all apps in development mode with hot reload
+- `turbo run dev` - Start all apps in development mode with hot reload
 - `generate` - Generate Prisma client and ZenStack code
 - `migrate` - Run database migrations (development)
 - `migrate:prod` - Run database migrations (production)
@@ -246,10 +246,7 @@ The root `package.json` provides these scripts:
 - `prod:web` - Start web in production mode
 
 ### Quality
-- `test` - Run all tests
-- `test:e2e` - Run end-to-end tests
 - `lint` - Lint all code
-- `format` - Format code with Prettier
 
 ## 🛠️ Tech Stack
 
@@ -302,7 +299,6 @@ git checkout -b feature/your-feature-name
 
 3. **Test your changes**:
 ```bash
-bun run test
 bun run lint
 ```
 
@@ -348,26 +344,15 @@ bun add package-name --filter=api
 
 ## 🧪 Testing
 
-```bash
-# Run all tests
-bun run test
-
-# Run E2E tests
-bun run test:e2e
-
-# Run tests in specific package
-cd apps/api
-bun run test
-```
+Testing infrastructure is not yet implemented in this project.
 
 ## 📝 Code Style
 
 The project uses:
 - **oxlint** for linting TypeScript
-- **Prettier** for code formatting
-- **lint-staged** for pre-commit hooks
+- **Prettier** for code formatting (configured in individual apps)
 
-Code is automatically formatted on commit via Husky hooks.
+Formatting and linting can be run manually using the `lint` scripts in each app.
 
 ## 🌍 Internationalization
 
