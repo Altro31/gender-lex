@@ -10,7 +10,7 @@
     "build:api": "turbo api#build",
     "build:web": "turbo web#build",
     "build": "turbo run build",
-    "prod:api": "node apps/api/.output/server/index.mjs",
+    "prod:api": "cd apps/api && bun start",
     "prod:web": "cd apps/web && next start",
     "migrate": "turbo migrate",
     "migrate:prod": "turbo migrate:prod",
