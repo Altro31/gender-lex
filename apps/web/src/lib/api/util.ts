@@ -1,4 +1,4 @@
-import { Stream } from "effect";
+import { Console, Stream } from "effect";
 import { constant } from "effect/Function";
 import { type ClientResponse, DetailedError, parseResponse } from "hono/client";
 
@@ -23,7 +23,7 @@ export async function handleStream<T>(
   }).pipe(
     Stream.decodeText(),
     Stream.map((i) => i.replace(/^data:/, "")),
-    Stream.map((i) => JSON.parse(i) as { data: T }),
+    Stream.map((i) => JSON.parse(i) as T),
     Stream.toAsyncIterable,
   );
 }

@@ -15,7 +15,7 @@ export function useAnalysisStream(id: string) {
     );
 
     for await (const update of stream) {
-      yield update.data;
+      yield update;
     }
   };
 
