@@ -16,10 +16,27 @@ const analysis = new Hono<HonoVariables>()
         validator(
             "form",
             z.object({
-                text: z.string().optional(),
-                files: z.file().array().optional(),
-                selectedPreset: z.string(),
+                text: z.string().optional().describe("Text content to analyze for gender bias"),
+                files: z.file().array().optional().describe("Files to analyze (PDF or text documents)"),
+                selectedPreset: z.string().describe("ID of the preset to use for analysis"),
             }),
+            {
+                tags: ["Analysis"],
+                summary: "Prepare and start a new analysis",
+                description: "Upload text or files for gender bias analysis. Initiates an analysis workflow using the specified preset.",
+                responses: {
+                    200: {
+                        description: "Analysis successfully initiated",
+                        content: {
+                            "application/json": {
+                                schema: z.object({
+                                    id: z.string().describe("ID of the created analysis")
+                                })
+                            }
+                        }
+                    }
+                }
+            }
         ),
 
         async c => {
@@ -71,7 +88,28 @@ const analysis = new Hono<HonoVariables>()
             return c.json(result)
         },
     )
-    .get("/status-count", async c => {
+    .get(
+        "/status-count", 
+        validator(
+            "query",
+            z.object({}),
+            {
+                tags: ["Analysis"],
+                summary: "Get analysis status counts",
+                description: "Returns the count of analyses grouped by status (pending, processing, completed, failed)",
+                responses: {
+                    200: {
+                        description: "Status counts retrieved successfully",
+                        content: {
+                            "application/json": {
+                                schema: z.record(z.string(), z.number())
+                            }
+                        }
+                    }
+                }
+            }
+        ),
+        async c => {
         const runEffect = c.get("runEffect")
         const program = Effect.gen(function* () {
             const analysisService = yield* AnalysisService
@@ -80,7 +118,25 @@ const analysis = new Hono<HonoVariables>()
         const result = await runEffect(program)
         return c.json(result)
     })
-    .delete("/:id", async c => {
+    .delete(
+        "/:id", 
+        validator(
+            "param",
+            z.object({
+                id: z.string().describe("ID of the analysis to delete")
+            }),
+            {
+                tags: ["Analysis"],
+                summary: "Delete an analysis",
+                description: "Permanently delete an analysis by its ID",
+                responses: {
+                    200: {
+                        description: "Analysis deleted successfully"
+                    }
+                }
+            }
+        ),
+        async c => {
         const runEffect = c.get("runEffect")
         const id = c.req.param("id")
         const program = Effect.gen(function* () {
@@ -92,7 +148,30 @@ const analysis = new Hono<HonoVariables>()
         return c.json(result)
     })
 
-    .get("/:id", async c => {
+    .get(
+        "/:id",
+        validator(
+            "param",
+            z.object({
+                id: z.string().describe("ID of the analysis to retrieve")
+            }),
+            {
+                tags: ["Analysis"],
+                summary: "Stream analysis updates (SSE)",
+                description: "Server-Sent Events endpoint that streams real-time analysis updates",
+                responses: {
+                    200: {
+                        description: "SSE stream of analysis updates",
+                        content: {
+                            "text/event-stream": {
+                                schema: z.any()
+                            }
+                        }
+                    }
+                }
+            }
+        ),
+        async c => {
         const runEffect = c.get("runEffect")
         const id = c.req.param("id")
 
@@ -122,10 +201,32 @@ const analysis = new Hono<HonoVariables>()
         validator(
             "query",
             z.object({
-                q: z.string().optional(),
-                page: z.coerce.number().int().optional(),
-                status: z.enum(AnalysisStatus).optional(),
+                q: z.string().optional().describe("Search query to filter analyses"),
+                page: z.coerce.number().int().optional().describe("Page number for pagination"),
+                status: z.enum(AnalysisStatus).optional().describe("Filter by analysis status"),
             }),
+            {
+                tags: ["Analysis"],
+                summary: "List analyses",
+                description: "Retrieve a paginated list of analyses with optional filters",
+                responses: {
+                    200: {
+                        description: "List of analyses retrieved successfully",
+                        content: {
+                            "application/json": {
+                                schema: z.object({
+                                    data: z.array(z.any()),
+                                    pagination: z.object({
+                                        page: z.number(),
+                                        totalPages: z.number(),
+                                        totalItems: z.number()
+                                    })
+                                })
+                            }
+                        }
+                    }
+                }
+            }
         ),
         async c => {
             const runEffect = c.get("runEffect")
@@ -140,7 +241,32 @@ const analysis = new Hono<HonoVariables>()
         },
     )
 
-    .post("/:id/redo", async c => {
+    .post(
+        "/:id/redo",
+        validator(
+            "param",
+            z.object({
+                id: z.string().describe("ID of the analysis to redo")
+            }),
+            {
+                tags: ["Analysis"],
+                summary: "Redo an analysis",
+                description: "Restart a completed or failed analysis with the same parameters",
+                responses: {
+                    200: {
+                        description: "Analysis successfully restarted",
+                        content: {
+                            "application/json": {
+                                schema: z.object({
+                                    id: z.string()
+                                })
+                            }
+                        }
+                    }
+                }
+            }
+        ),
+        async c => {
         const runEffect = c.get("runEffect")
         const id = c.req.param("id")
         const program = Effect.gen(function* () {
