@@ -49,7 +49,7 @@ const chatbot = new Hono<HonoVariables>()
         ),
         async c => {
         const runEffect = c.get("runEffect")
-        const body = await c.req.json()
+        const body = c.req.valid("json")
         const program = Effect.gen(function* () {
             const chatbotService = yield* ChatbotService
             return yield* chatbotService.sendMessage(body.content)
