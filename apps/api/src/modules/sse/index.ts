@@ -5,8 +5,31 @@ import { ContextService } from "@/shared/context.service"
 import { Effect, Stream } from "effect"
 import { Hono } from "hono"
 import { streamSSE } from "hono/streaming"
+import { validator } from "hono-openapi"
+import z from "zod"
 
-const sse = new Hono<HonoVariables>().get("/", async c => {
+const sse = new Hono<HonoVariables>().get(
+    "/",
+    validator(
+        "query",
+        z.object({}),
+        {
+            tags: ["SSE"],
+            summary: "Subscribe to server-sent events",
+            description: "Establish a Server-Sent Events connection for real-time updates about analyses and other activities",
+            responses: {
+                200: {
+                    description: "SSE stream established",
+                    content: {
+                        "text/event-stream": {
+                            schema: z.unknown().describe("Server-Sent Events stream containing real-time updates for user's analyses and activities")
+                        }
+                    }
+                }
+            }
+        }
+    ),
+    async c => {
     const runEffect = c.get("runEffect")
 
     return streamSSE(c, async stream => {

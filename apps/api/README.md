@@ -202,8 +202,16 @@ bun run prod:api
 
 Once the server is running, you can access:
 
-- **OpenAPI/Swagger UI**: http://localhost:3000/swagger
+- **OpenAPI Documentation (Scalar UI)**: http://localhost:3000/openapi
+- **OpenAPI Specification (JSON)**: http://localhost:3000/openapi/spec
 - **Health Check**: http://localhost:3000/ (returns `{ ok: true }`)
+
+The API documentation includes:
+- Complete endpoint specifications with request/response schemas
+- Authentication requirements
+- Parameter descriptions and validation rules
+- Response examples
+- Interactive API testing interface
 
 ## Workflows
 
