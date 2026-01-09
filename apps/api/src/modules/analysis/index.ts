@@ -164,7 +164,7 @@ const analysis = new Hono<HonoVariables>()
                         description: "SSE stream of analysis updates",
                         content: {
                             "text/event-stream": {
-                                schema: z.any()
+                                schema: z.unknown().describe("Server-Sent Events stream containing analysis updates with id, status, progress, and results")
                             }
                         }
                     }
@@ -215,7 +215,7 @@ const analysis = new Hono<HonoVariables>()
                         content: {
                             "application/json": {
                                 schema: z.object({
-                                    data: z.array(z.any()),
+                                    data: z.array(z.unknown()).describe("Array of analysis objects with id, status, createdAt, and other analysis details"),
                                     pagination: z.object({
                                         page: z.number(),
                                         totalPages: z.number(),

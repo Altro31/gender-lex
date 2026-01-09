@@ -48,7 +48,7 @@ const chatbot = new Hono<HonoVariables>()
             }
         ),
         async c => {
-        const runEffect = c.get("runEffect") as any
+        const runEffect = c.get("runEffect")
         const body = await c.req.json()
         const program = Effect.gen(function* () {
             const chatbotService = yield* ChatbotService
@@ -85,7 +85,7 @@ const chatbot = new Hono<HonoVariables>()
             }
         ),
         async c => {
-        const runEffect = c.get("runEffect") as any
+        const runEffect = c.get("runEffect")
         const program = Effect.gen(function* () {
             const chatbotService = yield* ChatbotService
             return yield* chatbotService.getMessages()

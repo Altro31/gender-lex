@@ -22,7 +22,7 @@ const sse = new Hono<HonoVariables>().get(
                     description: "SSE stream established",
                     content: {
                         "text/event-stream": {
-                            schema: z.any()
+                            schema: z.unknown().describe("Server-Sent Events stream containing real-time updates for user's analyses and activities")
                         }
                     }
                 }
