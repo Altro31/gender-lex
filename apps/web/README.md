@@ -153,7 +153,7 @@ Create a `.env.local` file in the apps/web directory:
 DATABASE_URL=postgresql://user:password@localhost:5432/genderlex
 
 # API URL
-NEXT_PUBLIC_API_URL=http://localhost:3000
+API_URL=http://localhost:3000
 
 # Authentication (Better Auth)
 BETTER_AUTH_SECRET=your_secret_key
@@ -166,8 +166,8 @@ AUTH_GITHUB_SECRET=your_github_secret
 # AI Chatbot (Required for Floating Chatbot Widget)
 GEMINI_API_KEY=your_gemini_api_key
 
-# Public URL
-NEXT_PUBLIC_URL=http://localhost:4000
+# Encryption
+ENCRYPTION_KEY=your_32_character_encryption_key
 ```
 
 ### Installation
@@ -300,23 +300,16 @@ const analysis = await api.analysis.prepare.post({
 
 ## Testing
 
-```bash
-# Run tests (from monorepo root)
-bun run test
-
-# Run E2E tests
-bun run test:e2e
-```
+Testing infrastructure is not yet implemented.
 
 ## Linting & Formatting
 
 ```bash
 # Lint code
 bun run lint
-
-# Format code
-bun run format
 ```
+
+Code formatting is configured via Prettier (see `prettier.config.json`).
 
 ## Scripts
 
