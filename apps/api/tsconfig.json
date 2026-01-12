@@ -9,8 +9,8 @@
         "allowImportingTsExtensions": true,
         "plugins": [
             { "name": "workflow" },
-            { "name": "@effect/language-service" },
-        ],
-    },
+            { "name": "@effect/language-service" }
+        ]
+    }
     // "exclude": ["node_modules"],
 }

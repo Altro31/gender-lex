@@ -400,7 +400,7 @@ export default function ProfileView({ user: initialUser }: { user: User }) {
 
 								<Separator />
 
-								<div className="grid grid-cols-2 gap-2">
+								<div className="grid max-grid-cols-41 gap-2">
 									<Button
 										onClick={() =>
 											setIsChangePasswordOpen(true)

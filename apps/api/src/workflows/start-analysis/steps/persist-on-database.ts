@@ -20,7 +20,11 @@ export async function persistOnDatabase(
 
         return yield* effectify(
             repository.create({
-                data: { workflow, Preset: { connect: { id: presetId } } },
+                data: {
+                    workflow,
+                    Preset: { connect: { id: presetId } },
+                    visibility: !user ? "public" : undefined,
+                },
                 select: { id: true },
             }),
         )

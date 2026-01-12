@@ -1,8 +1,11 @@
-import { HttpTaggedError } from '@/lib/types/http-error'
+import { type IHttpTaggedError } from "@/lib/types/http-error"
+import { Data } from "effect"
 
-const AnalysisNotFoundBase = HttpTaggedError('AnalysisNotFoundError')
-
-export class AnalysisNotFoundError extends AnalysisNotFoundBase {
-	override status = 404
-	override statusText = 'Analysis not found'
+// @HttpError()
+export class AnalysisNotFoundError
+    extends Data.TaggedError("AnalysisNotFoundError")
+    implements IHttpTaggedError
+{
+    status = 404
+    statusText = "Analysis not found"
 }

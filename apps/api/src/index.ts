@@ -10,7 +10,6 @@ import { effectMiddleware } from "./plugins/effect.plugin"
 import { openAPIRouteHandler } from "hono-openapi"
 import { Scalar } from "@scalar/hono-api-reference"
 
-export type App = typeof app
 const app = new Hono()
 
     // Apply CORS middleware
@@ -23,17 +22,25 @@ const app = new Hono()
     // Apply Effect middleware
     .use("*", effectMiddleware)
 
-    // Mount module routes
-    .route("/analysis", analysis)
-    .route("/model", model)
-    .route("/sse", sse)
-    .route("/chatbot", chatbot)
-    .route("/api/crud", zen)
+// Mount module routes
+const analysisRoute = app.route("/analysis", analysis)
+export type AnalysisApp = typeof analysisRoute
 
-    // Health check endpoint
-    .get("/", c => {
-        return c.json({ ok: true })
-    })
+const modelRoute = app.route("/model", model)
+export type ModelApp = typeof modelRoute
+
+const sseRoute = app.route("/sse", sse)
+export type SseApp = typeof sseRoute
+
+const chatbotRoute = app.route("/chatbot", chatbot)
+export type ChatbotApp = typeof chatbotRoute
+
+app.route("/api/crud", zen)
+
+// Health check endpoint
+app.get("/", c => {
+    return c.json({ ok: true })
+})
 
 app.get(
     "/openapi/spec",

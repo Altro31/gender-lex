@@ -14,7 +14,6 @@ export async function biasDetection({ analysis }: Args) {
         const biasDetectionService = yield* BiasDetectionService
 
         return yield* biasDetectionService.analice(analysis)
-        // return { biasedTerms: [], biasedMetaphors: [] } satisfies RawAnalysis
     }).pipe(BiasDetectionService.provide)
 
     return Effect.runPromise(program)

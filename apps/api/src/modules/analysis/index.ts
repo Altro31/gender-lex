@@ -1,76 +1,62 @@
+import type { HonoVariables } from "@/lib/types/hono-variables"
 import { UserProviderService } from "@/shared/user-provider.service"
 import { startAnalysisWorkflow } from "@/workflows/start-analysis/workflow"
 import { AnalysisStatus, type Analysis } from "@repo/db/models"
-import { Effect, Schedule, Stream } from "effect"
+import { Effect, Stream } from "effect"
 import { Hono } from "hono"
+import { validator } from "hono-openapi"
 import { streamSSE } from "hono/streaming"
 import { getRun, start } from "workflow/api"
-import { AnalysisService } from "./service"
-import { validator } from "hono-openapi"
 import z from "zod"
-import type { HonoVariables } from "@/lib/types/hono-variables"
+import { AnalysisService } from "./service"
+import { PrepareAnalyisisInput } from "@repo/types/dtos/analysis"
 
 const analysis = new Hono<HonoVariables>()
-    .post(
-        "/prepare",
-        validator(
-            "form",
-            z.object({
-                text: z.string().optional(),
-                files: z.file().array().optional(),
-                selectedPreset: z.string(),
-            }),
-        ),
+    .post("/prepare", validator("form", PrepareAnalyisisInput), async c => {
+        const runEffect = c.get("runEffect")
+        const body = c.req.valid("form")
 
-        async c => {
-            const runEffect = c.get("runEffect")
-            const body = c.req.valid("form")
-
-            const toAnalice = [] as {
-                resource: File | string
-                presetId: string
-            }[]
-            if (body.files?.length) {
-                for (const file of body.files) {
-                    toAnalice.push({
-                        resource: file,
-                        presetId: body.selectedPreset,
-                    })
-                }
-            }
-            if (body.text) {
+        const toAnalice = [] as {
+            resource: File | string
+            presetId: string
+        }[]
+        if (body.files?.length) {
+            for (const file of body.files) {
                 toAnalice.push({
-                    resource: body.text,
+                    resource: file,
                     presetId: body.selectedPreset,
                 })
             }
-            const program = Effect.gen(function* () {
-                const { user } = yield* UserProviderService
+        }
+        if (body.text) {
+            toAnalice.push({
+                resource: body.text,
+                presetId: body.selectedPreset,
+            })
+        }
+        const program = Effect.gen(function* () {
+            const { user } = yield* UserProviderService
 
-                const id = yield* Effect.async<string>(resume => {
-                    toAnalice.forEach(async ({ resource, presetId }) => {
-                        const run = await start(startAnalysisWorkflow, [
-                            resource instanceof File
-                                ? resource.stream()
-                                : resource,
-                            { presetId },
-                            { user },
-                        ])
-                        for await (const event of run.getReadable<string>({
-                            namespace: "id",
-                        })) {
-                            resume(Effect.succeed(event))
-                            break
-                        }
-                    })
+            const id = yield* Effect.async<string>(resume => {
+                toAnalice.forEach(async ({ resource, presetId }) => {
+                    const run = await start(startAnalysisWorkflow, [
+                        resource instanceof File ? resource.stream() : resource,
+                        { presetId },
+                        { user },
+                    ])
+                    for await (const event of run.getReadable<string>({
+                        namespace: "id",
+                    })) {
+                        resume(Effect.succeed(event))
+                        break
+                    }
                 })
-
-                return { id }
-            }).pipe(AnalysisService.provide)
-            const result = await runEffect(program)
-            return c.json(result)
-        },
-    )
+            })
+            return { id }
+        }).pipe(AnalysisService.provide)
+        const result = await runEffect(program)
+        return c.json(result)
+    })
     .get("/status-count", async c => {
         const runEffect = c.get("runEffect")
         const program = Effect.gen(function* () {
@@ -91,7 +77,6 @@ const analysis = new Hono<HonoVariables>()
         const result = await runEffect(program)
         return c.json(result)
     })
-
     .get("/:id", async c => {
         const runEffect = c.get("runEffect")
         const id = c.req.param("id")
@@ -116,7 +101,6 @@ const analysis = new Hono<HonoVariables>()
             }
         })
     })
-
     .get(
         "/",
         validator(
@@ -139,7 +123,6 @@ const analysis = new Hono<HonoVariables>()
             return c.json(result)
         },
     )
-
     .post("/:id/redo", async c => {
         const runEffect = c.get("runEffect")
         const id = c.req.param("id")
@@ -152,4 +135,3 @@ const analysis = new Hono<HonoVariables>()
     })
 
 export default analysis
-export type AnalysisAppType = typeof analysis

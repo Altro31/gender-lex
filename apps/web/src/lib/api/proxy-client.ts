@@ -1,7 +1,8 @@
-import type { App } from "@repo/types/api";
+import type { Hono } from "hono";
 import { hc } from "hono/client";
 
-export const proxyClient = hc<App>(
+export function getApiProxyClient<T extends Hono>() {
+  return hc<T>(
   process.env.NEXT_PUBLIC_UI_URL! + "/api/proxy",
   {
     fetch: async (input: any, options: any) => {
@@ -10,4 +11,6 @@ export const proxyClient = hc<App>(
       return fetch(input, { ...options, headers });
     },
   },
-);
+)
+}
+

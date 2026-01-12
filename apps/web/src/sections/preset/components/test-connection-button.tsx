@@ -1,15 +1,18 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { testConnection } from "@/services/model"
-import { useAction } from "next-safe-action/hooks"
-import { type ComponentProps, type MouseEvent } from "react"
+import { Button as ButtonPrimitive } from "@base-ui/react"
 
-interface Props extends ComponentProps<typeof Button> {
+import { useAction } from "next-safe-action/hooks"
+import { type MouseEvent, type MouseEventHandler } from "react"
+
+type Props = {
 	id: string
 	onSuccess?: () => any
 	onError?: () => any
 	onExecute?: () => any
-}
+} & ButtonPrimitive.Props
+
 
 export default function TestConnectionButton({
 	id,
@@ -27,7 +30,7 @@ export default function TestConnectionButton({
 		onExecute,
 	})
 
-	const handleTest = (e: MouseEvent<HTMLButtonElement>) => {
+	const handleTest: Props['onClick'] = (e) => {
 		execute(id)
 		onClick?.(e)
 	}
@@ -37,7 +40,7 @@ export default function TestConnectionButton({
 			variant="outline"
 			size="sm"
 			disabled={isPending}
-			onClick={handleTest}
+			onClick={(e)=>{}}
 			className={cn("text-sm", className)}
 			{...props}
 		>

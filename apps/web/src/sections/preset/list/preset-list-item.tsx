@@ -1,253 +1,227 @@
-'use client'
+"use client";
 
-import Loader from '@/components/loader'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import Loader from "@/components/loader";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card'
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { DeletePresetAlertDialogTrigger } from '@/sections/preset/components/dialogs/delete-preset-alert-dialog-content'
-import type { PresetsResponse } from '@/types/preset'
-import { i18n } from '@lingui/core'
-import { t } from '@lingui/core/macro'
-import { Select } from '@lingui/react/macro'
-import type { ModelRole } from '@repo/db/models'
-import { Copy, Edit, Eye, Settings, Trash2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { ClonePresetAlertDialogTrigger } from '../components/dialogs/clone-preset-alert-dialog-content'
-import { DetailsPresetDialogTrigger } from '../components/dialogs/details-preset-dialog'
-import { EditPresetDialogTrigger } from '../components/dialogs/edit-preset-dialog'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { DeletePresetAlertDialogTrigger } from "@/sections/preset/components/dialogs/delete-preset-alert-dialog-content";
+import type { PresetsResponse } from "@/types/preset";
+import { i18n } from "@lingui/core";
+import { t } from "@lingui/core/macro";
+import { Select } from "@lingui/react/macro";
+import type { ModelRole } from "@repo/db/models";
+import { Copy, Edit, Eye, Settings, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ClonePresetAlertDialogTrigger } from "../components/dialogs/clone-preset-alert-dialog-content";
+import { DetailsPresetDialogTrigger } from "../components/dialogs/details-preset-dialog";
+import { EditPresetDialogTrigger } from "../components/dialogs/edit-preset-dialog";
 
 interface Props {
-	preset: PresetsResponse[number]
+  preset: PresetsResponse[number];
 }
 
 type ExtendedPreset = PresetsResponse[number] & {
-	itemStatus?: 'clonning' | 'deleting' | 'clone'
-}
+  itemStatus?: "clonning" | "deleting" | "clone";
+};
 
 export default function PresetListItem({ preset: initialPreset }: Props) {
-	const [preset, setPreset] = useState<ExtendedPreset>(initialPreset)
+  const [preset, setPreset] = useState<ExtendedPreset>(initialPreset);
 
-	useEffect(() => {
-		setPreset(initialPreset)
-	}, [setPreset, initialPreset])
+  useEffect(() => {
+    setPreset(initialPreset);
+  }, [setPreset, initialPreset]);
 
-	const handleItemStatus = (status: ExtendedPreset['itemStatus']) => () => {
-		setPreset(preset => ({ ...preset, itemStatus: status }))
-	}
+  const handleItemStatus = (status: ExtendedPreset["itemStatus"]) => () => {
+    setPreset((preset) => ({ ...preset, itemStatus: status }));
+  };
 
-	const isClone = preset.itemStatus === 'clone'
-	const isClonning = preset.itemStatus === 'clonning'
-	const isDeleting = preset.itemStatus === 'deleting'
-	const isDisabled = isClone || isDeleting
+  const isClone = preset.itemStatus === "clone";
+  const isClonning = preset.itemStatus === "clonning";
+  const isDeleting = preset.itemStatus === "deleting";
+  const isDisabled = isClone || isDeleting;
 
-	return (
-		<>
-			{isClonning && (
-				<PresetListItem
-					preset={
-						{
-							...initialPreset,
-							itemStatus: 'clone',
-						} as PresetsResponse[number]
-					}
-				/>
-			)}
-			<Card
-				key={preset.id}
-				data-disabled={isDeleting || isClone || undefined}
-				className="after:bg-muted/80 relative overflow-clip transition-shadow after:absolute after:top-0 after:size-full not-data-disabled:after:hidden hover:shadow-lg"
-			>
-				<CardHeader>
-					<div className="flex items-start justify-between">
-						<CardTitle className="flex-1">{preset.name}</CardTitle>
-						<DropdownMenu>
-							<DropdownMenuTrigger
-								render={<Button variant="ghost" size="icon" />}
-							>
-								<Settings />
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								<DetailsPresetDialogTrigger
-									payload={{ preset }}
-									nativeButton={false}
-									render={
-										<DropdownMenuItem
-											disabled={isDeleting}
-										/>
-									}
-								>
-									<Eye />
-									{t`Details`}
-								</DetailsPresetDialogTrigger>
-								{!preset.isDefault && (
-									<EditPresetDialogTrigger
-										payload={{ preset }}
-										nativeButton={false}
-										render={
-											<DropdownMenuItem
-												disabled={isDeleting}
-											/>
-										}
-									>
-										<Edit />
-										{t`Edit`}
-									</EditPresetDialogTrigger>
-								)}
-								<ClonePresetAlertDialogTrigger
-									payload={{
-										preset,
-										onClone: handleItemStatus('clonning'),
-									}}
-									nativeButton={false}
-									render={
-										<DropdownMenuItem
-											disabled={isClonning || isDeleting}
-										/>
-									}
-								>
-									{isClonning ? <Loader /> : <Copy />}
-									{t`Clone`}
-								</ClonePresetAlertDialogTrigger>
-								{!preset.isDefault && (
-									<>
-										<DropdownMenuSeparator />
-										<DeletePresetAlertDialogTrigger
-											payload={{
-												preset,
-												onDelete:
-													handleItemStatus(
-														'deleting',
-													),
-											}}
-											nativeButton={false}
-											render={
-												<DropdownMenuItem
-													variant="destructive"
-													disabled={isDeleting}
-												/>
-											}
-										>
-											{isDeleting ? (
-												<Loader />
-											) : (
-												<Trash2 />
-											)}
-											{t`Delete`}
-										</DeletePresetAlertDialogTrigger>
-									</>
-								)}
-							</DropdownMenuContent>
-						</DropdownMenu>
-					</div>
-					{preset.description && (
-						<CardDescription className="line-clamp-2">
-							{preset.description}
-						</CardDescription>
-					)}
-				</CardHeader>
+  return (
+    <>
+      {isClonning && (
+        <PresetListItem
+          preset={
+            {
+              ...initialPreset,
+              itemStatus: "clone",
+            } as PresetsResponse[number]
+          }
+        />
+      )}
+      <Card
+        key={preset.id}
+        data-disabled={isDeleting || isClone || undefined}
+        className="after:bg-muted/80 relative overflow-clip transition-shadow after:absolute after:top-0 after:size-full not-data-disabled:after:hidden hover:shadow-lg"
+      >
+        <CardHeader>
+          <div className="flex items-start justify-between">
+            <CardTitle className="flex-1">{preset.name}</CardTitle>
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={<Button variant="ghost" size="icon" />}
+              >
+                <Settings />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DetailsPresetDialogTrigger
+                  payload={{ preset }}
+                  nativeButton={false}
+                  render={<DropdownMenuItem disabled={isDeleting} />}
+                >
+                  <Eye />
+                  {t`Details`}
+                </DetailsPresetDialogTrigger>
+                {!preset.isDefault && (
+                  <EditPresetDialogTrigger
+                    payload={{ preset }}
+                    nativeButton={false}
+                    render={<DropdownMenuItem disabled={isDeleting} />}
+                  >
+                    <Edit />
+                    {t`Edit`}
+                  </EditPresetDialogTrigger>
+                )}
+                <ClonePresetAlertDialogTrigger
+                  payload={{
+                    preset,
+                    onClone: handleItemStatus("clonning"),
+                  }}
+                  nativeButton={false}
+                  render={
+                    <DropdownMenuItem disabled={isClonning || isDeleting} />
+                  }
+                >
+                  {isClonning ? <Loader /> : <Copy />}
+                  {t`Clone`}
+                </ClonePresetAlertDialogTrigger>
+                {!preset.isDefault && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DeletePresetAlertDialogTrigger
+                      payload={{
+                        preset,
+                        onDelete: handleItemStatus("deleting"),
+                      }}
+                      nativeButton={false}
+                      render={
+                        <DropdownMenuItem
+                          variant="destructive"
+                          disabled={isDeleting}
+                        />
+                      }
+                    >
+                      {isDeleting ? <Loader /> : <Trash2 />}
+                      {t`Delete`}
+                    </DeletePresetAlertDialogTrigger>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          {preset.description && (
+            <CardDescription className="line-clamp-2">
+              {preset.description}
+            </CardDescription>
+          )}
+        </CardHeader>
 
-				<CardContent className="flex-1">
-					<div className="space-y-2">
-						<div className="space-y-2">
-							<div className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-								{t`Models`}
-							</div>
-							{preset.Models.map((presetModel, index) => (
-								<div
-									key={presetModel.id}
-									className="flex items-center justify-between text-sm"
-								>
-									<span className="truncate font-medium">
-										{presetModel.Model.name}
-									</span>
-									<Badge
-										variant="outline"
-										className={getRoleColor(
-											presetModel.role,
-										)}
-									>
-										<Select
-											value={presetModel.role}
-											_primary="Principal"
-											_secondary="Secondary"
-											other="Other"
-										/>
-									</Badge>
-								</div>
-							))}
-						</div>
+        <CardContent className="flex-1">
+          <div className="space-y-2">
+            <div className="space-y-2">
+              <div className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                {t`Models`}
+              </div>
+              {preset.Models.map((presetModel, index) => (
+                <div
+                  key={presetModel.id}
+                  className="flex items-center justify-between text-sm"
+                >
+                  <span className="truncate font-medium">
+                    {presetModel.Model.name}
+                  </span>
+                  <Badge
+                    variant="outline"
+                    className={getRoleColor(presetModel.role)}
+                  >
+                    <Select
+                      value={presetModel.role}
+                      _primary="Principal"
+                      _secondary="Secondary"
+                      other="Other"
+                    />
+                  </Badge>
+                </div>
+              ))}
+            </div>
 
-						<div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground">
-							{preset.usedAt && (
-								<div>
-									<span className="font-medium">
-										{t`Last use`}:
-									</span>{' '}
-									{new Date(preset.usedAt).toLocaleDateString(
-										i18n.locale,
-									)}
-								</div>
-							)}
-						</div>
-					</div>
-				</CardContent>
+            <div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground">
+              {preset.usedAt && (
+                <div>
+                  <span className="font-medium">{t`Last use`}:</span>{" "}
+                  {new Date(preset.usedAt).toLocaleDateString(i18n.locale)}
+                </div>
+              )}
+            </div>
+          </div>
+        </CardContent>
 
-				<CardFooter className="border-t">
-					<div className="w-full text-xs text-muted-foreground">
-						<div className="flex items-center justify-between">
-							<span>
-								{t`Created at`}:{' '}
-								{new Date(preset.createdAt).toLocaleDateString(
-									i18n.locale,
-								)}
-							</span>
-							<div className="flex items-center gap-1">
-								<div className="h-2 w-2 rounded-full bg-green-500" />
-								<span>
-									{preset.Models.length}{' '}
-									{t`Model`.toLowerCase()}
-									{preset.Models.length !== 1 ? 's' : ''}
-								</span>
-							</div>
-						</div>
-					</div>
-				</CardFooter>
+        <CardFooter className="border-t">
+          <div className="w-full text-xs text-muted-foreground">
+            <div className="flex items-center justify-between">
+              <span>
+                {t`Created at`}:{" "}
+                {new Date(preset.createdAt).toLocaleDateString(i18n.locale)}
+              </span>
+              <div className="flex items-center gap-1">
+                <div className="h-2 w-2 rounded-full bg-green-500" />
+                <span>
+                  {preset.Models.length} {t`Model`.toLowerCase()}
+                  {preset.Models.length !== 1 ? "s" : ""}
+                </span>
+              </div>
+            </div>
+          </div>
+        </CardFooter>
 
-				{isDisabled && (
-					<div className="text-muted-foreground absolute top-0 z-10 size-full">
-						<div className="flex size-full items-center justify-center gap-2">
-							<Loader />
-							{isDeleting && <span>{t`Deleting...`}</span>}
-							{isClone && <span>{t`Clonning...`}</span>}
-						</div>
-					</div>
-				)}
-			</Card>
-		</>
-	)
+        {isDisabled && (
+          <div className="text-muted-foreground absolute top-0 z-10 size-full">
+            <div className="flex size-full items-center justify-center gap-2">
+              <Loader />
+              {isDeleting && <span>{t`Deleting...`}</span>}
+              {isClone && <span>{t`Clonning...`}</span>}
+            </div>
+          </div>
+        )}
+      </Card>
+    </>
+  );
 }
 
 const getRoleColor = (role: ModelRole) => {
-	switch (role) {
-		case 'primary':
-			return 'border-blue-200 bg-blue-50 dark:bg-blue-950'
-		case 'secondary':
-			return 'border-green-200 bg-green-50 dark:bg-green-950'
-		default:
-			return 'border-muted-foreground bg-muted'
-	}
-}
+  switch (role) {
+    case "primary":
+      return "border-blue-200 bg-blue-50 dark:bg-blue-950";
+    case "secondary":
+      return "border-green-200 bg-green-50 dark:bg-green-950";
+    default:
+      return "border-muted-foreground bg-muted";
+  }
+};

@@ -1,15 +1,17 @@
 import type { HonoVariables } from "@/lib/types/hono-variables"
 import { ModelService } from "@/modules/model/service"
+import { CreateModelInput } from "@repo/types/dtos/model"
 import { Effect } from "effect"
 import { Hono } from "hono"
+import { validator } from "hono-openapi"
 
 const model = new Hono<HonoVariables>()
-    .post("/", async c => {
+    .post("/", validator("json", CreateModelInput), async c => {
         const runEffect = c.get("runEffect")
-        const body = await c.req.json()
+        const body = c.req.valid("json")
         const program = Effect.gen(function* () {
             const modelService = yield* ModelService
-            yield* modelService.create(body as any)
+            yield* modelService.create(body)
             return { ok: true } as const
         }).pipe(ModelService.provide)
         const result = await runEffect(program)

@@ -1,15 +1,19 @@
 "use server";
 
-import { client } from "@/lib/api/client";
+import { getApiClient } from "@/lib/api/client";
 import { handle } from "@/lib/api/util";
 import { getSession } from "@/lib/auth/auth-server";
 import { getDB } from "@/lib/db/client";
 import { actionClient } from "@/lib/safe-action";
 import type { HomeSchema } from "@/sections/home/form/home-schema";
+import type { AnalysisApp } from "@repo/types/api";
 import { DetailedError, parseResponse } from "hono/client";
 import { cacheTag, updateTag } from "next/cache";
+import { cookies } from "next/headers";
 import { unauthorized } from "next/navigation";
 import z from "zod";
+
+const client = getApiClient<AnalysisApp>();
 
 export async function prepareAnalysis(input: HomeSchema) {
   const res = await handle(
@@ -17,9 +21,9 @@ export async function prepareAnalysis(input: HomeSchema) {
       form: {
         text: input.text,
         files: input.files.map((i) => i.file),
-        selectedPreset: input.selectedPreset.id,
+        selectedPreset: input.selectedPreset,
       },
-    }),
+    })
   );
   if (res.error) {
     console.error(res.error);
@@ -52,7 +56,7 @@ export async function findAnalyses(query: {
   return parseResponse(
     client.analysis.$get({
       query,
-    }),
+    })
   );
 }
 
@@ -72,7 +76,7 @@ export async function getStatusCount() {
 
 export async function redoAnalysis(id: string) {
   const res = await handle(
-    client.analysis[":id"].redo.$post({ param: { id } }),
+    client.analysis[":id"].redo.$post({ param: { id } })
   );
   if (res.error) {
     console.error(res.error);

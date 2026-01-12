@@ -1,23 +1,12 @@
-import { Data } from 'effect'
+export function HttpError() {
+    console.log("Hola")
+    return (a: any, b: any) => {
+        console.log(a, b)
+    }
+}
 
-export const HttpTaggedError = <Name extends string>(name: Name) => {
-	class BaseHttpTaggedError extends Data.TaggedError(name) {
-		status: number = 400
-		statusText: string = 'Bad request'
-		override message: string = ''
-
-		constructor(message?: string) {
-			super()
-			if (message) this.message = message
-		}
-
-		toResponse(): Response {
-			return Response.json(
-				{ message: this.message },
-				{ status: this.status, statusText: this.statusText },
-			)
-		}
-	}
-
-	return BaseHttpTaggedError
+export interface IHttpTaggedError {
+    status: number
+    statusText: string
+    toResponse?(): Response
 }

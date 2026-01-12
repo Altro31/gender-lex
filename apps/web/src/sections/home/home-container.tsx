@@ -38,10 +38,10 @@ export default async function HomeContainer() {
 
 	return (
 		<UploadArea className="flex h-full items-center justify-center">
-			<div className="max-w-4xl space-y-3 p-4 sm:space-y-8">
-				<div className="w-fit">
+			<div className="max-w-4xl w-full space-y-3 p-4 sm:space-y-8">
+				<div>
 					<div className="space-y-2">
-						<h1 className="from-primary bg-linear-to-r via-fuchsia-600/80 via-65% to-violet-500 to-75% bg-clip-text p-1 text-3xl font-bold text-transparent sm:text-4xl">
+						<h1 className="from-primary bg-linear-to-r via-fuchsia-600/80 via-65% to-violet-500 to-75% bg-clip-text p-1 text-2xl font-bold text-transparent sm:text-4xl">
 							<Trans>
 								<span>Welcome to Genderlex,</span>
 								<br />
@@ -52,12 +52,12 @@ export default async function HomeContainer() {
 						</h1>
 					</div>
 				</div>
-				<div className="flex flex-wrap justify-center gap-4">
+				<div className="hidden sm:grid  max-grid-cols-xs gap-4">
 					{cards.map(({ icon: Icon, text, ready }) => (
 						<Card
 							key={text}
 							data-ready={ready}
-							className="data-[ready=false]:bg-muted hover:bg-muted/80 max-w-34 p-2 transition-colors sm:max-w-48 sm:p-4"
+							className="data-[ready=false]:bg-muted p-4"
 						>
 							<div className="flex h-full justify-between gap-1 sm:flex-col sm:gap-4">
 								<span className="text-xs sm:text-sm">

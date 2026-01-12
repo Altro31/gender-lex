@@ -19,7 +19,6 @@ import {
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ParamsOf } from "../../../../.next/types/routes";
-import UrlFixer from "../../../components/url-fixer";
 import { useAnalysisStream } from "../hooks/use-analysis-stream";
 
 export default function AnalysisHeader() {
@@ -80,7 +79,7 @@ export default function AnalysisHeader() {
                     day: "numeric",
                     hour: "2-digit",
                     minute: "2-digit",
-                  },
+                  }
                 )
               )}
             </div>

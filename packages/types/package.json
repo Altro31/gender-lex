@@ -3,6 +3,8 @@
 	"version": "0.0.0",
 	"peerDependencies": {
 		"@repo/db": "workspace:*",
-		"api": "workspace:*"
+		"api": "workspace:*",
+		"effect": "catalog:",
+		"zod": "catalog:"
 	}
 }

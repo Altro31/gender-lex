@@ -1,6 +1,11 @@
-import { HttpTaggedError } from '@/lib/types/http-error'
+import { type IHttpTaggedError } from "@/lib/types/http-error"
+import { Data } from "effect"
 
-export class UnauthorizedError extends HttpTaggedError('UnauthorizedError') {
-	override status = 401
-	override statusText = 'Unauthorized'
+// @HttpError()
+export class UnauthorizedError
+    extends Data.TaggedError("UnauthorizedError")
+    implements IHttpTaggedError
+{
+    status = 401
+    statusText = "Unauthorized"
 }

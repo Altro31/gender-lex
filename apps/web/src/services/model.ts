@@ -1,13 +1,16 @@
 "use server";
 
-import { client } from "@/lib/api/client";
+import { getApiClient } from "@/lib/api/client";
 import { getDB } from "@/lib/db/client";
 import { actionClient } from "@/lib/safe-action";
 import { ModelSchema } from "@/sections/model/form/model-schema";
+import type { ModelApp } from "@repo/types/api";
 import { parseResponse } from "hono/client";
 import { cacheTag, updateTag } from "next/cache";
 import { after } from "next/server";
 import { z } from "zod/mini";
+
+const client = getApiClient<ModelApp>();
 
 export async function findModels({
   q,
@@ -34,7 +37,7 @@ export async function findModels({
 export const createModel = actionClient
   .inputSchema(ModelSchema)
   .action(async ({ parsedInput: body }) => {
-    const data = await parseResponse(client.model.$post(body));
+    const data = await parseResponse(client.model.$post({ json: body }));
 
     updateTag("models");
     return { success: true, data };
@@ -68,7 +71,7 @@ export const testConnection = actionClient
     const data = await parseResponse(
       client.model[":id"]["test-connection"].$post({
         param: { id },
-      }),
+      })
     );
 
     updateTag("models");

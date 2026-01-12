@@ -96,8 +96,8 @@ export default function RegisterForm() {
 			<FormField
 				name="acceptTerms"
 				render={({ field }) => (
-					<FormItem className="">
-						<div className="flex flex-row items-center gap-1 space-y-0 rounded-md">
+					<FormItem>
+						<div className="flex flex-row items-center gap-2 space-y-0 rounded-md">
 							<FormControl>
 								<Checkbox
 									checked={field.value}
@@ -105,7 +105,7 @@ export default function RegisterForm() {
 								/>
 							</FormControl>
 							<FormLabel>
-								<TermsAndConditions />
+								<TermsAndConditions size="sm"/>
 							</FormLabel>
 						</div>
 						<FormMessage />

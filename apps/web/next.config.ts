@@ -1,4 +1,3 @@
-import envs from "@/lib/env/env-server" with { type: "macro" };
 import type { NextConfig } from "next";
 import path from "path";
 

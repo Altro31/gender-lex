@@ -1,1 +1,1 @@
-export { App } from 'api'
+export * from 'api'

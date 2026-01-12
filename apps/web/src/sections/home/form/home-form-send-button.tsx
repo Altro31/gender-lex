@@ -13,7 +13,7 @@ export default function HomeFormSendButton({ disabled = false }: Props) {
     <Button
       size="icon"
       className="cursor-pointer rounded-lg transition-opacity"
-      disabled={!isValid || isSubmitting}
+      disabled={!isValid || isSubmitting || disabled}
       type="submit"
     >
       {isSubmitting ? <Loader2 className="animate-spin" /> : <Upload />}

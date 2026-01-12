@@ -64,8 +64,9 @@ export default function AnalysisDetailsContainer() {
               {t`Identified Biased Terms`}
             </TabsTrigger>
             <TabsTrigger value="context">{t`Context`}</TabsTrigger>
-            <TabsTrigger value="alternatives">{t`Alternatives`}</TabsTrigger>
             <TabsTrigger value="impact">{t`Impact`}</TabsTrigger>
+
+            <TabsTrigger value="alternatives">{t`Alternatives`}</TabsTrigger>
           </TabsList>
 
           <Suspense fallback={<AnalysisContentFallback />}>

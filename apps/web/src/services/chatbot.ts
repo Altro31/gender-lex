@@ -1,9 +1,13 @@
 "use server";
 
-import { client } from "@/lib/api/client";
+import { getApiClient } from "@/lib/api/client";
 import { actionClient } from "@/lib/safe-action";
+import type { ChatbotApp } from "@repo/types/api";
 import { parseResponse } from "hono/client";
 import { z } from "zod";
+
+const client = getApiClient<ChatbotApp>()
+
 
 export const sendMessage = actionClient
   .inputSchema(z.object({ content: z.string() }))

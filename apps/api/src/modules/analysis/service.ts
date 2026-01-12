@@ -43,8 +43,8 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
                     return analysis
                 }),
                 findMany: ({
-                    page,
-                    pageSize,
+                    page = 1,
+                    pageSize = 10,
                     q,
                     status,
                 }: FindManyQueryParams) =>

@@ -4,9 +4,9 @@ import "shared/timestamps"
 
 type RawAnalysis {
     originalText                String?
-    modifiedTextAlternatives    ModifiedAlternative[]?        @json
-    biasedTerms                 BiasedTerm[]?                 @json
-    biasedMetaphors             BiasedMetaphor[]?             @json
+    modifiedTextAlternatives    ModifiedAlternative[]?       @json
+    biasedTerms                 BiasedTerm[]?                @json
+    biasedMetaphors             BiasedMetaphor[]?            @json
     additionalContextEvaluation AdditionalContextEvaluation? @json
     impactAnalysis              ImpactAnalysis?              @json
     conclusion                  String?
@@ -18,7 +18,7 @@ model Analysis with RawAnalysis,Timestamps {
     visibility  Visibility     @default(private)
     status      AnalysisStatus @default(pending)
     inputSource InputSource    @default(manual)
-    workflow String
+    workflow    String
 
     presetId    String
     Preset      Preset         @relation(fields: [presetId], references: [id], onDelete: SetNull)

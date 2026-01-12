@@ -26,6 +26,7 @@ export const AnalysisId = Schema.String.pipe(Schema.brand("AnalysisId"));
 export class Analysis
   extends Schema.TaggedClass<Analysis>()("Analysis", {
     id: AnalysisId,
+    workflow: Schema.String,
     name: Schema.NullOr(Schema.String),
     createdAt: Schema.Date,
     updatedAt: Schema.Date,
@@ -40,7 +41,7 @@ export class Analysis
           originalFragment: Schema.String,
           reason: Schema.String,
         }).pipe(Schema.Array, Schema.mutable),
-      }),
+      })
     ).pipe(Schema.mutable),
     biasedTerms: Schema.Struct({
       content: Schema.String,
