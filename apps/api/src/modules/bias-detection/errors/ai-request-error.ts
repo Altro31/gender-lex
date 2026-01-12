@@ -1,22 +1,20 @@
-import { Context, Data } from "effect"
 import type {
     AISDKError,
     APICallError,
-    RetryError,
-    JSONParseError,
     DownloadError,
-    LoadAPIKeyError,
-    NoSuchToolError,
-    StaticToolError,
-    LoadSettingError,
     DynamicToolError,
+    InvalidArgumentError,
+    InvalidPromptError,
+    JSONParseError,
+    LoadAPIKeyError,
+    LoadSettingError,
     NoSuchModelError,
     NoSuchProviderError,
-    InvalidPromptError,
+    NoSuchToolError,
+    RetryError,
     TypeValidationError,
-    InvalidArgumentError,
 } from "ai"
-
+import { Data } from "effect"
 export class AiRequestError extends Data.TaggedError("AiRequestError")<{
     error:
         | AISDKError

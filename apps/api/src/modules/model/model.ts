@@ -1,4 +1,3 @@
-import z from "zod"
 import { Model } from "@repo/db/schema/model.ts"
 import { Schema } from "effect"
 
