@@ -7,6 +7,7 @@ import { getDB } from "@/lib/db/client";
 import { actionClient } from "@/lib/safe-action";
 import type { HomeSchema } from "@/sections/home/form/home-schema";
 import type { AnalysisApp } from "@repo/types/api";
+import type { AnalysisFindManyQueryParams } from "@repo/types/dtos/analysis";
 import { DetailedError, parseResponse } from "hono/client";
 import { cacheTag, updateTag } from "next/cache";
 import { cookies } from "next/headers";
@@ -20,7 +21,7 @@ export async function prepareAnalysis(input: HomeSchema) {
     client.analysis.prepare.$post({
       form: {
         text: input.text,
-        files: input.files.map((i) => i.file),
+        files: input.filesObj.map((i) => i.file),
         selectedPreset: input.selectedPreset,
       },
     })
@@ -42,11 +43,11 @@ export const deleteAnalysis = actionClient
     updateTag("analyses");
   });
 
-export async function findAnalyses(query: {
-  q?: string;
-  page?: string;
-  status?: string;
-}) {
+export async function findAnalyses({
+  page,
+  pageSize,
+  ...rest
+}: AnalysisFindManyQueryParams) {
   "use cache: private";
   cacheTag("analyses");
 
@@ -55,7 +56,11 @@ export async function findAnalyses(query: {
 
   return parseResponse(
     client.analysis.$get({
-      query,
+      query: {
+        ...rest,
+        page: page ? page + "" : "",
+        pageSize: pageSize ? pageSize + "" : "",
+      },
     })
   );
 }

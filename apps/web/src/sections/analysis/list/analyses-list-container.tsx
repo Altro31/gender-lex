@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default async function AnalysesListContainer({ searchParams }: Props) {
-  const analyses = await findAnalyses(await searchParams);
+  const analyses = await findAnalyses((await searchParams) as any);
 
   return <AnalysesList analyses={analyses} />;
 }

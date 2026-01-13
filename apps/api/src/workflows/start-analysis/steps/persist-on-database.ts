@@ -1,4 +1,4 @@
-import { AnalysisRepository } from "@/modules/analysis/repository"
+import { AnalysisRepository } from "@/modules/data/analysis/repository"
 import { UserProviderService } from "@/shared/user-provider.service"
 import type { Context } from "@/workflows/common-types"
 import { effectify } from "@repo/db/effect"

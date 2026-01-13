@@ -1,14 +1,12 @@
 import { Button } from "@/components/ui/button";
 import type { HomeSchema } from "@/sections/home/form/home-schema";
 import { Paperclip, X } from "lucide-react";
-import { useFieldArray, type FieldArrayWithId } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 
 export default function HomeFiles() {
-  const { fields, remove } = useFieldArray<HomeSchema>({
-    name: "files",
+  const { fields: files, remove } = useFieldArray<HomeSchema>({
+    name: "filesObj",
   });
-  const files = fields as unknown as (HomeSchema["files"][number] &
-    FieldArrayWithId<{}>)[];
   return (
     files.length > 0 && (
       <div className="mb-3 flex flex-wrap gap-2">

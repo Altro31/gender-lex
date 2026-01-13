@@ -9,7 +9,10 @@ import { streamSSE } from "hono/streaming"
 import { getRun, start } from "workflow/api"
 import z from "zod"
 import { AnalysisService } from "./service"
-import { PrepareAnalyisisInput } from "@repo/types/dtos/analysis"
+import {
+    AnalysisFindManyQueryParams,
+    PrepareAnalyisisInput,
+} from "@repo/types/dtos/analysis"
 
 const analysis = new Hono<HonoVariables>()
     .post("/prepare", validator("form", PrepareAnalyisisInput), async c => {
@@ -101,28 +104,17 @@ const analysis = new Hono<HonoVariables>()
             }
         })
     })
-    .get(
-        "/",
-        validator(
-            "query",
-            z.object({
-                q: z.string().optional(),
-                page: z.coerce.number().int().optional(),
-                status: z.enum(AnalysisStatus).optional(),
-            }),
-        ),
-        async c => {
-            const runEffect = c.get("runEffect")
-            const query = c.req.query()
-            const program = Effect.gen(function* () {
-                const analysisService = yield* AnalysisService
-                return yield* analysisService.findMany(query)
-            }).pipe(AnalysisService.provide)
+    .get("/", validator("query", AnalysisFindManyQueryParams), async c => {
+        const runEffect = c.get("runEffect")
+        const query = c.req.valid("query")
+        const program = Effect.gen(function* () {
+            const analysisService = yield* AnalysisService
+            return yield* analysisService.findMany(query)
+        }).pipe(AnalysisService.provide)
 
-            const result = await runEffect(program)
-            return c.json(result)
-        },
-    )
+        const result = await runEffect(program)
+        return c.json(result)
+    })
     .post("/:id/redo", async c => {
         const runEffect = c.get("runEffect")
         const id = c.req.param("id")

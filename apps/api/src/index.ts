@@ -1,26 +1,24 @@
-import analysis from "@/modules/analysis"
-import chatbot from "@/modules/chatbot"
-import model from "@/modules/model"
+import analysis from "@/modules/data/analysis"
+import model from "@/modules/data/model"
 import sse from "@/modules/sse"
-import zen from "@/modules/zen"
+import zen from "@/modules/data/zen"
 import { auth } from "@repo/auth/api"
+import { Scalar } from "@scalar/hono-api-reference"
 import { Hono } from "hono"
+import { openAPIRouteHandler } from "hono-openapi"
 import { cors } from "hono/cors"
 import { effectMiddleware } from "./plugins/effect.plugin"
-import { openAPIRouteHandler } from "hono-openapi"
-import { Scalar } from "@scalar/hono-api-reference"
 
 const app = new Hono()
-
     // Apply CORS middleware
     .use("*", cors())
 
-    .on(["POST", "GET"], "/api/auth/*", c => {
-        return auth.handler(c.req.raw)
-    })
+app.on(["POST", "GET"], "/api/auth/*", c => {
+    return auth.handler(c.req.raw)
+})
 
-    // Apply Effect middleware
-    .use("*", effectMiddleware)
+// Apply Effect middleware
+app.use("*", effectMiddleware)
 
 // Mount module routes
 const analysisRoute = app.route("/analysis", analysis)
@@ -31,9 +29,6 @@ export type ModelApp = typeof modelRoute
 
 const sseRoute = app.route("/sse", sse)
 export type SseApp = typeof sseRoute
-
-const chatbotRoute = app.route("/chatbot", chatbot)
-export type ChatbotApp = typeof chatbotRoute
 
 app.route("/api/crud", zen)
 

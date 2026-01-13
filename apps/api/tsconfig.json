@@ -12,5 +12,4 @@
             { "name": "@effect/language-service" }
         ]
     }
-    // "exclude": ["node_modules"],
 }

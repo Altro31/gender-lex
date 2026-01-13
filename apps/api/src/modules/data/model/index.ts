@@ -1,5 +1,5 @@
 import type { HonoVariables } from "@/lib/types/hono-variables"
-import { ModelService } from "@/modules/model/service"
+import { ModelService } from "@/modules/data/model/service"
 import { CreateModelInput } from "@repo/types/dtos/model"
 import { Effect } from "effect"
 import { Hono } from "hono"
@@ -30,4 +30,3 @@ const model = new Hono<HonoVariables>()
     })
 
 export default model
-export type ModelAppType = typeof model

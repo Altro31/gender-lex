@@ -1,8 +1,8 @@
-import type { FindManyQueryParams } from "@/modules/analysis/model"
 import { effectify } from "@repo/db/effect"
 import type { AnalysisStatus } from "@repo/db/models"
 import { Effect } from "effect"
 import { AnalysisRepository } from "./repository"
+import type { AnalysisFindManyQueryParams } from "@repo/types/dtos/analysis"
 
 export class AnalysisService extends Effect.Service<AnalysisService>()(
     "AnalysisService",
@@ -47,7 +47,7 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
                     pageSize = 10,
                     q,
                     status,
-                }: FindManyQueryParams) =>
+                }: AnalysisFindManyQueryParams) =>
                     effectify(
                         repository.findMany({
                             where: {

@@ -5,6 +5,8 @@ import { getDB } from "@/lib/db/client";
 import { actionClient } from "@/lib/safe-action";
 import { ModelSchema } from "@/sections/model/form/model-schema";
 import type { ModelApp } from "@repo/types/api";
+import { CreateModelInput } from "@repo/types/dtos/model";
+import { Schema } from "effect";
 import { parseResponse } from "hono/client";
 import { cacheTag, updateTag } from "next/cache";
 import { after } from "next/server";
@@ -37,14 +39,23 @@ export async function findModels({
 export const createModel = actionClient
   .inputSchema(ModelSchema)
   .action(async ({ parsedInput: body }) => {
-    const data = await parseResponse(client.model.$post({ json: body }));
+    const data = await parseResponse(
+      client.model.$post({
+        json: {
+          ...body,
+          apiKey: body.apiKey ?? null,
+        },
+      })
+    );
 
     updateTag("models");
     return { success: true, data };
   });
 
 export const editModel = actionClient
-  .inputSchema(z.tuple([z.string(), ModelSchema]))
+  .inputSchema(
+    Schema.standardSchemaV1(Schema.Tuple(Schema.String, CreateModelInput))
+  )
   .action(async ({ parsedInput: [id, body] }) => {
     const db = await getDB();
 
