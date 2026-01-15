@@ -12,6 +12,8 @@ import { Suspense } from "react";
 import config from "@/../lingui.config";
 import ThemeProvider from "@/components/providers/theme-provider";
 import { OneTapGoogle } from "@/components/one-tap-google";
+import Session from "@/components/session";
+import FloatingChatbotWrapper from "@/components/floating-chatbot/floating-chatbot-wrapper";
 
 export function generateStaticParams() {
   return config.locales.map((locale) => ({ locale }));
@@ -39,9 +41,11 @@ export default async function RootLayout({
                       <Suspense fallback={null}>
                         <OneTapGoogle />
                       </Suspense>
-                      <Suspense fallback={null}>
-                        <FloatingChatbot />
-                      </Suspense>
+                      <FloatingChatbotWrapper>
+                        <Suspense fallback={null}>
+                          <FloatingChatbot />
+                        </Suspense>
+                      </FloatingChatbotWrapper>
                       <Toaster richColors position="bottom-right" />
                     </SidebarProvider>
                   </EventSourceProvider>

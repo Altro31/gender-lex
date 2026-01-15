@@ -18,6 +18,7 @@
     "@ai-sdk/react": "^3.0.3",
     "@base-ui/react": "^1.0.0",
     "@effect/platform": "catalog:",
+    "@ai-sdk/openai-compatible": "catalog:",
     "@effect/platform-node": "catalog:",
     "hono": "^4.7.10",
     "@hookform/resolvers": "^5.2.1",

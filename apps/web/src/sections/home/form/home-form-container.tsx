@@ -33,9 +33,10 @@ export default function HomeFormContainer() {
             <UploadButton />
             {session && (
               <RHFSelectAutofetcher
-                name="selectedPreset"
+                name="preset"
                 fetcherFunc={getPresetsSelect}
                 getKey={(i) => i.id}
+                getLabel={(i) => i.name}
                 renderValue={(i) => i.name}
                 renderItem={(i) => i.name}
                 renderLastItem={

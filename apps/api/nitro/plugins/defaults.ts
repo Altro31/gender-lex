@@ -3,14 +3,13 @@ import type { ModelCreateArgs } from "@repo/db/input"
 
 const models = [
     {
-        name: "Gemini-2.5 flash",
+        name: "Qwen3-1.7b",
         connection: {
-            identifier: "gemini-2.5-flash",
-            url: "https://generativelanguage.googleapis.com/v1beta",
+            identifier: "qwen_qwen3-1.7b",
+            url: "http://localhost:1234/v1",
         },
 
         settings: { temperature: 0.2 },
-        apiKey: process.env.GEMINI_API_KEY,
         isDefault: true,
     },
 ] satisfies ModelCreateArgs["data"][]

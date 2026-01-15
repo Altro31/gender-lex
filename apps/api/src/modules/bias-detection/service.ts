@@ -5,7 +5,7 @@ import { Analysis as AnalysisSchema } from "@repo/db/schema/analysis.ts"
 import { JSONSchema } from "effect"
 import { AiRequestError } from "./errors/ai-request-error"
 
-import { APICallError, generateText, jsonSchema, Output, stepCountIs } from "ai"
+import { jsonSchema, Output, ToolLoopAgent } from "ai"
 import { Effect } from "effect"
 
 type AnaliceInput = Analysis & { Preset: { Models: { Model: Model }[] } }
@@ -22,52 +22,26 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
                     const model = yield* aiService.buildLanguageModel(
                         analysis!.Preset!.Models![0]!.Model,
                     )
+
+                    const biasAgent = new ToolLoopAgent({
+                        model: model.languageModel,
+                        instructions: genderLexSystemPrompt,
+                        temperature: model.options.temperature,
+                        output: Output.object<RawAnalysis>({
+                            schema: jsonSchema(JSONSchema.make(AnalysisSchema)),
+                        }),
+                    })
+
                     const res = yield* Effect.tryPromise({
                         try: () =>
-                            generateText({
-                                model: model.languageModel,
+                            biasAgent.generate({
                                 prompt: `<analice>${analysis.originalText}</analice>`,
-                                system: genderLexSystemPrompt,
-                                stopWhen: stepCountIs(3),
-                                output: Output.object<RawAnalysis>({
-                                    schema: jsonSchema(
-                                        JSONSchema.make(AnalysisSchema),
-                                    ),
-                                }),
-                                temperature: model.options.temperature,
                             }),
                         catch(error: any) {
+                            console.error(error)
                             return new AiRequestError({ error })
                         },
-                    }).pipe(
-                        Effect.catchIf(
-                            e => e.error instanceof APICallError,
-                            e =>
-                                Effect.gen(function* () {
-                                    const res = yield* Effect.promise(() =>
-                                        generateText({
-                                            model: model.languageModel,
-                                            prompt: `<analice>${analysis.originalText}</analice>`,
-                                            system: genderLexSystemPrompt,
-                                            stopWhen: stepCountIs(3),
-                                            output: {
-                                                ...Output.object<RawAnalysis>({
-                                                    schema: jsonSchema(
-                                                        JSONSchema.make(
-                                                            AnalysisSchema,
-                                                        ),
-                                                    ),
-                                                }),
-                                                responseFormat: "schema" as any,
-                                            },
-                                            temperature:
-                                                model.options.temperature,
-                                        }),
-                                    )
-                                    return res
-                                }),
-                        ),
-                    )
+                    })
                     return res.output
                 }),
             }

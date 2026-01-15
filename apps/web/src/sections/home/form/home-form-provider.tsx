@@ -18,18 +18,20 @@ export default function HomeFormProvider({ children, lastUsedPreset }: Props) {
   const form = useForm({
     resolver: standardSchemaResolver(HomeSchema),
     defaultValues: {
+      filesObj: [],
       files: [],
       text: "",
       selectedPreset: lastUsedPreset ?? "",
+      preset: lastUsedPreset ? { id: lastUsedPreset } : (null as any),
     },
     mode: "all",
   });
 
   useEffect(
     () =>
-      form.watch(async ({ selectedPreset }, { name }) => {
-        if (name === "selectedPreset") {
-          await cookieStore.set("preset.last-used", selectedPreset ?? "");
+      form.watch(async ({ preset }, { name }) => {
+        if (name === "preset") {
+          await cookieStore.set("preset.last-used", preset?.id ?? "");
         }
       }).unsubscribe,
     []

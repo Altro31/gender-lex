@@ -11,5 +11,8 @@
     "./api": "./api.ts",
     "./next": "./next.ts",
     "./encrypt": "./encrypt.ts"
+  },
+  "peerDependencies": {
+    "@better-auth/core": "1.4.9"
   }
 }

@@ -1,57 +1,63 @@
 import {
+  Combobox,
+  ComboboxCollection,
+  ComboboxContent,
+  ComboboxGroup,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxLabel,
+  ComboboxList,
+  ComboboxSeparator,
+} from "@/components/ui/combobox";
+import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import type { HomeSchema } from "@/sections/home/form/home-schema";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { find } from "effect/Stream";
-import { useState, type ComponentProps } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 
 interface Props<T> {
   name: string;
   label?: string;
   required?: boolean;
   placeholder?: string;
-  size?: ComponentProps<typeof SelectTrigger>["size"];
   initialData?: T[];
   fetcherFunc: (params: { page: number }) => Promise<T[]>;
   getKey: (item: T) => string;
   renderItem: (item: T) => React.ReactNode;
   renderValue: (item: T) => React.ReactNode;
+  getValue?: (item: T | null) => any;
+  getLabel?: (item: T) => string;
   renderLastItem?: React.ReactNode;
   getDisabled?: (item: T) => boolean;
   getGroup?: (item: T) => string;
 }
 
-export default function RHFSelectAutofetcher<T>({
+export default function RHFComboboxAutofetcher<T>({
   name,
   label,
   required,
   placeholder,
-  size,
   initialData = [],
   fetcherFunc,
   getKey,
   renderItem,
   renderValue,
   getDisabled,
+  getLabel = (item) => (item as any).label,
   getGroup,
+  getValue = (item) => item,
   renderLastItem,
 }: Props<T>) {
+  const { setValue } = useFormContext();
+  const value = useWatch({ name });
   const [open, setOpen] = useState(false);
-  const { data } = useInfiniteQuery({
+  const { data, isPending } = useInfiniteQuery({
     initialData: { pageParams: [0], pages: [initialData] },
     queryKey: [name],
     queryFn: ({ pageParam }) => fetcherFunc({ page: pageParam }),
@@ -59,85 +65,114 @@ export default function RHFSelectAutofetcher<T>({
     getNextPageParam: (lastPage: T[], _, lasPageParam) =>
       lastPage.length ? lasPageParam + 1 : undefined,
   });
+  const setDefaultValueEvent = useEffectEvent(() => {
+    const items = data.pages.flat();
+    const item = items.find((i) => getKey(i) === getKey(value));
+    if (item) setValue(name, item);
+  });
+  useEffect(() => setDefaultValueEvent(), [data]);
 
   const grouped = Object.groupBy(
     data.pages.flat(),
     (item) => getGroup?.(item) ?? ""
   );
 
-  const groups = Object.entries(grouped);
+  type Group = {
+    value: string;
+    items: T[];
+  };
+
+  const groups = Object.entries(grouped).map(
+    ([value, items]) =>
+      ({
+        value,
+        items,
+      } as Group)
+  );
 
   const handleOpen = (open: boolean) => {
     if (!open) setOpen(open);
     setTimeout(() => setOpen(open), 100);
   };
 
-  const findItem = (key: string) =>
-    data.pages.flat().find((i) => getKey(i) === key);
-
   return (
-    <FormField
-      name={name}
-      render={({ field }) => {
-        return (
+    isPending || (
+      <FormField
+        name={name}
+        render={({ field }) => (
           <FormItem>
             {label && (
               <FormLabel>
                 {label} {required && "*"}
               </FormLabel>
             )}
-            <Select
+            <Combobox
+              items={groups}
               value={field.value}
-              onValueChange={field.onChange}
+              onValueChange={(item) => {
+                field.onChange(getValue(item));
+              }}
+              autoHighlight
+              filter={(item, query) =>
+                getLabel(item)
+                  .toLowerCase()
+                  .trim()
+                  .includes(query.toLowerCase().trim())
+              }
+              itemToStringValue={getKey}
+              itemToStringLabel={getLabel}
               open={open}
               onOpenChange={handleOpen}
+              isItemEqualToValue={(a, b) => getKey(a) === getKey(b)}
             >
               <FormControl>
-                <SelectTrigger size={size}>
-                  <SelectValue>
-                    {(value) => {
-                      const item = findItem(value);
+                {/* <ComboboxTrigger size={size}>
+                  <ComboboxValue>
+                    {(item?: T) => {
                       return item ? renderValue(item) : placeholder;
                     }}
-                  </SelectValue>
-                </SelectTrigger>
+                  </ComboboxValue>
+                </ComboboxTrigger> */}
+                <ComboboxInput placeholder={placeholder} />
               </FormControl>
-              <SelectContent className="w-min">
-                {groups.map(
-                  ([key, value]) =>
-                    value && (
-                      <SelectGroup key={key}>
-                        {key && <SelectLabel>{key}</SelectLabel>}
-                        {value.map((item) => {
+              <ComboboxContent onScrollEnd={() => alert("End")}>
+                <ComboboxList>
+                  {(group: Group) => (
+                    <ComboboxGroup key={group.value} items={group.items}>
+                      {group.value && (
+                        <ComboboxLabel>{group.value}</ComboboxLabel>
+                      )}
+                      <ComboboxCollection>
+                        {(item: T) => {
                           const itemKey = getKey(item);
 
                           const itemDisabled = getDisabled?.(item) ?? false;
-
                           return (
-                            <SelectItem
-                              key={itemKey + ""}
-                              value={itemKey}
+                            <ComboboxItem
+                              key={itemKey}
+                              value={item}
                               disabled={itemDisabled}
                             >
                               {renderItem(item)}
-                            </SelectItem>
+                            </ComboboxItem>
                           );
-                        })}
-                      </SelectGroup>
-                    )
-                )}
+                        }}
+                      </ComboboxCollection>
+                    </ComboboxGroup>
+                  )}
+                </ComboboxList>
                 {renderLastItem && (
-                  <>
-                    {groups.length > 0 && <SelectSeparator />}
-                    <SelectGroup>{renderLastItem}</SelectGroup>
-                  </>
+                  <div className="p-1">
+                    {groups.length > 0 && <ComboboxSeparator />}
+                    {renderLastItem}
+                  </div>
                 )}
-              </SelectContent>
-            </Select>
+              </ComboboxContent>
+            </Combobox>
             <FormMessage />
           </FormItem>
-        );
-      }}
-    />
+        )}
+      />
+    )
   );
 }

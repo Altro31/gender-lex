@@ -43,6 +43,7 @@
     "hono": "^4.7.10",
     "workflow": "4.0.1-beta.44",
     "@workflow/world-postgres": "4.1.0-beta.27",
+    "@ai-sdk/openai-compatible": "^2.0.2",
     "@effect/language-service": "^0.63.2",
     "effect": "^3.19.14",
     "pg": "^8.16.3",

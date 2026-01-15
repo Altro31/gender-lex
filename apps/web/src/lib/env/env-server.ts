@@ -24,6 +24,9 @@ const Envs = z.object({
   // .optional(),
   NEXT_PUBLIC_VAPID_PUBLIC_KEY: z.string(),
   VAPID_PRIVATE_KEY: z.string(),
+  CHATBOT_PROVIDER_URL: z.url(),
+  CHATBOT_PROVIDER_API_KEY: z.string().optional(),
+  CHATBOT_MODEL_IDENTIFIER: z.string(),
 });
 // .superRefine(
 // 	(

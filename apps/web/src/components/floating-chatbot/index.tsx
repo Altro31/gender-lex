@@ -27,24 +27,24 @@ import {
   ReasoningTrigger,
 } from "@/components/ai-elements/reasoning";
 import { Button } from "@/components/ui/button";
-import { AuthToolsMessage } from "@/lib/chatbot/tools/auth-helps";
 import { useChat } from "@ai-sdk/react";
 import { CopyIcon, MessageCircle, RefreshCcwIcon, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader } from "../ai-elements/loader";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import type { ChatbotMessage } from "@/lib/chatbot";
 
 export default function FloatingChatbot() {
   const router = useRouter();
   const [input, setInput] = useState("");
-  const { messages, sendMessage, status, regenerate } =
-    useChat<AuthToolsMessage>({
-      onToolCall({ toolCall }) {
+  const { messages, sendMessage, status, regenerate, stop } =
+    useChat<ChatbotMessage>({
+      async onToolCall({ toolCall }) {
         if (toolCall.dynamic) return;
-        if (toolCall.toolName === "") {
-          // alert(toolCall.input.redirect)
-          router.push("/auth/" + toolCall.input.redirect);
+        if (toolCall.toolName === "navigateTo") {
+          console.log("Redirecting...");
+          router.push((toolCall.input as any).route);
         }
       },
     });
@@ -168,6 +168,7 @@ export default function FloatingChatbot() {
               <PromptInputFooter>
                 <PromptInputTools />
                 <PromptInputSubmit
+                  onClick={() => status === "streaming" && stop()}
                   disabled={!input && !status}
                   status={status}
                 />

@@ -1,18 +1,17 @@
 import type { HonoVariables } from "@/lib/types/hono-variables"
 import { UserProviderService } from "@/shared/user-provider.service"
 import { startAnalysisWorkflow } from "@/workflows/start-analysis/workflow"
-import { AnalysisStatus, type Analysis } from "@repo/db/models"
+import { type Analysis } from "@repo/db/models"
+import {
+    AnalysisFindManyQueryParams,
+    PrepareAnalyisisInput,
+} from "@repo/types/dtos/analysis"
 import { Effect, Stream } from "effect"
 import { Hono } from "hono"
 import { validator } from "hono-openapi"
 import { streamSSE } from "hono/streaming"
 import { getRun, start } from "workflow/api"
-import z from "zod"
 import { AnalysisService } from "./service"
-import {
-    AnalysisFindManyQueryParams,
-    PrepareAnalyisisInput,
-} from "@repo/types/dtos/analysis"
 
 const analysis = new Hono<HonoVariables>()
     .post("/prepare", validator("form", PrepareAnalyisisInput), async c => {

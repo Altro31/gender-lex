@@ -1,4 +1,5 @@
 import { AnalysisRepository } from "@/modules/data/analysis/repository"
+import { PresetService } from "@/modules/data/preset/service"
 import { UserProviderService } from "@/shared/user-provider.service"
 import type { Context } from "@/workflows/common-types"
 import { effectify } from "@repo/db/effect"
@@ -17,6 +18,12 @@ export async function persistOnDatabase(
 
     const program = Effect.gen(function* () {
         const repository = yield* AnalysisRepository
+        const presetService = yield* PresetService
+
+        if (!user) {
+            const defaultPreset = yield* presetService.getDefault()
+            presetId = defaultPreset.id
+        }
 
         return yield* effectify(
             repository.create({
@@ -30,6 +37,7 @@ export async function persistOnDatabase(
         )
     }).pipe(
         AnalysisRepository.provide,
+        PresetService.provide,
         UserProviderService.provideFromUser(user),
     )
 
