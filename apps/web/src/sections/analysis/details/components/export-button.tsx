@@ -3,26 +3,40 @@
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { exportAnalysis } from "@/lib/export/export-utils";
+import { exportAnalysis, type ExportFormat } from "@/lib/export/export-utils";
 import {
   ExportDialog,
   ExportDialogTrigger,
 } from "@/sections/analysis/components/dialogs/export-dialog";
 import { t } from "@lingui/core/macro";
 import type { Analysis } from "@repo/db/models";
-import { Download, EllipsisVertical } from "lucide-react";
+import {
+  Download,
+  EllipsisVertical,
+  File,
+  FileCode,
+  FileImage,
+  FileText,
+  type LucideIcon,
+} from "lucide-react";
 import { toast } from "sonner";
 
 interface Props {
   analysis: Analysis;
 }
 
-export default function ExportButton({ analysis }: Props) {
-  const [format] = useLocalStorage("last-export", "pdf");
+const icons = {
+  txt: FileText,
+  markdown: FileCode,
+  pdf: FileImage,
+} satisfies Record<ExportFormat, LucideIcon>;
 
+export default function ExportButton({ analysis }: Props) {
+  const [format] = useLocalStorage<ExportFormat>("last-export");
+  const Icon = icons[format ?? "pdf"];
   const handleExport = () => {
     try {
-      exportAnalysis(analysis, format as any);
+      exportAnalysis(analysis, format ?? "pdf");
       toast.success(t`Export started successfully`);
     } catch (error) {
       console.error("Export error:", error);
@@ -35,8 +49,7 @@ export default function ExportButton({ analysis }: Props) {
     <>
       <ButtonGroup>
         <Button variant="outline" size="sm" onClick={handleExport}>
-          <Download />
-          {format}
+          <Icon />
           {t`Export`}
         </Button>
         <ExportDialogTrigger
