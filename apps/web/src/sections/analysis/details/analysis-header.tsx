@@ -32,12 +32,14 @@ import {
   ChangeVisibilityAlertDialog,
   ChangeVisibilityAlertDialogTrigger,
 } from "@/sections/analysis/components/dialogs/change-visibility-alert-dialog";
+import { ExportDialog } from "@/sections/analysis/components/dialogs/export-dialog";
 
 export default function AnalysisHeader() {
   const { data: session } = useSession();
   const { locale, id } = useParams<ParamsOf<"/[locale]/analysis/[id]">>();
   const [analysis, { isFetching }] = useAnalysisStream(id);
   const [copied, setCopied] = useState(false);
+  const [exportDialogOpen, setExportDialogOpen] = useState(false);
 
   const handleCopy = async () => {
     const url = location.href;
@@ -125,7 +127,12 @@ export default function AnalysisHeader() {
             </Badge>
           )}
 
-          <Button variant="outline" size="sm" className="gap-2 bg-transparent">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2 bg-transparent"
+            onClick={() => setExportDialogOpen(true)}
+          >
             <Download />
             {t`Export`}
           </Button>
@@ -160,6 +167,12 @@ export default function AnalysisHeader() {
           <ChangeVisibilityAlertDialog />
         </div>
       </div>
+
+      <ExportDialog
+        open={exportDialogOpen}
+        onOpenChange={setExportDialogOpen}
+        analysis={analysis}
+      />
     </div>
   );
 }
