@@ -2,10 +2,15 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "@/lib/auth/auth-client";
+import {
+  ChangeVisibilityAlertDialog,
+  ChangeVisibilityAlertDialogTrigger,
+} from "@/sections/analysis/components/dialogs/change-visibility-alert-dialog";
+import ExportButton from "@/sections/analysis/details/components/export-button";
 import { t } from "@lingui/core/macro";
-import { Select } from "@lingui/react/macro";
 import {
   AlertTriangle,
   ArrowLeft,
@@ -13,30 +18,21 @@ import {
   CheckCircle,
   Clock,
   Copy,
-  Download,
+  CopyCheck,
   Lock,
   LockOpen,
-  Share2,
   User,
-  Check,
-  CopyCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ParamsOf } from "../../../../.next/types/routes";
-import { useAnalysisStream } from "../hooks/use-analysis-stream";
-import { ButtonGroup } from "@/components/ui/button-group";
 import { useState } from "react";
 import { toast } from "sonner";
-import {
-  ChangeVisibilityAlertDialog,
-  ChangeVisibilityAlertDialogTrigger,
-} from "@/sections/analysis/components/dialogs/change-visibility-alert-dialog";
-import { ExportDialog } from "@/sections/analysis/components/dialogs/export-dialog";
+import { ParamsOf } from "../../../../.next/types/routes";
+import { useAnalysisStream } from "../hooks/use-analysis-stream";
 
 export default function AnalysisHeader() {
   const { data: session } = useSession();
-  const { locale, id } = useParams<ParamsOf<"/[locale]/analysis/[id]">>();
+  const { id } = useParams<ParamsOf<"/[locale]/analysis/[id]">>();
   const [analysis, { isFetching }] = useAnalysisStream(id);
   const [copied, setCopied] = useState(false);
   const [exportDialogOpen, setExportDialogOpen] = useState(false);
@@ -127,15 +123,7 @@ export default function AnalysisHeader() {
             </Badge>
           )}
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2 bg-transparent"
-            onClick={() => setExportDialogOpen(true)}
-          >
-            <Download />
-            {t`Export`}
-          </Button>
+          {analysis && <ExportButton analysis={analysis} />}
           {analysis?.visibility && (
             <ButtonGroup>
               <ChangeVisibilityAlertDialogTrigger
@@ -167,12 +155,6 @@ export default function AnalysisHeader() {
           <ChangeVisibilityAlertDialog />
         </div>
       </div>
-
-      <ExportDialog
-        open={exportDialogOpen}
-        onOpenChange={setExportDialogOpen}
-        analysis={analysis}
-      />
     </div>
   );
 }

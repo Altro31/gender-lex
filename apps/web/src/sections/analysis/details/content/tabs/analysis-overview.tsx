@@ -1,7 +1,7 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import AnalysisContentOriginalText from "@/sections/analysis/details/content/components/analysis-content-original-text";
+import AnalysisContentOriginalText from "@/sections/analysis/details/components/analysis-content-original-text";
 import { useAnalysisStream } from "@/sections/analysis/hooks/use-analysis-stream";
 import { t } from "@lingui/core/macro";
 import { AdditionalContextEvaluationItemBase } from "@repo/db/models";
