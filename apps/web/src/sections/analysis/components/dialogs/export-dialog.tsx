@@ -33,7 +33,9 @@ export function ExportDialog({ open, onOpenChange, analysis }: ExportDialogProps
       onOpenChange(false);
     } catch (error) {
       console.error("Export error:", error);
-      toast.error(t`Failed to export analysis`);
+      const errorMessage =
+        error instanceof Error ? error.message : t`Failed to export analysis`;
+      toast.error(errorMessage);
     }
   };
 

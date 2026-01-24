@@ -852,25 +852,37 @@ export function formatAsHTML(analysis: Analysis): string {
 }
 
 /**
+ * Creates a timestamp string for file naming
+ */
+function createFileTimestamp(): string {
+  return new Date().toISOString().replace(/[:.]/g, "-").slice(0, -5);
+}
+
+/**
  * Downloads a file with the given content
  */
 export function downloadFile(content: string, filename: string, mimeType: string) {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  try {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Failed to download file:", error);
+    throw new Error("File download failed");
+  }
 }
 
 /**
  * Exports the analysis in the specified format
  */
 export function exportAnalysis(analysis: Analysis, format: ExportFormat) {
-  const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, -5);
+  const timestamp = createFileTimestamp();
   const baseFilename = `analysis-${analysis.id}-${timestamp}`;
 
   switch (format) {
@@ -886,14 +898,15 @@ export function exportAnalysis(analysis: Analysis, format: ExportFormat) {
       // For PDF, we'll open a new window with the HTML content and trigger print
       const htmlContent = formatAsHTML(analysis);
       const printWindow = window.open("", "_blank");
-      if (printWindow) {
-        printWindow.document.write(htmlContent);
-        printWindow.document.close();
-        // Wait for content to load before printing
-        printWindow.onload = () => {
-          printWindow.print();
-        };
+      if (!printWindow) {
+        throw new Error("Popup blocked. Please allow popups for this site to export to PDF.");
       }
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+      // Wait for content to load before printing
+      printWindow.onload = () => {
+        printWindow.print();
+      };
       break;
   }
 }
