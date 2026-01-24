@@ -6,7 +6,7 @@ import { effectify } from "@repo/db/effect"
 import { Effect } from "effect"
 
 interface Args {
-    presetId: string
+    presetId: string | undefined
     workflow: string
 }
 
@@ -20,7 +20,7 @@ export async function persistOnDatabase(
         const repository = yield* AnalysisRepository
         const presetService = yield* PresetService
 
-        if (!user) {
+        if (!presetId) {
             const defaultPreset = yield* presetService.getDefault()
             presetId = defaultPreset.id
         }

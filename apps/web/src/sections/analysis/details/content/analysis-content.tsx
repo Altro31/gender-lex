@@ -1,6 +1,6 @@
 import { TabsContent } from "@/components/ui/tabs";
 import AnalysisAlternatives from "@/sections/analysis/details/content/tabs/analysis-alternatives";
-import AnalysisContext from "@/sections/analysis/details/content/tabs/analysis-context";
+import AnalysisContextEvaluation from "@/sections/analysis/details/content/tabs/analysis-context";
 import AnalysisImpact from "@/sections/analysis/details/content/tabs/analysis-impact";
 import AnalysisOverview from "@/sections/analysis/details/content/tabs/analysis-overview";
 import AnalysisTerms from "@/sections/analysis/details/content/tabs/analysis-terms";
@@ -20,7 +20,7 @@ export default function AnalysisContent() {
 
       {/* Context Tab */}
       <TabsContent value="context" className="space-y-6">
-        <AnalysisContext />
+        <AnalysisContextEvaluation />
       </TabsContent>
 
       {/* Alternatives Tab */}

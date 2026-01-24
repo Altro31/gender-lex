@@ -1,19 +1,20 @@
+import config from "@/../lingui.config";
 import FloatingChatbot from "@/components/floating-chatbot";
+import FloatingChatbotProvider from "@/components/floating-chatbot/floating-chatbot-provider";
+import FloatingChatbotWrapper from "@/components/floating-chatbot/floating-chatbot-wrapper";
+import { OneTapGoogle } from "@/components/one-tap-google";
 import { LinguiProvider } from "@/components/providers/lingui-provider";
 import QueryProvider from "@/components/providers/query-provider";
+import ThemeProvider from "@/components/providers/theme-provider";
 import { PushNotificationManager } from "@/components/pwa/push-notification-manager";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import "@/globals.css";
+import IsAnalysisProvider from "@/hooks/use-is-analysis";
 import { EventSourceProvider } from "@/lib/sse";
 import { setServerLocale } from "@/locales/request";
 import { NuqsAdapter } from "nuqs/adapters/next";
 import { Suspense } from "react";
-import config from "@/../lingui.config";
-import ThemeProvider from "@/components/providers/theme-provider";
-import { OneTapGoogle } from "@/components/one-tap-google";
-import Session from "@/components/session";
-import FloatingChatbotWrapper from "@/components/floating-chatbot/floating-chatbot-wrapper";
 
 export function generateStaticParams() {
   return config.locales.map((locale) => ({ locale }));
@@ -36,17 +37,21 @@ export default async function RootLayout({
                 <QueryProvider>
                   <EventSourceProvider>
                     <SidebarProvider>
-                      {children}
-                      <PushNotificationManager />
-                      <Suspense fallback={null}>
-                        <OneTapGoogle />
-                      </Suspense>
-                      <FloatingChatbotWrapper>
-                        <Suspense fallback={null}>
-                          <FloatingChatbot />
-                        </Suspense>
-                      </FloatingChatbotWrapper>
-                      <Toaster richColors position="bottom-right" />
+                      <IsAnalysisProvider>
+                        <FloatingChatbotProvider>
+                          {children}
+                          <PushNotificationManager />
+                          <Suspense fallback={null}>
+                            <OneTapGoogle />
+                          </Suspense>
+                          <FloatingChatbotWrapper>
+                            <Suspense fallback={null}>
+                              <FloatingChatbot />
+                            </Suspense>
+                          </FloatingChatbotWrapper>
+                          <Toaster richColors position="bottom-right" />
+                        </FloatingChatbotProvider>
+                      </IsAnalysisProvider>
                     </SidebarProvider>
                   </EventSourceProvider>
                 </QueryProvider>

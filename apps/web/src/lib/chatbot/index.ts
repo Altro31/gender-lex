@@ -1,5 +1,6 @@
 import { chatbotSystemPrompt } from "@/lib/chatbot/system.prompt";
-import { RouteTools } from "@/lib/chatbot/tools/route-tools";
+import { analysisTools } from "@/lib/chatbot/tools/analysis-tools";
+import { routeTools } from "@/lib/chatbot/tools/route-tools";
 import envs from "@/lib/env/env-server";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { InferAgentUIMessage, ToolLoopAgent } from "ai";
@@ -12,8 +13,8 @@ const provider = createOpenAICompatible({
 
 export const chatAgent = new ToolLoopAgent({
   model: provider(envs.CHATBOT_MODEL_IDENTIFIER),
-  tools: { ...RouteTools.tools },
+  tools: { ...routeTools, ...analysisTools },
   instructions: chatbotSystemPrompt,
 });
-
-export type ChatbotMessage = InferAgentUIMessage<typeof chatAgent, never>;
+type Metadata = { context?: { key: string } };
+export type ChatbotMessage = InferAgentUIMessage<typeof chatAgent, Metadata>;

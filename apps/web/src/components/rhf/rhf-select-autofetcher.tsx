@@ -66,6 +66,7 @@ export default function RHFComboboxAutofetcher<T>({
       lastPage.length ? lasPageParam + 1 : undefined,
   });
   const setDefaultValueEvent = useEffectEvent(() => {
+    if (!value) return;
     const items = data.pages.flat();
     const item = items.find((i) => getKey(i) === getKey(value));
     if (item) setValue(name, item);
@@ -161,12 +162,8 @@ export default function RHFComboboxAutofetcher<T>({
                     </ComboboxGroup>
                   )}
                 </ComboboxList>
-                {renderLastItem && (
-                  <div className="p-1">
-                    {groups.length > 0 && <ComboboxSeparator />}
-                    {renderLastItem}
-                  </div>
-                )}
+                {groups.length > 0 && <ComboboxSeparator />}
+                {renderLastItem && <div className="p-1">{renderLastItem}</div>}
               </ComboboxContent>
             </Combobox>
             <FormMessage />

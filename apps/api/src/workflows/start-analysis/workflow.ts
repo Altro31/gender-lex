@@ -12,7 +12,7 @@ import { updateWithResult } from "./steps/update-with-result"
 import type { Analysis } from "@repo/db/models"
 
 interface AnalysisInput {
-    presetId: string
+    presetId: string | undefined
 }
 
 export async function startAnalysisWorkflow(

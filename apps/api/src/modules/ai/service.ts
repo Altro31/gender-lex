@@ -10,8 +10,9 @@ export class AiService extends Effect.Service<AiService>()("AiService", {
                 Effect.gen(function* () {
                     const provider = createOpenAICompatible({
                         baseURL: model.connection.url,
-                        name: "",
+                        name: model.name,
                         apiKey: model.apiKey ?? undefined,
+                        supportsStructuredOutputs: true,
                         async fetch(input, init) {
                             const { body: initBody, ...rest } = init!
 

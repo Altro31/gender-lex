@@ -44,6 +44,7 @@ export default function HomeFormProvider({ children, lastUsedPreset }: Props) {
       return;
     }
     router.push(`/analysis/${data.id}`);
+    form.reset({ preset: input.preset });
   };
 
   return (

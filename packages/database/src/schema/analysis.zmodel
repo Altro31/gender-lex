@@ -3,6 +3,7 @@ import "preset"
 import "shared/timestamps"
 
 type RawAnalysis {
+    reasoning                   String?
     originalText                String?
     modifiedTextAlternatives    ModifiedAlternative[]?       @json
     biasedTerms                 BiasedTerm[]?                @json
@@ -26,8 +27,14 @@ model Analysis with RawAnalysis,Timestamps {
     userId      String?        @default(auth().id)
     User        User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
 
+    // Owners can read,update and delete
+    @@allow('read,update,delete',auth() == User)
 
-    @@allow("all",true)
+    // Everyone can read public analyses
+    @@allow('read',visibility == public)
+
+    // Everyone can create analysis
+    @@allow('create', true)
 }
 
 

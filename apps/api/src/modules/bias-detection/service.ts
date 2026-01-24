@@ -42,6 +42,7 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
                             return new AiRequestError({ error })
                         },
                     })
+                    res.output.reasoning = res.reasoningText
                     return res.output
                 }),
             }

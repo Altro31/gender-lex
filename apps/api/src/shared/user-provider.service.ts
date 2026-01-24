@@ -11,7 +11,7 @@ export class UserProviderService extends Effect.Tag("UserProviderService")<
         this,
         Effect.gen(function* () {
             const ctx = yield* ContextService
-            // Hono context: headers are at ctx.req.raw.headers
+            // Hono context: headers are at ctx.req.r
             const headers = ctx.req?.raw?.headers || new Headers()
             const res = yield* Effect.promise(() =>
                 auth.api.getSession({

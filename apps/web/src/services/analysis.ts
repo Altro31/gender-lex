@@ -6,11 +6,11 @@ import { getSession } from "@/lib/auth/auth-server";
 import { getDB } from "@/lib/db/client";
 import { actionClient } from "@/lib/safe-action";
 import type { HomeSchema } from "@/sections/home/form/home-schema";
+import { Visibility } from "@repo/db/models";
 import type { AnalysisApp } from "@repo/types/api";
 import type { AnalysisFindManyQueryParams } from "@repo/types/dtos/analysis";
-import { DetailedError, parseResponse } from "hono/client";
+import { parseResponse } from "hono/client";
 import { cacheTag, updateTag } from "next/cache";
-import { cookies } from "next/headers";
 import { unauthorized } from "next/navigation";
 import z from "zod";
 
@@ -22,7 +22,7 @@ export async function prepareAnalysis(input: HomeSchema) {
       form: {
         text: input.text,
         files: input.filesObj.map((i) => i.file),
-        selectedPreset: input.preset.id,
+        selectedPreset: input.preset?.id ?? undefined,
       },
     })
   );
@@ -54,12 +54,12 @@ export async function findAnalyses({
   const session = await getSession();
   if (!session) unauthorized();
 
-  return parseResponse(
+  return handle(
     client.analysis.$get({
       query: {
         ...rest,
-        page: page ? page + "" : "",
-        pageSize: pageSize ? pageSize + "" : "",
+        page: page ? page + "" : undefined,
+        pageSize: pageSize ? pageSize + "" : undefined,
       },
     })
   );
@@ -91,3 +91,22 @@ export async function redoAnalysis(id: string) {
   updateTag(`analysys-${id}`);
   return res;
 }
+
+export const changeVisibility = actionClient
+  .inputSchema(
+    z.object({
+      id: z.string(),
+      visibility: z.enum(Visibility),
+    })
+  )
+  .action(async ({ parsedInput }) => {
+    const { id, visibility } = parsedInput;
+    const res = await parseResponse(
+      client.analysis[":id"].visibility.$patch({
+        json: { visibility },
+        param: { id },
+      })
+    );
+    updateTag(`analyses`);
+    return res;
+  });

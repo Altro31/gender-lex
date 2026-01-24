@@ -35,6 +35,7 @@ export default function HomeFormContainer() {
               <RHFSelectAutofetcher
                 name="preset"
                 fetcherFunc={getPresetsSelect}
+                placeholder="Using Default Preset"
                 getKey={(i) => i.id}
                 getLabel={(i) => i.name}
                 renderValue={(i) => i.name}
@@ -42,7 +43,7 @@ export default function HomeFormContainer() {
                 renderLastItem={
                   <CreatePresetDialogTrigger
                     render={
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" className="w-full">
                         <Plus />
                         {t`New Preset`}
                       </Button>

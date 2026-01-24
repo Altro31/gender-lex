@@ -20,12 +20,12 @@ import { getSession } from '@/lib/auth/auth-server'
 
 import GithubButton from '@/components/app-sidebar/buttons/GithubButton'
 import GoogleButton from '@/components/app-sidebar/buttons/GoogleButton'
+import { LogoutButton } from '@/components/app-sidebar/buttons/logout-button'
 import ThemeSwitcher from '@/components/theme/theme-switcher'
 import LanguageSwitcher from '@/locales/components/language-switcher'
 import { t } from '@lingui/core/macro'
 import Link from 'next/link'
 import EmailButton from './buttons/EmailButton'
-import { LogoutDropdownMenuItem, SessionDropdownMenu } from './session-dropdown'
 
 export default async function NavUser() {
 	const session = await getSession()
@@ -40,7 +40,7 @@ export default async function NavUser() {
 async function User() {
 	const session = await getSession()
 	return (
-		<SessionDropdownMenu>
+		<DropdownMenu>
 			<DropdownMenuTrigger
 				className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 				render={<SidebarMenuButton size="lg" />}
@@ -100,9 +100,9 @@ async function User() {
 					<LanguageSwitcher />
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
-				<LogoutDropdownMenuItem>{t`Logout`}</LogoutDropdownMenuItem>
+				<LogoutButton render={<DropdownMenuItem />}/>
 			</DropdownMenuContent>
-		</SessionDropdownMenu>
+		</DropdownMenu>
 	)
 }
 

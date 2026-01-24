@@ -1,14 +1,14 @@
 import { z } from "zod";
 import { Pagination } from "./shared/pagination";
 import { Schema } from "effect";
-import { AnalysisStatus } from "@repo/db/models";
+import { AnalysisStatus, Visibility } from "@repo/db/models";
 
 export type PrepareAnalyisisInput = z.infer<typeof PrepareAnalyisisInput>;
 export const PrepareAnalyisisInput = z
   .object({
     text: z.string().optional(),
     files: z.file().array().optional(),
-    selectedPreset: z.string(),
+    selectedPreset: z.string().optional(),
   })
   .superRefine(({ text, files }, ctx) => {
     if (!(text || files?.length)) {
@@ -31,3 +31,8 @@ export const AnalysisFindManyQueryParams = Pagination.pipe(
   ),
   Schema.standardSchemaV1
 );
+
+export type ChangeVisibilityInput = typeof ChangeVisibilityInput.Type
+export const ChangeVisibilityInput = Schema.Struct({
+  visibility: Schema.Enums(Visibility),
+}).pipe(Schema.standardSchemaV1);

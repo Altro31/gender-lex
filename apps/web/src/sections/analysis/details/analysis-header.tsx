@@ -12,19 +12,40 @@ import {
   Calendar,
   CheckCircle,
   Clock,
+  Copy,
   Download,
+  Lock,
+  LockOpen,
   Share2,
   User,
+  Check,
+  CopyCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ParamsOf } from "../../../../.next/types/routes";
 import { useAnalysisStream } from "../hooks/use-analysis-stream";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { useState } from "react";
+import { toast } from "sonner";
+import {
+  ChangeVisibilityAlertDialog,
+  ChangeVisibilityAlertDialogTrigger,
+} from "@/sections/analysis/components/dialogs/change-visibility-alert-dialog";
 
 export default function AnalysisHeader() {
   const { data: session } = useSession();
   const { locale, id } = useParams<ParamsOf<"/[locale]/analysis/[id]">>();
   const [analysis, { isFetching }] = useAnalysisStream(id);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    const url = location.href;
+    setCopied(true);
+    await window.navigator.clipboard.writeText(url);
+    setTimeout(() => setCopied(false), 5000);
+    toast.success(t`Copied`);
+  };
 
   const getStatusConfig = (status: string) => {
     switch (status) {
@@ -103,31 +124,40 @@ export default function AnalysisHeader() {
               {statusConfig.label}
             </Badge>
           )}
-          {isFetching && !analysis?.visibility ? (
-            <Skeleton className="h-6 w-20" />
-          ) : (
-            <Badge
-              variant={
-                analysis?.visibility === "public" ? "default" : "secondary"
-              }
-            >
-              {" "}
-              <Select
-                value={analysis?.visibility ?? ""}
-                _public="Public"
-                _private="Private"
-                other="Other"
-              />
-            </Badge>
-          )}
+
           <Button variant="outline" size="sm" className="gap-2 bg-transparent">
             <Download />
             {t`Export`}
           </Button>
-          <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-            <Share2 />
-            {t`Share`}
-          </Button>
+          {analysis?.visibility && (
+            <ButtonGroup>
+              <ChangeVisibilityAlertDialogTrigger
+                render={<Button size="sm" variant="outline" />}
+                payload={{ analysis }}
+              >
+                {analysis.visibility === "private" ? (
+                  <>
+                    <Lock />
+                    {t`Private`}
+                  </>
+                ) : (
+                  <>
+                    <LockOpen />
+                    {t`Public`}
+                  </>
+                )}
+              </ChangeVisibilityAlertDialogTrigger>
+              <Button
+                size="sm"
+                disabled={copied}
+                onClick={handleCopy}
+                variant="outline"
+              >
+                {copied ? <CopyCheck /> : <Copy />}
+              </Button>
+            </ButtonGroup>
+          )}
+          <ChangeVisibilityAlertDialog />
         </div>
       </div>
     </div>

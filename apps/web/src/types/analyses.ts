@@ -1,6 +1,8 @@
-import type { findAnalyses, getStatusCount } from "@/services/analysis"
+import type { findAnalyses, getStatusCount } from "@/services/analysis";
 
-export type AnalysesResponse = Awaited<ReturnType<typeof findAnalyses>>
-export type AnalysesResponseItem = AnalysesResponse[number]
+export type AnalysesResponse = NonNullable<
+  Awaited<ReturnType<typeof findAnalyses>>["data"]
+>;
+export type AnalysesResponseItem = AnalysesResponse[number];
 
-export type StatusCountResponse = Awaited<ReturnType<typeof getStatusCount>>
+export type StatusCountResponse = Awaited<ReturnType<typeof getStatusCount>>;

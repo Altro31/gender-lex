@@ -26,39 +26,72 @@ import {
   ReasoningContent,
   ReasoningTrigger,
 } from "@/components/ai-elements/reasoning";
+import FloatingChatbotContextIndicator from "@/components/floating-chatbot/floating-chatbot-context-indicator";
+import { useFloatingChatbotContext } from "@/components/floating-chatbot/floating-chatbot-provider";
 import { Button } from "@/components/ui/button";
+import { useIsAnalysis } from "@/hooks/use-is-analysis";
+import { useSession } from "@/lib/auth/auth-client";
+import type { ChatbotMessage } from "@/lib/chatbot";
 import { useChat } from "@ai-sdk/react";
-import { CopyIcon, MessageCircle, RefreshCcwIcon, X } from "lucide-react";
+import { Popover as PopoverPrimitive } from "@base-ui/react";
+import {
+  CopyIcon,
+  MessageCircle,
+  RefreshCcwIcon,
+  Stars,
+  X,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import { Loader } from "../ai-elements/loader";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import type { ChatbotMessage } from "@/lib/chatbot";
+
+export const floatingChatbotPopover = PopoverPrimitive.createHandle();
 
 export default function FloatingChatbot() {
+  const { data: session } = useSession();
+  const analysisId = useIsAnalysis();
+  const [open, setOpen] = useState(false);
+  const [context, setContext] = useFloatingChatbotContext();
   const router = useRouter();
   const [input, setInput] = useState("");
-  const { messages, sendMessage, status, regenerate, stop } =
+  const { messages, sendMessage, status, regenerate, stop, addToolOutput } =
     useChat<ChatbotMessage>({
       async onToolCall({ toolCall }) {
         if (toolCall.dynamic) return;
         if (toolCall.toolName === "navigateTo") {
-          console.log("Redirecting...");
           router.push((toolCall.input as any).route);
         }
       },
     });
 
-  const handleSubmit = (message: PromptInputMessage) => {
+  const handleSubmit = async (message: PromptInputMessage) => {
     const hasText = Boolean(message.text);
     if (!hasText) {
       return;
     }
-    sendMessage({ text: message.text });
-    setInput("");
+    startTransition(() => {
+      setInput("");
+      setContext(undefined);
+    });
+    await sendMessage(
+      { text: message.text },
+      {
+        body: {
+          context: {
+            ...context,
+            id: analysisId,
+            path: location.pathname,
+            session,
+          },
+        },
+      }
+    );
   };
+  const handleClearContext = () => setContext(undefined);
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen} handle={floatingChatbotPopover}>
       <Button
         size="lg"
         className="fixed right-6 bottom-6 z-50 group h-16 w-16 rounded-full shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl"
@@ -66,7 +99,7 @@ export default function FloatingChatbot() {
       >
         <div className="absolute inset-0 rounded-full bg-blue-400/20 blur-xl transition-opacity duration-300 group-hover:opacity-100 opacity-0" />
         <X className="group-not-data-popup-open:hidden relative h-6 w-6 text-white transition-transform duration-300 group-hover:rotate-90" />
-        <MessageCircle className="group-data-popup-open:hidden relative h-6 w-6 text-white transition-transform duration-300 group-hover:scale-110" />
+        <Stars className="group-data-popup-open:hidden relative h-6 w-6 text-white transition-transform duration-300 group-hover:scale-110" />
       </Button>
 
       <PopoverContent
@@ -100,6 +133,11 @@ export default function FloatingChatbot() {
                               from={message.role}
                             >
                               <MessageContent>
+                                {message.metadata?.context?.key && (
+                                  <FloatingChatbotContextIndicator
+                                    contextKey={message.metadata.context.key}
+                                  />
+                                )}
                                 <MessageResponse>{part.text}</MessageResponse>
                               </MessageContent>
                               {message.role === "assistant" &&
@@ -151,6 +189,21 @@ export default function FloatingChatbot() {
           </div>
 
           <div className="border-t border-border/50 bg-muted/30 px-4 py-3 rounded-b-2xl">
+            {context && (
+              <div className="max-w-full flex gap-1 items-center mb-2">
+                {context.key && (
+                  <FloatingChatbotContextIndicator contextKey={context.key} />
+                )}
+                <Button
+                  size="icon-xs"
+                  variant="outline"
+                  className="rounded-full"
+                  onClick={handleClearContext}
+                >
+                  <X />
+                </Button>
+              </div>
+            )}
             <PromptInput
               onSubmit={handleSubmit}
               globalDrop

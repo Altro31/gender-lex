@@ -1,5 +1,5 @@
 import { effectify } from "@repo/db/effect"
-import type { AnalysisStatus } from "@repo/db/models"
+import type { AnalysisStatus, Visibility } from "@repo/db/models"
 import { Effect } from "effect"
 import { AnalysisRepository } from "./repository"
 import type { AnalysisFindManyQueryParams } from "@repo/types/dtos/analysis"
@@ -71,6 +71,18 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
                             data: { status: "pending" },
                         }),
                     ),
+                changeVisibility: Effect.fn("changeVisibility")(function* (
+                    id: string,
+                    visibility: Visibility,
+                ) {
+                    return yield* effectify(
+                        repository.update({
+                            where: { id },
+                            data: { visibility },
+                            include: null,
+                        }),
+                    )
+                }),
             }
             return service
         }),

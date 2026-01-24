@@ -10,6 +10,8 @@ import { schema } from "./generated/schema.ts";
 export type { ClientContract } from "@zenstackhq/orm";
 export type { SchemaType } from "./generated/schema.ts";
 
+export { ORMErrorReason } from "@zenstackhq/orm";
+
 export const db = new ZenStackClient(schema, {
   dialect: new PostgresDialect({
     pool: new Pool({ connectionString: process.env.DATABASE_URL }),

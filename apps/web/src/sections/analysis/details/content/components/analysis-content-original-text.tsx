@@ -13,7 +13,10 @@ interface Props {
   isFetching?: boolean;
 }
 
-export default function AnalysisContentOriginalText({ text, isFetching = false }: Props) {
+export default function AnalysisContentOriginalText({
+  text,
+  isFetching = false,
+}: Props) {
   const [showMore, setShowMore] = useState(false);
 
   return (

@@ -1,12 +1,13 @@
 "use client";
-import { useAnalysisStream } from "@/sections/analysis/hooks/use-analysis-stream";
-import { useParams } from "next/navigation";
-import type { ParamsOf } from "../../../../../../.next/types/routes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import AnalysisContentOriginalText from "@/sections/analysis/details/content/components/analysis-content-original-text";
+import { useAnalysisStream } from "@/sections/analysis/hooks/use-analysis-stream";
 import { t } from "@lingui/core/macro";
 import { AdditionalContextEvaluationItemBase } from "@repo/db/models";
+import { useParams } from "next/navigation";
+import type { ParamsOf } from "../../../../../../.next/types/routes";
+import AnalysisContext from "@/components/analysis-context";
 
 export default function AnalysisOverview() {
   const { id } = useParams<ParamsOf<"/[locale]/analysis/[id]">>();
@@ -14,6 +15,7 @@ export default function AnalysisOverview() {
   return (
     <>
       {/* Original Text */}
+
       <AnalysisContentOriginalText
         text={analysis?.originalText ?? ""}
         isFetching={isFetching}
@@ -103,16 +105,18 @@ export default function AnalysisOverview() {
           </CardContent>
         </Card>
       ) : analysis?.conclusion ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>{t`Conclusion`}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="leading-relaxed text-muted-foreground">
-              {analysis?.conclusion}
-            </p>
-          </CardContent>
-        </Card>
+        <AnalysisContext id="conclusion" content={analysis?.conclusion}>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t`Conclusion`}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="leading-relaxed text-muted-foreground">
+                {analysis?.conclusion}
+              </p>
+            </CardContent>
+          </Card>
+        </AnalysisContext>
       ) : null}
     </>
   );
