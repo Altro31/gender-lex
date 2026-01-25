@@ -9,7 +9,7 @@ const zen = new Hono<HonoVariables>()
 zen.use(
     "/api/model/*",
     createHonoHandler({
-        apiHandler: new ApiHandler(),
+        apiHandler: new ApiHandler({ endpoint: "/api/model" }),
         // getSessionUser extracts the current session user from the request,
         // its implementation depends on your auth solution
         getClient: async ctx => {

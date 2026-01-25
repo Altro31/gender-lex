@@ -9,15 +9,15 @@
     "migrate:prod": "zen migrate deploy"
   },
   "dependencies": {
-    "@zenstackhq/orm": "^3.1.0",
-    "@zenstackhq/plugin-policy": "^3.1.0",
+    "@zenstackhq/orm": "^3.2.1",
+    "@zenstackhq/plugin-policy": "^3.2.1",
     "@zenstackhq/server": "catalog:",
     "pg": "catalog:",
     "effect": "catalog:"
   },
   "devDependencies": {
     "@types/pg": "^8.16.0",
-    "@zenstackhq/cli": "^3.1.0",
+    "@zenstackhq/cli": "^3.2.1",
     "type-fest": "^5.3.1"
   },
   "peerDependencies": {

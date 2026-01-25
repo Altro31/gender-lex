@@ -20,9 +20,9 @@ export const db = new ZenStackClient(schema, {
 
 export const authDB = db.$use(new PolicyPlugin());
 
-type Options = Partial<Omit<RestApiHandlerOptions, "schema">>;
+type Options = Omit<RestApiHandlerOptions, "schema">;
 export class ApiHandler extends RestApiHandler {
-  constructor(options?: Options) {
-    super({ schema, ...(options as any) });
+  constructor(options: Options) {
+    super({ schema, ...options });
   }
 }
