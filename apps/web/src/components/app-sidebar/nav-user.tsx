@@ -1,3 +1,4 @@
+
 import envs from '@/lib/env/env-server' with { type: 'macro' }
 import { BadgeCheck, ChevronsUpDown, LogIn } from 'lucide-react'
 
@@ -100,7 +101,11 @@ async function User() {
 					<LanguageSwitcher />
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
-				<LogoutButton render={<DropdownMenuItem />}/>
+				<DropdownMenuGroup>
+					<LogoutButton variant='ghost' className='w-full justify-start' size='sm' nativeButton={false} render={<DropdownMenuItem />}>
+					{t`Logout`}
+				</LogoutButton>
+				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	)

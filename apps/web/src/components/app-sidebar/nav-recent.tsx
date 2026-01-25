@@ -4,17 +4,15 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { DeleteAnalysisAlertDialog } from "@/sections/analysis/components/dialogs/delete-analysis-alert-dialog";
 import { findRecentAnalyses } from "@/services/analysis";
 
-import { AnalysisActions } from "@/sections/analysis/components/analysis-actions";
+import { getSession } from "@/lib/auth/auth-server";
 import { t } from "@lingui/core/macro";
 import Link from "next/link";
-import { getSession } from "@/lib/auth/auth-server";
 import NavRecentAnalysisAction from "./nav-recent-analysis-action";
 
 export default async function NavRecent() {

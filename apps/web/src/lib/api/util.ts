@@ -20,11 +20,19 @@ export async function handleStream<T>(
   const res = await fetchRes;
   const stream = Stream.async<{ type: string; data: T }>((emit) => {
     consumeSSEStream(res.clone().body!, (e) => {
-      emit(
-        Effect.succeed(
-          Chunk.of({ type: e.event ?? "message", data: JSON.parse(e.data) })
-        )
-      );
+      try {
+        emit(
+          Effect.succeed(
+            Chunk.of({ type: e.event ?? "message", data: JSON.parse(e.data) })
+          )
+        );
+      } catch {
+        // emit(
+        //   Effect.succeed(
+        //     Chunk.of({ type: e.event ?? "message", data: {} as T })
+        //   )
+        // );
+      }
     }).then(() => emit(Effect.fail(Option.none())));
   });
 

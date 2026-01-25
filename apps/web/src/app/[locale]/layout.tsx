@@ -2,7 +2,7 @@ import config from "@/../lingui.config";
 import FloatingChatbot from "@/components/floating-chatbot";
 import FloatingChatbotProvider from "@/components/floating-chatbot/floating-chatbot-provider";
 import FloatingChatbotWrapper from "@/components/floating-chatbot/floating-chatbot-wrapper";
-import { OneTapGoogle } from "@/components/one-tap-google";
+import OneTapGoogle from "@/components/one-tap-google";
 import { LinguiProvider } from "@/components/providers/lingui-provider";
 import QueryProvider from "@/components/providers/query-provider";
 import ThemeProvider from "@/components/providers/theme-provider";
@@ -41,9 +41,7 @@ export default async function RootLayout({
                         <FloatingChatbotProvider>
                           {children}
                           <PushNotificationManager />
-                          <Suspense fallback={null}>
-                            <OneTapGoogle />
-                          </Suspense>
+                          <OneTapGoogle />
                           <FloatingChatbotWrapper>
                             <Suspense fallback={null}>
                               <FloatingChatbot />

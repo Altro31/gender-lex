@@ -89,43 +89,54 @@ const analysis = new Hono<HonoVariables>()
         const runEffect = c.get("runEffect")
         const id = c.req.param("id")
         c.json({})
-        return streamSSE(c, async stream => {
-            const program = Effect.gen(function* () {
-                const analysisService = yield* AnalysisService
-                const analysis = yield* analysisService.findOne(id)
-                if (analysis.status === "done") {
-                    return Stream.toAsyncIterable(
-                        Stream.fromIterable([analysis]),
-                    )
+        return streamSSE(
+            c,
+            async stream => {
+                const program = Effect.gen(function* () {
+                    const analysisService = yield* AnalysisService
+                    const analysis = yield* analysisService.findOne(id)
+                    if (analysis.status === "done") {
+                        return Stream.toAsyncIterable(
+                            Stream.fromIterable([analysis]),
+                        )
+                    }
+
+                    const run = getRun<Analysis>(analysis.workflow)
+
+                    const effectStream = Stream.fromAsyncIterable(
+                        run.getReadable<Analysis>({ namespace: "update" }),
+                        e => console.log(e),
+                    ).pipe(Stream.tap(() => Effect.sleep(100)))
+
+                    return Stream.toAsyncIterable(effectStream)
+                }).pipe(
+                    AnalysisService.provide,
+                    Effect.catchTag(
+                        "ClientError",
+                        Effect.fn(function* (e) {
+                            if (e.details.reason === ORMErrorReason.NOT_FOUND) {
+                                stream.writeSSE({
+                                    data: JSON.stringify(e.details),
+                                })
+                                stream.abort()
+                            }
+                        }),
+                    ),
+                )
+
+                const asyncIterable = await runEffect(program)
+                if (!asyncIterable) return
+                for await (const update of asyncIterable) {
+                    await stream.writeSSE({ data: JSON.stringify(update) })
                 }
-
-                const run = getRun<Analysis>(analysis.workflow)
-
-                const effectStream = Stream.fromAsyncIterable(
-                    run.getReadable<Analysis>({ namespace: "update" }),
-                    e => console.log(e),
-                ).pipe(Stream.tap(() => Effect.sleep(100)))
-
-                return Stream.toAsyncIterable(effectStream)
-            }).pipe(
-                AnalysisService.provide,
-                Effect.catchTag(
-                    "ClientError",
-                    Effect.fn(function* (e) {
-                        if (e.details.reason === ORMErrorReason.NOT_FOUND) {
-                            stream.writeSSE({ data: JSON.stringify(e.details) })
-                            stream.abort()
-                        }
-                    }),
-                ),
-            )
-
-            const asyncIterable = await runEffect(program)
-            if (!asyncIterable) return
-            for await (const update of asyncIterable) {
-                await stream.writeSSE({ data: JSON.stringify(update) })
-            }
-        }) as unknown as TypedResponse<Analysis, 200, "json">
+            },
+            async (e, stream) => {
+                stream.writeSSE({
+                    event: "error",
+                    data: JSON.stringify({ status: 404 }),
+                })
+            },
+        ) as unknown as TypedResponse<Analysis, 200, "json">
     })
     .get("/", validator("query", AnalysisFindManyQueryParams), async c => {
         const runEffect = c.get("runEffect")
