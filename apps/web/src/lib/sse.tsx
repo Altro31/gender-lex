@@ -8,7 +8,6 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import ReconnectingEventSource from "reconnecting-eventsource";
 import { useSession } from "./auth/auth-client";
 
 const EventSourceContext = createContext<EventSource | null>(null);
@@ -36,7 +35,7 @@ export const useEventSource = () => use(EventSourceContext);
 
 export function useSse<
   Event extends keyof MessageMapper,
-  Data = MessageMapper[Event],
+  Data = MessageMapper[Event]
 >(event: Event, listener: (data: Data) => void) {
   const eventSource = use(EventSourceContext);
 

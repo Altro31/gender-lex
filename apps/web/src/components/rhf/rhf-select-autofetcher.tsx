@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Combobox,
   ComboboxCollection,
@@ -121,7 +119,7 @@ export default function RHFComboboxAutofetcher<T>({
             <FormControl>
               <ComboboxInput placeholder={placeholder} />
             </FormControl>
-            <ComboboxContent onScrollEnd={() => alert("End")}>
+            <ComboboxContent>
               <ComboboxList>
                 {(group: Group) => (
                   <ComboboxGroup key={group.value} items={group.items}>

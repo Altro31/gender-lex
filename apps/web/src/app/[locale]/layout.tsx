@@ -13,7 +13,6 @@ import IsAnalysisProvider from "@/hooks/use-is-analysis";
 import { EventSourceProvider } from "@/lib/sse";
 import { setServerLocale } from "@/locales/request";
 import { NuqsAdapter } from "nuqs/adapters/next";
-import { Suspense } from "react";
 
 export function generateStaticParams() {
   return config.locales.map((locale) => ({ locale }));
@@ -27,26 +26,18 @@ export default async function RootLayout({
     <html lang={i18n.locale} suppressHydrationWarning>
       <body>
         <div className="root">
-          1
           <ThemeProvider>
-            2
             <LinguiProvider
               initialLocale={i18n.locale}
               initialMessages={i18n.messages}
             >
-              3
               <NuqsAdapter>
-                4
                 <QueryProvider>
-                  5
                   <EventSourceProvider>
-                    6
                     <SidebarProvider>
-                      7
                       <IsAnalysisProvider>
-                        8
                         <FloatingChatbotProvider>
-                          9{children}
+                          {children}
                           <PushNotificationManager />
                           <OneTapGoogle />
                           <FloatingChatbot />
