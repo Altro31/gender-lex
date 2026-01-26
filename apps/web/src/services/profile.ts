@@ -1,79 +1,79 @@
-'use server'
+"use server";
 
-import { getSession } from '@/lib/auth/auth-server'
-import { getDB } from '@/lib/db/client'
-import { actionClient } from '@/lib/safe-action'
-import { revalidatePath } from 'next/cache'
-import z from 'zod'
+import { getSession } from "@/lib/auth/auth-server";
+import { getDB } from "@/lib/db/client";
+import { actionClient } from "@/lib/safe-action";
+import { revalidatePath } from "next/cache";
+import z from "zod";
 
 const UpdateProfileSchema = z.object({
-	name: z.string().min(1, 'El nombre es requerido'),
-})
+  name: z.string().min(1, "El nombre es requerido"),
+});
 
-export type getUserProfile = Awaited<ReturnType<typeof getUserProfile>>
-export const getUserProfile = async () => {
-	'use cache: private'
+export type getUserProfile = Awaited<ReturnType<typeof getUserProfile>>;
+export async function getUserProfile() {
+  "use cache: private";
 
-	const session = await getSession()
-	if (!session) {
-		throw new Error('Usuario no autenticado')
-	}
+  const session = await getSession();
+  if (!session) {
+    throw new Error("Usuario no autenticado");
+  }
 
-	const db = await getDB()
-	const user = await db.user.findUnique({
-		where: { id: session.user.id },
-		select: {
-			id: true,
-			name: true,
-			email: true,
-			emailVerified: true,
-			image: true,
-			role: true,
-			createdAt: true,
-			updatedAt: true,
-			loggedAt: true,
-		},
-	})
+  const db = await getDB();
+  const user = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      emailVerified: true,
+      image: true,
+      role: true,
+      createdAt: true,
+      updatedAt: true,
+      loggedAt: true,
+    },
+  });
 
-	if (!user) {
-		throw new Error('Usuario no encontrado')
-	}
+  if (!user) {
+    throw new Error("Usuario no encontrado");
+  }
 
-	return user
+  return user;
 }
 
 export const updateUserProfile = actionClient
-	.inputSchema(UpdateProfileSchema)
-	.action(async ({ parsedInput }) => {
-		const session = await getSession()
-		if (!session) {
-			throw new Error('Usuario no autenticado')
-		}
+  .inputSchema(UpdateProfileSchema)
+  .action(async ({ parsedInput }) => {
+    const session = await getSession();
+    if (!session) {
+      throw new Error("Usuario no autenticado");
+    }
 
-		const db = await getDB()
-		const updatedUser = await db.user.update({
-			where: { id: session.user.id },
-			data: { name: parsedInput.name },
-		})
+    const db = await getDB();
+    const updatedUser = await db.user.update({
+      where: { id: session.user.id },
+      data: { name: parsedInput.name },
+    });
 
-		revalidatePath('/profile')
-		return { success: true, user: updatedUser }
-	})
+    revalidatePath("/profile");
+    return { success: true, user: updatedUser };
+  });
 
 export const updateUserImage = actionClient
-	.inputSchema(z.object({ image: z.string().url() }))
-	.action(async ({ parsedInput }) => {
-		const session = await getSession()
-		if (!session) {
-			throw new Error('Usuario no autenticado')
-		}
+  .inputSchema(z.object({ image: z.string().url() }))
+  .action(async ({ parsedInput }) => {
+    const session = await getSession();
+    if (!session) {
+      throw new Error("Usuario no autenticado");
+    }
 
-		const db = await getDB()
-		const updatedUser = await db.user.update({
-			where: { id: session.user.id },
-			data: { image: parsedInput.image },
-		})
+    const db = await getDB();
+    const updatedUser = await db.user.update({
+      where: { id: session.user.id },
+      data: { image: parsedInput.image },
+    });
 
-		revalidatePath('/profile')
-		return { success: true, user: updatedUser }
-	})
+    revalidatePath("/profile");
+    return { success: true, user: updatedUser };
+  });
