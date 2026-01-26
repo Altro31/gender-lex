@@ -48,6 +48,9 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
+      - name: Bun
+        uses: oven-sh/setup-bun@v2
+        run: bun build:api
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
