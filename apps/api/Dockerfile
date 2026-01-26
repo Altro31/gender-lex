@@ -16,18 +16,20 @@ RUN bun install --frozen-lockfile
 RUN bun build:api
 
 # Production stage
-FROM oven/bun:1-slim
+# FROM oven/bun:1-slim
 
-WORKDIR /app
+# WORKDIR /app/apps/api
 
 # Copy built application
-COPY --from=builder /app/apps/api/.output/index.js .
+# COPY --from=builder /app/apps/api/.output/index.js .
 
 # Expose port
 EXPOSE 3000
 
+CMD ["bun", "apps/api/.output/index.js"]
+
 # Set environment variables
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
 # Start the application
-CMD ["bun", "index.js"]
+# CMD ["bun", "index.js"]
