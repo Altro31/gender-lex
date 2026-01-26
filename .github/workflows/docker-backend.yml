@@ -52,6 +52,9 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install
+        run: bun i
+
+      - name: Build
         run: bun build:api
 
       - name: Build and push Docker image
