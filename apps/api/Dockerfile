@@ -10,7 +10,7 @@ COPY apps/api ./apps/api
 COPY packages ./packages
 
 # Install dependencies
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Build the application
 RUN bun build:api
