@@ -9,11 +9,9 @@ import { useEffect, type PropsWithChildren } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-interface Props extends PropsWithChildren {
-  lastUsedPreset: string | undefined;
-}
-
-export default function HomeFormProvider({ children, lastUsedPreset }: Props) {
+export default function HomeFormProvider({
+  children,
+}: React.PropsWithChildren) {
   const router = useRouter();
   const form = useForm({
     resolver: standardSchemaResolver(HomeSchema),
@@ -21,8 +19,8 @@ export default function HomeFormProvider({ children, lastUsedPreset }: Props) {
       filesObj: [],
       files: [],
       text: "",
-      selectedPreset: lastUsedPreset ?? "",
-      preset: lastUsedPreset ? { id: lastUsedPreset } : (null as any),
+      selectedPreset: "",
+      preset: null as any,
     },
     mode: "all",
   });
@@ -34,7 +32,7 @@ export default function HomeFormProvider({ children, lastUsedPreset }: Props) {
           await cookieStore.set("preset.last-used", preset?.id ?? "");
         }
       }).unsubscribe,
-    []
+    [form]
   );
 
   const onSubmit = async (input: HomeSchema) => {

@@ -1,5 +1,5 @@
 import TermsAndConditions from "@/components/terms-and-conditions";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -16,6 +16,7 @@ import { ArrowLeft, Lock } from "lucide-react";
 import Link from "next/link";
 import SocialLoginButtons from "./components/social-login-buttons";
 import { getLocale } from "@/locales/utils/locale";
+import { cn } from "@/lib/utils";
 
 export default async function LoginContainer() {
   const locale = await getLocale();
@@ -24,12 +25,14 @@ export default async function LoginContainer() {
       <div className="w-full max-w-md">
         {/* Back Button */}
         <div className="mb-6">
-          <Link href={`/${locale}`}>
-            <Button variant="ghost" size="sm">
-              <ArrowLeft />
-              {t`Back to home`}
-            </Button>
-          </Link>
+          <Button
+            variant="ghost"
+            size="sm"
+            render={<Link href={`/${locale}`} />}
+          >
+            <ArrowLeft />
+            {t`Back to home`}
+          </Button>
         </div>
 
         <Card className="border-0 shadow-xl">
@@ -58,16 +61,19 @@ export default async function LoginContainer() {
           <CardFooter>
             <p className="flex-1 text-center text-sm text-muted-foreground">
               {t`Don't you have an account?`}{" "}
-              <Button className="p-0" nativeButton={false} variant='link' render={<Link href={`/${locale}/auth/register`} />}>
-                  {t`Register here`}
-              </Button>
+              <Link
+                href={`/${locale}/auth/register`}
+                className={cn(buttonVariants({ variant: "link" }), "p-0")}
+              >
+                {t`Register here`}
+              </Link>
             </p>
           </CardFooter>
         </Card>
 
         {/* Footer */}
         <div className="mt-8 text-center text-xs text-muted-foreground">
-          <TermsAndConditions size="sm"/>
+          <TermsAndConditions size="sm" />
         </div>
       </div>
     </div>

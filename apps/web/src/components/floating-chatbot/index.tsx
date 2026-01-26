@@ -45,10 +45,17 @@ import { useRouter } from "next/navigation";
 import { startTransition, useState } from "react";
 import { Loader } from "../ai-elements/loader";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { useIsChatbotAvailable } from "@/components/floating-chatbot/use-available-chatbot";
+import dynamic from "next/dynamic";
 
 export const floatingChatbotPopover = PopoverPrimitive.createHandle();
 
-export default function FloatingChatbot() {
+function FloatingChatbot() {
+  const show = useIsChatbotAvailable();
+  return show && <Chatbot />;
+}
+
+function Chatbot() {
   const { data: session } = useSession();
   const analysisId = useIsAnalysis();
   const [open, setOpen] = useState(false);
@@ -92,15 +99,14 @@ export default function FloatingChatbot() {
 
   return (
     <Popover open={open} onOpenChange={setOpen} handle={floatingChatbotPopover}>
-      <Button
-        size="lg"
+      <PopoverTrigger
         className="fixed right-6 bottom-6 z-50 group h-16 w-16 rounded-full shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl"
-        render={<PopoverTrigger />}
+        render={<Button size="lg" />}
       >
         <div className="absolute inset-0 rounded-full bg-blue-400/20 blur-xl transition-opacity duration-300 group-hover:opacity-100 opacity-0" />
         <X className="group-not-data-popup-open:hidden relative h-6 w-6 text-white transition-transform duration-300 group-hover:rotate-90" />
         <Stars className="group-data-popup-open:hidden relative h-6 w-6 text-white transition-transform duration-300 group-hover:scale-110" />
-      </Button>
+      </PopoverTrigger>
 
       <PopoverContent
         className="h-128 w-80 sm:w-96 p-0 rounded-2xl"
@@ -233,3 +239,5 @@ export default function FloatingChatbot() {
     </Popover>
   );
 }
+
+export default dynamic(async () => FloatingChatbot, { ssr: false });

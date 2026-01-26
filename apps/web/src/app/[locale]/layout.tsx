@@ -1,7 +1,6 @@
 import config from "@/../lingui.config";
 import FloatingChatbot from "@/components/floating-chatbot";
 import FloatingChatbotProvider from "@/components/floating-chatbot/floating-chatbot-provider";
-import FloatingChatbotWrapper from "@/components/floating-chatbot/floating-chatbot-wrapper";
 import OneTapGoogle from "@/components/one-tap-google";
 import { LinguiProvider } from "@/components/providers/lingui-provider";
 import QueryProvider from "@/components/providers/query-provider";
@@ -28,26 +27,30 @@ export default async function RootLayout({
     <html lang={i18n.locale} suppressHydrationWarning>
       <body>
         <div className="root">
+          1
           <ThemeProvider>
+            2
             <LinguiProvider
               initialLocale={i18n.locale}
               initialMessages={i18n.messages}
             >
+              3
               <NuqsAdapter>
+                4
                 <QueryProvider>
+                  5
                   <EventSourceProvider>
+                    6
                     <SidebarProvider>
+                      7
                       <IsAnalysisProvider>
+                        8
                         <FloatingChatbotProvider>
-                          {children}
+                          9{children}
                           <PushNotificationManager />
                           <OneTapGoogle />
-                          <Suspense fallback={null}>
-                            <FloatingChatbotWrapper>
-                              <FloatingChatbot />
-                            </FloatingChatbotWrapper>
-                          </Suspense>
-                          <Toaster richColors position="bottom-right" />
+                          <FloatingChatbot />
+                          <Toaster position="bottom-right" />
                         </FloatingChatbotProvider>
                       </IsAnalysisProvider>
                     </SidebarProvider>

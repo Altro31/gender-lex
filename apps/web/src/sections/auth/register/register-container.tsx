@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import RegisterForm from "@/sections/auth/register/form/register-form";
 import RegisterFormContainer from "@/sections/auth/register/form/register-form-container";
 import { t } from "@lingui/core/macro";
@@ -20,12 +21,10 @@ export default function RegisterContainer() {
       <div className="w-full max-w-md">
         {/* Back Button */}
         <div className="mb-6">
-          <Link href="/">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft />
-              {t`Back to home`}
-            </Button>
-          </Link>
+          <Button variant="ghost" size="sm" render={<Link href="/" />}>
+            <ArrowLeft />
+            {t`Back to home`}
+          </Button>
         </div>
 
         <Card className="border-0 shadow-xl">
@@ -52,14 +51,12 @@ export default function RegisterContainer() {
           <CardFooter>
             <p className="flex-1 text-sm text-center text-muted-foreground">
               {t`Do you already have an account?`}{" "}
-              <Button
-                className="p-0"
-                nativeButton={false}
-                variant="link"
-                render={<Link href="/auth/login" />}
+              <Link
+                href="/auth/login"
+                className={cn(buttonVariants({ variant: "link" }), "p-0")}
               >
                 {t`Sing in here`}
-              </Button>
+              </Link>
             </p>
           </CardFooter>
         </Card>

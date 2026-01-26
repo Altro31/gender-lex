@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Combobox,
   ComboboxCollection,
@@ -16,10 +18,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import type { HomeSchema } from "@/sections/home/form/home-schema";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect, useEffectEvent, useState } from "react";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useState } from "react";
 
 interface Props<T> {
   name: string;
@@ -54,10 +54,8 @@ export default function RHFComboboxAutofetcher<T>({
   getValue = (item) => item,
   renderLastItem,
 }: Props<T>) {
-  const { setValue } = useFormContext();
-  const value = useWatch({ name });
   const [open, setOpen] = useState(false);
-  const { data, isPending } = useInfiniteQuery({
+  const { data } = useInfiniteQuery({
     initialData: { pageParams: [0], pages: [initialData] },
     queryKey: [name],
     queryFn: ({ pageParam }) => fetcherFunc({ page: pageParam }),
@@ -65,13 +63,6 @@ export default function RHFComboboxAutofetcher<T>({
     getNextPageParam: (lastPage: T[], _, lasPageParam) =>
       lastPage.length ? lasPageParam + 1 : undefined,
   });
-  const setDefaultValueEvent = useEffectEvent(() => {
-    if (!value) return;
-    const items = data.pages.flat();
-    const item = items.find((i) => getKey(i) === getKey(value));
-    if (item) setValue(name, item);
-  });
-  useEffect(() => setDefaultValueEvent(), [data]);
 
   const grouped = Object.groupBy(
     data.pages.flat(),
@@ -83,93 +74,86 @@ export default function RHFComboboxAutofetcher<T>({
     items: T[];
   };
 
-  const groups = Object.entries(grouped).map(
-    ([value, items]) =>
-      ({
-        value,
-        items,
-      } as Group)
-  );
+  const groups = Object.entries(grouped).map<Group>(([value, items]) => ({
+    value,
+    items: items!,
+  }));
 
   const handleOpen = (open: boolean) => {
     if (!open) setOpen(open);
     setTimeout(() => setOpen(open), 100);
   };
 
-  return (
-    isPending || (
-      <FormField
-        name={name}
-        render={({ field }) => (
-          <FormItem>
-            {label && (
-              <FormLabel>
-                {label} {required && "*"}
-              </FormLabel>
-            )}
-            <Combobox
-              items={groups}
-              value={field.value}
-              onValueChange={(item) => {
-                field.onChange(getValue(item));
-              }}
-              autoHighlight
-              filter={(item, query) =>
-                getLabel(item)
-                  .toLowerCase()
-                  .trim()
-                  .includes(query.toLowerCase().trim())
-              }
-              itemToStringValue={getKey}
-              itemToStringLabel={getLabel}
-              open={open}
-              onOpenChange={handleOpen}
-              isItemEqualToValue={(a, b) => getKey(a) === getKey(b)}
-            >
-              <FormControl>
-                {/* <ComboboxTrigger size={size}>
-                  <ComboboxValue>
-                    {(item?: T) => {
-                      return item ? renderValue(item) : placeholder;
-                    }}
-                  </ComboboxValue>
-                </ComboboxTrigger> */}
-                <ComboboxInput placeholder={placeholder} />
-              </FormControl>
-              <ComboboxContent onScrollEnd={() => alert("End")}>
-                <ComboboxList>
-                  {(group: Group) => (
-                    <ComboboxGroup key={group.value} items={group.items}>
-                      {group.value && (
-                        <ComboboxLabel>{group.value}</ComboboxLabel>
-                      )}
-                      <ComboboxCollection>
-                        {(item: T) => {
-                          const itemKey = getKey(item);
+  const getItem = (itemToFind: T) => {
+    const items = data.pages.flat();
+    return items.find((i) => getKey(i) === getKey(itemToFind)) ?? null;
+  };
 
-                          const itemDisabled = getDisabled?.(item) ?? false;
-                          return (
-                            <ComboboxItem
-                              key={itemKey}
-                              value={item}
-                              disabled={itemDisabled}
-                            >
-                              {renderItem(item)}
-                            </ComboboxItem>
-                          );
-                        }}
-                      </ComboboxCollection>
-                    </ComboboxGroup>
-                  )}
-                </ComboboxList>
-                {groups.length > 0 && <ComboboxSeparator />}
-                {renderLastItem && <div className="p-1">{renderLastItem}</div>}
-              </ComboboxContent>
-            </Combobox>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    )
+  return (
+    <FormField
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          {label && (
+            <FormLabel>
+              {label} {required && "*"}
+            </FormLabel>
+          )}
+          <Combobox
+            items={groups}
+            value={field.value ? getItem(field.value) : null}
+            onValueChange={(item) => {
+              field.onChange(getValue(item));
+            }}
+            autoHighlight
+            filter={(item, query) =>
+              getLabel(item)
+                .toLowerCase()
+                .trim()
+                .includes(query.toLowerCase().trim())
+            }
+            itemToStringValue={getKey}
+            itemToStringLabel={getLabel}
+            open={open}
+            onOpenChange={handleOpen}
+            isItemEqualToValue={(a, b) => getKey(a) === getKey(b)}
+          >
+            <FormControl>
+              <ComboboxInput placeholder={placeholder} />
+            </FormControl>
+            <ComboboxContent onScrollEnd={() => alert("End")}>
+              <ComboboxList>
+                {(group: Group) => (
+                  <ComboboxGroup key={group.value} items={group.items}>
+                    {group.value && (
+                      <ComboboxLabel>{group.value}</ComboboxLabel>
+                    )}
+                    <ComboboxCollection>
+                      {(item: T) => {
+                        const itemKey = getKey(item);
+
+                        const itemDisabled = getDisabled?.(item) ?? false;
+                        return (
+                          <ComboboxItem
+                            key={itemKey}
+                            value={item}
+                            disabled={itemDisabled}
+                          >
+                            {renderItem(item)}
+                          </ComboboxItem>
+                        );
+                      }}
+                    </ComboboxCollection>
+                  </ComboboxGroup>
+                )}
+              </ComboboxList>
+              {groups.length > 0 && <ComboboxSeparator />}
+              {renderLastItem && <div className="p-1">{renderLastItem}</div>}
+            </ComboboxContent>
+          </Combobox>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 }

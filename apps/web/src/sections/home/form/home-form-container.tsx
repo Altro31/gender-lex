@@ -1,19 +1,13 @@
 "use client";
 
-import RHFSelectAutofetcher from "@/components/rhf/rhf-select-autofetcher";
 import RHFTextarea from "@/components/rhf/rhf-textarea";
-import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth/auth-client";
+import PresetSelect from "@/sections/home/components/preset-select";
 import UploadButton from "@/sections/home/components/upload/upload-button";
 import HomeFiles from "@/sections/home/form/home-files";
 import FormSendButton from "@/sections/home/form/home-form-send-button";
-import {
-  CreatePresetDialog,
-  CreatePresetDialogTrigger,
-} from "@/sections/preset/components/dialogs/create-preset-dialog";
-import { getPresetsSelect } from "@/services/preset";
+import { CreatePresetDialog } from "@/sections/preset/components/dialogs/create-preset-dialog";
 import { t } from "@lingui/core/macro";
-import { Plus } from "lucide-react";
 
 export default function HomeFormContainer() {
   const { data: session } = useSession();
@@ -31,28 +25,7 @@ export default function HomeFormContainer() {
         <div className="bg-background flex justify-between rounded-lg p-2">
           <div className="flex gap-1">
             <UploadButton />
-            {session && (
-              <RHFSelectAutofetcher
-                name="preset"
-                fetcherFunc={getPresetsSelect}
-                placeholder="Using Default Preset"
-                getKey={(i) => i.id}
-                getLabel={(i) => i.name}
-                renderValue={(i) => i.name}
-                renderItem={(i) => i.name}
-                renderLastItem={
-                  <CreatePresetDialogTrigger
-                    render={
-                      <Button size="sm" variant="outline" className="w-full">
-                        <Plus />
-                        {t`New Preset`}
-                      </Button>
-                    }
-                  />
-                }
-              />
-            )}
-
+            {session && <PresetSelect />}
             <CreatePresetDialog />
           </div>
           <FormSendButton />
