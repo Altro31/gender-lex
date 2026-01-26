@@ -14,7 +14,6 @@ RUN bun install --frozen-lockfile
 
 # Build the application
 RUN bun build:api
-RUN bun migrate:prod
 
 # Production stage
 FROM oven/bun:1-slim
