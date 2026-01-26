@@ -8,7 +8,7 @@ export default function OneTapGoogle() {
   const { data: session } = useSession();
   const router = useRouter();
   useEffect(() => {
-    if (!session) return;
+    if (session) return;
     authClient.oneTap({ fetchOptions: { onSuccess: () => router.refresh() } });
   }, [session]);
 

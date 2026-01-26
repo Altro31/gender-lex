@@ -58,14 +58,14 @@ export function ChangeVisibilityAlertDialog() {
                 {analysis.visibility === "private" ? (
                   <Trans>
                     By changing the visibility of the current analysis as{" "}
-                    <strong>Public</strong>, anyone can access this URL an see
-                    this results.
+                    <strong>{t`Public`}</strong>, anyone can access this URL an
+                    see this results.
                   </Trans>
                 ) : (
                   <Trans>
                     By changing the visibility of the current analysis as{" "}
-                    <strong>Private</strong>, nobody can access this URL, but
-                    you.
+                    <strong>{t`Private`}</strong>, nobody can access this URL,
+                    but you.
                   </Trans>
                 )}
               </AlertDialogDescription>

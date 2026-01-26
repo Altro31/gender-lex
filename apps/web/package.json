@@ -11,7 +11,7 @@
     "start": "next start",
     "type:gen": "next typegen",
     "lint": "oxlint --fix --fix-suggestions",
-    "locales:gen": "lingui extract"
+    "locales:gen": "lingui extract --clean"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.1",

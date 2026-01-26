@@ -13,7 +13,6 @@ export function LinguiProvider({
   initialLocale: string;
   initialMessages: Messages;
 }) {
-  i18n.activate(initialLocale);
   useLayoutEffect(() => {
     i18n.load(initialLocale, initialMessages);
     i18n.activate(initialLocale);

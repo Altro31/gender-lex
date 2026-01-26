@@ -42,11 +42,11 @@ export default async function RootLayout({
                           {children}
                           <PushNotificationManager />
                           <OneTapGoogle />
-                          <FloatingChatbotWrapper>
-                            <Suspense fallback={null}>
+                          <Suspense fallback={null}>
+                            <FloatingChatbotWrapper>
                               <FloatingChatbot />
-                            </Suspense>
-                          </FloatingChatbotWrapper>
+                            </FloatingChatbotWrapper>
+                          </Suspense>
                           <Toaster richColors position="bottom-right" />
                         </FloatingChatbotProvider>
                       </IsAnalysisProvider>
