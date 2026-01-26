@@ -60,3 +60,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
+
+      - name: Trigger deploy hook
+        if: github.event_name != 'pull_request'
+        run: |
+          curl -X POST ${{ secrets.DEPLOY_HOOK_URL }}
