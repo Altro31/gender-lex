@@ -13,8 +13,8 @@ COPY packages ./packages
 RUN bun install --frozen-lockfile
 
 # Build the application
-WORKDIR /app/apps/api
-RUN bun run build
+RUN bun build:api
+RUN bun migrate:prod
 
 # Production stage
 FROM oven/bun:1-slim
