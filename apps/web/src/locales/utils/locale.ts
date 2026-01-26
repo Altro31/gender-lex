@@ -1,6 +1,7 @@
-import { locale } from 'next/root-params'
-import 'server-only'
+import { locale } from "next/root-params";
+import { cache } from "react";
+import "server-only";
 
-export function getLocale(): Promise<string> {
-	return locale()
-}
+export const getLocale = (): Promise<string> => {
+  return locale();
+};

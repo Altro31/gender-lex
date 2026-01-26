@@ -2,6 +2,7 @@ import { chatbotSystemPrompt } from "@/lib/chatbot/system.prompt";
 import { analysisTools } from "@/lib/chatbot/tools/analysis-tools";
 import { routeTools } from "@/lib/chatbot/tools/route-tools";
 import envs from "@/lib/env/env-server";
+import { google } from "@ai-sdk/google";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { InferAgentUIMessage, ToolLoopAgent } from "ai";
 

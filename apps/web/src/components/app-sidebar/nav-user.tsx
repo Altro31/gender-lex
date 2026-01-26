@@ -19,14 +19,14 @@ import {
 } from '@/components/ui/sidebar'
 import { getSession } from '@/lib/auth/auth-server'
 
-import GithubButton from '@/components/app-sidebar/buttons/GithubButton'
-import GoogleButton from '@/components/app-sidebar/buttons/GoogleButton'
+import EmailButton from '@/components/app-sidebar/buttons/email-button'
+import GithubButton from '@/components/app-sidebar/buttons/github-button'
+import GoogleButton from '@/components/app-sidebar/buttons/google-button'
 import { LogoutButton } from '@/components/app-sidebar/buttons/logout-button'
 import ThemeSwitcher from '@/components/theme/theme-switcher'
 import LanguageSwitcher from '@/locales/components/language-switcher'
 import { t } from '@lingui/core/macro'
 import Link from 'next/link'
-import EmailButton from './buttons/EmailButton'
 
 export default async function NavUser() {
 	const session = await getSession()
@@ -102,9 +102,9 @@ async function User() {
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					<LogoutButton variant='ghost' className='w-full justify-start' size='sm' nativeButton={false} render={<DropdownMenuItem />}>
-					{t`Logout`}
-				</LogoutButton>
+					<LogoutButton  nativeButton={false} render={<DropdownMenuItem />}>
+						{t`Logout`}
+					</LogoutButton>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
@@ -132,10 +132,10 @@ function Login() {
 				sideOffset={4}
 			>
 				<DropdownMenuGroup>
-					<EmailButton />
+					<DropdownMenuItem render={<EmailButton />}/>
 					<DropdownMenuSeparator />
-					<GoogleButton redirect={envs.UI_URL} />
-					<GithubButton redirect={envs.UI_URL} />
+					<GoogleButton nativeButton={false} redirect={envs.UI_URL} render={<DropdownMenuItem />}/>
+					<GithubButton nativeButton={false} redirect={envs.UI_URL} render={<DropdownMenuItem />}/>
 					<DropdownMenuSeparator />
 					<ThemeSwitcher />
 					<LanguageSwitcher />

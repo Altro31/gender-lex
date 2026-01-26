@@ -2,7 +2,6 @@
 
 import { type Messages, i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import Script from "next/script";
 import { useLayoutEffect } from "react";
 
 export function LinguiProvider({
@@ -14,6 +13,7 @@ export function LinguiProvider({
   initialLocale: string;
   initialMessages: Messages;
 }) {
+  i18n.activate(initialLocale);
   useLayoutEffect(() => {
     i18n.load(initialLocale, initialMessages);
     i18n.activate(initialLocale);

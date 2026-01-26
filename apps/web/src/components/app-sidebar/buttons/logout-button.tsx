@@ -1,12 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { authClient } from "@/lib/auth/auth-client";
 import { Button as ButtonPrimitive, mergeProps } from "@base-ui/react";
 import { LogOut } from "lucide-react";
 
 export function LogoutButton({
   children,
+
   ...props
 }: Omit<React.ComponentProps<typeof Button>, "onClick">) {
   const logOut = async () => {
@@ -15,9 +17,9 @@ export function LogoutButton({
   };
 
   return (
-    <Button {...mergeProps(props, { onClick: logOut })}>
+    <ButtonPrimitive {...mergeProps({ onClick: logOut }, props)}>
       <LogOut />
       {children}
-    </Button>
+    </ButtonPrimitive>
   );
 }

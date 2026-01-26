@@ -1,10 +1,18 @@
 {
   "$schema": "https://turborepo.com/schema.json",
-  "extends": ["//"],
+  "extends": [
+    "//"
+  ],
   "tasks": {
     "build": {
-      "dependsOn": ["@repo/db#generate"],
-      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"],
+      "dependsOn": [
+        "@repo/db#generate"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "!.next/dev/**"
+      ],
       "env": [
         "PORT",
         "API_URL",
@@ -19,7 +27,10 @@
         "DATABASE_URL",
         "GEMINI_API_KEY",
         "NEXT_PUBLIC_VAPID_PUBLIC_KEY",
-        "VAPID_PRIVATE_KEY"
+        "VAPID_PRIVATE_KEY",
+        "CHATBOT_PROVIDER_URL",
+        "CHATBOT_PROVIDER_API_KEY",
+        "CHATBOT_MODEL_IDENTIFIER"
       ]
     }
   }

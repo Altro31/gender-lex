@@ -33,7 +33,9 @@ export function formatAsText(analysis: Analysis): string {
   lines.push("-".repeat(80));
   lines.push(`Biased Terms: ${analysis.biasedTerms?.length || 0}`);
   lines.push(`Biased Metaphors: ${analysis.biasedMetaphors?.length || 0}`);
-  lines.push(`Text Alternatives: ${analysis.modifiedTextAlternatives?.length || 0}`);
+  lines.push(
+    `Text Alternatives: ${analysis.modifiedTextAlternatives?.length || 0}`
+  );
   lines.push("");
 
   // Biased Terms
@@ -44,7 +46,9 @@ export function formatAsText(analysis: Analysis): string {
     analysis.biasedTerms.forEach((term, index) => {
       lines.push(`${index + 1}. "${term.content}"`);
       lines.push(`   Category: ${term.category}`);
-      lines.push(`   Influence: ${Math.round(term.influencePercentage * 100)}%`);
+      lines.push(
+        `   Influence: ${Math.round(term.influencePercentage * 100)}%`
+      );
       lines.push(`   Explanation: ${term.explanation}`);
       lines.push("");
     });
@@ -57,7 +61,9 @@ export function formatAsText(analysis: Analysis): string {
     lines.push("-".repeat(80));
     analysis.biasedMetaphors.forEach((metaphor, index) => {
       lines.push(`${index + 1}. "${metaphor.content}"`);
-      lines.push(`   Influence: ${Math.round(metaphor.influencePercentage * 100)}%`);
+      lines.push(
+        `   Influence: ${Math.round(metaphor.influencePercentage * 100)}%`
+      );
       lines.push(`   Explanation: ${metaphor.explanation}`);
       lines.push(`   Historical Context: ${metaphor.historicalContext}`);
       lines.push("");
@@ -75,7 +81,9 @@ export function formatAsText(analysis: Analysis): string {
     if (ctx.stereotype) {
       lines.push("Stereotype:");
       lines.push(`  Present: ${ctx.stereotype.presence ? "Yes" : "No"}`);
-      lines.push(`  Influence: ${Math.round(ctx.stereotype.influencePercentage * 100)}%`);
+      lines.push(
+        `  Influence: ${Math.round(ctx.stereotype.influencePercentage * 100)}%`
+      );
       lines.push(`  Explanation: ${ctx.stereotype.explanation}`);
       if (ctx.stereotype.examples && ctx.stereotype.examples.length > 0) {
         lines.push(`  Examples: ${ctx.stereotype.examples.join(", ")}`);
@@ -86,9 +94,16 @@ export function formatAsText(analysis: Analysis): string {
     if (ctx.powerAsymmetry) {
       lines.push("Power Asymmetry:");
       lines.push(`  Present: ${ctx.powerAsymmetry.presence ? "Yes" : "No"}`);
-      lines.push(`  Influence: ${Math.round(ctx.powerAsymmetry.influencePercentage * 100)}%`);
+      lines.push(
+        `  Influence: ${Math.round(
+          ctx.powerAsymmetry.influencePercentage * 100
+        )}%`
+      );
       lines.push(`  Explanation: ${ctx.powerAsymmetry.explanation}`);
-      if (ctx.powerAsymmetry.examples && ctx.powerAsymmetry.examples.length > 0) {
+      if (
+        ctx.powerAsymmetry.examples &&
+        ctx.powerAsymmetry.examples.length > 0
+      ) {
         lines.push(`  Examples: ${ctx.powerAsymmetry.examples.join(", ")}`);
       }
       lines.push("");
@@ -96,17 +111,25 @@ export function formatAsText(analysis: Analysis): string {
 
     if (ctx.genderRepresentationAbsence) {
       lines.push("Gender Representation Absence:");
-      lines.push(`  Present: ${ctx.genderRepresentationAbsence.presence ? "Yes" : "No"}`);
       lines.push(
-        `  Influence: ${Math.round(ctx.genderRepresentationAbsence.influencePercentage * 100)}%`
+        `  Present: ${ctx.genderRepresentationAbsence.presence ? "Yes" : "No"}`
       );
-      lines.push(`  Explanation: ${ctx.genderRepresentationAbsence.explanation}`);
+      lines.push(
+        `  Influence: ${Math.round(
+          ctx.genderRepresentationAbsence.influencePercentage * 100
+        )}%`
+      );
+      lines.push(
+        `  Explanation: ${ctx.genderRepresentationAbsence.explanation}`
+      );
       if (
         ctx.genderRepresentationAbsence.affectedGroups &&
         ctx.genderRepresentationAbsence.affectedGroups.length > 0
       ) {
         lines.push(
-          `  Affected Groups: ${ctx.genderRepresentationAbsence.affectedGroups.join(", ")}`
+          `  Affected Groups: ${ctx.genderRepresentationAbsence.affectedGroups.join(
+            ", "
+          )}`
         );
       }
       lines.push("");
@@ -115,13 +138,21 @@ export function formatAsText(analysis: Analysis): string {
     if (ctx.intersectionality) {
       lines.push("Intersectionality:");
       lines.push(`  Present: ${ctx.intersectionality.presence ? "Yes" : "No"}`);
-      lines.push(`  Influence: ${Math.round(ctx.intersectionality.influencePercentage * 100)}%`);
+      lines.push(
+        `  Influence: ${Math.round(
+          ctx.intersectionality.influencePercentage * 100
+        )}%`
+      );
       lines.push(`  Explanation: ${ctx.intersectionality.explanation}`);
       if (
         ctx.intersectionality.excludedGroups &&
         ctx.intersectionality.excludedGroups.length > 0
       ) {
-        lines.push(`  Excluded Groups: ${ctx.intersectionality.excludedGroups.join(", ")}`);
+        lines.push(
+          `  Excluded Groups: ${ctx.intersectionality.excludedGroups.join(
+            ", "
+          )}`
+        );
       }
       lines.push("");
     }
@@ -129,9 +160,16 @@ export function formatAsText(analysis: Analysis): string {
     if (ctx.systemicBiases) {
       lines.push("Systemic Biases:");
       lines.push(`  Present: ${ctx.systemicBiases.presence ? "Yes" : "No"}`);
-      lines.push(`  Influence: ${Math.round(ctx.systemicBiases.influencePercentage * 100)}%`);
+      lines.push(
+        `  Influence: ${Math.round(
+          ctx.systemicBiases.influencePercentage * 100
+        )}%`
+      );
       lines.push(`  Explanation: ${ctx.systemicBiases.explanation}`);
-      if (ctx.systemicBiases.examples && ctx.systemicBiases.examples.length > 0) {
+      if (
+        ctx.systemicBiases.examples &&
+        ctx.systemicBiases.examples.length > 0
+      ) {
         lines.push(`  Examples: ${ctx.systemicBiases.examples.join(", ")}`);
       }
       lines.push("");
@@ -146,23 +184,36 @@ export function formatAsText(analysis: Analysis): string {
 
     if (analysis.impactAnalysis.accessToCare) {
       lines.push("Access to Care:");
-      lines.push(`  Affected: ${analysis.impactAnalysis.accessToCare.affected ? "Yes" : "No"}`);
-      lines.push(`  Description: ${analysis.impactAnalysis.accessToCare.description}`);
+      lines.push(
+        `  Affected: ${
+          analysis.impactAnalysis.accessToCare.affected ? "Yes" : "No"
+        }`
+      );
+      lines.push(
+        `  Description: ${analysis.impactAnalysis.accessToCare.description}`
+      );
       lines.push("");
     }
 
     if (analysis.impactAnalysis.stigmatization) {
       lines.push("Stigmatization:");
       lines.push(
-        `  Affected: ${analysis.impactAnalysis.stigmatization.affected ? "Yes" : "No"}`
+        `  Affected: ${
+          analysis.impactAnalysis.stigmatization.affected ? "Yes" : "No"
+        }`
       );
-      lines.push(`  Description: ${analysis.impactAnalysis.stigmatization.description}`);
+      lines.push(
+        `  Description: ${analysis.impactAnalysis.stigmatization.description}`
+      );
       lines.push("");
     }
   }
 
   // Modified Text Alternatives
-  if (analysis.modifiedTextAlternatives && analysis.modifiedTextAlternatives.length > 0) {
+  if (
+    analysis.modifiedTextAlternatives &&
+    analysis.modifiedTextAlternatives.length > 0
+  ) {
     lines.push("-".repeat(80));
     lines.push("TEXT ALTERNATIVES");
     lines.push("-".repeat(80));
@@ -230,8 +281,12 @@ export function formatAsMarkdown(analysis: Analysis): string {
   lines.push("## Summary Statistics");
   lines.push("");
   lines.push(`- **Biased Terms:** ${analysis.biasedTerms?.length || 0}`);
-  lines.push(`- **Biased Metaphors:** ${analysis.biasedMetaphors?.length || 0}`);
-  lines.push(`- **Text Alternatives:** ${analysis.modifiedTextAlternatives?.length || 0}`);
+  lines.push(
+    `- **Biased Metaphors:** ${analysis.biasedMetaphors?.length || 0}`
+  );
+  lines.push(
+    `- **Text Alternatives:** ${analysis.modifiedTextAlternatives?.length || 0}`
+  );
   lines.push("");
 
   // Biased Terms
@@ -242,7 +297,9 @@ export function formatAsMarkdown(analysis: Analysis): string {
       lines.push(`### ${index + 1}. "${term.content}"`);
       lines.push("");
       lines.push(`- **Category:** ${term.category}`);
-      lines.push(`- **Influence:** ${Math.round(term.influencePercentage * 100)}%`);
+      lines.push(
+        `- **Influence:** ${Math.round(term.influencePercentage * 100)}%`
+      );
       lines.push(`- **Explanation:** ${term.explanation}`);
       lines.push("");
     });
@@ -255,7 +312,9 @@ export function formatAsMarkdown(analysis: Analysis): string {
     analysis.biasedMetaphors.forEach((metaphor, index) => {
       lines.push(`### ${index + 1}. "${metaphor.content}"`);
       lines.push("");
-      lines.push(`- **Influence:** ${Math.round(metaphor.influencePercentage * 100)}%`);
+      lines.push(
+        `- **Influence:** ${Math.round(metaphor.influencePercentage * 100)}%`
+      );
       lines.push(`- **Explanation:** ${metaphor.explanation}`);
       lines.push(`- **Historical Context:** ${metaphor.historicalContext}`);
       lines.push("");
@@ -273,7 +332,11 @@ export function formatAsMarkdown(analysis: Analysis): string {
       lines.push("### Stereotype");
       lines.push("");
       lines.push(`- **Present:** ${ctx.stereotype.presence ? "Yes" : "No"}`);
-      lines.push(`- **Influence:** ${Math.round(ctx.stereotype.influencePercentage * 100)}%`);
+      lines.push(
+        `- **Influence:** ${Math.round(
+          ctx.stereotype.influencePercentage * 100
+        )}%`
+      );
       lines.push(`- **Explanation:** ${ctx.stereotype.explanation}`);
       if (ctx.stereotype.examples && ctx.stereotype.examples.length > 0) {
         lines.push(`- **Examples:** ${ctx.stereotype.examples.join(", ")}`);
@@ -284,10 +347,19 @@ export function formatAsMarkdown(analysis: Analysis): string {
     if (ctx.powerAsymmetry) {
       lines.push("### Power Asymmetry");
       lines.push("");
-      lines.push(`- **Present:** ${ctx.powerAsymmetry.presence ? "Yes" : "No"}`);
-      lines.push(`- **Influence:** ${Math.round(ctx.powerAsymmetry.influencePercentage * 100)}%`);
+      lines.push(
+        `- **Present:** ${ctx.powerAsymmetry.presence ? "Yes" : "No"}`
+      );
+      lines.push(
+        `- **Influence:** ${Math.round(
+          ctx.powerAsymmetry.influencePercentage * 100
+        )}%`
+      );
       lines.push(`- **Explanation:** ${ctx.powerAsymmetry.explanation}`);
-      if (ctx.powerAsymmetry.examples && ctx.powerAsymmetry.examples.length > 0) {
+      if (
+        ctx.powerAsymmetry.examples &&
+        ctx.powerAsymmetry.examples.length > 0
+      ) {
         lines.push(`- **Examples:** ${ctx.powerAsymmetry.examples.join(", ")}`);
       }
       lines.push("");
@@ -296,17 +368,27 @@ export function formatAsMarkdown(analysis: Analysis): string {
     if (ctx.genderRepresentationAbsence) {
       lines.push("### Gender Representation Absence");
       lines.push("");
-      lines.push(`- **Present:** ${ctx.genderRepresentationAbsence.presence ? "Yes" : "No"}`);
       lines.push(
-        `- **Influence:** ${Math.round(ctx.genderRepresentationAbsence.influencePercentage * 100)}%`
+        `- **Present:** ${
+          ctx.genderRepresentationAbsence.presence ? "Yes" : "No"
+        }`
       );
-      lines.push(`- **Explanation:** ${ctx.genderRepresentationAbsence.explanation}`);
+      lines.push(
+        `- **Influence:** ${Math.round(
+          ctx.genderRepresentationAbsence.influencePercentage * 100
+        )}%`
+      );
+      lines.push(
+        `- **Explanation:** ${ctx.genderRepresentationAbsence.explanation}`
+      );
       if (
         ctx.genderRepresentationAbsence.affectedGroups &&
         ctx.genderRepresentationAbsence.affectedGroups.length > 0
       ) {
         lines.push(
-          `- **Affected Groups:** ${ctx.genderRepresentationAbsence.affectedGroups.join(", ")}`
+          `- **Affected Groups:** ${ctx.genderRepresentationAbsence.affectedGroups.join(
+            ", "
+          )}`
         );
       }
       lines.push("");
@@ -315,16 +397,24 @@ export function formatAsMarkdown(analysis: Analysis): string {
     if (ctx.intersectionality) {
       lines.push("### Intersectionality");
       lines.push("");
-      lines.push(`- **Present:** ${ctx.intersectionality.presence ? "Yes" : "No"}`);
       lines.push(
-        `- **Influence:** ${Math.round(ctx.intersectionality.influencePercentage * 100)}%`
+        `- **Present:** ${ctx.intersectionality.presence ? "Yes" : "No"}`
+      );
+      lines.push(
+        `- **Influence:** ${Math.round(
+          ctx.intersectionality.influencePercentage * 100
+        )}%`
       );
       lines.push(`- **Explanation:** ${ctx.intersectionality.explanation}`);
       if (
         ctx.intersectionality.excludedGroups &&
         ctx.intersectionality.excludedGroups.length > 0
       ) {
-        lines.push(`- **Excluded Groups:** ${ctx.intersectionality.excludedGroups.join(", ")}`);
+        lines.push(
+          `- **Excluded Groups:** ${ctx.intersectionality.excludedGroups.join(
+            ", "
+          )}`
+        );
       }
       lines.push("");
     }
@@ -332,10 +422,19 @@ export function formatAsMarkdown(analysis: Analysis): string {
     if (ctx.systemicBiases) {
       lines.push("### Systemic Biases");
       lines.push("");
-      lines.push(`- **Present:** ${ctx.systemicBiases.presence ? "Yes" : "No"}`);
-      lines.push(`- **Influence:** ${Math.round(ctx.systemicBiases.influencePercentage * 100)}%`);
+      lines.push(
+        `- **Present:** ${ctx.systemicBiases.presence ? "Yes" : "No"}`
+      );
+      lines.push(
+        `- **Influence:** ${Math.round(
+          ctx.systemicBiases.influencePercentage * 100
+        )}%`
+      );
       lines.push(`- **Explanation:** ${ctx.systemicBiases.explanation}`);
-      if (ctx.systemicBiases.examples && ctx.systemicBiases.examples.length > 0) {
+      if (
+        ctx.systemicBiases.examples &&
+        ctx.systemicBiases.examples.length > 0
+      ) {
         lines.push(`- **Examples:** ${ctx.systemicBiases.examples.join(", ")}`);
       }
       lines.push("");
@@ -351,9 +450,13 @@ export function formatAsMarkdown(analysis: Analysis): string {
       lines.push("### Access to Care");
       lines.push("");
       lines.push(
-        `- **Affected:** ${analysis.impactAnalysis.accessToCare.affected ? "Yes" : "No"}`
+        `- **Affected:** ${
+          analysis.impactAnalysis.accessToCare.affected ? "Yes" : "No"
+        }`
       );
-      lines.push(`- **Description:** ${analysis.impactAnalysis.accessToCare.description}`);
+      lines.push(
+        `- **Description:** ${analysis.impactAnalysis.accessToCare.description}`
+      );
       lines.push("");
     }
 
@@ -361,15 +464,22 @@ export function formatAsMarkdown(analysis: Analysis): string {
       lines.push("### Stigmatization");
       lines.push("");
       lines.push(
-        `- **Affected:** ${analysis.impactAnalysis.stigmatization.affected ? "Yes" : "No"}`
+        `- **Affected:** ${
+          analysis.impactAnalysis.stigmatization.affected ? "Yes" : "No"
+        }`
       );
-      lines.push(`- **Description:** ${analysis.impactAnalysis.stigmatization.description}`);
+      lines.push(
+        `- **Description:** ${analysis.impactAnalysis.stigmatization.description}`
+      );
       lines.push("");
     }
   }
 
   // Modified Text Alternatives
-  if (analysis.modifiedTextAlternatives && analysis.modifiedTextAlternatives.length > 0) {
+  if (
+    analysis.modifiedTextAlternatives &&
+    analysis.modifiedTextAlternatives.length > 0
+  ) {
     lines.push("## Text Alternatives");
     lines.push("");
     analysis.modifiedTextAlternatives.forEach((alternative) => {
@@ -575,7 +685,9 @@ export function formatAsHTML(analysis: Analysis): string {
   
   <div class="metadata">
     <p><strong>Analysis ID:</strong> ${analysis.id}</p>
-    <p><strong>Date:</strong> ${new Date(analysis.createdAt).toLocaleString()}</p>
+    <p><strong>Date:</strong> ${new Date(
+      analysis.createdAt
+    ).toLocaleString()}</p>
     <p><strong>Status:</strong> ${analysis.status}</p>
   </div>
 
@@ -592,15 +704,21 @@ export function formatAsHTML(analysis: Analysis): string {
   <div class="stats">
     <div class="stat-card">
       <div class="stat-label">Biased Terms</div>
-      <div class="stat-value" style="color: #dc2626;">${analysis.biasedTerms?.length || 0}</div>
+      <div class="stat-value" style="color: #dc2626;">${
+        analysis.biasedTerms?.length || 0
+      }</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Biased Metaphors</div>
-      <div class="stat-value" style="color: #ea580c;">${analysis.biasedMetaphors?.length || 0}</div>
+      <div class="stat-value" style="color: #ea580c;">${
+        analysis.biasedMetaphors?.length || 0
+      }</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Text Alternatives</div>
-      <div class="stat-value" style="color: #2563eb;">${analysis.modifiedTextAlternatives?.length || 0}</div>
+      <div class="stat-value" style="color: #2563eb;">${
+        analysis.modifiedTextAlternatives?.length || 0
+      }</div>
     </div>
   </div>
 
@@ -617,7 +735,9 @@ export function formatAsHTML(analysis: Analysis): string {
           <div class="term-content">"${escapeHtml(term.content)}"</div>
           <span class="category">${term.category}</span>
         </div>
-        <div class="influence">${Math.round(term.influencePercentage * 100)}%</div>
+        <div class="influence">${Math.round(
+          term.influencePercentage * 100
+        )}%</div>
       </div>
       <div class="explanation">${escapeHtml(term.explanation)}</div>
     </div>
@@ -638,10 +758,14 @@ export function formatAsHTML(analysis: Analysis): string {
     <div class="metaphor-card">
       <div class="term-header">
         <div class="term-content">"${escapeHtml(metaphor.content)}"</div>
-        <div class="influence">${Math.round(metaphor.influencePercentage * 100)}%</div>
+        <div class="influence">${Math.round(
+          metaphor.influencePercentage * 100
+        )}%</div>
       </div>
       <div class="explanation">${escapeHtml(metaphor.explanation)}</div>
-      <div class="explanation" style="margin-top: 5px;"><strong>Historical Context:</strong> ${escapeHtml(metaphor.historicalContext)}</div>
+      <div class="explanation" style="margin-top: 5px;"><strong>Historical Context:</strong> ${escapeHtml(
+        metaphor.historicalContext
+      )}</div>
     </div>
   `
     )
@@ -660,13 +784,24 @@ export function formatAsHTML(analysis: Analysis): string {
     <div class="context-item">
       <h3>Stereotype</h3>
       <ul>
-        <li><strong>Present:</strong> ${analysis.additionalContextEvaluation.stereotype.presence ? "Yes" : "No"}</li>
-        <li><strong>Influence:</strong> ${Math.round(analysis.additionalContextEvaluation.stereotype.influencePercentage * 100)}%</li>
-        <li><strong>Explanation:</strong> ${escapeHtml(analysis.additionalContextEvaluation.stereotype.explanation)}</li>
+        <li><strong>Present:</strong> ${
+          analysis.additionalContextEvaluation.stereotype.presence
+            ? "Yes"
+            : "No"
+        }</li>
+        <li><strong>Influence:</strong> ${Math.round(
+          analysis.additionalContextEvaluation.stereotype.influencePercentage *
+            100
+        )}%</li>
+        <li><strong>Explanation:</strong> ${escapeHtml(
+          analysis.additionalContextEvaluation.stereotype.explanation
+        )}</li>
         ${
           analysis.additionalContextEvaluation.stereotype.examples &&
           analysis.additionalContextEvaluation.stereotype.examples.length > 0
-            ? `<li><strong>Examples:</strong> ${analysis.additionalContextEvaluation.stereotype.examples.map(escapeHtml).join(", ")}</li>`
+            ? `<li><strong>Examples:</strong> ${analysis.additionalContextEvaluation.stereotype.examples
+                .map(escapeHtml)
+                .join(", ")}</li>`
             : ""
         }
       </ul>
@@ -680,13 +815,25 @@ export function formatAsHTML(analysis: Analysis): string {
     <div class="context-item">
       <h3>Power Asymmetry</h3>
       <ul>
-        <li><strong>Present:</strong> ${analysis.additionalContextEvaluation.powerAsymmetry.presence ? "Yes" : "No"}</li>
-        <li><strong>Influence:</strong> ${Math.round(analysis.additionalContextEvaluation.powerAsymmetry.influencePercentage * 100)}%</li>
-        <li><strong>Explanation:</strong> ${escapeHtml(analysis.additionalContextEvaluation.powerAsymmetry.explanation)}</li>
+        <li><strong>Present:</strong> ${
+          analysis.additionalContextEvaluation.powerAsymmetry.presence
+            ? "Yes"
+            : "No"
+        }</li>
+        <li><strong>Influence:</strong> ${Math.round(
+          analysis.additionalContextEvaluation.powerAsymmetry
+            .influencePercentage * 100
+        )}%</li>
+        <li><strong>Explanation:</strong> ${escapeHtml(
+          analysis.additionalContextEvaluation.powerAsymmetry.explanation
+        )}</li>
         ${
           analysis.additionalContextEvaluation.powerAsymmetry.examples &&
-          analysis.additionalContextEvaluation.powerAsymmetry.examples.length > 0
-            ? `<li><strong>Examples:</strong> ${analysis.additionalContextEvaluation.powerAsymmetry.examples.map(escapeHtml).join(", ")}</li>`
+          analysis.additionalContextEvaluation.powerAsymmetry.examples.length >
+            0
+            ? `<li><strong>Examples:</strong> ${analysis.additionalContextEvaluation.powerAsymmetry.examples
+                .map(escapeHtml)
+                .join(", ")}</li>`
             : ""
         }
       </ul>
@@ -700,14 +847,28 @@ export function formatAsHTML(analysis: Analysis): string {
     <div class="context-item">
       <h3>Gender Representation Absence</h3>
       <ul>
-        <li><strong>Present:</strong> ${analysis.additionalContextEvaluation.genderRepresentationAbsence.presence ? "Yes" : "No"}</li>
-        <li><strong>Influence:</strong> ${Math.round(analysis.additionalContextEvaluation.genderRepresentationAbsence.influencePercentage * 100)}%</li>
-        <li><strong>Explanation:</strong> ${escapeHtml(analysis.additionalContextEvaluation.genderRepresentationAbsence.explanation)}</li>
+        <li><strong>Present:</strong> ${
+          analysis.additionalContextEvaluation.genderRepresentationAbsence
+            .presence
+            ? "Yes"
+            : "No"
+        }</li>
+        <li><strong>Influence:</strong> ${Math.round(
+          analysis.additionalContextEvaluation.genderRepresentationAbsence
+            .influencePercentage * 100
+        )}%</li>
+        <li><strong>Explanation:</strong> ${escapeHtml(
+          analysis.additionalContextEvaluation.genderRepresentationAbsence
+            .explanation
+        )}</li>
         ${
-          analysis.additionalContextEvaluation.genderRepresentationAbsence.affectedGroups &&
-          analysis.additionalContextEvaluation.genderRepresentationAbsence.affectedGroups.length >
-            0
-            ? `<li><strong>Affected Groups:</strong> ${analysis.additionalContextEvaluation.genderRepresentationAbsence.affectedGroups.map(escapeHtml).join(", ")}</li>`
+          analysis.additionalContextEvaluation.genderRepresentationAbsence
+            .affectedGroups &&
+          analysis.additionalContextEvaluation.genderRepresentationAbsence
+            .affectedGroups.length > 0
+            ? `<li><strong>Affected Groups:</strong> ${analysis.additionalContextEvaluation.genderRepresentationAbsence.affectedGroups
+                .map(escapeHtml)
+                .join(", ")}</li>`
             : ""
         }
       </ul>
@@ -721,13 +882,26 @@ export function formatAsHTML(analysis: Analysis): string {
     <div class="context-item">
       <h3>Intersectionality</h3>
       <ul>
-        <li><strong>Present:</strong> ${analysis.additionalContextEvaluation.intersectionality.presence ? "Yes" : "No"}</li>
-        <li><strong>Influence:</strong> ${Math.round(analysis.additionalContextEvaluation.intersectionality.influencePercentage * 100)}%</li>
-        <li><strong>Explanation:</strong> ${escapeHtml(analysis.additionalContextEvaluation.intersectionality.explanation)}</li>
+        <li><strong>Present:</strong> ${
+          analysis.additionalContextEvaluation.intersectionality.presence
+            ? "Yes"
+            : "No"
+        }</li>
+        <li><strong>Influence:</strong> ${Math.round(
+          analysis.additionalContextEvaluation.intersectionality
+            .influencePercentage * 100
+        )}%</li>
+        <li><strong>Explanation:</strong> ${escapeHtml(
+          analysis.additionalContextEvaluation.intersectionality.explanation
+        )}</li>
         ${
-          analysis.additionalContextEvaluation.intersectionality.excludedGroups &&
-          analysis.additionalContextEvaluation.intersectionality.excludedGroups.length > 0
-            ? `<li><strong>Excluded Groups:</strong> ${analysis.additionalContextEvaluation.intersectionality.excludedGroups.map(escapeHtml).join(", ")}</li>`
+          analysis.additionalContextEvaluation.intersectionality
+            .excludedGroups &&
+          analysis.additionalContextEvaluation.intersectionality.excludedGroups
+            .length > 0
+            ? `<li><strong>Excluded Groups:</strong> ${analysis.additionalContextEvaluation.intersectionality.excludedGroups
+                .map(escapeHtml)
+                .join(", ")}</li>`
             : ""
         }
       </ul>
@@ -741,13 +915,25 @@ export function formatAsHTML(analysis: Analysis): string {
     <div class="context-item">
       <h3>Systemic Biases</h3>
       <ul>
-        <li><strong>Present:</strong> ${analysis.additionalContextEvaluation.systemicBiases.presence ? "Yes" : "No"}</li>
-        <li><strong>Influence:</strong> ${Math.round(analysis.additionalContextEvaluation.systemicBiases.influencePercentage * 100)}%</li>
-        <li><strong>Explanation:</strong> ${escapeHtml(analysis.additionalContextEvaluation.systemicBiases.explanation)}</li>
+        <li><strong>Present:</strong> ${
+          analysis.additionalContextEvaluation.systemicBiases.presence
+            ? "Yes"
+            : "No"
+        }</li>
+        <li><strong>Influence:</strong> ${Math.round(
+          analysis.additionalContextEvaluation.systemicBiases
+            .influencePercentage * 100
+        )}%</li>
+        <li><strong>Explanation:</strong> ${escapeHtml(
+          analysis.additionalContextEvaluation.systemicBiases.explanation
+        )}</li>
         ${
           analysis.additionalContextEvaluation.systemicBiases.examples &&
-          analysis.additionalContextEvaluation.systemicBiases.examples.length > 0
-            ? `<li><strong>Examples:</strong> ${analysis.additionalContextEvaluation.systemicBiases.examples.map(escapeHtml).join(", ")}</li>`
+          analysis.additionalContextEvaluation.systemicBiases.examples.length >
+            0
+            ? `<li><strong>Examples:</strong> ${analysis.additionalContextEvaluation.systemicBiases.examples
+                .map(escapeHtml)
+                .join(", ")}</li>`
             : ""
         }
       </ul>
@@ -769,8 +955,12 @@ export function formatAsHTML(analysis: Analysis): string {
     <div class="context-item">
       <h3>Access to Care</h3>
       <ul>
-        <li><strong>Affected:</strong> ${analysis.impactAnalysis.accessToCare.affected ? "Yes" : "No"}</li>
-        <li><strong>Description:</strong> ${escapeHtml(analysis.impactAnalysis.accessToCare.description)}</li>
+        <li><strong>Affected:</strong> ${
+          analysis.impactAnalysis.accessToCare.affected ? "Yes" : "No"
+        }</li>
+        <li><strong>Description:</strong> ${escapeHtml(
+          analysis.impactAnalysis.accessToCare.description
+        )}</li>
       </ul>
     </div>
   `
@@ -782,8 +972,12 @@ export function formatAsHTML(analysis: Analysis): string {
     <div class="context-item">
       <h3>Stigmatization</h3>
       <ul>
-        <li><strong>Affected:</strong> ${analysis.impactAnalysis.stigmatization.affected ? "Yes" : "No"}</li>
-        <li><strong>Description:</strong> ${escapeHtml(analysis.impactAnalysis.stigmatization.description)}</li>
+        <li><strong>Affected:</strong> ${
+          analysis.impactAnalysis.stigmatization.affected ? "Yes" : "No"
+        }</li>
+        <li><strong>Description:</strong> ${escapeHtml(
+          analysis.impactAnalysis.stigmatization.description
+        )}</li>
       </ul>
     </div>
   `
@@ -794,7 +988,8 @@ export function formatAsHTML(analysis: Analysis): string {
   }
 
   ${
-    analysis.modifiedTextAlternatives && analysis.modifiedTextAlternatives.length > 0
+    analysis.modifiedTextAlternatives &&
+    analysis.modifiedTextAlternatives.length > 0
       ? `
   <h2>Text Alternatives</h2>
   ${analysis.modifiedTextAlternatives
@@ -802,18 +997,27 @@ export function formatAsHTML(analysis: Analysis): string {
       (alternative) => `
     <div class="context-item">
       <h3>Alternative ${alternative.alternativeNumber}</h3>
-      <div class="alternative-text">${escapeHtml(alternative.alternativeText)}</div>
+      <div class="alternative-text">${escapeHtml(
+        alternative.alternativeText
+      )}</div>
       ${
-        alternative.modificationsExplanation && alternative.modificationsExplanation.length > 0
+        alternative.modificationsExplanation &&
+        alternative.modificationsExplanation.length > 0
           ? `
         <h4 style="margin-top: 15px;">Modifications:</h4>
         ${alternative.modificationsExplanation
           .map(
             (mod) => `
           <div class="modification">
-            <div><span class="modification-label">Original:</span> "${escapeHtml(mod.originalFragment)}"</div>
-            <div><span class="modification-label">Modified:</span> "${escapeHtml(mod.modifiedFragment)}"</div>
-            <div><span class="modification-label">Reason:</span> ${escapeHtml(mod.reason)}</div>
+            <div><span class="modification-label">Original:</span> "${escapeHtml(
+              mod.originalFragment
+            )}"</div>
+            <div><span class="modification-label">Modified:</span> "${escapeHtml(
+              mod.modifiedFragment
+            )}"</div>
+            <div><span class="modification-label">Reason:</span> ${escapeHtml(
+              mod.reason
+            )}</div>
           </div>
         `
           )
@@ -842,7 +1046,9 @@ export function formatAsHTML(analysis: Analysis): string {
 
   <div class="footer">
     <p>Report generated by Gender-Lex</p>
-    <p>Analysis ID: ${analysis.id} | Generated: ${new Date().toLocaleString()}</p>
+    <p>Analysis ID: ${
+      analysis.id
+    } | Generated: ${new Date().toLocaleString()}</p>
   </div>
 </body>
 </html>
@@ -861,7 +1067,11 @@ function createFileTimestamp(): string {
 /**
  * Downloads a file with the given content
  */
-export function downloadFile(content: string, filename: string, mimeType: string) {
+export function downloadFile(
+  content: string,
+  filename: string,
+  mimeType: string
+) {
   try {
     const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
@@ -891,7 +1101,11 @@ export function exportAnalysis(analysis: Analysis, format: ExportFormat) {
       break;
 
     case "markdown":
-      downloadFile(formatAsMarkdown(analysis), `${baseFilename}.md`, "text/markdown");
+      downloadFile(
+        formatAsMarkdown(analysis),
+        `${baseFilename}.md`,
+        "text/markdown"
+      );
       break;
 
     case "pdf":
@@ -899,9 +1113,11 @@ export function exportAnalysis(analysis: Analysis, format: ExportFormat) {
       const htmlContent = formatAsHTML(analysis);
       const printWindow = window.open("", "_blank");
       if (!printWindow) {
-        throw new Error("Popup blocked. Please allow popups for this site to export to PDF.");
+        throw new Error(
+          "Popup blocked. Please allow popups for this site to export to PDF."
+        );
       }
-      printWindow.document.write(htmlContent);
+      printWindow.document.writeln(htmlContent);
       printWindow.document.close();
       // Wait for content to load before printing
       printWindow.onload = () => {
