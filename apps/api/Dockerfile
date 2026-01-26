@@ -21,8 +21,7 @@ FROM oven/bun:1-slim
 WORKDIR /app
 
 # Copy built application
-COPY --from=builder /app/apps/api/.output ./.output
-COPY --from=builder /app/apps/api/package.json ./package.json
+COPY --from=builder /app/apps/api/.output/index.js .
 
 # Expose port
 EXPOSE 3000
@@ -31,4 +30,4 @@ EXPOSE 3000
 ENV NODE_ENV=production
 
 # Start the application
-CMD ["bun", ".output/index.js"]
+CMD ["bun", "index.js"]
