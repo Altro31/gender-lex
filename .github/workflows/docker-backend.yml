@@ -48,14 +48,6 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
-      - name: Bun
-        uses: oven-sh/setup-bun@v2
-
-      - name: Install
-        run: bun i
-
-      - name: Build
-        run: bun build:api
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -68,6 +60,3 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
-
-      - name: Image digest
-        run: echo ${{ steps.meta.outputs.tags }}
