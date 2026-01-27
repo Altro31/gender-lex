@@ -23,7 +23,6 @@ const analysis = new Hono<HonoVariables>()
     .post("/prepare", validator("form", PrepareAnalyisisInput), async c => {
         const runEffect = c.get("runEffect")
         const body = c.req.valid("form")
-
         const toAnalice = [] as {
             resource: File | string
             presetId: string | undefined

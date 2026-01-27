@@ -3,7 +3,7 @@ import { PresetService } from "@/modules/data/preset/service"
 import { UserProviderService } from "@/shared/user-provider.service"
 import type { Context } from "@/workflows/common-types"
 import { effectify } from "@repo/db/effect"
-import { Effect } from "effect"
+import { Console, Effect } from "effect"
 
 interface Args {
     presetId: string | undefined

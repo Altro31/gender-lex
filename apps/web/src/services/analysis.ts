@@ -22,7 +22,7 @@ export async function prepareAnalysis(input: HomeSchema) {
       form: {
         text: input.text,
         files: input.filesObj.map((i) => i.file),
-        selectedPreset: input.preset?.id ?? undefined,
+        ...(input.preset?.id ? { selectedPreset: input.preset.id } : undefined),
       },
     })
   );

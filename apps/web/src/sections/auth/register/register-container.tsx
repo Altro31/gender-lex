@@ -21,7 +21,12 @@ export default function RegisterContainer() {
       <div className="w-full max-w-md">
         {/* Back Button */}
         <div className="mb-6">
-          <Button variant="ghost" size="sm" render={<Link href="/" />}>
+          <Button
+            variant="ghost"
+            size="sm"
+            nativeButton={false}
+            render={<Link href="/" />}
+          >
             <ArrowLeft />
             {t`Back to home`}
           </Button>

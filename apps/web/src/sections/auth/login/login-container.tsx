@@ -28,6 +28,7 @@ export default async function LoginContainer() {
           <Button
             variant="ghost"
             size="sm"
+            nativeButton={false}
             render={<Link href={`/${locale}`} />}
           >
             <ArrowLeft />
