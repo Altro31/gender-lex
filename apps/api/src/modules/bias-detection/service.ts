@@ -23,7 +23,7 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
                     analysis: AnaliceInput,
                 ) {
                     // Load balancing: select the least recently used model
-                    const models = analysis!.Preset!.Models!
+                    const models = analysis?.Preset?.Models ?? []
                     
                     if (models.length === 0) {
                         throw new Error("No models available in preset")
@@ -31,10 +31,14 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
                     
                     const selectedPresetModel = models.reduce((lru, current) => {
                         // Prioritize models that have never been used (usedAt is null)
-                        if (!current.Model.usedAt) return current
-                        if (!lru.Model.usedAt) return lru
-                        // Otherwise, select the one with the oldest usedAt
-                        return current.Model.usedAt < lru.Model.usedAt ? current : lru
+                        if (!current.Model.usedAt && lru.Model.usedAt) return current
+                        if (!lru.Model.usedAt && current.Model.usedAt) return lru
+                        // Both null or both have dates, compare dates if both have them
+                        if (current.Model.usedAt && lru.Model.usedAt) {
+                            return current.Model.usedAt < lru.Model.usedAt ? current : lru
+                        }
+                        // If both are null, keep the first one (lru)
+                        return lru
                     })
                     
                     const model = yield* aiService.buildLanguageModel(
