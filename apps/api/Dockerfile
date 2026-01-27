@@ -16,7 +16,7 @@ RUN bun install
 RUN bun build:api
 
 # Production stage
-FROM oven/bun:1-slim
+FROM node:slim
 
 WORKDIR /app/apps/api
 
@@ -32,4 +32,4 @@ EXPOSE 3000
 # ENV NODE_ENV=production
 
 # Start the application
-CMD ["bun", "index.js"]
+CMD ["node", "index.js"]
