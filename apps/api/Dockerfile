@@ -16,7 +16,7 @@ RUN bun install
 RUN bun build:api
 
 # Production stage
-FROM node:slim
+FROM oven/bun:1-slim
 
 WORKDIR /app/apps/api
 
