@@ -1,7 +1,9 @@
 import { AiService } from "@/modules/ai/service"
+import { ModelRepository } from "@/modules/data/model/repository"
 import { genderLexSystemPrompt } from "@/modules/bias-detection/prompts/system.prompt"
 import type { Analysis, Model, RawAnalysis } from "@repo/db/models"
 import { Analysis as AnalysisSchema } from "@repo/db/schema/analysis.ts"
+import { effectify } from "@repo/db/effect"
 import { JSONSchema } from "effect"
 import { AiRequestError } from "./errors/ai-request-error"
 
@@ -15,12 +17,23 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
     {
         effect: Effect.gen(function* () {
             const aiService = yield* AiService
+            const modelRepository = yield* ModelRepository
             return {
                 analice: Effect.fn("analice")(function* (
                     analysis: AnaliceInput,
                 ) {
+                    // Load balancing: select the least recently used model
+                    const models = analysis!.Preset!.Models!
+                    const selectedPresetModel = models.reduce((lru, current) => {
+                        // Prioritize models that have never been used (usedAt is null)
+                        if (!current.Model.usedAt) return current
+                        if (!lru.Model.usedAt) return lru
+                        // Otherwise, select the one with the oldest usedAt
+                        return current.Model.usedAt < lru.Model.usedAt ? current : lru
+                    })
+                    
                     const model = yield* aiService.buildLanguageModel(
-                        analysis!.Preset!.Models![0]!.Model,
+                        selectedPresetModel.Model,
                     )
 
                     const biasAgent = new ToolLoopAgent({
@@ -42,12 +55,21 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
                             return new AiRequestError({ error })
                         },
                     })
+                    
+                    // Update the model's usedAt timestamp for load balancing
+                    yield* effectify(
+                        modelRepository.update({
+                            where: { id: selectedPresetModel.Model.id },
+                            data: { usedAt: new Date() },
+                        }),
+                    )
+                    
                     res.output.reasoning = res.reasoningText
                     return res.output
                 }),
             }
         }),
-        dependencies: [AiService.Default],
+        dependencies: [AiService.Default, ModelRepository.Default],
     },
 ) {
     static provide = Effect.provide(this.Default)
