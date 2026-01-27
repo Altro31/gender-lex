@@ -29,6 +29,8 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
                         throw new Error("No models available in preset")
                     }
                     
+                    // Select the model with the oldest usedAt timestamp (or null)
+                    // Reduce without initial value is safe here since we checked length > 0
                     const selectedPresetModel = models.reduce((lru, current) => {
                         // Prioritize models that have never been used (usedAt is null)
                         if (!current.Model.usedAt && lru.Model.usedAt) return current
@@ -66,6 +68,7 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
                     })
                     
                     // Update the model's usedAt timestamp for load balancing
+                    // Only update after successful analysis to avoid marking failed attempts
                     yield* effectify(
                         modelRepository.update({
                             where: { id: selectedPresetModel.Model.id },
