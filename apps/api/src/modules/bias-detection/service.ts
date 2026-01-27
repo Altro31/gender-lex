@@ -24,6 +24,11 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
                 ) {
                     // Load balancing: select the least recently used model
                     const models = analysis!.Preset!.Models!
+                    
+                    if (models.length === 0) {
+                        throw new Error("No models available in preset")
+                    }
+                    
                     const selectedPresetModel = models.reduce((lru, current) => {
                         // Prioritize models that have never been used (usedAt is null)
                         if (!current.Model.usedAt) return current
