@@ -1,4 +1,4 @@
-import { JSONSchema, Schema, String } from "effect";
+import { JSONSchema, Schema } from "effect";
 
 const contextSchema = JSON.stringify(
   JSONSchema.make(
@@ -54,7 +54,7 @@ export const chatbotSystemPrompt = `
 
 4. Data Interpretation  
    - If properties \`key\` and \`content\` exist within \`<context>\`, they are used to explain specific sections of the analysis.  
-   - Infer the user language from the property \`path\` (e.g., /es = spanish, /en = english).  
+   - Infer the user language from the property \`path\` (e.g., /es = spanish, /en = english).
 
 5. User Interaction Rules 
    - Do not respond to questions outside the scope of GenderLex (e.g., unrelated bias topics). 

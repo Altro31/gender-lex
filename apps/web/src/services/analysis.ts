@@ -26,11 +26,11 @@ export async function prepareAnalysis(input: HomeSchema) {
       },
     })
   );
-  if (res.error) {
-    console.error(res.error);
-    return res;
+
+  if (!res.error) {
+    updateTag("analyses");
   }
-  updateTag("analyses");
+
   return res;
 }
 

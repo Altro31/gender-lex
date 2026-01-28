@@ -48,11 +48,17 @@ export default function ExportButton({ analysis }: Props) {
   return (
     <>
       <ButtonGroup>
-        <Button variant="outline" size="sm" onClick={handleExport}>
+        <Button
+          disabled={analysis.status !== "done"}
+          variant="outline"
+          size="sm"
+          onClick={handleExport}
+        >
           <Icon />
           {t`Export`}
         </Button>
         <ExportDialogTrigger
+          disabled={analysis.status !== "done"}
           className="gap-2 bg-transparent"
           payload={{ analysis }}
           render={<Button variant="outline" size="icon-sm" />}

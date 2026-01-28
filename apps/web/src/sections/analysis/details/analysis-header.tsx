@@ -35,7 +35,6 @@ export default function AnalysisHeader() {
   const { id } = useParams<ParamsOf<"/[locale]/analysis/[id]">>();
   const [analysis, { isFetching }] = useAnalysisStream(id);
   const [copied, setCopied] = useState(false);
-  const [exportDialogOpen, setExportDialogOpen] = useState(false);
 
   const handleCopy = async () => {
     const url = location.href;

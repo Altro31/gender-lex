@@ -47,6 +47,8 @@ import { Loader } from "../ai-elements/loader";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { useIsChatbotAvailable } from "@/components/floating-chatbot/use-available-chatbot";
 import dynamic from "next/dynamic";
+import { lastAssistantMessageIsCompleteWithToolCalls } from "ai";
+import { prepareAnalysis } from "@/services/analysis";
 
 export const floatingChatbotPopover = PopoverPrimitive.createHandle();
 
@@ -64,10 +66,33 @@ function Chatbot() {
   const [input, setInput] = useState("");
   const { messages, sendMessage, status, regenerate, stop, addToolOutput } =
     useChat<ChatbotMessage>({
+      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
       async onToolCall({ toolCall }) {
         if (toolCall.dynamic) return;
         if (toolCall.toolName === "navigateTo") {
           router.push((toolCall.input as any).route);
+        }
+        if (toolCall.toolName === "analice") {
+          const res = await prepareAnalysis({
+            text: (toolCall.input as any).text,
+            filesObj: [],
+          });
+          if (res.error) {
+            console.error(res.error.message);
+            addToolOutput({
+              tool: toolCall.toolName,
+              toolCallId: toolCall.toolCallId,
+              errorText: "Failed to excecute analysis",
+              state: "output-error",
+            });
+            return;
+          }
+          router.push(`/analysis/${res.data.id}`);
+          addToolOutput({
+            tool: toolCall.toolName,
+            toolCallId: toolCall.toolCallId,
+            output: "Analysis successfully",
+          });
         }
       },
     });

@@ -6,6 +6,10 @@ import { tool } from "ai";
 import z from "zod";
 
 export const analysisTools = {
+  analice: tool({
+    description: "Analice a text for bias detection",
+    inputSchema: z.object({ text: z.string() }),
+  }),
   getAnalysis: tool({
     description: "Obtains the full information of an analysis",
     inputSchema: z.object({

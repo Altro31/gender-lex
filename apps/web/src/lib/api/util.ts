@@ -10,7 +10,7 @@ export async function handle<T extends ClientResponse<any>>(
     const data = await parseResponse(fetchRes);
     return { data, error: undefined };
   } catch (error) {
-    return { data: undefined, error: error as DetailedError };
+    return { error } as { error: DetailedError };
   }
 }
 
