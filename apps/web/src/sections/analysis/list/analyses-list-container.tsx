@@ -7,9 +7,9 @@ interface Props {
 
 export default async function AnalysesListContainer({ searchParams }: Props) {
   const query = await searchParams;
-  const { data, error } = await findAnalyses(query as any);
-  if (error) {
-    throw error;
+  const res = await findAnalyses(query as any);
+  if (res.error) {
+    throw res.error;
   }
-  return <AnalysesList analyses={data} />;
+  return <AnalysesList analyses={res.data} />;
 }

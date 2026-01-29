@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DeletePresetAlertDialogTrigger } from "@/sections/preset/components/dialogs/delete-preset-alert-dialog-content";
-import type { PresetsResponse } from "@/types/preset";
+import type { findPresets } from "@/services/preset";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { Select } from "@lingui/react/macro";
@@ -31,10 +31,10 @@ import { DetailsPresetDialogTrigger } from "../components/dialogs/details-preset
 import { EditPresetDialogTrigger } from "../components/dialogs/edit-preset-dialog";
 
 interface Props {
-  preset: PresetsResponse[number];
+  preset: findPresets.Data.Item;
 }
 
-type ExtendedPreset = PresetsResponse[number] & {
+type ExtendedPreset = findPresets.Data.Item & {
   itemStatus?: "clonning" | "deleting" | "clone";
 };
 
@@ -54,18 +54,14 @@ export default function PresetListItem({ preset: initialPreset }: Props) {
   const isDeleting = preset.itemStatus === "deleting";
   const isDisabled = isClone || isDeleting;
 
+  const clonnedPreset = {
+    ...initialPreset,
+    itemStatus: "clone",
+  };
+
   return (
     <>
-      {isClonning && (
-        <PresetListItem
-          preset={
-            {
-              ...initialPreset,
-              itemStatus: "clone",
-            } as PresetsResponse[number]
-          }
-        />
-      )}
+      {isClonning && <PresetListItem preset={clonnedPreset} />}
       <Card
         key={preset.id}
         data-disabled={isDeleting || isClone || undefined}

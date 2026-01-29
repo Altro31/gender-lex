@@ -2,14 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import ModelListItem from "@/sections/model/list/model-list-item";
-import type { ModelsResponse } from "@/types/model";
+import type { findModels } from "@/services/model";
 import { t } from "@lingui/core/macro";
 import { Plus, Settings } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { CreateModelDialogTrigger } from "../components/dialogs/create-model-dialog";
 
 interface Props {
-  modelsResponse: ModelsResponse;
+  modelsResponse: findModels.Success;
 }
 
 export default function ModelList({ modelsResponse: models }: Props) {

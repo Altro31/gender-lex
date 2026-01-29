@@ -10,12 +10,12 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ModelDetails from "@/sections/model/details/model-details";
-import type { ModelsResponseItem } from "@/types/model";
+import type { findModels } from "@/services/model";
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { t } from "@lingui/core/macro";
 
 interface DetailsModelPayload {
-  model: ModelsResponseItem;
+  model: findModels.Success.Item;
 }
 
 const detailsModelDialog = DialogPrimitive.createHandle<DetailsModelPayload>();

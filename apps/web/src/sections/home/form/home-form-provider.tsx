@@ -36,12 +36,12 @@ export default function HomeFormProvider({
   );
 
   const onSubmit = async (input: HomeSchema) => {
-    const { data, error } = await prepareAnalysis(input);
-    if (error) {
-      toast.error(error.message);
+    const res = await prepareAnalysis(input);
+    if (res.error) {
+      toast.error(res.error.message);
       return;
     }
-    router.push(`/analysis/${data.id}`);
+    router.push(`/analysis/${res.data.id}`);
     form.reset({ preset: input.preset });
   };
 

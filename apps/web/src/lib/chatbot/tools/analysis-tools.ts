@@ -11,7 +11,7 @@ export const analysisTools = {
     inputSchema: z.object({ text: z.string() }),
   }),
   getAnalysis: tool({
-    description: "Obtains the full information of an analysis",
+    description: "Get the full information of an analysis",
     inputSchema: z.object({
       id: z.string(),
     }),

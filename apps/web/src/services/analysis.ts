@@ -1,6 +1,7 @@
 "use server";
 
 import { getApiClient } from "@/lib/api/client";
+import type { InferApiResponse, InferSuccess } from "@/lib/api/type";
 import { handle } from "@/lib/api/util";
 import { getSession } from "@/lib/auth/auth-server";
 import { getDB } from "@/lib/db/client";
@@ -9,7 +10,7 @@ import type { HomeSchema } from "@/sections/home/form/home-schema";
 import { Visibility } from "@repo/db/models";
 import type { AnalysisApp } from "@repo/types/api";
 import type { AnalysisFindManyQueryParams } from "@repo/types/dtos/analysis";
-import { parseResponse } from "hono/client";
+import { parseResponse, type DetailedError } from "hono/client";
 import { cacheTag, updateTag } from "next/cache";
 import { unauthorized } from "next/navigation";
 import z from "zod";
@@ -64,6 +65,13 @@ export async function findAnalyses({
     })
   );
 }
+export namespace findAnalyses {
+  type T = typeof findAnalyses;
+  export type Data = InferSuccess<T>["data"];
+  export namespace Data {
+    export type Item = Data[number];
+  }
+}
 
 export async function findRecentAnalyses() {
   "use cache: private";
@@ -71,12 +79,24 @@ export async function findRecentAnalyses() {
   const db = await getDB();
   return db.analysis.findMany({ orderBy: [{ createdAt: "desc" }], take: 5 });
 }
+export namespace findRecentAnalyses {
+  type T = typeof findRecentAnalyses;
+  export type Data = InferSuccess<T>;
+  export namespace Data {
+    export type Item = Data[number];
+  }
+}
 
 export async function getStatusCount() {
   "use cache: private";
   cacheTag(`analyses`);
 
   return parseResponse(client.analysis["status-count"].$get());
+}
+export namespace getStatusCount {
+  type T = typeof getStatusCount;
+  export type ReturnType = InferApiResponse<T>;
+  export type Success = InferSuccess<T>;
 }
 
 export async function redoAnalysis(id: string) {

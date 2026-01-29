@@ -9,12 +9,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { AnalysisActions } from "@/sections/analysis/components/analysis-actions";
-import type { AnalysesResponseItem } from "@/types/analyses";
+import type { findAnalyses } from "@/services/analysis";
 import { t } from "@lingui/core/macro";
 import { CheckCircle, Clock, Play, Settings, XCircle } from "lucide-react";
 
 interface Props {
-  analysis: AnalysesResponseItem;
+  analysis: findAnalyses.Data.Item;
 }
 
 export default function AnalysesListItem({ analysis }: Props) {

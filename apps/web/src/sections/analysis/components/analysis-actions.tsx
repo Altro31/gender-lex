@@ -25,12 +25,12 @@ interface Props {
 export function AnalysisActions({ analysis, renderTrigger }: Props) {
   const router = useRouter();
   const handleRedoAnalysis = (analysis: Analysis) => async () => {
-    const { error, data } = await redoAnalysis(analysis.id);
-    if (error) {
-      toast.error(error.message);
+    const res = await redoAnalysis(analysis.id);
+    if (res.error) {
+      toast.error(res.error.message);
       return;
     }
-    router.push(`/analysis/${data.id}`);
+    router.push(`/analysis/${res.data.id}`);
   };
 
   return (

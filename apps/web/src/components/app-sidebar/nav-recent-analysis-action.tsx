@@ -5,9 +5,10 @@ import { Analysis } from "@repo/db/models";
 import { SidebarMenuAction } from "../ui/sidebar";
 import { MoreHorizontal } from "lucide-react";
 import { t } from "@lingui/core/macro";
+import type { findRecentAnalyses } from "@/services/analysis";
 
 interface Props {
-  item: Analysis;
+  item: findRecentAnalyses.Data.Item;
 }
 
 export default function NavRecentAnalysisAction({ item }: Props) {

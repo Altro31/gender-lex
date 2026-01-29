@@ -1,138 +1,152 @@
-'use server'
+"use server";
 
-import { getDB } from '@/lib/db/client'
-import { actionClient } from '@/lib/safe-action'
-import { PresetSchema } from '@/sections/preset/form/preset-schema'
-import { cacheTag, updateTag } from 'next/cache'
-import { z } from 'zod/mini'
+import type { InferSuccess } from "@/lib/api/type";
+import { getDB } from "@/lib/db/client";
+import { actionClient } from "@/lib/safe-action";
+import { PresetSchema } from "@/sections/preset/form/preset-schema";
+import { cacheTag, updateTag } from "next/cache";
+import { z } from "zod/mini";
+
 export async function findPresets({ page, q }: { page: number; q?: string }) {
-	'use cache: private'
-	cacheTag('presets')
-	const db = await getDB()
+  "use cache: private";
+  cacheTag("presets");
+  const db = await getDB();
 
-	return db.preset.findMany({
-		where: { name: { contains: q, mode: 'insensitive' } },
-		skip: (page - 1) * 10,
-		take: 10,
-		include: { Models: { include: { Model: true } } },
-		orderBy: [{ createdAt: 'desc' }, { updatedAt: 'desc' }],
-	})
+  return db.preset.findMany({
+    where: { name: { contains: q, mode: "insensitive" } },
+    skip: (page - 1) * 10,
+    take: 10,
+    include: { Models: { include: { Model: true } } },
+    orderBy: [{ createdAt: "desc" }, { updatedAt: "desc" }],
+  });
+}
+export namespace findPresets {
+  type T = typeof findPresets;
+  export type Data = InferSuccess<T>;
+  export namespace Data {
+    export type Item = Data[number];
+  }
 }
 
 export const createPreset = actionClient
-	.inputSchema(PresetSchema)
-	.action(async ({ parsedInput: { Models, ...rest } }) => {
-		const db = await getDB()
-		const data = await db.preset.create({
-			data: {
-				...rest,
-				Models: {
-					create: Models.map(model => ({
-						role: model.role,
-						Model: { connect: { id: model.Model.id } },
-					})),
-				},
-			},
-		})
+  .inputSchema(PresetSchema)
+  .action(async ({ parsedInput: { Models, ...rest } }) => {
+    const db = await getDB();
+    const data = await db.preset.create({
+      data: {
+        ...rest,
+        Models: {
+          create: Models.map((model) => ({
+            role: model.role,
+            Model: { connect: { id: model.Model.id } },
+          })),
+        },
+      },
+    });
 
-		updateTag('presets')
-		return { success: true, data }
-	})
+    updateTag("presets");
+    return { success: true, data };
+  });
 
 export const editPreset = actionClient
-	.inputSchema(z.tuple([z.string(), PresetSchema]))
-	.action(async ({ parsedInput: [id, { Models, ...rest }] }) => {
-		const db = await getDB()
+  .inputSchema(z.tuple([z.string(), PresetSchema]))
+  .action(async ({ parsedInput: [id, { Models, ...rest }] }) => {
+    const db = await getDB();
 
-		const data = await db.$transaction(async tx => {
-			await tx.preset.update({
-				where: { id },
-				data: { Models: { deleteMany: {} } },
-				select: { id: true },
-			})
-			return tx.preset.update({
-				where: { id },
-				data: {
-					...rest,
-					Models: {
-						create: Models.map(model => ({
-							role: model.role,
-							Model: { connect: { id: model.Model.id } },
-						})),
-					},
-				},
-				select: { id: true },
-			})
-		})
+    const data = await db.$transaction(async (tx) => {
+      await tx.preset.update({
+        where: { id },
+        data: { Models: { deleteMany: {} } },
+        select: { id: true },
+      });
+      return tx.preset.update({
+        where: { id },
+        data: {
+          ...rest,
+          Models: {
+            create: Models.map((model) => ({
+              role: model.role,
+              Model: { connect: { id: model.Model.id } },
+            })),
+          },
+        },
+        select: { id: true },
+      });
+    });
 
-		updateTag('presets')
-		updateTag(`preset-${id}`)
+    updateTag("presets");
+    updateTag(`preset-${id}`);
 
-		return { success: true, data }
-	})
+    return { success: true, data };
+  });
 
 export const deletePreset = actionClient
-	.inputSchema(z.string())
-	.action(async ({ parsedInput: id }) => {
-		const db = await getDB()
+  .inputSchema(z.string())
+  .action(async ({ parsedInput: id }) => {
+    const db = await getDB();
 
-		await db.preset.delete({ where: { id } })
+    await db.preset.delete({ where: { id } });
 
-		updateTag('presets')
-		return { success: true }
-	})
+    updateTag("presets");
+    return { success: true };
+  });
 
 export const clonePreset = actionClient
-	.inputSchema(z.string())
-	.action(async ({ parsedInput: id }) => {
-		const db = await getDB()
-		const { Models, ...rest } = await db.preset.findUniqueOrThrow({
-			where: { id },
-			omit: {
-				id: true,
-				createdAt: true,
-				isDefault: true,
-				updatedAt: true,
-				usedAt: true,
-				userId: true,
-			},
-			include: {
-				Models: {
-					// select: { role: true, Model: { select: { id: true } } },
-					include: { Model: true },
-				},
-			},
-		})
+  .inputSchema(z.string())
+  .action(async ({ parsedInput: id }) => {
+    const db = await getDB();
+    const { Models, ...rest } = await db.preset.findUniqueOrThrow({
+      where: { id },
+      omit: {
+        id: true,
+        createdAt: true,
+        isDefault: true,
+        updatedAt: true,
+        usedAt: true,
+        userId: true,
+      },
+      include: {
+        Models: {
+          // select: { role: true, Model: { select: { id: true } } },
+          include: { Model: true },
+        },
+      },
+    });
 
-		const cloned = await db.preset.create({
-			data: {
-				name: rest.name + ' (Copy)',
-				description: rest.description,
-				Models: {
-					create: Models.map(pm => ({
-						role: pm.role,
-						Model: { connect: { id: pm.modelId } },
-					})),
-				},
-			},
-		})
+    const cloned = await db.preset.create({
+      data: {
+        name: rest.name + " (Copy)",
+        description: rest.description,
+        Models: {
+          create: Models.map((pm) => ({
+            role: pm.role,
+            Model: { connect: { id: pm.modelId } },
+          })),
+        },
+      },
+    });
 
-		updateTag('presets')
-		return { success: true, data: cloned }
-	})
+    updateTag("presets");
+    return { success: true, data: cloned };
+  });
 
 export const getPresetsSelect = async ({ page }: { page: number }) => {
-	'use cache: private'
-	cacheTag('presets')
+  "use cache: private";
+  cacheTag("presets");
 
-	const db = await getDB()
-	return db.preset.findMany({ skip: page * 20, take: 20 })
-}
+  const db = await getDB();
+  return db.preset.findMany({ skip: page * 20, take: 20 });
+};
 
 export const getLastUsedPreset = async () => {
-	'use cache: private'
-	cacheTag('presets')
+  "use cache: private";
+  cacheTag("presets");
 
-	const db = await getDB()
-	return db.preset.findFirst({ orderBy: [{ usedAt: 'desc' }] })
+  const db = await getDB();
+  return db.preset.findFirst({ orderBy: [{ usedAt: "desc" }] });
+};
+
+export namespace getLastUsedPreset {
+  type T = typeof getLastUsedPreset;
+  export type Data = InferSuccess<T>;
 }

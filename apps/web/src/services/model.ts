@@ -1,6 +1,7 @@
 "use server";
 
 import { getApiClient } from "@/lib/api/client";
+import type { InferApiResponse, InferSuccess } from "@/lib/api/type";
 import { getDB } from "@/lib/db/client";
 import { actionClient } from "@/lib/safe-action";
 import { ModelSchema } from "@/sections/model/form/model-schema";
@@ -34,6 +35,13 @@ export async function findModels({
       { updatedAt: "desc" },
     ],
   });
+}
+export namespace findModels {
+  type T = typeof findModels;
+  export type Success = InferSuccess<T>;
+  export namespace Success {
+    export type Item = Success[number];
+  }
 }
 
 export const createModel = actionClient
