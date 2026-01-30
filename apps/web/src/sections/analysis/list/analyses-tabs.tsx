@@ -7,7 +7,7 @@ import { AnalysisStatus } from "@repo/db/models";
 import { debounce, parseAsStringEnum, useQueryState } from "nuqs";
 
 interface Props {
-  statusCount: getStatusCount.Success;
+  statusCount: getStatusCount["Data"];
 }
 
 export default function AnalysesTabs({ statusCount }: Props) {

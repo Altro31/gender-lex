@@ -8,7 +8,7 @@ import { t } from "@lingui/core/macro";
 import type { findRecentAnalyses } from "@/services/analysis";
 
 interface Props {
-  item: findRecentAnalyses.Data.Item;
+  item: findRecentAnalyses["Item"];
 }
 
 export default function NavRecentAnalysisAction({ item }: Props) {

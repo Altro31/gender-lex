@@ -9,7 +9,7 @@ import { useQueryState } from "nuqs";
 import { CreateModelDialogTrigger } from "../components/dialogs/create-model-dialog";
 
 interface Props {
-  modelsResponse: findModels.Success;
+  modelsResponse: findModels["Data"];
 }
 
 export default function ModelList({ modelsResponse: models }: Props) {

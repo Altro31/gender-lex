@@ -7,6 +7,10 @@ import { PresetSchema } from "@/sections/preset/form/preset-schema";
 import { cacheTag, updateTag } from "next/cache";
 import { z } from "zod/mini";
 
+export interface findPresets {
+  Data: InferSuccess<typeof findPresets>;
+  Item: this["Data"][number];
+}
 export async function findPresets({ page, q }: { page: number; q?: string }) {
   "use cache: private";
   cacheTag("presets");
@@ -19,13 +23,6 @@ export async function findPresets({ page, q }: { page: number; q?: string }) {
     include: { Models: { include: { Model: true } } },
     orderBy: [{ createdAt: "desc" }, { updatedAt: "desc" }],
   });
-}
-export namespace findPresets {
-  type T = typeof findPresets;
-  export type Data = InferSuccess<T>;
-  export namespace Data {
-    export type Item = Data[number];
-  }
 }
 
 export const createPreset = actionClient
@@ -137,16 +134,3 @@ export const getPresetsSelect = async ({ page }: { page: number }) => {
   const db = await getDB();
   return db.preset.findMany({ skip: page * 20, take: 20 });
 };
-
-export const getLastUsedPreset = async () => {
-  "use cache: private";
-  cacheTag("presets");
-
-  const db = await getDB();
-  return db.preset.findFirst({ orderBy: [{ usedAt: "desc" }] });
-};
-
-export namespace getLastUsedPreset {
-  type T = typeof getLastUsedPreset;
-  export type Data = InferSuccess<T>;
-}

@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 interface Props extends PropsWithChildren {
-  preset: findPresets.Data.Item;
+  preset: findPresets["Item"];
   onSuccess?: () => void;
 }
 

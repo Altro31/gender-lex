@@ -16,7 +16,7 @@ import { DetailsPresetDialog } from "../components/dialogs/details-preset-dialog
 import { EditPresetDialog } from "../components/dialogs/edit-preset-dialog";
 
 interface Props {
-  presets: findPresets.Data;
+  presets: findPresets["Data"];
 }
 
 export default function PresetsList({ presets }: Props) {

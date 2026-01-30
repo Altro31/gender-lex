@@ -14,7 +14,7 @@ import { t } from "@lingui/core/macro";
 import { CheckCircle, Clock, Play, Settings, XCircle } from "lucide-react";
 
 interface Props {
-  analysis: findAnalyses.Data.Item;
+  analysis: findAnalyses["Item"];
 }
 
 export default function AnalysesListItem({ analysis }: Props) {

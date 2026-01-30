@@ -15,7 +15,7 @@ import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { t } from "@lingui/core/macro";
 
 interface DetailsModelPayload {
-  model: findModels.Success.Item;
+  model: findModels["Item"];
 }
 
 const detailsModelDialog = DialogPrimitive.createHandle<DetailsModelPayload>();

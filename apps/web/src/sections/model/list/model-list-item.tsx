@@ -36,7 +36,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface Props {
-  model: findModels.Success.Item & { itemStatus?: "deleting" };
+  model: findModels["Item"] & { itemStatus?: "deleting" };
 }
 
 export default function ModelListItem({ model: initialModel }: Props) {

@@ -22,7 +22,7 @@ import { t } from "@lingui/core/macro";
 const editPresetDialog = DialogPrimitive.createHandle<EditPresetPayload>();
 
 interface EditPresetPayload {
-  preset: findPresets.Data.Item;
+  preset: findPresets["Item"];
 }
 
 export function EditPresetDialog() {

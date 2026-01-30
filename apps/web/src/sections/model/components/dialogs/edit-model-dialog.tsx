@@ -14,7 +14,7 @@ import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { t } from "@lingui/core/macro";
 
 interface EditModelPayload {
-  model: findModels.Success.Item;
+  model: findModels["Item"];
 }
 
 const editModelDialog = DialogPrimitive.createHandle<EditModelPayload>();

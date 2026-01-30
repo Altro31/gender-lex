@@ -16,7 +16,7 @@ const detailsPresetDialog =
   DialogPrimitive.createHandle<DetailsPresetPayload>();
 
 interface DetailsPresetPayload {
-  preset: findPresets.Data.Item;
+  preset: findPresets["Item"];
 }
 
 export function DetailsPresetDialog() {

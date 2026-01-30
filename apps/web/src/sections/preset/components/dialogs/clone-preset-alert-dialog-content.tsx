@@ -20,7 +20,7 @@ import { type MouseEvent } from "react";
 import { toast } from "sonner";
 
 interface ClonePresetPayload {
-  preset: findPresets.Data.Item;
+  preset: findPresets["Item"];
   onClone?: () => void;
 }
 

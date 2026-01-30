@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 interface Props {
-  model: findModels.Success.Item;
+  model: findModels["Item"];
   onSuccess?: () => void;
 }
 

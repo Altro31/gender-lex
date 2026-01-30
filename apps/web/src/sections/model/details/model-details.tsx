@@ -31,7 +31,7 @@ import {
 import { useState } from "react";
 
 interface ModelDetailsProps {
-  model: findModels.Success.Item;
+  model: findModels["Item"];
 }
 
 export default function ModelDetails({

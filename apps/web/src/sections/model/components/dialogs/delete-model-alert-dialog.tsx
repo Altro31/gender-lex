@@ -18,7 +18,7 @@ import { t } from "@lingui/core/macro";
 import { useAction } from "next-safe-action/hooks";
 
 interface DeleteModelPayload {
-  model: findModels.Success.Item;
+  model: findModels["Item"];
   onDelete?: () => void;
 }
 

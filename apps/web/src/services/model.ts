@@ -15,6 +15,10 @@ import { z } from "zod/mini";
 
 const client = getApiClient<ModelApp>();
 
+export interface findModels {
+  Data: InferSuccess<typeof findModels>;
+  Item: this["Data"][number];
+}
 export async function findModels({
   q,
   page = "1",
@@ -35,13 +39,6 @@ export async function findModels({
       { updatedAt: "desc" },
     ],
   });
-}
-export namespace findModels {
-  type T = typeof findModels;
-  export type Success = InferSuccess<T>;
-  export namespace Success {
-    export type Item = Success[number];
-  }
 }
 
 export const createModel = actionClient

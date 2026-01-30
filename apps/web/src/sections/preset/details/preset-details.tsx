@@ -13,7 +13,7 @@ import { t } from "@lingui/core/macro";
 import { Calendar, Tag, Zap } from "lucide-react";
 
 interface Props {
-  preset: findPresets.Data.Item;
+  preset: findPresets["Item"];
 }
 
 export default function PresetDetails({ preset }: Props) {

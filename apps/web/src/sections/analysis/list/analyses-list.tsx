@@ -5,7 +5,7 @@ import AnalysesListItem from "@/sections/analysis/list/analyses-list-item";
 import type { findAnalyses } from "@/services/analysis";
 
 interface Props {
-  analyses: findAnalyses.Data;
+  analyses: findAnalyses["Data"];
 }
 
 export default function AnalysesList({ analyses }: Props) {

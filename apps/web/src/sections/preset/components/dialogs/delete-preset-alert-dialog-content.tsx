@@ -20,7 +20,7 @@ import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
 
 interface DeletePresetPayload {
-  preset: findPresets.Data.Item;
+  preset: findPresets["Item"];
   onDelete?: () => void;
 }
 

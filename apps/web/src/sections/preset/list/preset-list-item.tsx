@@ -31,10 +31,10 @@ import { DetailsPresetDialogTrigger } from "../components/dialogs/details-preset
 import { EditPresetDialogTrigger } from "../components/dialogs/edit-preset-dialog";
 
 interface Props {
-  preset: findPresets.Data.Item;
+  preset: findPresets["Item"];
 }
 
-type ExtendedPreset = findPresets.Data.Item & {
+type ExtendedPreset = findPresets["Item"] & {
   itemStatus?: "clonning" | "deleting" | "clone";
 };
 
