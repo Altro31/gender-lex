@@ -34,7 +34,7 @@
         "ai": "catalog:",
         "better-auth": "catalog:",
         "effect": "catalog:",
-        "hono": "^4.11.7",
+        "hono": "catalog:",
         "hono-openapi": "^1.2.0",
         "umlsjs": "^1.2.1",
         "workflow": "^4.0.1-beta.50",

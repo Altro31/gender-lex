@@ -12,7 +12,7 @@ export class ClientError extends Data.TaggedError("ClientError")<{
 
 type FilterNotContaining<
   Set,
-  Needle extends string,
+  Needle extends string
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
 > = Set extends `${infer _A}${Needle}${infer _B}` ? never : Set;
 
@@ -26,7 +26,7 @@ type ExcludeNonStringKeys<Obj> = {
 
 type ExcludeKeysContaining<
   Obj extends Record<string, any>,
-  Key extends string,
+  Key extends string
 > = { [key in FilterNotContaining<keyof Obj, Key>]: Obj[key] };
 
 export type Client = ExcludeKeysContaining<
@@ -42,7 +42,7 @@ type LazyPromiseToLazyEffect<Fn extends (...a: any[]) => any> = Fn extends (
 
 type EffectifyObject<
   Obj extends Record<string, F>,
-  F extends (...a: any[]) => any = any,
+  F extends (...a: any[]) => any = any
 > = { [op in keyof Obj]: LazyPromiseToLazyEffect<Obj[op]> };
 
 type EffectClient = {
@@ -85,24 +85,25 @@ export function createEffectClient(prisma: ClientType) {
                 "count",
                 "aggregate",
                 "groupBy",
+                "exists",
               ];
             },
             get(_target, method) {
               return (...args: any[]) =>
                 Effect.tryPromise(() =>
-                  (prisma as any)[model][method](...args),
+                  (prisma as any)[model][method](...args)
                 );
             },
-          },
+          }
         );
       },
-    },
+    }
   ) as EffectClient;
 }
 
 export function effectify<T>(func: T) {
   type Eff = T extends ZenStackPromise<SchemaType, infer R> ? R : never;
   return Effect.tryPromise(
-    () => func as Promise<any>,
+    () => func as Promise<any>
   ) as unknown as Effect.Effect<Eff, ClientError, never>;
 }

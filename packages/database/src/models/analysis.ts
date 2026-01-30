@@ -81,5 +81,6 @@ export class Analysis
     status: Schema.Enums(AnalysisStatus),
     inputSource: Schema.Enums(InputSource),
     presetId: PresetId,
+    reasoning: Schema.NullOr(Schema.String),
   })
   implements ZenAnalysis {}

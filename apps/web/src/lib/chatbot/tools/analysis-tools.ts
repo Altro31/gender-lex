@@ -1,6 +1,5 @@
 import { getApiClient } from "@/lib/api/client";
 import { handle } from "@/lib/api/util";
-import type { Analysis } from "@repo/db/models";
 import { AnalysisApp } from "@repo/types/api";
 import { tool } from "ai";
 import z from "zod";

@@ -1,7 +1,6 @@
-import { Chunk, Console, Effect, Option, Stream } from "effect";
-import { constant } from "effect/Function";
-import { type ClientResponse, DetailedError, parseResponse } from "hono/client";
 import { consumeSSEStream } from "@geee-be/sse-stream-parser";
+import { Chunk, Effect, Option, Stream } from "effect";
+import { type ClientResponse, DetailedError, parseResponse } from "hono/client";
 
 export async function handle<T extends ClientResponse<any>>(
   fetchRes: T | Promise<T>
