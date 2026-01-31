@@ -5,4 +5,10 @@ next-env.d.ts
 .well-known
 .swc
 
+# TanStack Start / Vinxi
+.vinxi
+.output
+dist
+src/routeTree.gen.ts
+
 certificates

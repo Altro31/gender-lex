@@ -17,15 +17,13 @@
 		"jsx": "react-jsx",
 		"incremental": true,
 		"noUncheckedIndexedAccess": true,
-		"plugins": [{ "name": "next" }, { "name": "@effect/language-service" }],
+		"plugins": [{ "name": "@effect/language-service" }],
 		"paths": { "@/*": ["./src/*"] }
 	},
 	"include": [
-		"next-env.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
-		".next/types/**/*.ts",
-		".next/dev/types/**/*.ts"
+		"src/routeTree.gen.ts"
 	],
 	"exclude": ["node_modules"]
 }

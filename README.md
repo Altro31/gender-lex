@@ -29,7 +29,7 @@ This is a Turborepo monorepo with the following structure:
 gender-lex/
 ├── apps/
 │   ├── api/              # Backend API (Elysia + Bun)
-│   └── web/              # Frontend web app (Next.js 16)
+│   └── web/              # Frontend web app (TanStack Start)
 └── packages/
     ├── auth/             # Authentication (@repo/auth)
     ├── database/         # Database & schema (@repo/db)
@@ -65,7 +65,8 @@ RESTful API server built with:
 #### 🎨 Web (`apps/web`)
 
 Modern web application built with:
-- **Framework**: Next.js 16 (App Router)
+- **Framework**: TanStack Start (file-based routing)
+- **Build Tool**: Vinxi + Vite
 - **UI**: React 19 + Radix UI + shadcn/ui
 - **Styling**: Tailwind CSS 4
 - **i18n**: Lingui (English/Spanish)
@@ -272,7 +273,8 @@ The root `package.json` provides these scripts:
 - **Medical Terms**: UMLS.js
 
 ### Frontend
-- **Framework**: Next.js 16
+- **Framework**: TanStack Start
+- **Build Tool**: Vinxi + Vite
 - **UI Library**: React 19
 - **Components**: Radix UI + shadcn/ui
 - **Styling**: Tailwind CSS 4

@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/sidebar'
 import { getSession } from '@/lib/auth/auth-server'
 import { t } from '@lingui/core/macro'
-import Link from 'next/link'
+import { Link } from '@tanstack/react-router'
 
 export default async function NavMain({
 	items,
@@ -31,7 +31,7 @@ export default async function NavMain({
 						<SidebarMenuItem key={item.title}>
 							<SidebarMenuButton
 								tooltip={item.title}
-								render={<Link href={item.url} />}
+								render={<Link to={item.url} />}
 							>
 								{item.icon}
 								<span>{item.title}</span>

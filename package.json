@@ -11,7 +11,7 @@
     "build:web": "turbo web#build",
     "build": "turbo run build",
     "prod:api": "cd apps/api && bun start",
-    "prod:web": "cd apps/web && next start",
+    "prod:web": "cd apps/web && vinxi start",
     "migrate": "turbo migrate",
     "migrate:prod": "turbo migrate:prod",
     "lint": "turbo run lint"
