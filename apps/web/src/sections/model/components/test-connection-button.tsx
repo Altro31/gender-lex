@@ -1,48 +1,50 @@
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { testConnection } from '@/services/model'
-import { ButtonProps } from '@base-ui/react'
-import { t } from '@lingui/core/macro'
-import { useAction } from 'next-safe-action/hooks'
+import { Button } from "@/components/ui/button";
+import { getApiProxyClient } from "@/lib/api/proxy-client";
+import { handleStream } from "@/lib/api/util";
+import { ButtonProps, mergeProps } from "@base-ui/react";
+import { t } from "@lingui/core/macro";
+import type { Model } from "@repo/db/models";
+import type { ModelApp } from "@repo/types/api";
+import { useTransition } from "react";
 
-type Props = ButtonProps & {
-	id: string
-	onSuccess?: () => any
-	onError?: () => any
-	onExecute?: () => any
+interface Props extends ButtonProps {
+  id: string;
+  onUpdate?: (model: Model) => void;
 }
 
+const client = getApiProxyClient<ModelApp>();
+
 export default function TestConnectionButton({
-	id,
-	onError,
-	onExecute,
-	onSuccess,
-	onClick,
-	className,
-	children = t`Test Connection`,
-	...props
+  id,
+  onUpdate,
+  ...props
 }: Props) {
-	const { execute, isPending } = useAction(testConnection, {
-		onSuccess,
-		onError,
-		onExecute,
-	})
+  const [isPending, startTransition] = useTransition();
 
-	const handleTest = (e: any) => {
-		execute(id)
-		onClick?.(e)
-	}
+  const handleTest = () =>
+    startTransition(async () => {
+      const stream = await handleStream(
+        client.model[":id"]["test-connection"].stream.$post({ param: { id } })
+      );
+      for await (const update of stream) {
+        onUpdate?.(update.data);
+      }
+    });
 
-	return (
-		<Button
-			variant="outline"
-			size="sm"
-			disabled={isPending}
-			onClick={handleTest}
-			className={cn('text-sm', className)}
-			{...props}
-		>
-			{children}
-		</Button>
-	)
+  return (
+    <Button
+      {...mergeProps<typeof Button>(
+        {
+          variant: "outline",
+          size: "sm",
+          disabled: isPending,
+          onClick: handleTest,
+          className: "text-sm",
+          children: t`Test Connection`,
+        },
+        props
+      )}
+      {...props}
+    />
+  );
 }

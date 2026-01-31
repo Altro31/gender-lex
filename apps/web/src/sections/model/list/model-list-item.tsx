@@ -138,9 +138,7 @@ export default function ModelListItem({ model: initialModel }: Props) {
           </Badge>
           <TestConnectionButton
             id={model.id}
-            onExecute={() => setStatus("connecting")}
-            onSuccess={() => setStatus("active")}
-            onError={() => setStatus("error")}
+            onUpdate={(model) => setStatus(model.status)}
           />
         </div>
       </CardContent>

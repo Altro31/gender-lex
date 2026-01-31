@@ -18,7 +18,7 @@ import {
 } from "@/sections/model/utils/status";
 import type { findModels } from "@/services/model";
 import { t } from "@lingui/core/macro";
-import type { ModelStatus } from "@repo/db/models";
+import type { Model, ModelStatus } from "@repo/db/models";
 import {
   AlertTriangleIcon,
   Calendar,
@@ -48,10 +48,6 @@ export default function ModelDetails({
       }));
     }
   });
-
-  const handleStatus = (status: ModelStatus) => () => {
-    setModel((model) => ({ ...model, status }));
-  };
 
   return (
     <div className="space-y-2 text-wrap! wrap-break-word!">
@@ -183,9 +179,7 @@ export default function ModelDetails({
             <TestConnectionButton
               id={model.id}
               className="ml-auto"
-              onExecute={handleStatus("connecting")}
-              onSuccess={handleStatus("active")}
-              onError={handleStatus("error")}
+              onUpdate={setModel}
             />
             {model.error && (
               <Alert variant="destructive">

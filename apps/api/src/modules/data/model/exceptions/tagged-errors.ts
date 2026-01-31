@@ -25,3 +25,10 @@ export class InactiveModelError
 {
     readonly modelError = "INACTIVE_MODEL" satisfies ModelError
 }
+
+export class InvalidModelConnectionURLError
+    extends Data.TaggedError("InvalidModelConnectionURLError")
+    implements IModelError
+{
+    readonly modelError = "INVALID_CONNECTION_URL" satisfies ModelError
+}

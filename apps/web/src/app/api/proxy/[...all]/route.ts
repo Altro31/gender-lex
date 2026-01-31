@@ -1,5 +1,4 @@
 import envs from "@/lib/env/env-server";
-import { headers } from "next/headers";
 import { NextRequest } from "next/server";
 
 const handler = async (req: NextRequest) => {
@@ -7,10 +6,7 @@ const handler = async (req: NextRequest) => {
   if (path.startsWith("//")) path = path.slice(1);
   const url = new URL(envs.API_URL, req.nextUrl);
   url.pathname = path;
-  return fetch(url, {
-    ...req,
-    headers: await headers(),
-  });
+  return fetch(new Request(url, req));
 };
 
 export const GET = handler;
