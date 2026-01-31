@@ -26,7 +26,7 @@ import { LogoutButton } from '@/components/app-sidebar/buttons/logout-button'
 import ThemeSwitcher from '@/components/theme/theme-switcher'
 import LanguageSwitcher from '@/locales/components/language-switcher'
 import { t } from '@lingui/core/macro'
-import Link from 'next/link'
+import { Link } from '@tanstack/react-router'
 
 export default async function NavUser() {
 	const session = await getSession()
@@ -93,7 +93,7 @@ async function User() {
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					<DropdownMenuItem render={<Link href="/profile" />}>
+					<DropdownMenuItem render={<Link to="/profile" />}>
 						<BadgeCheck />
 						{t`Account`}
 					</DropdownMenuItem>

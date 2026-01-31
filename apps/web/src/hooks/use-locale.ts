@@ -1,6 +1,6 @@
-import { useParams, useSearchParams } from 'next/navigation'
-
+// Temporary implementation - locale routing to be implemented
 export function useLocale() {
-	const params = useParams()
-	return params.locale
+	// TODO: Implement proper locale detection with TanStack Router
+	// For now, default to Spanish as per original setup
+	return 'es'
 }
