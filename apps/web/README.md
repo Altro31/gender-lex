@@ -4,7 +4,7 @@ Frontend web application for Gender-Lex, a platform for analyzing gender bias in
 
 ## Overview
 
-This is the Next.js web application that provides the user interface for Gender-Lex. It enables users to upload documents, analyze them for gender bias, interact with an AI chatbot, and manage analysis presets and AI models. The application supports internationalization with English and Spanish languages.
+This is the TanStack Start web application that provides the user interface for Gender-Lex. It enables users to upload documents, analyze them for gender bias, interact with an AI chatbot, and manage analysis presets and AI models. The application supports internationalization with English and Spanish languages.
 
 ## Features
 
@@ -30,8 +30,10 @@ This is the Next.js web application that provides the user interface for Gender-
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 (App Router)
+- **Framework**: TanStack Start (file-based routing)
+- **Build Tool**: Vinxi + Vite
 - **React**: React 19
+- **Router**: TanStack Router
 - **UI Components**: Radix UI, shadcn/ui
 - **Styling**: Tailwind CSS 4, Tailwind Animate
 - **Forms**: React Hook Form + Zod validation
@@ -46,7 +48,7 @@ This is the Next.js web application that provides the user interface for Gender-
 - **Icons**: Lucide React
 - **Real-time**: Server-Sent Events (reconnecting-eventsource)
 - **Functional Programming**: Effect
-- **Type Safety**: TypeScript with Next.js TypeGen
+- **Type Safety**: TypeScript
 
 ## Project Structure
 
