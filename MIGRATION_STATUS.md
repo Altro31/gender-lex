@@ -45,6 +45,11 @@ All 10 page routes migrated from Next.js App Router to TanStack Router:
 - ✅ **README.md** (apps/web): Updated to reflect TanStack Start
 - ✅ **README.md** (root): Updated architecture overview
 
+### 7. Known Issues to Address
+- ⚠️ **searchParams Promise wrapping**: Routes use `Promise.resolve(searchParams)` because container components expect async searchParams (Next.js pattern). Need to update container components to accept synchronous params or add proper async handling.
+- ⚠️ **Locale hardcoded**: `use-locale.ts` returns 'es' hardcoded - needs proper implementation with TanStack Router
+- ✅ **Privacy/Terms pages**: Updated to show placeholder content instead of null
+
 ## 🔄 Remaining Work
 
 ### 1. Dependencies (Critical - Blocker)

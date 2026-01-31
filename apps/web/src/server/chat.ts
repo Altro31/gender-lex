@@ -13,14 +13,16 @@ export const sendChatMessage = createServerFn({ method: "POST" })
     
     if (context) {
       const lastMessages = conversationHistory.at(-1)?.content as TextPart[];
-      const message = lastMessages[0]!;
+      const message = lastMessages?.[0];
       
-      message.text =
-        `
-      <context>
-        ${JSON.stringify(context)}
-      </context>
-      ` + message.text;
+      if (message) {
+        message.text =
+          `
+        <context>
+          ${JSON.stringify(context)}
+        </context>
+        ` + message.text;
+      }
     }
 
     const result = await chatAgent.stream({ messages: conversationHistory });
