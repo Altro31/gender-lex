@@ -2,7 +2,6 @@ import { chatbotSystemPrompt } from "@/lib/chatbot/system.prompt";
 import { analysisTools } from "@/lib/chatbot/tools/analysis-tools";
 import { routeTools } from "@/lib/chatbot/tools/route-tools";
 import envs from "@/lib/env/env-server";
-import { google } from "@ai-sdk/google";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { InferAgentUIMessage, ToolLoopAgent } from "ai";
 
@@ -16,6 +15,10 @@ export const chatAgent = new ToolLoopAgent({
   model: provider(envs.CHATBOT_MODEL_IDENTIFIER),
   tools: { ...routeTools, ...analysisTools },
   instructions: chatbotSystemPrompt,
+  experimental_telemetry: {
+    isEnabled: true,
+    functionId: "gender-lex-chatbot",
+  },
 });
 type Metadata = { context?: { key: string } };
 export type ChatbotMessage = InferAgentUIMessage<typeof chatAgent, Metadata>;

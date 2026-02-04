@@ -37,8 +37,6 @@ model Analysis with RawAnalysis,Timestamps {
     @@allow('create', true)
 }
 
-
-
 enum Visibility {
     public
     private

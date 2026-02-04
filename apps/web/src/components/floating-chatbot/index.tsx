@@ -70,11 +70,12 @@ function Chatbot() {
       async onToolCall({ toolCall }) {
         if (toolCall.dynamic) return;
         if (toolCall.toolName === "navigateTo") {
-          router.push((toolCall.input as any).route);
+          router.push(toolCall.input.route);
+          return;
         }
         if (toolCall.toolName === "analice") {
           const res = await prepareAnalysis({
-            text: (toolCall.input as any).text,
+            text: toolCall.input.text,
             filesObj: [],
           });
           if (res.error) {
@@ -91,8 +92,10 @@ function Chatbot() {
           addToolOutput({
             tool: toolCall.toolName,
             toolCallId: toolCall.toolCallId,
+            state: "output-available",
             output: "Analysis successfully",
           });
+          return;
         }
       },
     });

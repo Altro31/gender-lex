@@ -1,14 +1,16 @@
+import { UserProviderService } from "@/shared/user-provider.service"
 import { effectify } from "@repo/db/effect"
 import type { AnalysisStatus, Visibility } from "@repo/db/models"
+import type { AnalysisFindManyQueryParams } from "@repo/types/dtos/analysis"
 import { Effect } from "effect"
 import { AnalysisRepository } from "./repository"
-import type { AnalysisFindManyQueryParams } from "@repo/types/dtos/analysis"
 
 export class AnalysisService extends Effect.Service<AnalysisService>()(
     "AnalysisService",
     {
         effect: Effect.gen(function* () {
             const repository = yield* AnalysisRepository
+            const { user } = yield* UserProviderService
 
             const service = {
                 statusCount: () =>
@@ -16,7 +18,7 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
                         const [all, pending, analyzing, done, error] =
                             yield* Effect.all(
                                 [
-                                    effectify(repository.count()),
+                                    this.countByStatus(),
                                     this.countByStatus("pending"),
                                     this.countByStatus("analyzing"),
                                     this.countByStatus("done"),
@@ -27,8 +29,15 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
                         return { all, pending, analyzing, done, error }
                     }),
 
-                countByStatus: (status: AnalysisStatus) =>
-                    effectify(repository.count({ where: { status } })),
+                countByStatus: (status?: AnalysisStatus) =>
+                    effectify(
+                        repository.count({
+                            where: {
+                                status,
+                                User: user ? { id: user.id } : undefined,
+                            },
+                        }),
+                    ),
 
                 delete: (id: string) =>
                     effectify(repository.delete({ where: { id } })),
@@ -42,17 +51,18 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
                     )
                     return analysis
                 }),
-                findMany: ({
+                findMany: Effect.fn("findMany")(function* ({
                     page = 1,
                     pageSize = 10,
                     q,
                     status,
-                }: AnalysisFindManyQueryParams) =>
-                    effectify(
+                }: AnalysisFindManyQueryParams) {
+                    return yield* effectify(
                         repository.findMany({
                             where: {
                                 name: { contains: q, mode: "insensitive" },
-                                status: status as any,
+                                status,
+                                User: user ? { id: user.id } : undefined,
                             },
                             include: { Preset: true },
                             skip: (page! - 1) * pageSize!,
@@ -62,8 +72,8 @@ export class AnalysisService extends Effect.Service<AnalysisService>()(
                                 { updatedAt: "desc" },
                             ],
                         }),
-                    ),
-
+                    )
+                }),
                 redo: (id: string) =>
                     effectify(
                         repository.update({

@@ -11,7 +11,7 @@ import { Visibility } from "@repo/db/models";
 import type { AnalysisApp } from "@repo/types/api";
 import type { AnalysisFindManyQueryParams } from "@repo/types/dtos/analysis";
 import { parseResponse } from "hono/client";
-import { cacheTag, updateTag } from "next/cache";
+import { refresh } from "next/cache";
 import { unauthorized } from "next/navigation";
 import z from "zod";
 
@@ -29,7 +29,7 @@ export async function prepareAnalysis(input: HomeSchema) {
   );
 
   if (!res.error) {
-    updateTag("analyses");
+    refresh();
   }
 
   return res;
@@ -41,7 +41,7 @@ export const deleteAnalysis = actionClient
     const session = await getSession();
     if (!session) unauthorized();
     await parseResponse(client.analysis[":id"].$delete({ param: { id } }));
-    updateTag("analyses");
+    refresh();
   });
 
 export interface findAnalyses {
@@ -53,9 +53,6 @@ export async function findAnalyses({
   pageSize,
   ...rest
 }: AnalysisFindManyQueryParams) {
-  "use cache: private";
-  cacheTag("analyses");
-
   const session = await getSession();
   if (!session) unauthorized();
 
@@ -71,8 +68,6 @@ export async function findAnalyses({
 }
 
 export async function findRecentAnalyses() {
-  "use cache: private";
-  cacheTag(`analyses`);
   const db = await getDB();
   return db.analysis.findMany({ orderBy: [{ createdAt: "desc" }], take: 5 });
 }
@@ -85,10 +80,7 @@ export interface getStatusCount {
   Data: InferSuccess<typeof getStatusCount>;
 }
 export async function getStatusCount() {
-  "use cache: private";
-  cacheTag(`analyses`);
-
-  return parseResponse(client.analysis["status-count"].$get());
+  return parseResponse(client.auth$.analysis["status-count"].$get());
 }
 
 export async function redoAnalysis(id: string) {
@@ -99,8 +91,7 @@ export async function redoAnalysis(id: string) {
     console.error(res.error);
     return res;
   }
-  updateTag("analyses");
-  updateTag(`analysys-${id}`);
+  refresh();
   return res;
 }
 
@@ -119,6 +110,6 @@ export const changeVisibility = actionClient
         param: { id },
       })
     );
-    updateTag(`analyses`);
+    refresh();
     return res;
   });

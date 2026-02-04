@@ -4,7 +4,7 @@ import type { InferSuccess } from "@/lib/api/type";
 import { getDB } from "@/lib/db/client";
 import { actionClient } from "@/lib/safe-action";
 import { PresetSchema } from "@/sections/preset/form/preset-schema";
-import { cacheTag, updateTag } from "next/cache";
+import { refresh } from "next/cache";
 import { z } from "zod/mini";
 
 export interface findPresets {
@@ -12,8 +12,6 @@ export interface findPresets {
   Item: this["Data"][number];
 }
 export async function findPresets({ page, q }: { page: number; q?: string }) {
-  "use cache: private";
-  cacheTag("presets");
   const db = await getDB();
 
   return db.preset.findMany({
@@ -41,7 +39,7 @@ export const createPreset = actionClient
       },
     });
 
-    updateTag("presets");
+    refresh();
     return { success: true, data };
   });
 
@@ -71,9 +69,7 @@ export const editPreset = actionClient
       });
     });
 
-    updateTag("presets");
-    updateTag(`preset-${id}`);
-
+    refresh();
     return { success: true, data };
   });
 
@@ -84,7 +80,7 @@ export const deletePreset = actionClient
 
     await db.preset.delete({ where: { id } });
 
-    updateTag("presets");
+    refresh();
     return { success: true };
   });
 
@@ -123,14 +119,11 @@ export const clonePreset = actionClient
       },
     });
 
-    updateTag("presets");
+    refresh();
     return { success: true, data: cloned };
   });
 
 export const getPresetsSelect = async ({ page }: { page: number }) => {
-  "use cache: private";
-  cacheTag("presets");
-
   const db = await getDB();
   return db.preset.findMany({ skip: page * 20, take: 20 });
 };

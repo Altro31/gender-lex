@@ -12,12 +12,20 @@ export const availableRoutes = {
 
 export const routeTools = {
   getAvailableRoutes: tool({
-    description: "Get detailed info for all available routes of the system",
+    description:
+      "Returns a complete map of all available routes in the application with descriptions of their purpose. Use this when the user asks about available pages, navigation options, or where they can perform specific actions in the system.",
     inputSchema: z.object({}),
     execute: () => availableRoutes,
   }),
   navigateTo: tool({
-    description: "Navigate to an specific route",
-    inputSchema: z.object({ route: z.enum(Object.keys(availableRoutes)) }),
+    description:
+      "Navigates the user to a specific page within the application. Use this when the user explicitly requests to go to a particular section (e.g., 'take me to models page', 'go to analysis', 'show me my previous analyses'). Only use routes from the available routes list.",
+    inputSchema: z.object({
+      route: z
+        .enum(Object.keys(availableRoutes))
+        .describe(
+          "The target route path to navigate to. Must be one of the available routes in the system."
+        ),
+    }),
   }),
 };

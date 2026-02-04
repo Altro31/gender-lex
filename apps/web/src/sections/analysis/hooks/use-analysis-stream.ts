@@ -1,6 +1,5 @@
 import { getApiProxyClient } from "@/lib/api/proxy-client";
 import { handleStream } from "@/lib/api/util";
-import { Analysis } from "@repo/db/models";
 import { AnalysisApp } from "@repo/types/api";
 import {
   experimental_streamedQuery as streamedQuery,
@@ -33,6 +32,9 @@ export function useAnalysisStream(id: string) {
   const { data, ...rest } = useQuery({
     queryKey: [`analysis-${id}`],
     queryFn: streamedQuery({ streamFn: fetchAnalysis, refetchMode: "replace" }),
+    // refetchOnMount: () => true,
+    // refetchOnReconnect: () => true,
+    // refetchOnWindowFocus: () => true,
   });
 
   const analysis = data?.at(-1);

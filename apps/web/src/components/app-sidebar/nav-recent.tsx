@@ -30,6 +30,7 @@ export default async function NavRecent() {
             {data.map((item) => (
               <SidebarMenuItem key={item.id}>
                 <SidebarMenuButton
+                  className="h-auto"
                   render={<Link href={`/analysis/${item.id}`} />}
                 >
                   {item.name}

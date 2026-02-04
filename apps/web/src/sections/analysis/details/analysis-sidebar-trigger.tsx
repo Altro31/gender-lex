@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { useSidebar } from "@/components/ui/sidebar"
-import { useEffect, useEffectEvent } from "react"
+import { useSidebar } from "@/components/ui/sidebar";
+import { useEffect, useEffectEvent } from "react";
 
 export default function AnalysisSidebarTrigger() {
-	const sidebar = useSidebar()
-	const sidebarEffect = useEffectEvent(() => sidebar.setOpen(false))
+  const sidebar = useSidebar();
+  const sidebarEffect = useEffectEvent(() => sidebar.setOpen(false));
 
-	useEffect(() => {
-		sidebarEffect()
-		// oxlint-disable-next-line exhaustive-deps
-	}, [])
+  useEffect(() => {
+    sidebarEffect();
+    // oxlint-disable-next-line exhaustive-deps
+  }, []);
 
-	return null
+  return null;
 }

@@ -1,7 +1,7 @@
 "use server";
 
 import { getApiClient } from "@/lib/api/client";
-import type { InferApiResponse, InferSuccess } from "@/lib/api/type";
+import type { InferSuccess } from "@/lib/api/type";
 import { getDB } from "@/lib/db/client";
 import { actionClient } from "@/lib/safe-action";
 import { ModelSchema } from "@/sections/model/form/model-schema";
@@ -9,7 +9,7 @@ import type { ModelApp } from "@repo/types/api";
 import { CreateModelInput } from "@repo/types/dtos/model";
 import { Schema } from "effect";
 import { parseResponse } from "hono/client";
-import { cacheTag, updateTag } from "next/cache";
+import { refresh } from "next/cache";
 import { after } from "next/server";
 import { z } from "zod/mini";
 
@@ -26,8 +26,6 @@ export async function findModels({
   q?: string;
   page?: string;
 }) {
-  "use cache: private";
-  cacheTag("models");
   const db = await getDB();
   return db.model.findMany({
     where: { name: { contains: q, mode: "insensitive" } },
@@ -53,7 +51,7 @@ export const createModel = actionClient
       })
     );
 
-    updateTag("models");
+    refresh();
     return { success: true, data };
   });
 
@@ -67,8 +65,7 @@ export const editModel = actionClient
     const data = await db.model.update({ where: { id }, data: body });
     after(() => testConnection(id));
 
-    updateTag("models");
-    updateTag(`model-${id}`);
+    refresh();
     return { success: true, data };
   });
 
@@ -77,7 +74,7 @@ export const deleteModel = actionClient
   .action(async ({ parsedInput: id }) => {
     const db = await getDB();
     await db.model.delete({ where: { id } });
-    updateTag("models");
+    refresh();
     return { success: true };
   });
 
@@ -90,14 +87,11 @@ export const testConnection = actionClient
       })
     );
 
-    updateTag("models");
-    updateTag(`model-${id}`);
+    refresh();
     return { success: true, data };
   });
 
 export const getModelsSelect = async ({ page }: { page: number }) => {
-  "use cache: private";
-  cacheTag("models");
   const db = await getDB();
 
   return db.model.findMany({

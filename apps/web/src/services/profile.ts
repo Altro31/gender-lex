@@ -12,8 +12,6 @@ const UpdateProfileSchema = z.object({
 
 export type getUserProfile = Awaited<ReturnType<typeof getUserProfile>>;
 export async function getUserProfile() {
-  "use cache: private";
-
   const session = await getSession();
   if (!session) {
     throw new Error("Usuario no autenticado");

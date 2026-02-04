@@ -37,13 +37,13 @@ export function AnalysisActions({ analysis, renderTrigger }: Props) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger render={renderTrigger} />
-        <DropdownMenuContent align="start">
+        <DropdownMenuContent align="start" className="w-auto">
           <DropdownMenuItem render={<Link href={`/analysis/${analysis.id}`} />}>
-            <Eye className="mr-2 " />
+            <Eye />
             {t`Details`}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleRedoAnalysis(analysis)}>
-            <RotateCcw className="mr-2 " />
+            <RotateCcw />
             {t`Redo Analysis`}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -53,7 +53,7 @@ export function AnalysisActions({ analysis, renderTrigger }: Props) {
             nativeButton={false}
             render={<DropdownMenuItem variant="destructive" />}
           >
-            <Trash2 className="" />
+            <Trash2 />
             {t`Delete`}
           </DeleteAnalysisAlertDialogTrigger>
         </DropdownMenuContent>
