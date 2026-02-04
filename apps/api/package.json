@@ -24,10 +24,10 @@
         "@effect/platform": "catalog:",
         "@effect/platform-node": "catalog:",
         "@hono/standard-validator": "^0.2.2",
-        "@hono/zod-openapi": "^1.2.0",
+        "@hono/zod-openapi": "^1.2.1",
         "@repo/auth": "workspace:*",
         "@repo/db": "workspace:*",
-        "@scalar/hono-api-reference": "^0.9.38",
+        "@scalar/hono-api-reference": "^0.9.40",
         "@workflow/world-postgres": "catalog:",
         "@zenstackhq/server": "catalog:",
         "adm-zip": "^0.5.16",
@@ -37,7 +37,7 @@
         "hono": "catalog:",
         "hono-openapi": "^1.2.0",
         "umlsjs": "^1.2.1",
-        "workflow": "^4.0.1-beta.50",
+        "workflow": "^4.1.0-beta.52",
         "zod": "catalog:"
     },
     "peerDependencies": {
