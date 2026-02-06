@@ -14,6 +14,7 @@ import { validator } from "hono-openapi"
 import { streamSSE } from "hono/streaming"
 import { getRun, start } from "workflow/api"
 import { AnalysisService } from "./service"
+import type { AnalysisUpdate } from "@/lib/types/raw-analysis"
 
 const analysis = new Hono<HonoVariables>()
     .onError((e, c) => {
@@ -87,7 +88,7 @@ const analysis = new Hono<HonoVariables>()
     .get("/:id", async c => {
         const runEffect = c.get("runEffect")
         const id = c.req.param("id")
-        c.json({})
+
         return streamSSE(
             c,
             async stream => {
@@ -135,7 +136,7 @@ const analysis = new Hono<HonoVariables>()
                     data: JSON.stringify({ status: 404 }),
                 })
             },
-        ) as unknown as TypedResponse<Analysis, 200, "json">
+        ) as unknown as TypedResponse<AnalysisUpdate, 200, "json">
     })
     .get("/", validator("query", AnalysisFindManyQueryParams), async c => {
         const runEffect = c.get("runEffect")

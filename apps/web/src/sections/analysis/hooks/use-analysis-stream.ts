@@ -32,9 +32,6 @@ export function useAnalysisStream(id: string) {
   const { data, ...rest } = useQuery({
     queryKey: [`analysis-${id}`],
     queryFn: streamedQuery({ streamFn: fetchAnalysis, refetchMode: "replace" }),
-    // refetchOnMount: () => true,
-    // refetchOnReconnect: () => true,
-    // refetchOnWindowFocus: () => true,
   });
 
   const analysis = data?.at(-1);

@@ -28,7 +28,7 @@ export default function PresetSelect() {
     <RHFComboboxAutofetcher
       name="preset"
       fetcherFunc={getPresetsSelect}
-      placeholder="Using Default Preset"
+      placeholder={t`Using Default Preset`}
       getKey={(i) => i.id}
       getLabel={(i) => i.name}
       renderValue={(i) => i.name}

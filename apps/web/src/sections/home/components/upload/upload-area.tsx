@@ -86,8 +86,8 @@ export function RHFUploadRegister() {
       e.preventDefault();
       const file = e.dataTransfer?.files.item(0)!;
       setIsDragging(false);
-      const files = getValues("files");
-      setValue("files", [...files!, { file } as any]);
+      const files = getValues("filesObj");
+      setValue("filesObj", [...files!, { file } as any]);
     }
     element?.addEventListener("drop", handleDrop);
     return () => element?.removeEventListener("drop", handleDrop);

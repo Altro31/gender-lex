@@ -12,8 +12,8 @@ export default function UploadButton() {
     const files = Array.from(e.currentTarget.files ?? []).map((file) => ({
       file,
     }));
-    const previousFiles = getValues("files")!;
-    setValue("files", [...previousFiles, ...files] as any);
+    const previousFiles = getValues("filesObj")!;
+    setValue("filesObj", [...previousFiles, ...files] as any);
     e.currentTarget.value = "";
   };
 

@@ -47,7 +47,9 @@ export default function AnalysesListItem({ analysis }: Props) {
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="mb-2 flex items-center gap-3">
-              <CardTitle className="text-lg">{analysis.name}</CardTitle>
+              <CardTitle className="text-lg">
+                {analysis.name ?? "Sin nombre"}
+              </CardTitle>
               <Badge className={statusConfig[analysis.status].color}>
                 <StatusIcon className="mr-1 h-3 w-3" />
                 {statusConfig[analysis.status].label}

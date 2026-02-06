@@ -1,13 +1,5 @@
-import type { Analysis } from "@repo/db/models"
+import type { Analysis, RawAnalysis } from "@repo/db/models"
+import type { DeepPartial } from "ai"
+import type { SimplifyDeep } from "type-fest"
 
-export type RawAnalysis = Pick<
-    Analysis,
-    | "name"
-    | "originalText"
-    | "modifiedTextAlternatives"
-    | "biasedTerms"
-    | "biasedMetaphors"
-    | "additionalContextEvaluation"
-    | "impactAnalysis"
-    | "conclusion"
->
+export type AnalysisUpdate = SimplifyDeep<Analysis & DeepPartial<RawAnalysis>>

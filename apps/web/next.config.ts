@@ -26,6 +26,7 @@ const nextConfig: NextConfig = {
     rules: { "*.po": { loaders: ["@lingui/loader"], as: "*.js" } },
     root: path.join(import.meta.dirname, "..", ".."),
   },
+  logging: { fetches: { hmrRefreshes: true, fullUrl: true } },
 };
 
 export default nextConfig;

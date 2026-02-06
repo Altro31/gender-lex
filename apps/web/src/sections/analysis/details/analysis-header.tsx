@@ -22,6 +22,8 @@ import {
   Lock,
   LockOpen,
   User,
+  Loader2,
+  type LucideProps,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -29,6 +31,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ParamsOf } from "../../../../.next/types/routes";
 import { useAnalysisStream } from "../hooks/use-analysis-stream";
+import { mergeProps } from "@base-ui/react";
 
 export default function AnalysisHeader() {
   const { data: session } = useSession();
@@ -50,7 +53,14 @@ export default function AnalysisHeader() {
         return {
           label: t`Analyzing`,
           color: "bg-blue-100 text-blue-800",
-          icon: Clock,
+          icon: (props: LucideProps) => (
+            <Loader2
+              {...mergeProps<typeof Loader2>(
+                { className: "animate-spin" },
+                props
+              )}
+            />
+          ),
         };
       case "done":
         return {
@@ -82,7 +92,9 @@ export default function AnalysisHeader() {
       </div>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 className="mb-2 text-3xl font-bold ">{t`Analysis Details`}</h1>
+          <h1 className="mb-2 text-3xl font-bold ">
+            {analysis?.name ?? "Sin nombre"}
+          </h1>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Calendar />

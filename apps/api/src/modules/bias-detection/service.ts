@@ -34,7 +34,7 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
 
                     const res = yield* Effect.tryPromise({
                         try: () =>
-                            biasAgent.generate({
+                            biasAgent.stream({
                                 prompt: `<analice>${analysis.originalText}</analice>`,
                             }),
                         catch(error: any) {
@@ -42,8 +42,7 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
                             return new AiRequestError({ error })
                         },
                     })
-                    res.output.reasoning = res.reasoningText
-                    return res.output
+                    return res.partialOutputStream
                 }),
             }
         }),

@@ -32,7 +32,7 @@ export const AnalysisFindManyQueryParams = Pagination.pipe(
   Schema.standardSchemaV1
 );
 
-export type ChangeVisibilityInput = typeof ChangeVisibilityInput.Type
+export type ChangeVisibilityInput = typeof ChangeVisibilityInput.Type;
 export const ChangeVisibilityInput = Schema.Struct({
   visibility: Schema.Enums(Visibility),
 }).pipe(Schema.standardSchemaV1);

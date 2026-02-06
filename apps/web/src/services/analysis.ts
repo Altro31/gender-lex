@@ -69,7 +69,11 @@ export async function findAnalyses({
 
 export async function findRecentAnalyses() {
   const db = await getDB();
-  return db.analysis.findMany({ orderBy: [{ createdAt: "desc" }], take: 5 });
+  return db.analysis.findMany({
+    where: { status: "done" },
+    orderBy: [{ createdAt: "desc" }],
+    take: 5,
+  });
 }
 export interface findRecentAnalyses {
   Data: InferSuccess<typeof findRecentAnalyses>;

@@ -17,9 +17,7 @@ export default function HomeFormProvider({
     resolver: standardSchemaResolver(HomeSchema),
     defaultValues: {
       filesObj: [],
-      files: [],
       text: "",
-      selectedPreset: "",
       preset: null as any,
     },
     mode: "all",

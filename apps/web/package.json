@@ -82,6 +82,7 @@
     "@types/react": "^19.2.11",
     "@types/react-dom": "^19.2.3",
     "@types/web-push": "^3.6.4",
+    "next-devtools-mcp": "^0.3.10",
     "oxlint": "catalog:",
     "prettier-plugin-tailwindcss": "latest",
     "tailwindcss": "^4.1.18",

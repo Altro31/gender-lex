@@ -16,9 +16,10 @@
     "effect": "catalog:"
   },
   "devDependencies": {
+    "@repo/types": "workspace:*",
     "@types/pg": "^8.16.0",
     "@zenstackhq/cli": "^3.3.2",
-    "type-fest": "^5.4.3"
+    "type-fest": "catalog:"
   },
   "peerDependencies": {
     "kysely": "^0.28.8"

@@ -66,7 +66,7 @@ export default function AnalysisContextEvaluation() {
                 <CardTitle className="flex items-center gap-2">
                   <div
                     className={`h-3 w-3 rounded-full ${
-                      analysis?.additionalContextEvaluation.stereotype.presence
+                      analysis?.additionalContextEvaluation.stereotype?.presence
                         ? "bg-red-500"
                         : "bg-green-500"
                     }`}
@@ -80,7 +80,7 @@ export default function AnalysisContextEvaluation() {
                   <span className="font-bold">
                     {Math.round(
                       analysis?.additionalContextEvaluation.stereotype
-                        .influencePercentage * 100
+                        ?.influencePercentage * 100
                     )}
                     %
                   </span>
@@ -88,20 +88,23 @@ export default function AnalysisContextEvaluation() {
                 <Progress
                   value={
                     analysis?.additionalContextEvaluation.stereotype
-                      .influencePercentage * 100
+                      ?.influencePercentage * 100
                   }
                 />
                 <p className="text-sm text-muted-foreground">
-                  {analysis?.additionalContextEvaluation.stereotype.explanation}
+                  {
+                    analysis?.additionalContextEvaluation.stereotype
+                      ?.explanation
+                  }
                 </p>
-                {analysis?.additionalContextEvaluation.stereotype.examples
-                  .length > 0 && (
+                {analysis?.additionalContextEvaluation.stereotype?.examples
+                  ?.length > 0 && (
                   <div>
                     <h4 className="mb-2 text-sm font-medium text-muted-foreground">
                       {t`Examples`}:
                     </h4>
                     <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                      {analysis?.additionalContextEvaluation.stereotype.examples.map(
+                      {analysis?.additionalContextEvaluation.stereotype?.examples.map(
                         (example, i) => (
                           <li key={i}>{example}</li>
                         )
@@ -124,7 +127,7 @@ export default function AnalysisContextEvaluation() {
                   <div
                     className={`h-3 w-3 rounded-full ${
                       analysis?.additionalContextEvaluation.powerAsymmetry
-                        .presence
+                        ?.presence
                         ? "bg-red-500"
                         : "bg-green-500"
                     }`}
@@ -138,7 +141,7 @@ export default function AnalysisContextEvaluation() {
                   <span className="font-bold">
                     {Math.round(
                       analysis?.additionalContextEvaluation.powerAsymmetry
-                        .influencePercentage * 100
+                        ?.influencePercentage * 100
                     )}
                     %
                   </span>
@@ -146,17 +149,17 @@ export default function AnalysisContextEvaluation() {
                 <Progress
                   value={
                     analysis?.additionalContextEvaluation.powerAsymmetry
-                      .influencePercentage * 100
+                      ?.influencePercentage * 100
                   }
                 />
                 <p className="text-sm text-muted-foreground">
                   {
                     analysis?.additionalContextEvaluation.powerAsymmetry
-                      .explanation
+                      ?.explanation
                   }
                 </p>
-                {analysis?.additionalContextEvaluation.powerAsymmetry.examples
-                  .length > 0 && (
+                {analysis?.additionalContextEvaluation.powerAsymmetry?.examples
+                  ?.length > 0 && (
                   <div>
                     <h4 className="mb-2 text-sm font-medium text-muted-foreground">
                       {t`Examples`}:
@@ -188,7 +191,7 @@ export default function AnalysisContextEvaluation() {
                   <div
                     className={`h-3 w-3 rounded-full ${
                       analysis?.additionalContextEvaluation
-                        .genderRepresentationAbsence.presence
+                        .genderRepresentationAbsence?.presence
                         ? "bg-red-500"
                         : "bg-green-500"
                     }`}
@@ -202,7 +205,7 @@ export default function AnalysisContextEvaluation() {
                   <span className="font-bold">
                     {Math.round(
                       analysis?.additionalContextEvaluation
-                        .genderRepresentationAbsence.influencePercentage * 100
+                        .genderRepresentationAbsence?.influencePercentage * 100
                     )}
                     %
                   </span>
@@ -210,17 +213,17 @@ export default function AnalysisContextEvaluation() {
                 <Progress
                   value={
                     analysis?.additionalContextEvaluation
-                      .genderRepresentationAbsence.influencePercentage * 100
+                      .genderRepresentationAbsence?.influencePercentage * 100
                   }
                 />
                 <p className="text-sm text-muted-foreground">
                   {
                     analysis?.additionalContextEvaluation
-                      .genderRepresentationAbsence.explanation
+                      .genderRepresentationAbsence?.explanation
                   }
                 </p>
                 {analysis?.additionalContextEvaluation
-                  .genderRepresentationAbsence.affectedGroups.length > 0 && (
+                  .genderRepresentationAbsence?.affectedGroups.length > 0 && (
                   <div>
                     <h4 className="mb-2 text-sm font-medium text-muted-foreground">
                       {t`Affected Groups`}:
@@ -251,7 +254,7 @@ export default function AnalysisContextEvaluation() {
                   <div
                     className={`h-3 w-3 rounded-full ${
                       analysis?.additionalContextEvaluation.intersectionality
-                        .presence
+                        ?.presence
                         ? "bg-red-500"
                         : "bg-green-500"
                     }`}
@@ -265,7 +268,7 @@ export default function AnalysisContextEvaluation() {
                   <span className="font-bold">
                     {Math.round(
                       analysis?.additionalContextEvaluation.intersectionality
-                        .influencePercentage * 100
+                        ?.influencePercentage * 100
                     )}
                     %
                   </span>
@@ -273,17 +276,17 @@ export default function AnalysisContextEvaluation() {
                 <Progress
                   value={
                     analysis?.additionalContextEvaluation.intersectionality
-                      .influencePercentage * 100
+                      ?.influencePercentage * 100
                   }
                 />
                 <p className="text-sm text-muted-foreground">
                   {
                     analysis?.additionalContextEvaluation.intersectionality
-                      .explanation
+                      ?.explanation
                   }
                 </p>
                 {analysis?.additionalContextEvaluation.intersectionality
-                  .excludedGroups.length > 0 && (
+                  ?.excludedGroups.length > 0 && (
                   <div>
                     <h4 className="mb-2 text-sm font-medium text-muted-foreground">
                       {t`Excluded Groups`}:
@@ -314,7 +317,7 @@ export default function AnalysisContextEvaluation() {
                   <div
                     className={`h-3 w-3 rounded-full ${
                       analysis?.additionalContextEvaluation.systemicBiases
-                        .presence
+                        ?.presence
                         ? "bg-red-500"
                         : "bg-green-500"
                     }`}
@@ -328,7 +331,7 @@ export default function AnalysisContextEvaluation() {
                   <span className="font-bold">
                     {Math.round(
                       analysis?.additionalContextEvaluation.systemicBiases
-                        .influencePercentage * 100
+                        ?.influencePercentage * 100
                     )}
                     %
                   </span>
@@ -336,16 +339,16 @@ export default function AnalysisContextEvaluation() {
                 <Progress
                   value={
                     analysis?.additionalContextEvaluation.systemicBiases
-                      .influencePercentage * 100
+                      ?.influencePercentage * 100
                   }
                 />
                 <p className="text-sm text-muted-foreground">
                   {
                     analysis?.additionalContextEvaluation.systemicBiases
-                      .explanation
+                      ?.explanation
                   }
                 </p>
-                {analysis?.additionalContextEvaluation.systemicBiases.examples
+                {analysis?.additionalContextEvaluation.systemicBiases?.examples
                   .length > 0 && (
                   <div>
                     <h4 className="mb-2 text-sm font-medium text-muted-foreground">

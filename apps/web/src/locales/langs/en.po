@@ -18,10 +18,6 @@ msgstr ""
 msgid "{0, select, primary {Principal} secondary {Secondary} other {Other}}"
 msgstr "{0, select, primary {Principal} secondary {Secondary} other {Other}}"
 
-#: src/sections/analysis/details/analysis-header.tsx:113
-#~ msgid "{0, select, public {Public} private {Private} other {Other}}"
-#~ msgstr "{0, select, public {Public} private {Private} other {Other}}"
-
 #: src/sections/model/utils/status.ts:29
 msgid "{error, select, INVALID_API_KEY {Invalid API key} INVALID_IDENTIFIER {Invalid identifier} INVALID_CONNECTION_URL {Invalid connection URL} INACTIVE_MODEL {Inactive model} MAX_ATTEMPTS_REACHED {Maximum number of attempts reached} other {Other}}"
 msgstr "{error, select, INVALID_API_KEY {Invalid API key} INVALID_IDENTIFIER {Invalid identifier} INVALID_CONNECTION_URL {Invalid connection URL} INACTIVE_MODEL {Inactive model} MAX_ATTEMPTS_REACHED {Maximum number of attempts reached} other {Other}}"
@@ -138,14 +134,10 @@ msgstr "Analyzed Text"
 msgid "Analyzing"
 msgstr "Analyzing"
 
-#: src/sections/model/details/model-details.tsx:96
+#: src/sections/model/details/model-details.tsx:92
 #: src/sections/model/form/model-form.tsx:48
 msgid "API Key"
 msgstr "API Key"
-
-#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:40
-#~ msgid "Are you shure?"
-#~ msgstr "Are you shure?"
 
 #: src/sections/analysis/components/dialogs/change-visibility-alert-dialog.tsx:56
 #: src/sections/analysis/components/dialogs/delete-analysis-alert-dialog.tsx:48
@@ -188,10 +180,6 @@ msgstr "By changing the visibility of the current analysis as <0>{0}</0>, nobody
 #: src/components/terms-and-conditions.tsx:24
 msgid "By continuing, you accept our <0>{0}</0> and <1>{1}</1>"
 msgstr "By continuing, you accept our <0>{0}</0> and <1>{1}</1>"
-
-#: src/components/terms-and-conditions.tsx:7
-#~ msgid "By continuing, you accept our <0>Terms of service</0> and <1>Privacy Policy</1>"
-#~ msgstr "By continuing, you accept our <0>Terms of service</0> and <1>Privacy Policy</1>"
 
 #: src/sections/analysis/components/dialogs/change-visibility-alert-dialog.tsx:74
 #: src/sections/analysis/components/dialogs/delete-analysis-alert-dialog.tsx:62
@@ -258,13 +246,9 @@ msgstr "Confirm Password"
 msgid "Confirm your password"
 msgstr "Confirm your password"
 
-#: src/sections/model/details/model-details.tsx:169
+#: src/sections/model/details/model-details.tsx:165
 msgid "Connection Test"
 msgstr "Connection Test"
-
-#: src/sections/analysis/details/content/analysis-content-original-text.tsx:45
-#~ msgid "Content hidden for privacy"
-#~ msgstr "Content hidden for privacy"
 
 #: src/sections/analysis/details/analysis-details-container.tsx:66
 msgid "Context"
@@ -315,12 +299,12 @@ msgstr "Create New Model"
 msgid "Create New Preset"
 msgstr "Create New Preset"
 
-#: src/sections/model/list/model-list-item.tsx:151
+#: src/sections/model/list/model-list-item.tsx:149
 #: src/sections/preset/list/preset-list-item.tsx:186
 msgid "Created at"
 msgstr "Created at"
 
-#: src/sections/model/details/model-details.tsx:133
+#: src/sections/model/details/model-details.tsx:129
 #: src/sections/preset/details/preset-details.tsx:115
 msgid "Creation date"
 msgstr "Creation date"
@@ -339,7 +323,7 @@ msgid "Delete"
 msgstr "Delete"
 
 #: src/sections/analysis/components/dialogs/delete-analysis-alert-dialog.tsx:71
-#: src/sections/model/list/model-list-item.tsx:167
+#: src/sections/model/list/model-list-item.tsx:165
 #: src/sections/preset/list/preset-list-item.tsx:204
 msgid "Deleting..."
 msgstr "Deleting..."
@@ -417,7 +401,7 @@ msgstr "Edit the information of preset: {0}"
 msgid "Email"
 msgstr "Email"
 
-#: src/sections/model/details/model-details.tsx:108
+#: src/sections/model/details/model-details.tsx:104
 msgid "Endpoint"
 msgstr "Endpoint"
 
@@ -486,10 +470,6 @@ msgstr "GenderLex | Your smart writing assistant"
 msgid "GenderLex, your smart writing assistant"
 msgstr "GenderLex, your smart writing assistant"
 
-#: src/sections/analysis/details/content/analysis-content-original-text.tsx:33
-#~ msgid "Hide"
-#~ msgstr "Hide"
-
 #: src/sections/analysis/details/content/tabs/analysis-terms.tsx:130
 msgid "Historical Context"
 msgstr "Historical Context"
@@ -511,7 +491,7 @@ msgstr "Identifier"
 msgid "Impact"
 msgstr "Impact"
 
-#: src/sections/model/details/model-details.tsx:127
+#: src/sections/model/details/model-details.tsx:123
 #: src/sections/preset/details/preset-details.tsx:110
 msgid "Important dates and usage statistics"
 msgstr "Important dates and usage statistics"
@@ -542,8 +522,8 @@ msgstr "Join our platform in seconds"
 msgid "Language"
 msgstr "Language"
 
-#: src/sections/model/details/model-details.tsx:145
-#: src/sections/model/list/model-list-item.tsx:156
+#: src/sections/model/details/model-details.tsx:141
+#: src/sections/model/list/model-list-item.tsx:154
 #: src/sections/preset/details/preset-details.tsx:127
 #: src/sections/preset/list/preset-list-item.tsx:174
 msgid "Last use"
@@ -594,7 +574,7 @@ msgstr "Manage your profile and account settings"
 msgid "Metaphorical expressions that perpetuate gender biases"
 msgstr "Metaphorical expressions that perpetuate gender biases"
 
-#: src/sections/model/details/model-details.tsx:87
+#: src/sections/model/details/model-details.tsx:83
 #: src/sections/preset/components/model-select/model-config-card.tsx:66
 #: src/sections/preset/list/preset-list-item.tsx:192
 msgid "Model"
@@ -605,7 +585,7 @@ msgstr "Model"
 msgid "Model Configuration"
 msgstr "Model Configuration"
 
-#: src/sections/model/details/model-details.tsx:157
+#: src/sections/model/details/model-details.tsx:153
 msgid "Model ID"
 msgstr "Model ID"
 
@@ -651,7 +631,7 @@ msgid "Modified version of the original text without gender bias"
 msgstr "Modified version of the original text without gender bias"
 
 #: src/components/app-sidebar/nav-recent-analysis-action.tsx:21
-#: src/components/app-sidebar/nav-recent.tsx:46
+#: src/components/app-sidebar/nav-recent.tsx:47
 msgid "More"
 msgstr "More"
 
@@ -870,17 +850,9 @@ msgstr "Set up a new combination of models with specific parameters"
 msgid "Set up a new connection to a language model"
 msgstr "Set up a new connection to a language model"
 
-#: src/sections/model/details/model-details.tsx:76
+#: src/sections/model/details/model-details.tsx:72
 msgid "Settings"
 msgstr "Settings"
-
-#: src/sections/analysis/details/analysis-header.tsx:134
-#~ msgid "Share"
-#~ msgstr "Share"
-
-#: src/sections/analysis/details/content/analysis-content-original-text.tsx:33
-#~ msgid "Show"
-#~ msgstr "Show"
 
 #: src/sections/analysis/details/components/analysis-content-original-text.tsx:38
 msgid "Show less"
@@ -926,7 +898,7 @@ msgstr "Start by creating your first preset"
 msgid "Starting session..."
 msgstr "Starting session..."
 
-#: src/sections/model/details/model-details.tsx:176
+#: src/sections/model/details/model-details.tsx:172
 #: src/sections/model/list/model-list-item.tsx:134
 msgid "Status"
 msgstr "Status"
@@ -959,7 +931,7 @@ msgstr "System"
 msgid "Systemic Biases"
 msgstr "Systemic Biases"
 
-#: src/sections/model/details/model-details.tsx:79
+#: src/sections/model/details/model-details.tsx:75
 msgid "Technical details of the connection to the model"
 msgstr "Technical details of the connection to the model"
 
@@ -971,7 +943,7 @@ msgstr "Temperature"
 msgid "Terms of service"
 msgstr "Terms of service"
 
-#: src/sections/model/components/test-connection-button.tsx:22
+#: src/sections/model/components/test-connection-button.tsx:43
 msgid "Test Connection"
 msgstr "Test Connection"
 
@@ -998,10 +970,6 @@ msgid ""
 msgstr ""
 "This action cannot be undone. \n"
 "The model will be permanently eliminated"
-
-#: src/sections/analysis/components/delete-analysis-alert-dialog-content.tsx:41
-#~ msgid "This action cannot be undone. \\nWill be permanently eliminated the analysis<0> {0}</0> and all its results."
-#~ msgstr "This action cannot be undone. \\nWill be permanently eliminated the analysis<0> {0}</0> and all its results."
 
 #. placeholder {0}: preset.name
 #: src/sections/preset/components/dialogs/delete-preset-alert-dialog-content.tsx:55
@@ -1035,7 +1003,7 @@ msgstr "Update"
 msgid "Upload File"
 msgstr "Upload File"
 
-#: src/sections/model/details/model-details.tsx:124
+#: src/sections/model/details/model-details.tsx:120
 #: src/sections/preset/details/preset-details.tsx:107
 msgid "Usage Information"
 msgstr "Usage Information"
@@ -1044,13 +1012,13 @@ msgstr "Usage Information"
 msgid "User registered successfully"
 msgstr "User registered successfully"
 
-#: src/sections/model/details/model-details.tsx:171
+#: src/sections/home/components/preset-select.tsx:31
+msgid "Using Default Preset"
+msgstr "Using Default Preset"
+
+#: src/sections/model/details/model-details.tsx:167
 msgid "Verify that the model configuration is correct"
 msgstr "Verify that the model configuration is correct"
-
-#: src/components/app-sidebar/nav-recent.tsx:53
-#~ msgid "View details"
-#~ msgstr "View details"
 
 #: src/app/[locale]/(domain)/analysis/[id]/page.tsx:11
 msgid "View details of the current analysis"

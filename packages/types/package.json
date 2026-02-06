@@ -1,6 +1,9 @@
 {
 	"name": "@repo/types",
 	"version": "0.0.0",
+	"devDependencies": {
+		"type-fest": "catalog:"
+	},
 	"peerDependencies": {
 		"@repo/db": "workspace:*",
 		"api": "workspace:*",

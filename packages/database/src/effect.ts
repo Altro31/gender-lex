@@ -1,8 +1,8 @@
 import type { ORMError, ZenStackPromise } from "@zenstackhq/orm";
 import { Data, Effect } from "effect";
-import type { UnionToTuple } from "type-fest";
 import type { ClientContract, SchemaType } from "./client";
 import { schema } from "./generated/schema.ts";
+import type { AllOf } from "@repo/types/utils";
 
 type ClientType = ClientContract<SchemaType>;
 
@@ -66,8 +66,8 @@ export function createEffectClient(prisma: ClientType) {
             getOwnPropertyDescriptor() {
               return { enumerable: true, configurable: true };
             },
-            ownKeys(): UnionToTuple<keyof ClientType["model"]> {
-              return [
+            ownKeys() {
+              const keys = [
                 "create",
                 "delete",
                 "createMany",
@@ -86,7 +86,8 @@ export function createEffectClient(prisma: ClientType) {
                 "aggregate",
                 "groupBy",
                 "exists",
-              ];
+              ] as const;
+              return keys as AllOf<keyof ClientType["model"], typeof keys>;
             },
             get(_target, method) {
               return (...args: any[]) =>
