@@ -1,12 +1,14 @@
 import type { AnalysisUpdate } from "@/lib/types/raw-analysis"
+import type { AnalysisOutput } from "@/modules/bias-detection/service"
 import { getUpdateStream } from "@/workflows/start-analysis/steps/utils"
 import type { Analysis, RawAnalysis } from "@repo/db/models"
-import type { DeepPartial } from "ai"
+import type { DeepPartial, ReasoningOutput } from "ai"
 import { Stream } from "effect"
 import { constant } from "effect/Function"
 
 export async function consumeResultStream<T extends Analysis>(
-    resultStream: ReadableStream<DeepPartial<RawAnalysis>>,
+    resultStream: ReadableStream<DeepPartial<AnalysisOutput>>,
+    reasoningStream: ReadableStream<ReasoningOutput[]>,
     analysis: T,
 ) {
     "use step"
@@ -35,6 +37,10 @@ export async function consumeResultStream<T extends Analysis>(
     }
 
     writer.releaseLock()
+    const reasoningOutput = await reasoningStream.getReader().read()
 
-    return result as typeof result & RawAnalysis
+    return {
+        ...(result as typeof result & RawAnalysis),
+        reasoning: JSON.stringify(reasoningOutput.value),
+    }
 }

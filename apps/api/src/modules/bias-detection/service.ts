@@ -1,14 +1,27 @@
 import { AiService } from "@/modules/ai/service"
 import { genderLexSystemPrompt } from "@/modules/bias-detection/prompts/system.prompt"
-import type { Analysis, Model, RawAnalysis } from "@repo/db/models"
+import type { Analysis, Model } from "@repo/db/models"
 import { Analysis as AnalysisSchema } from "@repo/db/schema/analysis.ts"
-import { JSONSchema } from "effect"
+import { Chunk, JSONSchema, Schema, Stream } from "effect"
 import { AiRequestError } from "./errors/ai-request-error"
 
-import { jsonSchema, Output, ToolLoopAgent } from "ai"
+import { jsonSchema, Output, ToolLoopAgent, type ReasoningOutput } from "ai"
 import { Effect } from "effect"
 
 type AnaliceInput = Analysis & { Preset: { Models: { Model: Model }[] } }
+
+export type AnalysisOutput = typeof AnalysisOutput.Type
+export const AnalysisOutput = AnalysisSchema.pipe(
+    Schema.pick(
+        "additionalContextEvaluation",
+        "biasedMetaphors",
+        "biasedTerms",
+        "conclusion",
+        "impactAnalysis",
+        "modifiedTextAlternatives",
+        "name",
+    ),
+)
 
 export class BiasDetectionService extends Effect.Service<BiasDetectionService>()(
     "BiasDetectionService",
@@ -27,8 +40,8 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
                         model: model.languageModel,
                         instructions: genderLexSystemPrompt,
                         temperature: model.options.temperature,
-                        output: Output.object<RawAnalysis>({
-                            schema: jsonSchema(JSONSchema.make(AnalysisSchema)),
+                        output: Output.object<typeof AnalysisOutput.Type>({
+                            schema: jsonSchema(JSONSchema.make(AnalysisOutput)),
                         }),
                     })
 
@@ -42,7 +55,17 @@ export class BiasDetectionService extends Effect.Service<BiasDetectionService>()
                             return new AiRequestError({ error })
                         },
                     })
-                    return res.partialOutputStream
+                    const reasoningStream = Stream.toReadableStream(
+                        Stream.async<ReasoningOutput[]>(emit => {
+                            res.reasoning.then(res =>
+                                emit(Effect.succeed(Chunk.of(res))),
+                            )
+                        }),
+                    )
+                    return {
+                        stream: res.partialOutputStream,
+                        reasoningStream,
+                    }
                 }),
             }
         }),

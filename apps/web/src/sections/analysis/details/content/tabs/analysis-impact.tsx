@@ -47,7 +47,7 @@ export default function AnalysisImpact() {
                 <CardTitle className="flex items-center gap-2">
                   <div
                     className={`h-3 w-3 rounded-full ${
-                      analysis?.impactAnalysis.accessToCare.affected
+                      analysis?.impactAnalysis.accessToCare?.affected
                         ? "bg-red-500"
                         : "bg-green-500"
                     }`}
@@ -60,18 +60,18 @@ export default function AnalysisImpact() {
                   <div className="flex items-center gap-2">
                     <Badge
                       className={
-                        analysis?.impactAnalysis.accessToCare.affected
+                        analysis?.impactAnalysis.accessToCare?.affected
                           ? "bg-red-100 text-red-800"
                           : "bg-green-100 text-green-800"
                       }
                     >
-                      {analysis?.impactAnalysis.accessToCare.affected
+                      {analysis?.impactAnalysis.accessToCare?.affected
                         ? t`Affected`
                         : t`No Affected`}
                     </Badge>
                   </div>
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    {analysis?.impactAnalysis.accessToCare.description}
+                    {analysis?.impactAnalysis.accessToCare?.description}
                   </p>
                 </div>
               </CardContent>
@@ -86,7 +86,7 @@ export default function AnalysisImpact() {
                 <CardTitle className="flex items-center gap-2">
                   <div
                     className={`h-3 w-3 rounded-full ${
-                      analysis?.impactAnalysis.stigmatization.affected
+                      analysis?.impactAnalysis.stigmatization?.affected
                         ? "bg-red-500"
                         : "bg-green-500"
                     }`}
@@ -99,18 +99,18 @@ export default function AnalysisImpact() {
                   <div className="flex items-center gap-2">
                     <Badge
                       className={
-                        analysis?.impactAnalysis.stigmatization.affected
+                        analysis?.impactAnalysis.stigmatization?.affected
                           ? "bg-red-100 text-red-800"
                           : "bg-green-100 text-green-800"
                       }
                     >
-                      {analysis?.impactAnalysis.stigmatization.affected
+                      {analysis?.impactAnalysis.stigmatization?.affected
                         ? t`Affected`
                         : t`No Affected`}
                     </Badge>
                   </div>
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    {analysis?.impactAnalysis.stigmatization.description}
+                    {analysis?.impactAnalysis.stigmatization?.description}
                   </p>
                 </div>
               </CardContent>

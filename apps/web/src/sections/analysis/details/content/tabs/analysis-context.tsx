@@ -79,16 +79,16 @@ export default function AnalysisContextEvaluation() {
                   <span className="text-sm text-muted-foreground">{t`Influence`}</span>
                   <span className="font-bold">
                     {Math.round(
-                      analysis?.additionalContextEvaluation.stereotype
-                        ?.influencePercentage * 100
+                      (analysis?.additionalContextEvaluation.stereotype
+                        ?.influencePercentage ?? 0) * 100
                     )}
                     %
                   </span>
                 </div>
                 <Progress
                   value={
-                    analysis?.additionalContextEvaluation.stereotype
-                      ?.influencePercentage * 100
+                    (analysis?.additionalContextEvaluation.stereotype
+                      ?.influencePercentage ?? 0) * 100
                   }
                 />
                 <p className="text-sm text-muted-foreground">
@@ -97,14 +97,14 @@ export default function AnalysisContextEvaluation() {
                       ?.explanation
                   }
                 </p>
-                {analysis?.additionalContextEvaluation.stereotype?.examples
-                  ?.length > 0 && (
+                {(analysis?.additionalContextEvaluation.stereotype?.examples
+                  ?.length ?? 0) > 0 && (
                   <div>
                     <h4 className="mb-2 text-sm font-medium text-muted-foreground">
                       {t`Examples`}:
                     </h4>
                     <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                      {analysis?.additionalContextEvaluation.stereotype?.examples.map(
+                      {analysis?.additionalContextEvaluation.stereotype?.examples?.map(
                         (example, i) => (
                           <li key={i}>{example}</li>
                         )
@@ -140,16 +140,16 @@ export default function AnalysisContextEvaluation() {
                   <span className="text-sm text-muted-foreground">{t`Influence`}</span>
                   <span className="font-bold">
                     {Math.round(
-                      analysis?.additionalContextEvaluation.powerAsymmetry
-                        ?.influencePercentage * 100
+                      (analysis?.additionalContextEvaluation.powerAsymmetry
+                        ?.influencePercentage ?? 0) * 100
                     )}
                     %
                   </span>
                 </div>
                 <Progress
                   value={
-                    analysis?.additionalContextEvaluation.powerAsymmetry
-                      ?.influencePercentage * 100
+                    (analysis?.additionalContextEvaluation.powerAsymmetry
+                      ?.influencePercentage ?? 0) * 100
                   }
                 />
                 <p className="text-sm text-muted-foreground">
@@ -158,14 +158,14 @@ export default function AnalysisContextEvaluation() {
                       ?.explanation
                   }
                 </p>
-                {analysis?.additionalContextEvaluation.powerAsymmetry?.examples
-                  ?.length > 0 && (
+                {(analysis?.additionalContextEvaluation.powerAsymmetry?.examples
+                  ?.length ?? 0) > 0 && (
                   <div>
                     <h4 className="mb-2 text-sm font-medium text-muted-foreground">
                       {t`Examples`}:
                     </h4>
                     <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                      {analysis?.additionalContextEvaluation.powerAsymmetry.examples.map(
+                      {analysis?.additionalContextEvaluation.powerAsymmetry?.examples?.map(
                         (example, i) => (
                           <li key={i}>{example}</li>
                         )
@@ -204,16 +204,18 @@ export default function AnalysisContextEvaluation() {
                   <span className="text-sm text-muted-foreground">{t`Influence`}</span>
                   <span className="font-bold">
                     {Math.round(
-                      analysis?.additionalContextEvaluation
-                        .genderRepresentationAbsence?.influencePercentage * 100
+                      (analysis?.additionalContextEvaluation
+                        .genderRepresentationAbsence?.influencePercentage ??
+                        0) * 100
                     )}
                     %
                   </span>
                 </div>
                 <Progress
                   value={
-                    analysis?.additionalContextEvaluation
-                      .genderRepresentationAbsence?.influencePercentage * 100
+                    (analysis?.additionalContextEvaluation
+                      .genderRepresentationAbsence?.influencePercentage ?? 0) *
+                    100
                   }
                 />
                 <p className="text-sm text-muted-foreground">
@@ -222,14 +224,15 @@ export default function AnalysisContextEvaluation() {
                       .genderRepresentationAbsence?.explanation
                   }
                 </p>
-                {analysis?.additionalContextEvaluation
-                  .genderRepresentationAbsence?.affectedGroups.length > 0 && (
+                {(analysis?.additionalContextEvaluation
+                  .genderRepresentationAbsence?.affectedGroups?.length ?? 0) >
+                  0 && (
                   <div>
                     <h4 className="mb-2 text-sm font-medium text-muted-foreground">
                       {t`Affected Groups`}:
                     </h4>
                     <div className="flex flex-wrap gap-2">
-                      {analysis?.additionalContextEvaluation.genderRepresentationAbsence.affectedGroups.map(
+                      {analysis?.additionalContextEvaluation.genderRepresentationAbsence?.affectedGroups?.map(
                         (group, i) => (
                           <Badge key={i} variant="outline">
                             {group}
@@ -267,16 +270,16 @@ export default function AnalysisContextEvaluation() {
                   <span className="text-sm text-muted-foreground">{t`Influence`}</span>
                   <span className="font-bold">
                     {Math.round(
-                      analysis?.additionalContextEvaluation.intersectionality
-                        ?.influencePercentage * 100
+                      (analysis?.additionalContextEvaluation.intersectionality
+                        ?.influencePercentage ?? 0) * 100
                     )}
                     %
                   </span>
                 </div>
                 <Progress
                   value={
-                    analysis?.additionalContextEvaluation.intersectionality
-                      ?.influencePercentage * 100
+                    (analysis?.additionalContextEvaluation.intersectionality
+                      ?.influencePercentage ?? 0) * 100
                   }
                 />
                 <p className="text-sm text-muted-foreground">
@@ -285,14 +288,14 @@ export default function AnalysisContextEvaluation() {
                       ?.explanation
                   }
                 </p>
-                {analysis?.additionalContextEvaluation.intersectionality
-                  ?.excludedGroups.length > 0 && (
+                {(analysis?.additionalContextEvaluation.intersectionality
+                  ?.excludedGroups?.length ?? 0) > 0 && (
                   <div>
                     <h4 className="mb-2 text-sm font-medium text-muted-foreground">
                       {t`Excluded Groups`}:
                     </h4>
                     <div className="flex flex-wrap gap-2">
-                      {analysis?.additionalContextEvaluation.intersectionality.excludedGroups.map(
+                      {analysis?.additionalContextEvaluation.intersectionality?.excludedGroups?.map(
                         (group, i) => (
                           <Badge key={i} variant="outline">
                             {group}
@@ -330,16 +333,16 @@ export default function AnalysisContextEvaluation() {
                   <span className="text-sm text-muted-foreground">{t`Influence`}</span>
                   <span className="font-bold">
                     {Math.round(
-                      analysis?.additionalContextEvaluation.systemicBiases
-                        ?.influencePercentage * 100
+                      (analysis?.additionalContextEvaluation.systemicBiases
+                        ?.influencePercentage ?? 0) * 100
                     )}
                     %
                   </span>
                 </div>
                 <Progress
                   value={
-                    analysis?.additionalContextEvaluation.systemicBiases
-                      ?.influencePercentage * 100
+                    (analysis?.additionalContextEvaluation.systemicBiases
+                      ?.influencePercentage ?? 0) * 100
                   }
                 />
                 <p className="text-sm text-muted-foreground">
@@ -348,14 +351,14 @@ export default function AnalysisContextEvaluation() {
                       ?.explanation
                   }
                 </p>
-                {analysis?.additionalContextEvaluation.systemicBiases?.examples
-                  .length > 0 && (
+                {(analysis?.additionalContextEvaluation.systemicBiases?.examples
+                  ?.length ?? 0) > 0 && (
                   <div>
                     <h4 className="mb-2 text-sm font-medium text-muted-foreground">
                       {t`Examples`}:
                     </h4>
                     <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                      {analysis?.additionalContextEvaluation.systemicBiases.examples.map(
+                      {analysis?.additionalContextEvaluation.systemicBiases?.examples?.map(
                         (example, i) => (
                           <li key={i}>{example}</li>
                         )

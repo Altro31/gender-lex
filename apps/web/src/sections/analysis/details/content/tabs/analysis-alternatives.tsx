@@ -46,7 +46,7 @@ export default function AnalysisAlternatives() {
           <Card key={index}>
             <CardHeader>
               <CardTitle>
-                {t`Alternative`} {alternative.alternativeNumber}
+                {t`Alternative`} {alternative?.alternativeNumber}
               </CardTitle>
               <CardDescription>
                 {t`Modified version of the original text without gender bias`}
@@ -54,7 +54,9 @@ export default function AnalysisAlternatives() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="rounded-lg border bg-background p-4">
-                <p className="leading-relaxed">{alternative.alternativeText}</p>
+                <p className="leading-relaxed">
+                  {alternative?.alternativeText}
+                </p>
               </div>
 
               <Separator />
@@ -64,39 +66,41 @@ export default function AnalysisAlternatives() {
                   {t`Modifications Made`}:
                 </h4>
                 <div className="space-y-3">
-                  {alternative.modificationsExplanation.map((mod, modIndex) => (
-                    <div
-                      key={modIndex}
-                      className="space-y-2 rounded-lg border p-3"
-                    >
-                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div>
-                          <h5 className="mb-1 text-sm font-medium text-red-700">
-                            {t`Original`}:
-                          </h5>
-                          <p className="rounded bg-background p-2 text-sm">
-                            "{mod.originalFragment}"
-                          </p>
+                  {alternative?.modificationsExplanation?.map(
+                    (mod, modIndex) => (
+                      <div
+                        key={modIndex}
+                        className="space-y-2 rounded-lg border p-3"
+                      >
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                          <div>
+                            <h5 className="mb-1 text-sm font-medium text-red-700">
+                              {t`Original`}:
+                            </h5>
+                            <p className="rounded bg-background p-2 text-sm">
+                              "{mod?.originalFragment}"
+                            </p>
+                          </div>
+                          <div>
+                            <h5 className="mb-1 text-sm font-medium text-green-700">
+                              {t`Modified`}:
+                            </h5>
+                            <p className="rounded bg-background p-2 text-sm">
+                              "{mod?.modifiedFragment}"
+                            </p>
+                          </div>
                         </div>
                         <div>
-                          <h5 className="mb-1 text-sm font-medium text-green-700">
-                            {t`Modified`}:
+                          <h5 className="mb-1 text-sm font-medium text-muted-foreground">
+                            {t`Reason`}:
                           </h5>
-                          <p className="rounded bg-background p-2 text-sm">
-                            "{mod.modifiedFragment}"
+                          <p className="text-sm text-muted-foreground">
+                            {mod?.reason}
                           </p>
                         </div>
                       </div>
-                      <div>
-                        <h5 className="mb-1 text-sm font-medium text-muted-foreground">
-                          {t`Reason`}:
-                        </h5>
-                        <p className="text-sm text-muted-foreground">
-                          {mod.reason}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               </div>
             </CardContent>

@@ -1,6 +1,5 @@
 import { BiasDetectionService } from "@/modules/bias-detection/service"
 import type { Analysis, Model, Preset, PresetModel } from "@repo/db/models"
-import type { DeepPartial } from "ai"
 import { Effect } from "effect"
 
 interface Args<T> {
@@ -16,10 +15,10 @@ export async function biasDetection<
     const program = Effect.gen(function* () {
         const biasDetectionService = yield* BiasDetectionService
 
-        return (yield* biasDetectionService.analice(
-            analysis,
-        )) as ReadableStream<DeepPartial<T>>
+        return yield* biasDetectionService.analice(analysis)
     }).pipe(BiasDetectionService.provide)
 
-    return Effect.runPromise(program)
+    const { reasoningStream, stream } = await Effect.runPromise(program)
+
+    return [stream, reasoningStream] as const
 }

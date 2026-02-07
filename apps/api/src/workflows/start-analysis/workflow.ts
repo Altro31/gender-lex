@@ -1,5 +1,6 @@
+import type { AnalysisOutput } from "@/modules/bias-detection/service"
 import { consumeResultStream } from "@/workflows/start-analysis/steps/consume-result-stream"
-import type { Analysis, RawAnalysis } from "@repo/db/models"
+import type { Analysis } from "@repo/db/models"
 import type { Context } from "../common-types"
 import { biasDetection } from "./steps/bias-detection"
 import { extractContent } from "./steps/extract-content"
@@ -46,16 +47,19 @@ export async function startAnalysisWorkflow(
     )
     await streamAnalysisUpdate(analyzingAnalysis)
 
-    const resultStream = await biasDetection({
+    const [stream, reasoningStream] = await biasDetection({
         analysis: analyzingAnalysis,
     })
     const result = await consumeResultStream(
-        resultStream as ReadableStream<Partial<RawAnalysis>>,
+        stream as ReadableStream<Partial<AnalysisOutput>>,
+        reasoningStream,
         analyzingAnalysis,
     )
-
     const updatedWithResult = await updateWithResult(
-        { result, analysisId: analyzingAnalysis.id },
+        {
+            result,
+            analysisId: analyzingAnalysis.id,
+        },
         ctx,
     )
 

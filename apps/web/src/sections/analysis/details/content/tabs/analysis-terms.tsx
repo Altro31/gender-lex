@@ -1,17 +1,17 @@
 "use client";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAnalysisStream } from "@/sections/analysis/hooks/use-analysis-stream";
 import { t } from "@lingui/core/macro";
 import { useParams } from "next/navigation";
 import type { ParamsOf } from "../../../../../../.next/types/routes";
-import { Progress } from "@/components/ui/progress";
 
 export default function AnalysisTerms() {
   const { id } = useParams<ParamsOf<"/[locale]/analysis/[id]">>();
@@ -46,22 +46,22 @@ export default function AnalysisTerms() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span className="text-lg font-medium">
-                      "{term.content}"
+                      "{term?.content}"
                     </span>
                   </div>
                   <div className="text-right">
                     <div className="text-sm text-muted-foreground">{t`Influence`}</div>
                     <div className="text-lg font-bold text-red-600">
-                      {Math.round(term.influencePercentage * 100)}%
+                      {Math.round((term?.influencePercentage ?? 0) * 100)}%
                     </div>
                   </div>
                 </div>
                 <Progress
-                  value={term.influencePercentage * 100}
+                  value={(term?.influencePercentage ?? 0) * 100}
                   className="h-2"
                 />
                 <p className="text-sm text-muted-foreground">
-                  {term.explanation}
+                  {term?.explanation}
                 </p>
               </div>
             ))
@@ -103,17 +103,17 @@ export default function AnalysisTerms() {
               <div key={index} className="space-y-3 rounded-lg border p-4">
                 <div className="flex items-center justify-between">
                   <span className="text-lg font-medium">
-                    "{metaphor.content}"
+                    "{metaphor?.content}"
                   </span>
                   <div className="text-right">
                     <div className="text-sm text-muted-foreground">{t`Influence`}</div>
                     <div className="text-lg font-bold text-orange-600">
-                      {Math.round(metaphor.influencePercentage * 100)}%
+                      {Math.round((metaphor?.influencePercentage ?? 0) * 100)}%
                     </div>
                   </div>
                 </div>
                 <Progress
-                  value={metaphor.influencePercentage * 100}
+                  value={(metaphor?.influencePercentage ?? 0) * 100}
                   className="h-2"
                 />
                 <div className="space-y-2">
@@ -122,7 +122,7 @@ export default function AnalysisTerms() {
                       {t`Explanation`}:
                     </h4>
                     <p className="text-sm text-muted-foreground">
-                      {metaphor.explanation}
+                      {metaphor?.explanation}
                     </p>
                   </div>
                   <div>
@@ -130,7 +130,7 @@ export default function AnalysisTerms() {
                       {t`Historical Context`}:
                     </h4>
                     <p className="text-sm text-muted-foreground">
-                      {metaphor.historicalContext}
+                      {metaphor?.historicalContext}
                     </p>
                   </div>
                 </div>

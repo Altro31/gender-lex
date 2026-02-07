@@ -10,19 +10,19 @@ import {
   ChangeVisibilityAlertDialogTrigger,
 } from "@/sections/analysis/components/dialogs/change-visibility-alert-dialog";
 import ExportButton from "@/sections/analysis/details/components/export-button";
+import { isAnalysis } from "@/sections/analysis/utils/types";
+import { mergeProps } from "@base-ui/react";
 import { t } from "@lingui/core/macro";
 import {
   AlertTriangle,
   ArrowLeft,
   Calendar,
   CheckCircle,
-  Clock,
   Copy,
   CopyCheck,
+  Loader2,
   Lock,
   LockOpen,
-  User,
-  Loader2,
   type LucideProps,
 } from "lucide-react";
 import Link from "next/link";
@@ -31,7 +31,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ParamsOf } from "../../../../.next/types/routes";
 import { useAnalysisStream } from "../hooks/use-analysis-stream";
-import { mergeProps } from "@base-ui/react";
 
 export default function AnalysisHeader() {
   const { data: session } = useSession();
@@ -101,24 +100,13 @@ export default function AnalysisHeader() {
               {isFetching && !analysis?.createdAt ? (
                 <Skeleton className="h-4 w-48" />
               ) : (
-                new Date(analysis?.createdAt ?? new Date()).toLocaleDateString(
-                  "es-ES",
-                  {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }
-                )
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <User />
-              {isFetching && !analysis?.id ? (
-                <Skeleton className="h-4 w-32" />
-              ) : (
-                <>ID: {analysis?.id}</>
+                new Date(analysis!.createdAt).toLocaleDateString("es-ES", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
               )}
             </div>
           </div>
@@ -134,8 +122,8 @@ export default function AnalysisHeader() {
             </Badge>
           )}
 
-          {analysis && <ExportButton analysis={analysis} />}
-          {analysis?.visibility && (
+          {isAnalysis(analysis) && <ExportButton analysis={analysis} />}
+          {isAnalysis(analysis) && (
             <ButtonGroup>
               <ChangeVisibilityAlertDialogTrigger
                 render={<Button size="sm" variant="outline" />}
