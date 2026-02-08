@@ -1,5 +1,5 @@
 # Build stage
-FROM oven/bun:1.3.6 AS builder
+FROM oven/bun:1.2 AS builder
 WORKDIR /app
 COPY package.json ./
 COPY turbo.json ./
