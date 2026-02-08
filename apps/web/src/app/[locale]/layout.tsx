@@ -1,6 +1,5 @@
 import config from "@/../lingui.config";
 import FloatingChatbot from "@/components/floating-chatbot";
-import FloatingChatbotProvider from "@/components/floating-chatbot/floating-chatbot-provider";
 import OneTapGoogle from "@/components/one-tap-google";
 import { LinguiProvider } from "@/components/providers/lingui-provider";
 import QueryProvider from "@/components/providers/query-provider";
@@ -9,6 +8,7 @@ import { PushNotificationManager } from "@/components/pwa/push-notification-mana
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import "@/globals.css";
+import { ChatbotProvider } from "@/hooks/use-chatbot";
 import IsAnalysisProvider from "@/hooks/use-is-analysis";
 import { EventSourceProvider } from "@/lib/sse";
 import { setServerLocale } from "@/locales/request";
@@ -36,13 +36,13 @@ export default async function RootLayout({
                   <EventSourceProvider>
                     <SidebarProvider>
                       <IsAnalysisProvider>
-                        <FloatingChatbotProvider>
+                        <ChatbotProvider>
                           {children}
                           <PushNotificationManager />
                           <OneTapGoogle />
                           <FloatingChatbot />
                           <Toaster position="bottom-right" />
-                        </FloatingChatbotProvider>
+                        </ChatbotProvider>
                       </IsAnalysisProvider>
                     </SidebarProvider>
                   </EventSourceProvider>

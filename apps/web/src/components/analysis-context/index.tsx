@@ -1,7 +1,7 @@
 "use client";
 
-import { useFloatingChatbotContext } from "@/components/floating-chatbot/floating-chatbot-provider";
 import { Button } from "@/components/ui/button";
+import { useChatbot } from "@/hooks/use-chatbot";
 import { cn } from "@/lib/utils";
 import { t } from "@lingui/core/macro";
 import { Check, Stars } from "lucide-react";
@@ -14,9 +14,9 @@ interface Props {
 }
 
 export default function AnalysisContext({ children, content, id }: Props) {
-  const [context, setContext] = useFloatingChatbotContext();
-  const used = context?.key === id;
-  const handleUseContext = () => setContext({ content, key: id });
+  const { context } = useChatbot();
+  const used = context.value?.key === id;
+  const handleUseContext = () => context.set({ content, key: id });
 
   return (
     <div

@@ -27,12 +27,11 @@ import {
   ReasoningTrigger,
 } from "@/components/ai-elements/reasoning";
 import FloatingChatbotContextIndicator from "@/components/floating-chatbot/floating-chatbot-context-indicator";
-import { useFloatingChatbotContext } from "@/components/floating-chatbot/floating-chatbot-provider";
+import { useIsChatbotAvailable } from "@/components/floating-chatbot/use-available-chatbot";
 import { Button } from "@/components/ui/button";
+import { useChatbot } from "@/hooks/use-chatbot";
 import { useIsAnalysis } from "@/hooks/use-is-analysis";
 import { useSession } from "@/lib/auth/auth-client";
-import type { ChatbotMessage } from "@/lib/chatbot";
-import { useChat } from "@ai-sdk/react";
 import { Popover as PopoverPrimitive } from "@base-ui/react";
 import {
   CopyIcon,
@@ -41,14 +40,10 @@ import {
   Stars,
   X,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { startTransition, useState } from "react";
 import { Loader } from "../ai-elements/loader";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { useIsChatbotAvailable } from "@/components/floating-chatbot/use-available-chatbot";
-import dynamic from "next/dynamic";
-import { lastAssistantMessageIsCompleteWithToolCalls } from "ai";
-import { prepareAnalysis } from "@/services/analysis";
 
 export const floatingChatbotPopover = PopoverPrimitive.createHandle();
 
@@ -60,45 +55,10 @@ function FloatingChatbot() {
 function Chatbot() {
   const { data: session } = useSession();
   const analysisId = useIsAnalysis();
-  const [open, setOpen] = useState(false);
-  const [context, setContext] = useFloatingChatbotContext();
-  const router = useRouter();
+  const { open, chat, context } = useChatbot();
+  const { messages, regenerate, sendMessage, stop, status } = chat;
+
   const [input, setInput] = useState("");
-  const { messages, sendMessage, status, regenerate, stop, addToolOutput } =
-    useChat<ChatbotMessage>({
-      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
-      async onToolCall({ toolCall }) {
-        if (toolCall.dynamic) return;
-        if (toolCall.toolName === "navigateTo") {
-          router.push(toolCall.input.route);
-          return;
-        }
-        if (toolCall.toolName === "analice") {
-          const res = await prepareAnalysis({
-            text: toolCall.input.text,
-            filesObj: [],
-          });
-          if (res.error) {
-            console.error(res.error.message);
-            addToolOutput({
-              tool: toolCall.toolName,
-              toolCallId: toolCall.toolCallId,
-              errorText: "Failed to excecute analysis",
-              state: "output-error",
-            });
-            return;
-          }
-          router.push(`/analysis/${res.data.id}`);
-          addToolOutput({
-            tool: toolCall.toolName,
-            toolCallId: toolCall.toolCallId,
-            state: "output-available",
-            output: "Analysis successfully",
-          });
-          return;
-        }
-      },
-    });
 
   const handleSubmit = async (message: PromptInputMessage) => {
     const hasText = Boolean(message.text);
@@ -107,26 +67,32 @@ function Chatbot() {
     }
     startTransition(() => {
       setInput("");
-      setContext(undefined);
+      context.set(undefined);
     });
     await sendMessage(
       { text: message.text },
       {
         body: {
           context: {
-            ...context,
+            ...context.value,
             id: analysisId,
             path: location.pathname,
-            session,
+            session: session?.user
+              ? { user: { name: session.user.name, email: session.user.email } }
+              : undefined,
           },
         },
       }
     );
   };
-  const handleClearContext = () => setContext(undefined);
+  const handleClearContext = () => context.set(undefined);
 
   return (
-    <Popover open={open} onOpenChange={setOpen} handle={floatingChatbotPopover}>
+    <Popover
+      open={open.value}
+      onOpenChange={open.set}
+      handle={floatingChatbotPopover}
+    >
       <PopoverTrigger
         className="fixed right-6 bottom-6 z-50 group h-16 w-16 rounded-full shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl"
         render={<Button size="lg" />}
@@ -223,10 +189,12 @@ function Chatbot() {
           </div>
 
           <div className="border-t border-border/50 bg-muted/30 px-4 py-3 rounded-b-2xl">
-            {context && (
+            {context.value && (
               <div className="max-w-full flex gap-1 items-center mb-2">
-                {context.key && (
-                  <FloatingChatbotContextIndicator contextKey={context.key} />
+                {context.value?.key && (
+                  <FloatingChatbotContextIndicator
+                    contextKey={context.value.key}
+                  />
                 )}
                 <Button
                   size="icon-xs"
