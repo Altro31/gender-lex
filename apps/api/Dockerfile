@@ -10,7 +10,7 @@ COPY apps/api ./apps/api
 COPY packages ./packages
 
 # Install dependencies
-RUN bun install
+RUN bun install -f
 
 # Build the application
 RUN bun build:api
