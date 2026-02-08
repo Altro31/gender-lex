@@ -1,11 +1,11 @@
 # Build stage
-FROM oven/bun:1.2 AS builder
+FROM oven/bun:1.3.5 AS builder
 WORKDIR /app
 COPY package.json ./
 COPY turbo.json ./
 COPY apps/api ./apps/api
 COPY packages ./packages
-RUN bun install
+RUN bun i --no-save
 RUN bun build:api
 
 # Production stage
