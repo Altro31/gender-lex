@@ -48,7 +48,7 @@
       "peerDependencies": {
         "@ai-sdk/provider": "^3.0.0",
         "@workflow/web": "^4.0.1-beta.26",
-        "kysely": "0.28.8",
+        "kysely": "^0.28.8",
       },
     },
     "apps/web": {
