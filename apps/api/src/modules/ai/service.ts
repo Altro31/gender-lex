@@ -13,7 +13,8 @@ export class AiService extends Effect.Service<AiService>()("AiService", {
                         name: model.name,
                         apiKey: model.apiKey ?? undefined,
                         supportsStructuredOutputs: true,
-                        async fetch(input, init) {
+                        // @ts-expect-error - The type definitions for createOpenAICompatible are not accurate
+                        fetch: async (input, init) => {
                             const { body: initBody, ...rest } = init!
 
                             const schema = {

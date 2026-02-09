@@ -8,4 +8,7 @@ export const sseModels = {
         status: z.nativeEnum(ModelStatus),
         message: z.string().optional(),
     }),
+    "model:test-started": z.object({
+        modelId: z.string(),
+    }),
 } satisfies Record<keyof MessageMapper, any>
