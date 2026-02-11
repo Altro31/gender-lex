@@ -144,7 +144,7 @@ Shared TypeScript types for:
 1. **Clone the repository**:
 
 ```bash
-git clone https://github.com/whojas/gender-lex.git
+git clone https://github.com/Altro31/gender-lex.git
 cd gender-lex
 ```
 
@@ -162,6 +162,9 @@ Copy the example env files and fill in your values:
 # Database configuration (root level)
 cp packages/database/.env.example packages/database/.env
 
+# API configuration
+cp apps/api/.env.example apps/api/.env
+
 # Web app configuration
 cp apps/web/.env.example apps/web/.env.local
 ```
@@ -172,12 +175,21 @@ Edit the `.env` files with your configuration:
 # packages/database/.env
 DATABASE_URL=postgresql://user:password@localhost:5432/genderlex
 
+# apps/api/.env
+DATABASE_URL=postgresql://user:password@localhost:5432/genderlex
+UI_URL=http://localhost:4000
+BETTER_AUTH_SECRET=your_secret_key
+ENCRYPTION_KEY=your_32_character_encryption_key
+GEMINI_API_KEY=your_gemini_api_key
+# ... (see apps/api/.env.example for all options)
+
 # apps/web/.env.local
 DATABASE_URL=postgresql://user:password@localhost:5432/genderlex
-NEXT_PUBLIC_API_URL=http://localhost:3000
+API_URL=http://localhost:3000
 BETTER_AUTH_SECRET=your_secret_key
 AUTH_GOOGLE_ID=your_google_client_id
 AUTH_GOOGLE_SECRET=your_google_secret
+GEMINI_API_KEY=your_gemini_api_key
 # ... (see apps/web/.env.example for all options)
 ```
 
@@ -195,7 +207,7 @@ bun run migrate
 
 ```bash
 # Start all apps in development mode
-bun run dev
+turbo run dev
 ```
 
 This will start:
@@ -231,7 +243,7 @@ bun run prod:web
 The root `package.json` provides these scripts:
 
 ### Development
-- `dev` - Start all apps in development mode with hot reload
+- `turbo run dev` - Start all apps in development mode with hot reload
 - `generate` - Generate Prisma client and ZenStack code
 - `migrate` - Run database migrations (development)
 - `migrate:prod` - Run database migrations (production)
@@ -246,10 +258,7 @@ The root `package.json` provides these scripts:
 - `prod:web` - Start web in production mode
 
 ### Quality
-- `test` - Run all tests
-- `test:e2e` - Run end-to-end tests
 - `lint` - Lint all code
-- `format` - Format code with Prettier
 
 ## 🛠️ Tech Stack
 
@@ -302,7 +311,6 @@ git checkout -b feature/your-feature-name
 
 3. **Test your changes**:
 ```bash
-bun run test
 bun run lint
 ```
 
@@ -348,26 +356,15 @@ bun add package-name --filter=api
 
 ## 🧪 Testing
 
-```bash
-# Run all tests
-bun run test
-
-# Run E2E tests
-bun run test:e2e
-
-# Run tests in specific package
-cd apps/api
-bun run test
-```
+Testing infrastructure is not yet implemented in this project.
 
 ## 📝 Code Style
 
 The project uses:
 - **oxlint** for linting TypeScript
-- **Prettier** for code formatting
-- **lint-staged** for pre-commit hooks
+- **Prettier** for code formatting (configured in individual apps)
 
-Code is automatically formatted on commit via Husky hooks.
+Formatting and linting can be run manually using the `lint` scripts in each app.
 
 ## 🌍 Internationalization
 

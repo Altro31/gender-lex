@@ -127,7 +127,7 @@ src/
 
 ### Environment Variables
 
-Create a `.env` file in the root directory:
+Create a `.env` file in the `apps/api` directory:
 
 ```env
 # Database
@@ -229,13 +229,7 @@ Integrates Effect runtime with Elysia, enabling functional error handling and de
 
 ## Testing
 
-```bash
-# Run tests
-bun run test
-
-# Run E2E tests
-bun run test:e2e
-```
+Testing infrastructure is not yet implemented.
 
 ## Linting
 
