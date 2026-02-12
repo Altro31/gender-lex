@@ -5,3 +5,4 @@ dist
 .swc
 .output
 src/**/*.d.ts
+/test/**/summary.txt

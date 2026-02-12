@@ -1,8 +1,8 @@
 {
-	"typescript.tsdk": "node_modules/typescript/lib",
-	"i18n-ally.localesPaths": ["apps/web/src/locales/langs"],
-	"oxc.enable": true,
-	"i18n-ally.keystyle": "nested",
-	"i18n-ally.sourceLanguage": "es",
-	"i18n-ally.extract.autoDetect": false
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "i18n-ally.localesPaths": ["apps/web/src/locales/langs"],
+  "oxc.enable": true,
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "es",
+  "i18n-ally.extract.autoDetect": false
 }

@@ -11,6 +11,7 @@ export type { ClientContract } from "@zenstackhq/orm";
 export type { SchemaType } from "./generated/schema.ts";
 
 export { ORMErrorReason } from "@zenstackhq/orm";
+export { PolicyPlugin } from "@zenstackhq/plugin-policy";
 
 export const db = new ZenStackClient(schema, {
   dialect: new PostgresDialect({

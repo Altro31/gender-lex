@@ -8,10 +8,15 @@ import { streamSSE } from "hono/streaming"
 
 const sse = new Hono<HonoVariables>().get("/", async c => {
     const runEffect = c.get("runEffect")
+    const shouldCloseAfterHandshake = c.req.query("close") === "1"
 
     return streamSSE(c, async stream => {
         // Send initial connection message
         await stream.writeSSE({ data: "Connected!!!" })
+
+        if (shouldCloseAfterHandshake) {
+            return
+        }
 
         const asyncIterable = await runEffect(
             Effect.gen(function* () {

@@ -24,7 +24,7 @@ model Model with Timestamps {
     PresetModels PresetModel[]
 
     // Owners can do anything
-    @@allow("all",auth()==User)
+    @@allow("all", auth().id == userId)
 
     // Admins can delete models
     @@allow('delete', auth().role == admin)
