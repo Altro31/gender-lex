@@ -2,6 +2,10 @@
 
 Scripts de prueba de carga para la API de Gender-Lex usando [k6](https://k6.io/).
 
+# K6 Load Testing Scripts
+
+Scripts de prueba de carga para la API de Gender-Lex usando [k6](https://k6.io/).
+
 ## Prerequisitos
 
 Instalar k6:
@@ -18,11 +22,9 @@ O descargar desde: https://k6.io/docs/get-started/installation/
 
 ```bash
 # Linux (Debian/Ubuntu)
-sudo gpg -k
-sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
-echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
 sudo apt-get update
 sudo apt-get install k6
+k6 run apps/api/test/k6/smoke/scenario.js
 
 # macOS
 brew install k6
@@ -30,32 +32,28 @@ brew install k6
 
 ## Scripts Disponibles
 
-### 1. Smoke Test (`k6-smoke-test.js`)
-
 Prueba básica con carga mínima para verificar funcionalidad.
+
+k6 run apps/api/test/k6/load/scenario.js
 
 -   **VUs**: 1 usuario
 -   **Duración**: 1 minuto
 -   **Uso**: Validación rápida después de despliegues
 
-```powershell
+````powershell
 k6 run k6-smoke-test.js
-```
-
-### 2. Load Test (`k6-load-test.js`)
 
 Prueba de carga normal con incremento gradual.
+k6 run apps/api/test/k6/stress/scenario.js
 
 -   **VUs**: 10-20 usuarios
 -   **Duración**: ~4 minutos
 -   **Uso**: Pruebas regulares de rendimiento
 
 ```powershell
-k6 run k6-load-test.js
-```
-
 ### 3. Stress Test (`k6-stress-test.js`)
 
+k6 run apps/api/test/k6/spike/scenario.js
 Prueba de estrés para encontrar límites del sistema.
 
 -   **VUs**: hasta 150 usuarios
@@ -64,9 +62,11 @@ Prueba de estrés para encontrar límites del sistema.
 
 ```powershell
 k6 run k6-stress-test.js
-```
+````
 
 ### 4. Spike Test (`k6-spike-test.js`)
+
+k6 run apps/api/test/k6/load/scenario.js
 
 Prueba de picos súbitos de tráfico.
 
@@ -80,17 +80,15 @@ k6 run k6-spike-test.js
 
 ## Configuración
 
+k6 run -e API_URL=http://localhost:3000 apps/api/test/k6/load/scenario.js
+
 ### URL de la API
 
 Por defecto, los scripts usan `http://localhost:3232`. Para cambiar:
 
 ```powershell
-# PowerShell
 $env:API_URL = "https://api.production.com"
 k6 run k6-load-test.js
-```
-
-```bash
 # Bash
 API_URL=https://api.production.com k6 run k6-load-test.js
 ```
@@ -121,23 +119,29 @@ k6 muestra resultados en tiempo real y un resumen al final. Ejemplo de Load Test
 ````
 🚀 Starting Document Processing & Analysis Stress Test
 Target: http://localhost:3000
+k6 run --out json=results.json apps/api/test/k6/load/scenario.js
 Stress Profile: 200 → 500 → 1000 users over 1 minute
 
      ✓ prepare analysis status ok
      ✓ analysis list returns array
      ✓ status count is object
+k6 run --out csv=results.csv apps/api/test/k6/load/scenario.js
 
 █ CUSTOM METRICS
      analysis_preparation_duration..: avg=2.3s  min=1.2s med=2.1s max=8.5s  p(90)=3.8s p(95)=4.2s
      analysis_list_query_duration...: avg=450ms min=120ms med=380ms max=1.2s p(90)=780ms p(95)=920ms
      document_processing_errors.....: 245 errors
+k6 run --out influxdb=http://localhost:8086/k6 apps/api/test/k6/load/scenario.js
 
 █ HTTP METRICS
      http_req_duration..............: avg=1.5s  min=100ms med=1.2s max=10s  p(90)=3.2s p(95)=4.5s
      http_req_failed................: 24.5% ✓ 245 / ✗ 755
      http_reqs......................: 1000   16.67/s
+k6 cloud apps/api/test/k6/load/scenario.js
 
 ✅ Document Processing & Analysis Stress Test completed
+
+Además, cada escenario genera automáticamente un `summary.txt` y un `results.json` hipotético bajo su carpeta (por ejemplo, `apps/api/test/k6/smoke/summary.txt`). Estos archivos contienen métricas agregadas por endpoint (VUs, duración efectiva, total de requests, fallos y tasa de error) para compartir resultados rápidamente sin necesidad de rerun.
 ### Exportar Resultados
 
 #### JSON
@@ -220,15 +224,12 @@ function testNuevoEndpoint() {
     const res = http.get(`${BASE_URL}/tu-endpoint`)
 
     check(res, {
-        "status es 200": r => r.status === 200,
         "response tiene data": r => r.json("data") !== undefined,
     })
 }
 ```
 
 ### Autenticación
-
-Si tu API requiere autenticación:
 
 ```javascript
 const params = {
@@ -243,63 +244,38 @@ const res = http.get(`${BASE_URL}/protected`, params)
 
 ## Integración CI/CD
 
-### GitHub Actions
-
-```yaml
-- name: Run k6 smoke test
-  run: |
-      k6 run k6-smoke-test.js
-```
-
-### Exit Codes
-
+-   name: Run k6 smoke test
+    run: |
+    k6 run k6-smoke-test.js
 -   `0`: Todas las pruebas pasaron
 -   `99`: Algunos umbrales fallaron
 -   `Otro`: Error en la ejecución
-
-## 💡 Mejores Prácticas
-
-### Orden de Ejecución Recomendado
 
 1. **Smoke Test**: Establecer baseline y validar funcionalidad
 2. **Load Test**: Evaluar procesamiento de documentos con carga moderada
 3. **Stress Test**: Probar SSE con conexiones extremas
 4. **Spike Test**: Validar workflows con análisis masivos paralelos
 
-### Durante las Pruebas
-
 -   **Monitorear Recursos**: Usar `htop` (Linux) o Task Manager (Windows) para CPU/RAM
 -   **Observar Base de Datos**: Queries lentas, conexiones abiertas, locks
 -   **Revisar Logs**: Errores de aplicación en tiempo real
--   **Network**: Ancho de banda y latencia de red
-
-### Entorno de Pruebas
 
 -   Usar staging con specs similares a producción
 -   Limpiar datos de prueba entre ejecuciones
--   Desactivar rate limiting para pruebas de estrés
--   Aislar pruebas de usuarios reales
 
 ### Interpretación de Resultados
 
 -   **Smoke Test falla**: Problema funcional básico - NO ejecutar otras pruebas
 -   **Tasa de error <10%**: Sistema saludable bajo carga normal
 -   **Tasa de error 10-30%**: Carga alta pero manejable
--   **Tasa de error >30%**: Límite del sistema alcanzado - optimización necesaria
-
-## Troubleshooting
 
 ### Error: "connection refused"
 
 -   Verifica que la API esté corriendo
--   Confirma el puerto correcto
--   Revisa firewall/CORS
 
 ### Performance Degradado
 
 -   Verifica recursos del sistema
--   Revisa logs de la aplicación
--   Considera escalar horizontalmente
 
 ### Timeout Errors
 
@@ -309,12 +285,20 @@ const res = http.get(`${BASE_URL}/protected`, params)
 
 ## 📚 Recursos
 
+k6 run apps/api/test/k6/smoke/scenario.js
+
 ### Documentación k6
 
+k6 run apps/api/test/k6/load/scenario.js
+
 -   [Documentación oficial](https://k6.io/docs/)
+    k6 run apps/api/test/k6/stress/scenario.js
 -   [Ejemplos de k6](https://k6.io/docs/examples/)
 -   [Best Practices](https://k6.io/docs/testing-guides/test-builder/)
+    k6 run apps/api/test/k6/spike/scenario.js
 -   [Community Forum](https://community.k6.io/)
+
+k6 run --out json=results.json apps/api/test/k6/load/scenario.js
 
 ### Métricas y Monitoreo
 
