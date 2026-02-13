@@ -18,6 +18,8 @@ on:
 
 env:
   DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/gender-lex-front
+  CAPROVER_SERVER_URL: ${{ secrets.CAPROVER_SERVER_URL }}
+  CAPROVER_APP_TOKEN: ${{ secrets.CAPROVER_FRONT_APP_TOKEN }}
 
 jobs:
   build-and-push:
@@ -67,4 +69,4 @@ jobs:
 
       - name: Trigger caprover deploy hook
         run: |
-          curl -X POST "$CAPROVER_SERVER_URL/api/v2/apps/appData/forceDeploy" -H "Content-Type: application/json" -H "x-captain-auth: $CAPROVER_FRONT_APP_TOKEN" -d "{\"appName\": \"gender-lex-front\"}"
+          curl -X POST "${{ env.CAPROVER_SERVER_URL }}/api/v2/apps/appData/forceDeploy" -H "Content-Type: application/json" -H "x-captain-auth: ${{ env.CAPROVER_APP_TOKEN }}" -d "{\"appName\": \"gender-lex-front\"}"
