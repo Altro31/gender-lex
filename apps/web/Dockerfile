@@ -2,6 +2,7 @@ FROM node:24-alpine AS base
 WORKDIR /app
 
 FROM base AS bun
+RUN apk add --no-cache libc6-compat
 RUN npm install -g bun
 
 
@@ -24,12 +25,10 @@ WORKDIR /app
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED=1
 
-ENV NODE_ENV=production \
-    PORT=3000 \
-    HOSTNAME="0.0.0.0"
+ENV NODE_ENV=production
 
-RUN groupadd --system --gid 1001 nodejs && \
-    useradd --system --uid 1001 --no-log-init -g nodejs nextjs
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 
@@ -41,5 +40,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
 
 EXPOSE 3000
+
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "./server.js"]
