@@ -12,10 +12,7 @@ WORKDIR /app
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
-COPY package.json bun.lock* ./
-COPY turbo.json ./
-COPY apps/web ./apps/web
-COPY packages ./packages
+COPY . .
 RUN bun install --no-save
 
 # Next.js collects completely anonymous telemetry data about general usage.
