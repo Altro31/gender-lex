@@ -1,8 +1,8 @@
-import { describe, it, expect, mock, beforeEach } from "bun:test"
-import { Effect, Layer, Stream, Chunk } from "effect"
 import { AiService } from "@/modules/ai/service"
 import { BiasDetectionService } from "@/modules/bias-detection/service"
 import type { Analysis, Model, Preset } from "@repo/db/models"
+import { describe, expect, it } from "bun:test"
+import { Effect, Layer } from "effect"
 
 // Mock data
 const mockModel: Model = {
@@ -18,16 +18,15 @@ const mockModel: Model = {
     userId: "user-integration-1",
     createdAt: new Date(),
     updatedAt: new Date(),
-}
+} as any
 
 const mockPreset: Preset = {
     id: "preset-integration-1",
     name: "Integration Test Preset",
-    systemPrompt: "Test system prompt",
     userId: "user-integration-1",
     createdAt: new Date(),
     updatedAt: new Date(),
-}
+} as any
 
 const mockAnalysis: Analysis & { Preset: { Models: { Model: Model }[] } } = {
     id: "analysis-integration-1",
@@ -40,8 +39,8 @@ const mockAnalysis: Analysis & { Preset: { Models: { Model: Model }[] } } = {
         "El director debe ser un hombre de negocios astuto. La enfermera debe cuidar a los pacientes con ternura.",
     createdAt: new Date(),
     updatedAt: new Date(),
-    inputSource: null,
-    workflow: null,
+    inputSource: "manual",
+    workflow: "",
     additionalContextEvaluation: null,
     biasedMetaphors: null,
     biasedTerms: null,
@@ -95,37 +94,6 @@ const mockAnalysisResult = {
         "Se recomienda usar lenguaje inclusivo y neutral para roles profesionales",
 }
 
-// Mock readable stream that emits partial results
-const createMockStream = () => {
-    const encoder = new TextEncoder()
-    return new ReadableStream({
-        start(controller) {
-            // Simulate streaming partial results
-            const partials = [
-                { name: mockAnalysisResult.name },
-                { biasedTerms: mockAnalysisResult.biasedTerms.slice(0, 1) },
-                { biasedTerms: mockAnalysisResult.biasedTerms },
-                { biasedMetaphors: mockAnalysisResult.biasedMetaphors },
-                {
-                    modifiedTextAlternatives:
-                        mockAnalysisResult.modifiedTextAlternatives,
-                },
-                {
-                    additionalContextEvaluation:
-                        mockAnalysisResult.additionalContextEvaluation,
-                },
-                { impactAnalysis: mockAnalysisResult.impactAnalysis },
-                { conclusion: mockAnalysisResult.conclusion },
-            ]
-
-            for (const partial of partials) {
-                controller.enqueue(partial)
-            }
-            controller.close()
-        },
-    })
-}
-
 // Create mock AI service with streaming support
 const createMockAiService = () =>
     Layer.succeed(
@@ -159,8 +127,7 @@ describe("Start Analysis Workflow Integration", () => {
         const failingAiService = Layer.succeed(
             AiService,
             AiService.of({
-                buildLanguageModel: () =>
-                    Effect.fail(new Error("AI service unavailable")),
+                buildLanguageModel: () => Effect.fail("AI service unavailable"),
             } as any),
         )
 
@@ -220,9 +187,7 @@ describe("Start Analysis Workflow Integration", () => {
             AiService.of({
                 buildLanguageModel: (model: Model) => {
                     capturedModel = model
-                    return Effect.fail(
-                        new Error("Intentional fail after capture"),
-                    )
+                    return Effect.fail("AI service unavailable")
                 },
             } as any),
         )
@@ -249,9 +214,11 @@ describe("Start Analysis Workflow Integration", () => {
 
         // Verify the correct model was passed
         expect(capturedModel).toBeDefined()
-        expect(capturedModel?.id).toBe(mockModel.id)
-        expect(capturedModel?.apiKey).toBe(mockModel.apiKey)
-        expect(capturedModel?.connection.url).toBe(mockModel.connection.url)
+        expect((<any>capturedModel)?.id).toBe(mockModel.id)
+        expect((<any>capturedModel)?.apiKey).toBe(mockModel.apiKey)
+        expect((<any>capturedModel)?.connection.url).toBe(
+            mockModel.connection.url,
+        )
     })
 
     it("should validate analysis input structure", async () => {

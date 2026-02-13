@@ -49,7 +49,10 @@ const buildApp = () => {
     app.use("*", requireAuth)
     app.get("/secure", c => c.json({ status: "ok", session: currentSession }))
     app.onError((err, c) =>
-        c.json({ message: err.statusText ?? err.message }, err.status ?? 500),
+        c.json(
+            { message: (<any>err).statusText ?? err.message },
+            (<any>err).status ?? 500,
+        ),
     )
     return app
 }

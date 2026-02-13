@@ -1,14 +1,12 @@
-import { describe, it, expect, mock, beforeEach } from "bun:test"
-import { Effect, Layer, Schema, Stream } from "effect"
-import AdmZip from "adm-zip"
-import { Readable } from "stream"
 import {
-    PrepareAnalyisisInput,
     AnalysisFindManyQueryParams,
+    PrepareAnalyisisInput,
 } from "@repo/types/dtos/analysis"
 import { CreateModelInput } from "@repo/types/dtos/model"
-import { ContextService } from "@/shared/context.service"
-import { UserProviderService } from "@/shared/user-provider.service"
+import AdmZip from "adm-zip"
+import { beforeEach, describe, expect, it, mock } from "bun:test"
+import { Schema } from "effect"
+import { Readable } from "stream"
 
 const buildStructuredDataBuffer = (elements: any[]) => {
     const zip = new AdmZip()
@@ -48,16 +46,6 @@ mock.module("@adobe/pdfservices-node-sdk", () => ({
     ServicePrincipalCredentials: class {},
 }))
 
-const { ExtractorService } = await import("@/modules/extractor/service")
-const { EnvsService } = await import("@/shared/envs.service")
-const { ModelService } = await import("@/modules/data/model/service")
-const { ModelRepository } = await import("@/modules/data/model/repository")
-const { SseService } = await import("@/modules/sse/service")
-const { HttpService } = await import("@/shared/http.service")
-const { InvalidModelApiKeyError } = await import(
-    "@/modules/data/model/exceptions/tagged-errors"
-)
-
 beforeEach(() => {
     structuredDataBuffer = buildStructuredDataBuffer([])
 })
@@ -66,7 +54,7 @@ describe("Zod form validation", () => {
     it("requires either plain text or uploaded files", () => {
         const result = PrepareAnalyisisInput.safeParse({ text: "", files: [] })
         expect(result.success).toBe(false)
-        expect(result.error?.issues[0].message).toContain("text")
+        expect(result.error?.issues[0]?.message).toContain("text")
     })
 
     it("accepts valid file uploads", () => {

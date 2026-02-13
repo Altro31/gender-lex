@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "type": "module",
     "scripts": {
-        "build": "nitro build && bun build .output/server/index.mjs --target=node --outdir .output",
+        "build": "nitro build && bun build .output/server/index.mjs --target=bun --outdir .output",
         "dev": "nitro dev",
         "start": "bun .output/index.js",
         "lint": "oxlint --fix --fix-suggestions --fix-dangerously",

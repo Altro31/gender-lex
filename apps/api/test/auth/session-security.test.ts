@@ -17,15 +17,13 @@ const { ContextService } = await import("@/shared/context.service")
 mock.module("@/shared/auth/auth.service", () => ({
     AuthService: {
         safe: Effect.gen(function* () {
-            const ctx = yield* ContextService
-            const headers = ctx.req?.raw?.headers || new Headers()
-            const result = yield* Effect.promise(() =>
-                getSessionMock({ headers }),
-            )
+            const result = yield* Effect.promise(() => getSessionMock())
             if (!result) {
                 return yield* new UnauthorizedError()
             }
-            return { session: { ...result.session, user: result.user } }
+            return {
+                session: { ...(<any>result).session, user: (<any>result).user },
+            }
         }),
         unsafe: Effect.succeed(undefined),
         provide: <A>(effect: Effect.Effect<A>) => effect,
@@ -69,7 +67,7 @@ describe("AuthService session security", () => {
                 email: "secure@example.com",
                 role: "authenticated",
             },
-        })
+        } as any)
 
         const result = await runSafe(headers)
         expect(result.session.user.id).toBe("user-cookie")
@@ -88,14 +86,14 @@ describe("AuthService session security", () => {
                 role: "authenticated",
                 provider: "google",
             },
-        })
+        } as any)
 
         const result = await runSafe()
-        expect(result.session.user.provider).toBe("google")
+        expect((<any>result.session.user).provider).toBe("google")
     })
 
     it("returns enriched sessions for GitHub OAuth logins", async () => {
-        getSessionMock.mockResolvedValueOnce({
+        getSessionMock.mockResolvedValueOnce(<any>{
             session: {
                 id: "sess-github",
                 expiresAt: new Date(Date.now() + 60_000).toISOString(),
@@ -109,6 +107,6 @@ describe("AuthService session security", () => {
         })
 
         const result = await runSafe()
-        expect(result.session.user.provider).toBe("github")
+        expect((<any>result.session.user).provider).toBe("github")
     })
 })
