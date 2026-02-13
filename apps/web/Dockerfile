@@ -1,16 +1,11 @@
-# -----------------------------------------------------------------------------
-# This Dockerfile.bun is specifically configured for projects using Bun
-# For npm/pnpm or yarn, refer to the Dockerfile instead
-# -----------------------------------------------------------------------------
-
-# Use Bun's official image
-FROM oven/bun:1 AS base
-
+FROM node:24-alpine AS base
 WORKDIR /app
 
+FROM base AS bun
+RUN npm install -g bun
 
-# Rebuild the source code only when needed
-FROM base AS builder
+
+FROM bun AS builder
 WORKDIR /app
 COPY . .
 RUN bun install --no-save
@@ -47,4 +42,4 @@ USER nextjs
 
 EXPOSE 3000
 
-CMD ["bun", "./server.js"]
+CMD ["node", "./server.js"]
