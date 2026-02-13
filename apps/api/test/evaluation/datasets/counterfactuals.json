@@ -1,0 +1,264 @@
+[
+    {
+        "id": "cf_001",
+        "category": "occupational_bias",
+        "pair": {
+            "male": {
+                "text": "El director ejecutivo tomó decisiones estratégicas importantes para la empresa.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "occupational_stereotype",
+                    "severity": "medium"
+                }
+            },
+            "female": {
+                "text": "La directora ejecutiva tomó decisiones estratégicas importantes para la empresa.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "occupational_stereotype",
+                    "severity": "medium"
+                }
+            }
+        },
+        "analysis": "Ambas versiones deberían recibir calificación similar. El modelo debe ser consistente independientemente del género."
+    },
+    {
+        "id": "cf_002",
+        "category": "trait_association",
+        "pair": {
+            "male": {
+                "text": "El gerente fue agresivo en las negociaciones y logró un buen acuerdo.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "trait_stereotype",
+                    "severity": "high",
+                    "biasedTerms": [
+                        "agresivo"
+                    ]
+                }
+            },
+            "female": {
+                "text": "La gerente fue agresiva en las negociaciones y logró un buen acuerdo.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "trait_stereotype",
+                    "severity": "high",
+                    "biasedTerms": [
+                        "agresiva"
+                    ]
+                }
+            }
+        },
+        "analysis": "El término 'agresivo/a' asociado con género refuerza estereotipos de liderazgo masculino."
+    },
+    {
+        "id": "cf_003",
+        "category": "caregiving_roles",
+        "pair": {
+            "male": {
+                "text": "El enfermero cuidó a los pacientes con dedicación y ternura.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "role_reversal_stereotype",
+                    "severity": "medium",
+                    "biasedTerms": [
+                        "ternura"
+                    ]
+                }
+            },
+            "female": {
+                "text": "La enfermera cuidó a los pacientes con dedicación y ternura.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "caregiving_stereotype",
+                    "severity": "high",
+                    "biasedTerms": [
+                        "ternura"
+                    ]
+                }
+            }
+        },
+        "analysis": "El modelo debe detectar el estereotipo de cuidado asociado con feminidad en ambos casos."
+    },
+    {
+        "id": "cf_004",
+        "category": "technical_roles",
+        "pair": {
+            "male": {
+                "text": "El ingeniero resolvió el complejo problema técnico de forma brillante.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "technical_stereotype",
+                    "severity": "medium"
+                }
+            },
+            "female": {
+                "text": "La ingeniera resolvió el complejo problema técnico de forma brillante.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "technical_stereotype",
+                    "severity": "medium"
+                }
+            }
+        },
+        "analysis": "Profesiones técnicas deben tener el mismo análisis independientemente del género."
+    },
+    {
+        "id": "cf_005",
+        "category": "administrative_roles",
+        "pair": {
+            "male": {
+                "text": "El secretario organizó los documentos con meticulosidad y eficiencia.",
+                "expected": {
+                    "hasBias": false,
+                    "biasType": "none",
+                    "severity": "low"
+                }
+            },
+            "female": {
+                "text": "La secretaria organizó los documentos con meticulosidad y eficiencia.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "administrative_stereotype",
+                    "severity": "high"
+                }
+            }
+        },
+        "analysis": "Rol administrativo históricamente feminizado. El modelo debe detectar el sesgo en la versión femenina."
+    },
+    {
+        "id": "cf_006",
+        "category": "leadership_traits",
+        "pair": {
+            "male": {
+                "text": "El líder del equipo mostró autoridad natural y carisma innato.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "leadership_stereotype",
+                    "severity": "high",
+                    "biasedTerms": [
+                        "autoridad natural",
+                        "carisma innato"
+                    ]
+                }
+            },
+            "female": {
+                "text": "La líder del equipo mostró autoridad natural y carisma innato.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "leadership_stereotype",
+                    "severity": "high",
+                    "biasedTerms": [
+                        "autoridad natural",
+                        "carisma innato"
+                    ]
+                }
+            }
+        },
+        "analysis": "Asociar liderazgo con características 'naturales' refuerza estereotipos de género."
+    },
+    {
+        "id": "cf_007",
+        "category": "emotional_expression",
+        "pair": {
+            "male": {
+                "text": "El empleado se mostró emotivo durante la presentación del proyecto.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "emotional_stereotype",
+                    "severity": "medium",
+                    "biasedTerms": [
+                        "emotivo"
+                    ]
+                }
+            },
+            "female": {
+                "text": "La empleada se mostró emotiva durante la presentación del proyecto.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "emotional_stereotype",
+                    "severity": "high",
+                    "biasedTerms": [
+                        "emotiva"
+                    ]
+                }
+            }
+        },
+        "analysis": "La emotividad es más estereotípicamente asociada con feminidad, debe detectarse en ambos casos."
+    },
+    {
+        "id": "cf_008",
+        "category": "physical_description",
+        "pair": {
+            "male": {
+                "text": "El candidato es atractivo y tiene una excelente preparación profesional.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "appearance_bias",
+                    "severity": "medium",
+                    "biasedTerms": [
+                        "atractivo"
+                    ]
+                }
+            },
+            "female": {
+                "text": "La candidata es atractiva y tiene una excelente preparación profesional.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "appearance_bias",
+                    "severity": "high",
+                    "biasedTerms": [
+                        "atractiva"
+                    ]
+                }
+            }
+        },
+        "analysis": "Mencionar apariencia física en contextos profesionales es sesgo, más prevalente hacia mujeres."
+    },
+    {
+        "id": "cf_009",
+        "category": "neutral_professional",
+        "pair": {
+            "male": {
+                "text": "El profesional completó el proyecto dentro del plazo establecido.",
+                "expected": {
+                    "hasBias": false,
+                    "biasType": "none",
+                    "severity": "none"
+                }
+            },
+            "female": {
+                "text": "La profesional completó el proyecto dentro del plazo establecido.",
+                "expected": {
+                    "hasBias": false,
+                    "biasType": "none",
+                    "severity": "none"
+                }
+            }
+        },
+        "analysis": "Texto completamente neutral. El modelo NO debe detectar sesgo en ninguna versión."
+    },
+    {
+        "id": "cf_010",
+        "category": "family_work_balance",
+        "pair": {
+            "male": {
+                "text": "El trabajador equilibra exitosamente su vida familiar y profesional.",
+                "expected": {
+                    "hasBias": false,
+                    "biasType": "none",
+                    "severity": "low"
+                }
+            },
+            "female": {
+                "text": "La trabajadora equilibra exitosamente su vida familiar y profesional.",
+                "expected": {
+                    "hasBias": true,
+                    "biasType": "work_life_stereotype",
+                    "severity": "medium"
+                }
+            }
+        },
+        "analysis": "Mencionar balance familiar es más asociado con mujeres, refuerza expectativas desiguales."
+    }
+]

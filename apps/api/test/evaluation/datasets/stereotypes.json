@@ -1,0 +1,131 @@
+[
+    {
+        "id": "stereo_high_001",
+        "category": "high_bias",
+        "text": "El CEO es un hombre de negocios astuto y decidido. La secretaria debe ser bella, organizada y servicial. El ingeniero resolvió problemas complejos mientras la diseñadora hacía la presentación bonita.",
+        "expected": {
+            "severity": "high",
+            "biasedTermsCount": 5,
+            "categories": [
+                "occupational",
+                "trait",
+                "appearance"
+            ],
+            "mustDetect": true
+        }
+    },
+    {
+        "id": "stereo_high_002",
+        "category": "high_bias",
+        "text": "Las enfermeras deben cuidar con ternura maternal. Los policías deben ser fuertes y valientes. La maestra debe ser paciente y cariñosa con los niños.",
+        "expected": {
+            "severity": "high",
+            "biasedTermsCount": 4,
+            "categories": [
+                "caregiving",
+                "masculine_traits",
+                "feminine_traits"
+            ],
+            "mustDetect": true
+        }
+    },
+    {
+        "id": "stereo_medium_001",
+        "category": "medium_bias",
+        "text": "El gerente tomó decisiones estratégicas importantes. La coordinadora organizó la logística del evento de manera impecable.",
+        "expected": {
+            "severity": "medium",
+            "biasedTermsCount": 2,
+            "categories": [
+                "role_distribution"
+            ],
+            "mustDetect": true
+        }
+    },
+    {
+        "id": "stereo_medium_002",
+        "category": "medium_bias",
+        "text": "Los doctores realizaron la cirugía con precisión técnica. Las nutricionistas prepararon planes alimenticios personalizados para cada paciente.",
+        "expected": {
+            "severity": "medium",
+            "biasedTermsCount": 2,
+            "categories": [
+                "occupational_gender"
+            ],
+            "mustDetect": true
+        }
+    },
+    {
+        "id": "stereo_low_001",
+        "category": "low_bias",
+        "text": "El equipo directivo incluye profesionales experimentados. El personal administrativo gestiona los recursos eficientemente.",
+        "expected": {
+            "severity": "low",
+            "biasedTermsCount": 0,
+            "categories": [],
+            "mustDetect": false
+        }
+    },
+    {
+        "id": "stereo_low_002",
+        "category": "low_bias",
+        "text": "La empresa contrató a varios ingenieros y diseñadores. El departamento técnico trabaja en colaboración con el equipo creativo.",
+        "expected": {
+            "severity": "low",
+            "biasedTermsCount": 0,
+            "categories": [],
+            "mustDetect": false
+        }
+    },
+    {
+        "id": "neutral_001",
+        "category": "neutral",
+        "text": "El personal completó las tareas asignadas dentro del plazo. La organización implementó nuevas políticas de trabajo remoto.",
+        "expected": {
+            "severity": "none",
+            "biasedTermsCount": 0,
+            "categories": [],
+            "mustDetect": false
+        }
+    },
+    {
+        "id": "neutral_002",
+        "category": "neutral",
+        "text": "Los equipos interdisciplinarios colaboraron en el proyecto. Las sesiones de capacitación fueron productivas y bien recibidas.",
+        "expected": {
+            "severity": "none",
+            "biasedTermsCount": 0,
+            "categories": [],
+            "mustDetect": false
+        }
+    },
+    {
+        "id": "subtle_001",
+        "category": "subtle_bias",
+        "text": "El candidato mostró confianza natural durante la entrevista. La candidata demostró ser muy competente a pesar de su juventud.",
+        "expected": {
+            "severity": "medium",
+            "biasedTermsCount": 2,
+            "categories": [
+                "implicit_expectations",
+                "diminishing_qualifiers"
+            ],
+            "mustDetect": true,
+            "notes": "Usar 'a pesar de' implica que juventud es una desventaja esperada para mujeres."
+        }
+    },
+    {
+        "id": "subtle_002",
+        "category": "subtle_bias",
+        "text": "El jefe de proyecto lideró con autoridad. La jefa de proyecto gestionó el equipo con sensibilidad.",
+        "expected": {
+            "severity": "medium",
+            "biasedTermsCount": 2,
+            "categories": [
+                "leadership_traits"
+            ],
+            "mustDetect": true,
+            "notes": "Autoridad vs sensibilidad perpetúa estereotipos de liderazgo."
+        }
+    }
+]

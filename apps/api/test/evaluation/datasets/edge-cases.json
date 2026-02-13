@@ -1,0 +1,110 @@
+[
+    {
+        "id": "edge_001",
+        "category": "ambiguous_context",
+        "text": "El doctor atendió al paciente. La doctora prescribió medicación.",
+        "expected": {
+            "severity": "low",
+            "notes": "Uso simétrico y neutral de profesión médica, no debería detectarse como sesgo."
+        }
+    },
+    {
+        "id": "edge_002",
+        "category": "historical_context",
+        "text": "En el siglo XIX, las mujeres no podían votar y se esperaba que solo se dedicaran al hogar.",
+        "expected": {
+            "severity": "none",
+            "notes": "Descripción histórica factual, NO es un sesgo en el texto sino una descripción de sesgos históricos."
+        }
+    },
+    {
+        "id": "edge_003",
+        "category": "fictional_characters",
+        "text": "En la novela, el protagonista es un guerrero valiente y la protagonista es una princesa delicada que necesita ser rescatada.",
+        "expected": {
+            "severity": "medium",
+            "notes": "Aunque es ficción, perpetúa estereotipos de género en roles narrativos."
+        }
+    },
+    {
+        "id": "edge_004",
+        "category": "statistical_statement",
+        "text": "Según estudios recientes, el 85% de las personas que trabajan en enfermería son mujeres.",
+        "expected": {
+            "severity": "none",
+            "notes": "Dato estadístico factual, NO es un sesgo en el texto."
+        }
+    },
+    {
+        "id": "edge_005",
+        "category": "direct_quote",
+        "text": "El director comentó: 'Necesitamos hombres fuertes para este trabajo físico'.",
+        "expected": {
+            "severity": "high",
+            "notes": "Aunque es una cita directa, el contenido es sesgado y debe detectarse."
+        }
+    },
+    {
+        "id": "edge_006",
+        "category": "grammatical_gender",
+        "text": "El problema fue resuelto satisfactoriamente. La solución implementada fue efectiva.",
+        "expected": {
+            "severity": "none",
+            "notes": "Género gramatical de sustantivos inanimados NO es sesgo de género social."
+        }
+    },
+    {
+        "id": "edge_007",
+        "category": "inclusive_language",
+        "text": "Les profesionales del equipo desarrollaron una solución innovadora.",
+        "expected": {
+            "severity": "none",
+            "notes": "Lenguaje inclusivo intencional, NO debe detectarse como sesgo."
+        }
+    },
+    {
+        "id": "edge_008",
+        "category": "self_identification",
+        "text": "Como mujer en STEM, enfrento desafíos únicos en mi campo profesional.",
+        "expected": {
+            "severity": "low",
+            "notes": "Auto-identificación en contexto de discriminación experimentada, NO es sesgo del texto."
+        }
+    },
+    {
+        "id": "edge_009",
+        "category": "counteracting_stereotype",
+        "text": "Contrario a los estereotipos, muchos hombres sobresalen en roles de cuidado infantil y educación temprana.",
+        "expected": {
+            "severity": "none",
+            "notes": "Texto explícitamente combatiendo estereotipos, NO debe marcarse como sesgado."
+        }
+    },
+    {
+        "id": "edge_010",
+        "category": "complex_negation",
+        "text": "No es cierto que las mujeres sean menos capaces en matemáticas que los hombres.",
+        "expected": {
+            "severity": "none",
+            "notes": "Negación explícita de estereotipo, el modelo debe entender la negación."
+        }
+    },
+    {
+        "id": "edge_011",
+        "category": "conditional_bias",
+        "text": "Si asumimos que los líderes deben ser agresivos, entonces estaríamos excluyendo a muchas personas calificadas.",
+        "expected": {
+            "severity": "low",
+            "notes": "Condicional hipotético crítico del sesgo, contexto es importante."
+        }
+    },
+    {
+        "id": "edge_012",
+        "category": "sarcasm_irony",
+        "text": "Claro, porque todas las mujeres nacen sabiendo cocinar y los hombres no pueden hacer dos cosas a la vez.",
+        "expected": {
+            "severity": "medium",
+            "notes": "Sarcasmo/ironía criticando estereotipos. Difícil de detectar, pero el modelo debe reconocer el contexto."
+        }
+    }
+]

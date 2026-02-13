@@ -1,5 +1,6 @@
 # Build stage
-FROM oven/bun:1.3.5 AS builder
+FROM node:24-alpine AS builder
+RUN npm install -g bun
 WORKDIR /app
 COPY package.json ./
 COPY turbo.json ./
@@ -13,4 +14,4 @@ FROM oven/bun:1-slim
 WORKDIR /app/apps/api
 COPY --from=builder /app/apps/api/.output/index.js .
 EXPOSE 3000
-CMD ["node", "index.js"]
+CMD ["bun", "index.js"]

@@ -44,3 +44,7 @@ pnpm-debug.log*
 # Misc
 .DS_Store
 *.pem
+
+.agents
+.github/skills
+.doc

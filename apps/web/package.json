@@ -11,7 +11,10 @@
     "start": "next start",
     "type:gen": "next typegen",
     "lint": "oxlint --fix --fix-suggestions",
-    "locales:gen": "lingui extract --clean"
+    "locales:gen": "lingui extract --clean",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.20",
@@ -76,6 +79,7 @@
   },
   "devDependencies": {
     "@effect/language-service": "catalog:",
+    "@playwright/test": "^1.50.0",
     "@repo/types": "workspace:*",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/negotiator": "^0.6.4",
