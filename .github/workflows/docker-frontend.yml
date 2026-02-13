@@ -1,23 +1,23 @@
-name: Build and Push Backend Docker Image
+name: Build and Push Frontend Docker Image
 
 on:
   push:
     branches:
       - main
     paths:
-      - "apps/api/**"
+      - "apps/web/**"
       - "packages/**"
-      - ".github/workflows/docker-backend.yml"
+      - ".github/workflows/docker-frontend.yml"
   pull_request:
     branches:
       - main
     paths:
-      - "apps/api/**"
+      - "apps/web/**"
       - "packages/**"
   workflow_dispatch:
 
 env:
-  DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/gender-lex
+  DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/gender-lex-front
 
 jobs:
   build-and-push:
@@ -53,7 +53,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./apps/api/Dockerfile
+          file: ./apps/web/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -67,4 +67,4 @@ jobs:
 
       - name: Trigger caprover deploy hook
         run: |
-          curl -X POST "$CAPROVER_SERVER_URL/api/v2/apps/appData/forceDeploy" -H "Content-Type: application/json" -H "x-captain-auth: $CAPROVER_BACK_APP_TOKEN" -d "{\"appName\": \"gender-lex-back\"}"
+          curl -X POST "$CAPROVER_SERVER_URL/api/v2/apps/appData/forceDeploy" -H "Content-Type: application/json" -H "x-captain-auth: $CAPROVER_FRONT_APP_TOKEN" -d "{\"appName\": \"gender-lex-front\"}"

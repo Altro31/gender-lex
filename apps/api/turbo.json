@@ -44,6 +44,9 @@
             ]
         },
         "migrate:prod": {
+            "dependsOn": [
+                "^migrate:prod"
+            ],
             "cache": false,
             "env": [
                 "DATABASE_URL",
