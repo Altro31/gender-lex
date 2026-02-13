@@ -34,6 +34,7 @@ export async function persistOnDatabase({ presetId }: Args, { user }: Context) {
             }),
         )
     }).pipe(
+        Effect.withSpan("Persisting analysis on database"),
         AnalysisRepository.provide,
         PresetService.provide,
         UserProviderService.provideFromUser(user),

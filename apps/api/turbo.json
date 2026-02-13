@@ -1,10 +1,16 @@
 {
     "$schema": "https://turborepo.com/schema.json",
-    "extends": ["//"],
+    "extends": [
+        "//"
+    ],
     "tasks": {
         "build": {
-            "dependsOn": ["@repo/db#generate"],
-            "outputs": [".output/**"],
+            "dependsOn": [
+                "@repo/db#generate"
+            ],
+            "outputs": [
+                ".output/**"
+            ],
             "env": [
                 "PORT",
                 "AUTH_GOOGLE_ID",
@@ -26,6 +32,15 @@
                 "WORKFLOW_POSTGRES_URL",
                 "WORKFLOW_POSTGRES_JOB_PREFIX",
                 "WORKFLOW_POSTGRES_WORKER_CONCURRENCY"
+            ]
+        },
+        "migrate": {
+            "dependsOn": [
+                "^migrate"
+            ],
+            "cache": false,
+            "env": [
+                "DATABASE_URL",
             ]
         },
         "migrate:prod": {
