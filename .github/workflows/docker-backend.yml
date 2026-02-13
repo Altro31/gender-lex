@@ -66,8 +66,9 @@ jobs:
       #     curl -X POST ${{ secrets.DEPLOY_HOOK_URL }}
 
       - name: Deploy App to CapRover
-        uses: caprover/deploy-from-github@v1.0.1
+        uses: caprover/deploy-from-github@v1.1.2
         with:
           server: "${{ secrets.CAPROVER_SERVER_URL }}"
           app: "gender-lex-back"
           token: "${{ secrets.CAPROVER_BACK_APP_TOKEN }}"
+          image: "altro31/gender-lex-back:latest"
