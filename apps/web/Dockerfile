@@ -45,4 +45,4 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 RUN ls
-CMD ["node", "./server.js"]
+CMD ["node", "./apps/web/server.js"]
