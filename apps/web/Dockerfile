@@ -8,19 +8,15 @@ FROM oven/bun:1 AS base
 
 WORKDIR /app
 
-# Install dependencies with bun
-FROM base AS deps
-COPY package.json bun.lock* ./
-RUN bun install --no-save
 
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
 COPY package.json bun.lock* ./
 COPY turbo.json ./
 COPY apps/web ./apps/web
 COPY packages ./packages
+RUN bun install --no-save
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
