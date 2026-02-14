@@ -1,23 +1,21 @@
-FROM node:24-alpine AS base
+FROM node:24-alpine AS builder
 
-FROM base AS bun
-RUN npm install -g bun
-
-# Build stage
-FROM bun AS builder
 RUN npm install -g bun
 WORKDIR /app
-COPY package.json bun.lock* ./
-COPY turbo.json ./
-COPY apps/api ./apps/api
+ENV NODE_ENV=production
+
+COPY package.json bun.lock* turbo.json ./
+COPY apps ./apps
 COPY packages ./packages
-RUN bun install --no-save
-RUN bun build:api
 
+RUN bun install --frozen-lockfile
+RUN bun run build:api
 
-FROM base AS runner
-WORKDIR /app
-COPY --from=builder /app ./
-EXPOSE 3000
+FROM node:24-alpine AS runner
 WORKDIR /app/apps/api
+ENV NODE_ENV=production
+
+COPY --from=builder /app/apps/api/.output ./.output
+
+EXPOSE 3000
 CMD ["node", ".output/server/index.mjs"]
