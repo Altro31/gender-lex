@@ -16,7 +16,7 @@ FROM base
 WORKDIR /app
 COPY --from=builder /app/apps/api/.output .
 WORKDIR /app/server
-RUN npm ci
+RUN npm install
 EXPOSE 3000
 WORKDIR /app
 CMD ["node", "server/index.mjs"]
