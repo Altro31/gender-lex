@@ -11,8 +11,7 @@ RUN bun build:api
 
 # Production stage
 FROM node:24-alpine
-RUN npm install -g bun
-WORKDIR /app/apps/api
-COPY --from=builder /app/apps/api/.output/index.js .
+WORKDIR /app
+COPY --from=builder /app/apps/api/.output .
 EXPOSE 3000
-CMD ["bun", "index.js"]
+CMD ["node", "server/index.mjs"]
