@@ -1,7 +1,10 @@
 FROM node:24-alpine AS base
 
+FROM base AS bun
+RUN npm install -g bun
+
 # Build stage
-FROM base AS builder
+FROM bun AS builder
 RUN npm install -g bun
 WORKDIR /app
 COPY package.json bun.lock* ./
@@ -12,11 +15,14 @@ RUN bun install --no-save
 RUN bun build:api
 
 
-FROM base
+FROM bun AS pre-runner
 WORKDIR /app
 COPY --from=builder /app/apps/api/.output .
 WORKDIR /app/server
 RUN npm install
-EXPOSE 3000
+
+FROM base AS runner
 WORKDIR /app
+COPY --from=pre-runner /app ./
+EXPOSE 3000
 CMD ["node", "server/index.mjs"]
