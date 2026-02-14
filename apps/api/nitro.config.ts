@@ -5,5 +5,16 @@ export default defineConfig({
     modules: ["workflow/nitro"],
     plugins: ["nitro/plugins/start-pg-world.ts"],
     experimental: { tsconfigPaths: true },
-    externals: { traceInclude: ["@workflow/world-postgres"] },
+    externals: {
+        traceInclude: ["@workflow/world-postgres"],
+        external: [
+            "workflow",
+            "@workflow/core",
+            "@workflow/errors",
+            "@workflow/utils",
+            "@workflow/world",
+            "@workflow/world-local",
+            "@workflow/world-postgres",
+        ],
+    },
 })
