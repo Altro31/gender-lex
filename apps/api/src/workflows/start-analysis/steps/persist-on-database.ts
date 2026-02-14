@@ -4,15 +4,17 @@ import { UserProviderService } from "@/shared/user-provider.service"
 import type { Context } from "@/workflows/common-types"
 import { effectify } from "@repo/db/effect"
 import { Effect } from "effect"
-import { getWorkflowMetadata } from "workflow"
 
 interface Args {
     presetId: string | undefined
+    workflow: string
 }
 
-export async function persistOnDatabase({ presetId }: Args, { user }: Context) {
+export async function persistOnDatabase(
+    { presetId, workflow }: Args,
+    { user }: Context,
+) {
     "use step"
-    const { workflowRunId } = getWorkflowMetadata()
 
     const program = Effect.gen(function* () {
         const repository = yield* AnalysisRepository
@@ -26,7 +28,7 @@ export async function persistOnDatabase({ presetId }: Args, { user }: Context) {
         return yield* effectify(
             repository.create({
                 data: {
-                    workflow: workflowRunId,
+                    workflow,
                     Preset: { connect: { id: presetId } },
                     visibility: !user ? "public" : undefined,
                 },

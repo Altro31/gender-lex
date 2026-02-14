@@ -10,6 +10,7 @@ import { streamAnalysisUpdate } from "./steps/stream-update"
 import { updateOriginalText } from "./steps/update-original-text"
 import { updateStatus } from "./steps/update-status"
 import { updateWithResult } from "./steps/update-with-result"
+import { getWorkflowMetadata } from "workflow"
 
 interface AnalysisInput {
     presetId: string | undefined
@@ -24,7 +25,12 @@ export async function startAnalysisWorkflow(
 
     const { presetId } = input
 
-    const persistedAnalysis = await persistOnDatabase({ presetId }, ctx)
+    const { workflowRunId } = getWorkflowMetadata()
+
+    const persistedAnalysis = await persistOnDatabase(
+        { presetId, workflow: workflowRunId },
+        ctx,
+    )
 
     await streamGeneratedId(persistedAnalysis.id)
     await closeStreamId()
