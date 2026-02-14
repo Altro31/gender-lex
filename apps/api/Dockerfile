@@ -14,7 +14,7 @@ RUN bun build:api
 # Production stage
 FROM base
 WORKDIR /app
-COPY --from=builder /app/apps/api/.output .
-WORKDIR /app/server
+COPY --from=builder /app/apps/api ./apps/api
+WORKDIR /app/apps/api
 EXPOSE 3000
-CMD ["node", "index.mjs"]
+CMD ["node", ".output/server/index.mjs"]
