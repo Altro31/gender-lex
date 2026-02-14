@@ -10,6 +10,6 @@ COPY apps/api ./apps/api
 COPY packages ./packages
 RUN bun install --no-save
 RUN bun build:api
-EXPOSE 
+EXPOSE 3000
 WORKDIR /app/apps/api
 CMD ["node", ".output/server/index.mjs"]
