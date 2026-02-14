@@ -12,10 +12,11 @@ RUN bun install --frozen-lockfile
 RUN bun run build:api
 
 FROM node:24-alpine AS runner
-WORKDIR /app/apps/api
+WORKDIR /app
 ENV NODE_ENV=production
 
-COPY --from=builder /app/apps/api/.output ./.output
+COPY --from=builder /app ./
+WORKDIR /app/apps/api
 
 EXPOSE 3000
 CMD ["node", ".output/server/index.mjs"]
