@@ -15,5 +15,6 @@ RUN bun build:api
 FROM base
 WORKDIR /app
 COPY --from=builder /app/apps/api/.output .
+WORKDIR /app/server
 EXPOSE 3000
-CMD ["node", "server/index.mjs"]
+CMD ["node", "index.mjs"]
