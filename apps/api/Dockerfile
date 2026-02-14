@@ -19,7 +19,7 @@ FROM bun AS pre-runner
 WORKDIR /app
 COPY --from=builder /app/apps/api/.output .
 WORKDIR /app/server
-RUN npm install
+RUN bun install --no-save
 
 FROM base AS runner
 WORKDIR /app
