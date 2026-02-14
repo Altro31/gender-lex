@@ -1,10 +1,11 @@
 import type { AnalysisUpdate } from "@/lib/types/raw-analysis"
-import { getUpdateStream } from "@/workflows/start-analysis/steps/utils"
 import type { Analysis } from "@repo/db/models"
 
-export async function streamAnalysisUpdate(update: Analysis) {
+export async function streamAnalysisUpdate(
+    update: Analysis,
+    stream: WritableStream<AnalysisUpdate>,
+) {
     "use step"
-    const stream = getUpdateStream()
     const writer = stream.getWriter()
     await writer.write({
         id: update.id,

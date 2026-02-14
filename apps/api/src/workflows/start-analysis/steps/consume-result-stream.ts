@@ -1,6 +1,5 @@
 import type { AnalysisUpdate } from "@/lib/types/raw-analysis"
 import type { AnalysisOutput } from "@/modules/bias-detection/service"
-import { getUpdateStream } from "@/workflows/start-analysis/steps/utils"
 import type { Analysis, RawAnalysis } from "@repo/db/models"
 import type { DeepPartial, ReasoningOutput } from "ai"
 import { Stream } from "effect"
@@ -10,11 +9,11 @@ export async function consumeResultStream<T extends Analysis>(
     resultStream: ReadableStream<DeepPartial<AnalysisOutput>>,
     reasoningStream: ReadableStream<ReasoningOutput[]>,
     analysis: T,
+    streamUpdate: WritableStream<AnalysisUpdate>,
 ) {
     "use step"
 
-    const stream = getUpdateStream()
-    const writer = stream.getWriter()
+    const writer = streamUpdate.getWriter()
 
     const analysisStream = Stream.fromReadableStream({
         evaluate: constant(resultStream),

@@ -1,22 +1,30 @@
-FROM node:24-alpine AS builder
-
-RUN npm install -g bun
-WORKDIR /app
+FROM node:24-alpine as base
 ENV NODE_ENV=production
+WORKDIR /app
 
-COPY package.json bun.lock* turbo.json ./
-COPY apps ./apps
-COPY packages ./packages
+FROM base as bun
+RUN npm install -g bun turbo
 
-RUN bun install --frozen-lockfile
+FROM bun as prepare
+RUN bun add -g turbo
+COPY . .
+RUN turbo prune api --docker
+
+FROM bun AS builder
+COPY --from=prepare /app/out/json/ .
+RUN bun i --no-safe
+COPY --from=prepare /app/out/full/ .
 RUN bun run build:api
 
-FROM node:24-alpine AS runner
-WORKDIR /app
+FROM base AS runner
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nitro
+USER nitro
 ENV NODE_ENV=production
 
-COPY --from=builder /app ./
+COPY --from=builder --chown=nitro:nodejs /app ./
 WORKDIR /app/apps/api
 
 EXPOSE 3000
-CMD ["node", ".output/server/index.mjs"]
+CMD node .output/server/index.mjs
